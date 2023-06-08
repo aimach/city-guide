@@ -16,8 +16,8 @@ export enum UserRole {
 
 @Entity()
 export class User {
-   @PrimaryGeneratedColumn()
-   id: number;
+   @PrimaryGeneratedColumn('uuid')
+   id: string;
 
    @Column({ type: 'varchar', length: 100, unique: true })
    username: string;
@@ -27,6 +27,9 @@ export class User {
 
    @Column()
    password: string;
+
+   @Column()
+   image: string;
 
    @Column({ type: 'enum', enum: UserRole, default: UserRole.FREE_USER })
    role: UserRole;
