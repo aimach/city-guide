@@ -6,6 +6,8 @@ import {
    JoinTable,
    PrimaryGeneratedColumn,
 } from 'typeorm';
+import { Poi } from './Poi';
+import { City } from './City';
 
 export enum UserRole {
    ADMIN = 'admin',
@@ -36,4 +38,12 @@ export class User {
 
    @Column({ nullable: true, type: 'varchar', length: 100 })
    city: string;
+
+   @ManyToMany(() => Poi, (poi) => poi.users, { cascade: true })
+   @JoinTable()
+   favouritePoi: Poi[];
+
+   @ManyToMany(() => City, { cascade: true })
+   @JoinTable()
+   favouriteCities: City[];
 }

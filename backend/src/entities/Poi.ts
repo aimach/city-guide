@@ -8,7 +8,11 @@ import {
    Point,
    CreateDateColumn,
    UpdateDateColumn,
+   ManyToOne,
 } from 'typeorm';
+import { Category } from './Category';
+import { City } from './City';
+import { User } from './User';
 
 export class Poi {
    @PrimaryGeneratedColumn('uuid')
@@ -34,4 +38,13 @@ export class Poi {
 
    @UpdateDateColumn()
    updated_at: string;
+
+   @ManyToOne(() => Category, (category) => category.poi)
+   category: Category;
+
+   @ManyToOne(() => City, (city) => city.poi)
+   city: City;
+
+   @ManyToMany(() => User, (user) => user.favouritePoi)
+   users: User[];
 }

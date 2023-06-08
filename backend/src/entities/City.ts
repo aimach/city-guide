@@ -6,7 +6,12 @@ import {
    JoinTable,
    PrimaryGeneratedColumn,
    Point,
+   OneToMany,
+   OneToOne,
+   JoinColumn,
 } from 'typeorm';
+import { Poi } from './Poi';
+import { User } from './User';
 
 export class City {
    @PrimaryGeneratedColumn('uuid')
@@ -20,4 +25,11 @@ export class City {
 
    @Column()
    image: string;
+
+   @OneToMany(() => Poi, (poi) => poi.city)
+   poi: Poi[];
+
+   @OneToOne(() => User)
+   @JoinColumn()
+   user_admin_city: User;
 }

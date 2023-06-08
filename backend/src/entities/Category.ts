@@ -5,7 +5,9 @@ import {
    ManyToMany,
    JoinTable,
    PrimaryGeneratedColumn,
+   OneToMany,
 } from 'typeorm';
+import { Poi } from './Poi';
 
 export class Category {
    @PrimaryGeneratedColumn('uuid')
@@ -16,4 +18,7 @@ export class Category {
 
    @Column()
    image: string;
+
+   @OneToMany(() => Poi, (poi) => poi.category)
+   poi: Poi[];
 }
