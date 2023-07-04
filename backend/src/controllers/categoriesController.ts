@@ -14,7 +14,7 @@ export default class CategoryController {
   }
 
   // categoriesController.createCategory
-  async create(req, res) {
+  async createCategory(req, res) {
     try {
       const createCategory = await dataSource
         .getRepository(Category)
