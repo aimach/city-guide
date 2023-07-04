@@ -1,4 +1,6 @@
 import { DataSource } from "typeorm";
+import { User } from "./models/User";
+import { Category } from "./models/Category";
 
 const dataSource = new DataSource({
   type: "postgres",
@@ -10,7 +12,7 @@ const dataSource = new DataSource({
 
   synchronize: true,
 
-  entities: [],
+  entities: [User, Category],
 });
 
 export default dataSource;
