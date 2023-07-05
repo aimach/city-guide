@@ -13,11 +13,11 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-app.use('api/auth', authRoutes);
-app.use('api/profile', profileRoutes);
-app.use('api/poi', poiRoutes);
-app.use('api/cities', citiesRoutes);
-app.use('api/categories', categoriesRoutes);
+app.use('/api/auth', authRoutes);
+app.use('/api/profile', profileRoutes);
+app.use('/api/poi', poiRoutes);
+app.use('/api/cities', citiesRoutes);
+app.use('/api/categories', categoriesRoutes);
 
 const start = async (): Promise<void> => {
    const port = 5000;
