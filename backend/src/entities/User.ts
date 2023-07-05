@@ -1,6 +1,5 @@
 import {
    Entity,
-   PrimaryColumn,
    Column,
    ManyToMany,
    JoinTable,
@@ -39,11 +38,11 @@ export class User {
    @Column({ nullable: true, type: 'varchar', length: 100 })
    city: string;
 
-   @ManyToMany(() => Poi, (poi) => poi.users, { cascade: true })
+   @ManyToMany(() => Poi, (poi) => poi.users, { cascade: true, eager: true })
    @JoinTable()
    favouritePoi: Poi[];
 
-   @ManyToMany(() => City, { cascade: true })
+   @ManyToMany(() => City, { cascade: true, eager: true })
    @JoinTable()
    favouriteCities: City[];
 }

@@ -1,18 +1,16 @@
 import {
-   Entity,
-   PrimaryColumn,
    Column,
-   ManyToMany,
-   JoinTable,
    PrimaryGeneratedColumn,
    Point,
    OneToMany,
    OneToOne,
    JoinColumn,
+   Entity,
 } from 'typeorm';
 import { Poi } from './Poi';
 import { User } from './User';
 
+@Entity()
 export class City {
    @PrimaryGeneratedColumn('uuid')
    id: string;
@@ -20,7 +18,7 @@ export class City {
    @Column({ type: 'varchar', length: 100 })
    name: string;
 
-   @Column({ type: 'geometry' })
+   @Column('point')
    coordinates: Point;
 
    @Column()

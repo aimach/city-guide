@@ -1,14 +1,7 @@
-import {
-   Entity,
-   PrimaryColumn,
-   Column,
-   ManyToMany,
-   JoinTable,
-   PrimaryGeneratedColumn,
-   OneToMany,
-} from 'typeorm';
+import { Column, PrimaryGeneratedColumn, OneToMany, Entity } from 'typeorm';
 import { Poi } from './Poi';
 
+@Entity()
 export class Category {
    @PrimaryGeneratedColumn('uuid')
    id: string;
