@@ -1,3 +1,19 @@
-h1 {
-    color: green;
+@import 'style/variable';
+@import 'style/mixin';
+@import 'style/placeholder';
+
+html {
+    background-color: $primary_color;
 }
+
+h1 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 40px;
+    font-weight: 700;
+    color: $white_color; 
+}
+
+input {
+    @extend %inputForm;
+}
+
