@@ -1,23 +1,16 @@
-import express from 'express';
+import express from "express";
+import CategoryController from "../controllers/categoryController";
 
 export const categoriesRoutes = express.Router();
 
-categoriesRoutes.get(
-   '/'
-   // categoriesController.getCategories
-);
+const categoryController = new CategoryController();
 
-categoriesRoutes.post(
-   '/'
-   // categoriesController.createCategory
-);
+categoriesRoutes.get("/", categoryController.getCategories);
 
-categoriesRoutes.put(
-   '/:id'
-   // categoriesController.updateCategory
-);
+categoriesRoutes.get("/:id", categoryController.getOneCategory);
 
-categoriesRoutes.delete(
-   '/:id'
-   // categoriesController.deleteCategory
-);
+categoriesRoutes.post("/", categoryController.createCategory);
+
+categoriesRoutes.put("/:id", categoryController.updateCategory);
+
+categoriesRoutes.delete("/:id", categoryController.deleteCategory);

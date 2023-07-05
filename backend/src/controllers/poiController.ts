@@ -15,11 +15,9 @@ export default class PoiController {
   }
 
   // poiController.getOnePoi
-  // la route n'existe pas mais j'ai créé le controller au cas où
-
   async getOnePoi(req: Request, res: Response): Promise<void> {
     try {
-      const id = req.params;
+      const { id } = req.params;
       const poiToRead = await dataSource.getRepository(Poi).findOneBy({ id });
       if (poiToRead === null) {
         res.status(404).send("Point of interest not found");
@@ -34,13 +32,16 @@ export default class PoiController {
   // poiController.createPoi
   async createPoi(req: Request, res: Response): Promise<void> {
     try {
-      const createPoi = await dataSource.getRepository(Poi).save(req.body);
-      // vérifier que ça a bien été créé dans la bdd
-      res.status(201).send("Created point of interest");
-    } catch (err) {
-      if (err.code === "SQLITE_CONSTRAINT") {
+      const createPoi = await dataSource
+        .getRepository(Poi)
+        .count({ where: { name: req.body.name } });
+      if (createPoi > 0) {
         res.status(409).send("Point of interest already exists");
+      } else {
+        await dataSource.getRepository(Poi).save(req.body);
+        res.status(201).send("Created point of interest");
       }
+    } catch (err) {
       res.status(400).send("Something went wrong");
     }
   }
@@ -48,14 +49,12 @@ export default class PoiController {
   // poiController.updatePoi
   async updatePoi(req: Request, res: Response): Promise<void> {
     try {
-      const id = req.params;
+      const { id } = req.params;
       const poiToUpdate = await dataSource.getRepository(Poi).findOneBy({ id });
       if (poiToUpdate === null) {
         res.status(404).send("Point of interest not found");
       } else {
-        await dataSource.getRepository(Poi).update(id, {
-          // à modifier en fonction du contenu
-        });
+        await dataSource.getRepository(Poi).update(id, req.body);
         res.status(200).send("Updated point of interest");
       }
     } catch (err) {
@@ -66,7 +65,7 @@ export default class PoiController {
   // poiController.deletePoi
   async deletePoi(req: Request, res: Response): Promise<void> {
     try {
-      const id = req.params;
+      const { id } = req.params;
       const poiToDelete = await dataSource.getRepository(Poi).findOneBy({ id });
       if (poiToDelete === null) {
         res.status(404).send("Point of interest not found");

@@ -1,23 +1,16 @@
-import express from 'express';
+import express from "express";
+import CityController from "../controllers/cityController";
 
 export const citiesRoutes = express.Router();
 
-citiesRoutes.get(
-   '/'
-   // citiesController.getCities
-);
+const cityController = new CityController();
 
-citiesRoutes.post(
-   '/'
-   // citiesController.createCity
-);
+citiesRoutes.get("/", cityController.getCities);
 
-citiesRoutes.put(
-   '/:id'
-   // citiesController.updateCity
-);
+citiesRoutes.get("/:id", cityController.getOneCity);
 
-citiesRoutes.delete(
-   '/:id'
-   // citiesController.deleteCity
-);
+citiesRoutes.post("/", cityController.createCity);
+
+citiesRoutes.put("/:id", cityController.updateCity);
+
+citiesRoutes.delete("/:id", cityController.deleteCity);

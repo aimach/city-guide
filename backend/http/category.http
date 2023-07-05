@@ -1,0 +1,29 @@
+GET http://localhost:5000/api/categories
+
+###
+
+GET http://localhost:5000/api/categories/a513866d-b529-4166-8206-44d27f828910
+
+###
+
+POST http://localhost:5000/api/categories
+Content-Type: application/json
+
+{
+  "name": "restaurant", 
+  "image": ""
+}
+
+###
+
+PUT http://localhost:5000/api/categories/cbcd43fe-fed9-41c4-a9e9-5761b7b7206e
+Content-Type: application/json
+
+{
+  "name": "restaurant", 
+  "image": ""
+}
+
+###
+
+DELETE http://localhost:5000/api/categories/a513866d-b529-4166-8206-44d27f828910

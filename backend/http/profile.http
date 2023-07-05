@@ -1,0 +1,24 @@
+GET http://localhost:5000/api/profile
+
+###
+
+GET http://localhost:5000/api/profile/5554014c-df4a-4cee-9c98-d173c070f2c2
+
+###
+
+PUT http://localhost:5000/api/profile/5554014c-df4a-4cee-9c98-d173c070f2c2
+Content-Type: application/json
+
+{
+  "id": "5554014c-df4a-4cee-9c98-d173c070f2c2",
+  "username": "Aimach",
+  "email": "aimach@mail.com",
+  "password": "password",
+  "image": null,
+  "role": "free_user",
+  "city": "Toulouse"
+}
+
+###
+
+DELETE http://localhost:5000/api/profile/5554014c-df4a-4cee-9c98-d173c070f2c2

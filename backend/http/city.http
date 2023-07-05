@@ -1,0 +1,32 @@
+GET http://localhost:5000/api/cities
+
+###
+
+GET http://localhost:5000/api/cities/2b0e7f15-6609-49b9-acc5-134dec517677
+
+###
+
+POST http://localhost:5000/api/cities
+Content-Type: application/json
+
+{
+  "coordinates": "(45.75, 1.44)",
+  "userAdminCityId": null,
+  "name": "Lyon",
+  "image": ""
+}
+
+###
+
+PUT http://localhost:5000/api/cities/15cd0416-82e7-4024-b4f4-56b6595d5574
+Content-Type: application/json
+
+{
+  "coordinates": "(45.75,1.44)",
+  "name": "lyon",
+  "image": "image"
+}
+
+###
+
+DELETE http://localhost:5000/api/cities/11a6450d-2954-4808-8a35-82d74a77e7bc

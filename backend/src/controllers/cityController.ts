@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import dataSource from "../dataSource";
 import { City } from "../entities/City";
 
-export default class CategoryController {
+export default class CityController {
   // citiesController.getCities
   async getCities(req: Request, res: Response): Promise<void> {
     try {
@@ -15,16 +15,14 @@ export default class CategoryController {
   }
 
   // categoriesController.getOneCity
-  // la route n'existe pas mais j'ai créé le controller au cas où
-
   async getOneCity(req: Request, res: Response): Promise<void> {
     try {
-      const id = req.params;
+      const { id } = req.params;
       const cityToRead = await dataSource.getRepository(City).findOneBy({ id });
       if (cityToRead === null) {
         res.status(404).send("City not found");
       } else {
-        res.stats(200).send(cityToRead);
+        res.status(200).send(cityToRead);
       }
     } catch (err) {
       res.status(400).send("Error while reading city");
@@ -34,13 +32,16 @@ export default class CategoryController {
   // citiesController.createCity
   async createCity(req: Request, res: Response): Promise<void> {
     try {
-      const createCity = await dataSource.getRepository(City).save(req.body);
-      // vérifier que ça a bien été créé dans la bdd
-      res.status(201).send("Created city");
-    } catch (err) {
-      if (err.code === "SQLITE_CONSTRAINT") {
+      const createCity = await dataSource
+        .getRepository(City)
+        .count({ where: { name: req.body.name } });
+      if (createCity > 0) {
         res.status(409).send("City already exists");
+      } else {
+        await dataSource.getRepository(City).save(req.body);
+        res.status(201).send("Created city");
       }
+    } catch (err) {
       res.status(400).send("Something went wrong");
     }
   }
@@ -48,16 +49,14 @@ export default class CategoryController {
   // citiesController.updateCity
   async updateCity(req: Request, res: Response): Promise<void> {
     try {
-      const id = req.params;
+      const { id } = req.params;
       const cityToUpdate = await dataSource
         .getRepository(City)
         .findOneBy({ id });
       if (cityToUpdate === null) {
         res.status(404).send("City not found");
       } else {
-        await dataSource.getRepository(City).update(id, {
-          // à modifier en fonction du contenu
-        });
+        await dataSource.getRepository(City).update(id, req.body);
         res.status(200).send("Updated city");
       }
     } catch (err) {
@@ -66,9 +65,9 @@ export default class CategoryController {
   }
 
   // citiesController.deleteCity
-  async deleteProfile(req: Request, res: Response): Promise<void> {
+  async deleteCity(req: Request, res: Response): Promise<void> {
     try {
-      const id = req.params;
+      const { id } = req.params;
       const cityToDelete = await dataSource
         .getRepository(City)
         .findOneBy({ id });

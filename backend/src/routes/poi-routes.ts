@@ -1,23 +1,16 @@
-import express from 'express';
+import express from "express";
+import PoiController from "../controllers/poiController";
 
 export const poiRoutes = express.Router();
 
-poiRoutes.get(
-   '/'
-   // poiController.getPoi
-);
+const poiController = new PoiController();
 
-poiRoutes.post(
-   '/'
-   // poiController.createPoi
-);
+poiRoutes.get("/", poiController.getPoi);
 
-poiRoutes.put(
-   '/:id'
-   // poiController.updatePoi
-);
+poiRoutes.get("/:id", poiController.getOnePoi);
 
-poiRoutes.delete(
-   '/:id'
-   // poiController.deletePoi
-);
+poiRoutes.post("/", poiController.createPoi);
+
+poiRoutes.put("/:id", poiController.updatePoi);
+
+poiRoutes.delete("/:id", poiController.deletePoi);

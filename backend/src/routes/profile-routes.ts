@@ -1,19 +1,14 @@
-import express from 'express';
+import express from "express";
+import ProfileController from "../controllers/profileController";
 
 export const profileRoutes = express.Router();
 
-profileRoutes.get(
-   '/:id'
-   // profileController.getOneProfile
-);
+const profileController = new ProfileController();
 
-profileRoutes.put(
-   '/:id'
-   // profileController.updateProfile
-);
+profileRoutes.get("/", profileController.getProfile);
 
-// Route et controller pour supprimer un profil en cas de désinscription ?
-profileRoutes.delete(
-   ':/id'
-   // profileController.deleteProfile
-);
+profileRoutes.get("/:id", profileController.getOneProfile);
+
+profileRoutes.put("/:id", profileController.updateProfile);
+
+profileRoutes.delete("/:id", profileController.deleteProfile);
