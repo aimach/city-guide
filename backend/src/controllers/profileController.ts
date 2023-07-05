@@ -1,5 +1,5 @@
 import dataSource from "../dataSource";
-import { User } from "../models/User";
+import { User } from "../entities/User";
 
 export default class ProfileController {
   // profileController.getOneProfile

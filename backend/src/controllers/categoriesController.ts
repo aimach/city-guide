@@ -1,9 +1,9 @@
 import dataSource from "../dataSource";
-import { Category } from "../models/Category";
+import { Category } from "../entities/Category";
 
 export default class CategoryController {
   // categoriesController.getCategories
-  async getCategories(req, res) {
+  async getCategories(req: Request, res: Express.Response): Promise<void> {
     try {
       const allCategories = await dataSource.getRepository(Category).find();
       res.status(200).send(allCategories);
@@ -14,15 +14,13 @@ export default class CategoryController {
   }
 
   // categoriesController.createCategory
-  async createCategory(req, res) {
+  async createCategory(req: Request, res: Response): Promise<void> {
     try {
-      const createCategory = await dataSource
-        .getRepository(Category)
-        .save(req.body);
+      await dataSource.getRepository(Category).save(req.body);
       // vérifier que ça a bien été créé dans la bdd
       res.status(201).send("Created skill");
-    } catch (err) {
-      if (err.code === "SQLITE_CONSTRAINT") {
+    } catch (error) {
+      if (error.code === "SQLITE_CONSTRAINT") {
         res.status(409).send("Category already exists");
       }
       res.status(400).send("Something went wrong");
@@ -32,7 +30,7 @@ export default class CategoryController {
   // categoriesController.getOneCategory
   // la route n'existe pas mais j'ai créé le controller au cas où
 
-  async getOneCategory(req, res) {
+  async getOneCategory(req: Request, res: Response) {
     try {
       const id = req.params;
       const categoryToRead = await dataSource
@@ -49,7 +47,7 @@ export default class CategoryController {
   }
 
   // categoriesController.updateCategory
-  async updateCategory(req, res) {
+  async updateCategory(req: Request, res: Response) {
     try {
       const id = req.params;
       const categoryToUpdate = await dataSource
@@ -69,7 +67,7 @@ export default class CategoryController {
   }
 
   // categoriesController.deleteCategory
-  async deleteProfile(req, res) {
+  async deleteProfile(req: Request, res: Response) {
     try {
       const id = req.params;
       const categoryToDelete = await dataSource

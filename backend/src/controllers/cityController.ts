@@ -1,5 +1,5 @@
 import dataSource from "../dataSource";
-import { City } from "../models/City";
+import { City } from "../entities/City";
 
 export default class CategoryController {
   // citiesController.getCities

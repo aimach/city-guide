@@ -1,5 +1,5 @@
 import dataSource from "../dataSource";
-import { Poi } from "../models/Poi";
+import { Poi } from "../entities/Poi";
 
 export default class PoiController {
   // poiController.getPoi
