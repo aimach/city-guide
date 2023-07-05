@@ -47,18 +47,15 @@ export class Poi {
   @UpdateDateColumn()
   updated_at: Date;
 
-  // changement du nom du champ de category à category_id
   @ManyToOne(() => Category, (category) => category.poi)
-  category_id: Category;
+  category: Category;
 
-  // changement du nom du champ de city à city_id
   @ManyToOne(() => City, (city) => city.poi)
-  city_id: City;
+  city: City;
 
-  // ajout de la référence du user dans un poi
   @ManyToOne(() => User, (user) => user.createdPoi)
-  user_id: User;
+  user: User;
 
-  @ManyToMany(() => User, (user) => user.favouritePoi)
-  users: User[];
+  // @ManyToMany(() => User, (user) => user.favouritePoi)
+  // users: User[];
 }

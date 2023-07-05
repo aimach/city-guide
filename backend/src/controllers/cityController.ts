@@ -1,12 +1,18 @@
 import { Request, Response } from "express";
 import dataSource from "../dataSource";
 import { City } from "../entities/City";
+import { User } from "../entities/User";
 
 export default class CityController {
   // citiesController.getCities
   async getCities(req: Request, res: Response): Promise<void> {
     try {
-      const allCities = await dataSource.getRepository(City).find();
+      const allCities = await dataSource.getRepository(City).find({
+        relations: {
+          user_admin_city: true,
+          poi: true,
+        },
+      });
       res.status(200).send(allCities);
     } catch (err) {
       console.log(err);
@@ -18,7 +24,13 @@ export default class CityController {
   async getOneCity(req: Request, res: Response): Promise<void> {
     try {
       const { id } = req.params;
-      const cityToRead = await dataSource.getRepository(City).findOneBy({ id });
+      const cityToRead = await dataSource.getRepository(City).findOne({
+        where: { id },
+        relations: {
+          user_admin_city: true,
+          poi: true,
+        },
+      });
       if (cityToRead === null) {
         res.status(404).send("City not found");
       } else {
@@ -76,6 +88,31 @@ export default class CityController {
       } else {
         await dataSource.getRepository(City).delete(id);
         res.status(200).send("Deleted city");
+      }
+    } catch (err) {
+      res.status(400).send("Error while deleting city");
+    }
+  }
+
+  async addUserToCity(req: Request, res: Response): Promise<void> {
+    try {
+      const { id } = req.params;
+      const cityToUpdate = await dataSource
+        .getRepository(City)
+        .findOneBy({ id });
+      if (cityToUpdate === null) {
+        res.status(404).send("City not found");
+      } else {
+        const userToAdd = await dataSource
+          .getRepository(User)
+          .findOneBy({ id: req.body.user.id });
+        if (userToAdd === null) {
+          res.status(404).send("User not found");
+        } else {
+          cityToUpdate.user_admin_city = userToAdd;
+          await dataSource.getRepository(City).save(cityToUpdate);
+          res.status(200).send("User added to city");
+        }
       }
     } catch (err) {
       res.status(400).send("Error while deleting city");
