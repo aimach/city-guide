@@ -1,9 +1,11 @@
+import { Request, Response } from "express";
 import dataSource from "../dataSource";
 import { Category } from "../entities/Category";
 
 export default class CategoryController {
   // categoriesController.getCategories
-  async getCategories(req: Request, res: Express.Response): Promise<void> {
+  // changer void par Category[] | null une fois qu'on aura importé les types
+  async getCategories(req: Request, res: Response): Promise<void> {
     try {
       const allCategories = await dataSource.getRepository(Category).find();
       res.status(200).send(allCategories);
@@ -16,21 +18,24 @@ export default class CategoryController {
   // categoriesController.createCategory
   async createCategory(req: Request, res: Response): Promise<void> {
     try {
-      await dataSource.getRepository(Category).save(req.body);
-      // vérifier que ça a bien été créé dans la bdd
-      res.status(201).send("Created skill");
-    } catch (error) {
-      if (error.code === "SQLITE_CONSTRAINT") {
+      const createCategory = await dataSource
+        .getRepository(Category)
+        .count({ where: { name: req.body.name } });
+      if (createCategory > 0) {
         res.status(409).send("Category already exists");
+      } else {
+        await dataSource.getRepository(Category).save(req.body);
+        res.status(201).send("Created category");
       }
+    } catch (error) {
       res.status(400).send("Something went wrong");
     }
   }
 
   // categoriesController.getOneCategory
   // la route n'existe pas mais j'ai créé le controller au cas où
-
-  async getOneCategory(req: Request, res: Response) {
+  // changer void par Category | null une fois qu'on aura importé les types
+  async getOneCategory(req: Request, res: Response): Promise<void> {
     try {
       const id = req.params;
       const categoryToRead = await dataSource
@@ -39,7 +44,7 @@ export default class CategoryController {
       if (categoryToRead === null) {
         res.status(404).send("Category not found");
       } else {
-        res.stats(200).send(categoryToRead);
+        res.status(200).send(categoryToRead);
       }
     } catch (err) {
       res.status(400).send("Error while reading category");
@@ -47,7 +52,7 @@ export default class CategoryController {
   }
 
   // categoriesController.updateCategory
-  async updateCategory(req: Request, res: Response) {
+  async updateCategory(req: Request, res: Response): Promise<void> {
     try {
       const id = req.params;
       const categoryToUpdate = await dataSource
@@ -67,7 +72,7 @@ export default class CategoryController {
   }
 
   // categoriesController.deleteCategory
-  async deleteProfile(req: Request, res: Response) {
+  async deleteProfile(req: Request, res: Response): Promise<void> {
     try {
       const id = req.params;
       const categoryToDelete = await dataSource

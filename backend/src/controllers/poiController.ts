@@ -1,9 +1,10 @@
+import { Request, Response } from "express";
 import dataSource from "../dataSource";
 import { Poi } from "../entities/Poi";
 
 export default class PoiController {
   // poiController.getPoi
-  async getPoi(req, res) {
+  async getPoi(req: Request, res: Response): Promise<void> {
     try {
       const allPoi = await dataSource.getRepository(Poi).find();
       res.status(200).send(allPoi);
@@ -16,14 +17,14 @@ export default class PoiController {
   // poiController.getOnePoi
   // la route n'existe pas mais j'ai créé le controller au cas où
 
-  async getOnePoi(req, res) {
+  async getOnePoi(req: Request, res: Response): Promise<void> {
     try {
       const id = req.params;
       const poiToRead = await dataSource.getRepository(Poi).findOneBy({ id });
       if (poiToRead === null) {
         res.status(404).send("Point of interest not found");
       } else {
-        res.stats(200).send(poiToRead);
+        res.status(200).send(poiToRead);
       }
     } catch (err) {
       res.status(400).send("Error while reading point of interest");
@@ -31,7 +32,7 @@ export default class PoiController {
   }
 
   // poiController.createPoi
-  async createPoi(req, res) {
+  async createPoi(req: Request, res: Response): Promise<void> {
     try {
       const createPoi = await dataSource.getRepository(Poi).save(req.body);
       // vérifier que ça a bien été créé dans la bdd
@@ -45,7 +46,7 @@ export default class PoiController {
   }
 
   // poiController.updatePoi
-  async updatePoi(req, res) {
+  async updatePoi(req: Request, res: Response): Promise<void> {
     try {
       const id = req.params;
       const poiToUpdate = await dataSource.getRepository(Poi).findOneBy({ id });
@@ -63,7 +64,7 @@ export default class PoiController {
   }
 
   // poiController.deletePoi
-  async deletePoi(req, res) {
+  async deletePoi(req: Request, res: Response): Promise<void> {
     try {
       const id = req.params;
       const poiToDelete = await dataSource.getRepository(Poi).findOneBy({ id });

@@ -1,9 +1,10 @@
+import { Request, Response } from "express";
 import dataSource from "../dataSource";
 import { City } from "../entities/City";
 
 export default class CategoryController {
   // citiesController.getCities
-  async getCities(req, res) {
+  async getCities(req: Request, res: Response): Promise<void> {
     try {
       const allCities = await dataSource.getRepository(City).find();
       res.status(200).send(allCities);
@@ -16,7 +17,7 @@ export default class CategoryController {
   // categoriesController.getOneCity
   // la route n'existe pas mais j'ai créé le controller au cas où
 
-  async getOneCity(req, res) {
+  async getOneCity(req: Request, res: Response): Promise<void> {
     try {
       const id = req.params;
       const cityToRead = await dataSource.getRepository(City).findOneBy({ id });
@@ -31,7 +32,7 @@ export default class CategoryController {
   }
 
   // citiesController.createCity
-  async createCity(req, res) {
+  async createCity(req: Request, res: Response): Promise<void> {
     try {
       const createCity = await dataSource.getRepository(City).save(req.body);
       // vérifier que ça a bien été créé dans la bdd
@@ -45,7 +46,7 @@ export default class CategoryController {
   }
 
   // citiesController.updateCity
-  async updateCity(req, res) {
+  async updateCity(req: Request, res: Response): Promise<void> {
     try {
       const id = req.params;
       const cityToUpdate = await dataSource
@@ -65,7 +66,7 @@ export default class CategoryController {
   }
 
   // citiesController.deleteCity
-  async deleteProfile(req, res) {
+  async deleteProfile(req: Request, res: Response): Promise<void> {
     try {
       const id = req.params;
       const cityToDelete = await dataSource

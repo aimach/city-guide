@@ -1,9 +1,10 @@
+import { Request, Response } from "express";
 import dataSource from "../dataSource";
 import { User } from "../entities/User";
 
 export default class ProfileController {
   // profileController.getOneProfile
-  async getOneProfile(req, res) {
+  async getOneProfile(req: Request, res: Response): Promise<void> {
     try {
       const id = req.params;
       const profileToRead = await dataSource
@@ -12,7 +13,7 @@ export default class ProfileController {
       if (profileToRead === null) {
         res.status(404).send("User not found");
       } else {
-        res.stats(200).send(profileToRead);
+        res.status(200).send(profileToRead);
       }
     } catch (err) {
       res.status(400).send("Error while reading user");
@@ -20,7 +21,7 @@ export default class ProfileController {
   }
 
   // profileController.updateProfile
-  async updateProfile(req, res) {
+  async updateProfile(req: Request, res: Response): Promise<void> {
     try {
       const id = req.params;
       const profileToUpdate = await dataSource
@@ -40,7 +41,7 @@ export default class ProfileController {
   }
 
   // profileController.deleteProfile
-  async deleteProfile(req, res) {
+  async deleteProfile(req: Request, res: Response): Promise<void> {
     try {
       const id = req.params;
       const profileToDelete = await dataSource
