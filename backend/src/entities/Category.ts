@@ -1,17 +1,18 @@
-import { Column, PrimaryGeneratedColumn, OneToMany, Entity } from 'typeorm';
-import { Poi } from './Poi';
+import { Column, PrimaryGeneratedColumn, OneToMany, Entity } from "typeorm";
+import { Poi } from "./Poi";
 
 @Entity()
 export class Category {
-   @PrimaryGeneratedColumn('uuid')
-   id: string;
+  @PrimaryGeneratedColumn("uuid")
+  id: string;
 
-   @Column({ type: 'varchar', length: 100, unique: true })
-   name: string;
+  @Column({ type: "varchar", length: 100, unique: true })
+  name: string;
 
-   @Column()
-   image: string;
+  // ajout du type text
+  @Column("text")
+  image: string;
 
-   @OneToMany(() => Poi, (poi) => poi.category)
-   poi: Poi[];
+  @OneToMany(() => Poi, (poi) => poi.category_id)
+  poi: Poi[];
 }

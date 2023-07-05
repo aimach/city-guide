@@ -1,33 +1,38 @@
 import {
-   Column,
-   PrimaryGeneratedColumn,
-   Point,
-   OneToMany,
-   OneToOne,
-   JoinColumn,
-   Entity,
-} from 'typeorm';
-import { Poi } from './Poi';
-import { User } from './User';
+  Column,
+  PrimaryGeneratedColumn,
+  Point,
+  OneToMany,
+  ManyToMany,
+  OneToOne,
+  JoinColumn,
+  Entity,
+} from "typeorm";
+import { Poi } from "./Poi";
+import { User } from "./User";
 
 @Entity()
 export class City {
-   @PrimaryGeneratedColumn('uuid')
-   id: string;
+  @PrimaryGeneratedColumn("uuid")
+  id: string;
 
-   @Column({ type: 'varchar', length: 100 })
-   name: string;
+  @Column({ type: "varchar", length: 100 })
+  name: string;
 
-   @Column('point')
-   coordinates: Point;
+  @Column("point")
+  coordinates: Point;
 
-   @Column()
-   image: string;
+  // ajout du type text
+  @Column("text")
+  image: string;
 
-   @OneToMany(() => Poi, (poi) => poi.city)
-   poi: Poi[];
+  @OneToMany(() => Poi, (poi) => poi.city_id)
+  poi: Poi[];
 
-   @OneToOne(() => User)
-   @JoinColumn()
-   user_admin_city: User;
+  @ManyToMany(() => User, (user) => user.favouriteCities)
+  users: User[];
+
+  @OneToOne(() => User)
+  @JoinColumn()
+  user_admin_city: User;
 }
