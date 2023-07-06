@@ -6,6 +6,8 @@ services:
       command: npm run dev
       volumes:
          - ./backend/src:/app/src
+      env_file:
+         - ./backend/.env
 
    frontend:
       build: ./frontend
