@@ -1,10 +1,13 @@
 import { Request, Response } from "express";
+import * as dotenv from "dotenv";
 import { User } from "../entities/User";
 import dataSource from "../dataSource";
 import * as bcrypt from "bcrypt";
 import { sign } from "jsonwebtoken";
 import { hash } from "bcrypt";
 import validator from "validator";
+
+dotenv.config();
 
 const TOKEN = process.env.TOKEN;
 
