@@ -16,3 +16,7 @@ profileRoutes.put(
 );
 
 // Route et controller pour supprimer un profil en cas de désinscription ?
+profileRoutes.delete(
+   ':/id'
+   // profileController.deleteProfile
+);
