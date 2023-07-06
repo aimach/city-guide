@@ -93,7 +93,7 @@ export default class CityController {
           .getRepository(City)
           .count({ where: { latitude, longitude, id: Not(id) } });
         // if one or another exists, send 409
-        if (nameAlreadyExist > 0 || coordsAlreadyExist > 0) {
+        if (nameAlreadyExist > 0 && coordsAlreadyExist > 0) {
           res.status(409).send("City already exists");
         } else {
           await dataSource.getRepository(City).update(id, req.body);

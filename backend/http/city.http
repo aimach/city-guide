@@ -2,7 +2,7 @@ GET http://localhost:5000/api/cities
 
 ###
 
-GET http://localhost:5000/api/cities/2b0e7f15-6609-49b9-acc5-134dec517677
+GET http://localhost:5000/api/cities/23f3604f-98fc-4dca-a958-79edf7124f82
 
 ###
 
@@ -10,23 +10,22 @@ POST http://localhost:5000/api/cities
 Content-Type: application/json
 
 {
-  "latitude": 40.5,
-  "longitude": 40.7,
-  "name": "Marmande",
-  "image": "",
-  "user_admin_city": "ae720191-dac3-4170-b653-b1df92377919"
+  "latitude": 41.5,
+  "longitude": 40.5,
+  "name": "Paris",
+  "image": ""
 }
 
 ###
 
 
-PUT http://localhost:5000/api/cities/2b0e7f15-6609-49b9-acc5-134dec517677
+PUT http://localhost:5000/api/cities/4817ab55-3d30-4cfe-a386-adf647969f1b
 Content-Type: application/json
 
 {
-  "user_admin_city": "ae720191-dac3-4170-b653-b1df92377919"
+  "user_admin_city": "645de8ee-22ca-4462-b3b9-1f38069fbe9e"
 }
 
 ###
 
-DELETE http://localhost:5000/api/cities/354738cc-49fd-4489-a497-6e765c136c37
+DELETE http://localhost:5000/api/cities/23f3604f-98fc-4dca-a958-79edf7124f82

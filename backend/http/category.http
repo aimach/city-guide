@@ -1,8 +1,9 @@
+
 GET http://localhost:5000/api/categories
 
 ###
 
-GET http://localhost:5000/api/categories/cbcd43fe-fed9-41c4-a9e9-5761b7b7206e
+GET http://localhost:5000/api/categories/3ec194ab-80f9-4c46-98f8-0428e110b175
 
 ###
 
@@ -10,20 +11,20 @@ POST http://localhost:5000/api/categories
 Content-Type: application/json
 
 {
-  "name": "bar", 
+  "name": "restaurant", 
   "image": ""
 }
 
 ###
 
-PUT http://localhost:5000/api/categories/b51ee200-61e6-482f-9ef6-a9936b133049
+PUT http://localhost:5000/api/categories/3ec194ab-80f9-4c46-98f8-0428e110b175
 Content-Type: application/json
 
 {
-  "name": "boîte de nuit", 
+  "name": "Bar", 
   "image": ""
 }
 
 ###
 
-DELETE http://localhost:5000/api/categories/a513866d-b529-4166-8206-44d27f828910
+DELETE http://localhost:5000/api/categories/3ec194ab-80f9-4c46-98f8-0428e110b175

@@ -2,7 +2,7 @@ GET http://localhost:5000/api/poi
 
 ###
 
-GET http://localhost:5000/api/poi/2e91db0d-9fb1-44ae-a26c-8c1f0decc182
+GET http://localhost:5000/api/poi/0ca1a997-b4d9-40c7-be61-8250bea4dc04
 
 ###
 
@@ -11,7 +11,7 @@ Content-Type: application/json
 
 {
   "name": "Point d'intérêt incroyable",
-    "latitude": 40.5,
+  "latitude": 40.5,
   "longitude": 40.5,
   "description": "Lorem ipsum",
   "address": "Lorem ipsum",
@@ -24,11 +24,12 @@ Content-Type: application/json
 
 ###
 
-PUT http://localhost:5000/api/poi/302e23b7-5767-4262-8c30-b8cf0094fbce
+PUT http://localhost:5000/api/poi/0ca1a997-b4d9-40c7-be61-8250bea4dc04
 Content-Type: application/json
 
 {
-  "city": "aaf86c0e-6cba-4ec6-9820-b4d3aa7e1066"
+  "category": "fde6577a-f327-4210-be81-19305b4f403a",
+  "user": "645de8ee-22ca-4462-b3b9-1f38069fbe9e"
 }
 
 ###
