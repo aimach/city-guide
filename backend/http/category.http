@@ -10,17 +10,17 @@ POST http://localhost:5000/api/categories
 Content-Type: application/json
 
 {
-  "name": "restaurant", 
+  "name": "bar", 
   "image": ""
 }
 
 ###
 
-PUT http://localhost:5000/api/categories/cbcd43fe-fed9-41c4-a9e9-5761b7b7206e
+PUT http://localhost:5000/api/categories/b51ee200-61e6-482f-9ef6-a9936b133049
 Content-Type: application/json
 
 {
-  "name": "restaurant", 
+  "name": "boîte de nuit", 
   "image": ""
 }
 

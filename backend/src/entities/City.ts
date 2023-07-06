@@ -34,7 +34,7 @@ export class City {
   @ManyToMany(() => User, (user) => user.favouriteCities)
   users: User[];
 
-  @OneToOne(() => User)
+  @OneToOne(() => User, { onDelete: "SET NULL" })
   @JoinColumn()
-  userAdminCity: User;
+  user_admin_city: User;
 }

@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import dataSource from "../dataSource";
 import { City } from "../entities/City";
+import { Not } from "typeorm";
 
 export default class CityController {
   // get all cities
@@ -8,7 +9,7 @@ export default class CityController {
     try {
       const allCities = await dataSource.getRepository(City).find({
         relations: {
-          userAdminCity: true,
+          user_admin_city: true,
           poi: true,
         },
       });
@@ -26,7 +27,7 @@ export default class CityController {
       const cityToRead = await dataSource.getRepository(City).findOne({
         where: { id },
         relations: {
-          userAdminCity: true,
+          user_admin_city: true,
           poi: true,
         },
       });
@@ -41,40 +42,71 @@ export default class CityController {
   }
 
   // create city
-  // je n'arrive pas à vérifier quand l'administrateur de ville existe déjà
   async createCity(req: Request, res: Response): Promise<void> {
-    const { name } = req.body;
+    const { name, latitude, longitude } = req.body;
     try {
-      const createCity = await dataSource
+      // check if name doesn't already exist in db
+      const nameAlreadyExist = await dataSource
         .getRepository(City)
         .count({ where: { name } });
-      if (createCity > 0) {
+      // check if coords doesn't already exist in db
+      const coordsAlreadyExist = await dataSource
+        .getRepository(City)
+        .count({ where: { latitude, longitude } });
+      // if one or another exists, send 409
+      if (nameAlreadyExist > 0 || coordsAlreadyExist > 0) {
         res.status(409).send("City already exists");
       } else {
         await dataSource.getRepository(City).save(req.body);
         res.status(201).send("Created city");
       }
-    } catch (err) {
-      res.status(400).send("Something went wrong");
+    } catch (error: any) {
+      // check if error is 'Key ("userAdminCityId")=(id) already exists'
+      if (error.code === "23505") {
+        res.status(409).send("User is already administrator in another city");
+      } else {
+        res.status(400).send("Something went wrong");
+      }
     }
   }
 
   // update city by id (params)
-  // je n'arrive pas à vérifier quand l'administrateur de ville existe déjà
   async updateCity(req: Request, res: Response): Promise<void> {
     try {
       const { id } = req.params;
+      const { name, latitude, longitude } = req.body;
+      // check if city exists by id
       const cityToUpdate = await dataSource
         .getRepository(City)
         .findOneBy({ id });
+      // if city doesn't exist, send 404
       if (cityToUpdate === null) {
         res.status(404).send("City not found");
       } else {
-        await dataSource.getRepository(City).update(id, req.body);
-        res.status(200).send("Updated city");
+        // check if body.name doesn't already exist in db
+        const nameAlreadyExist = await dataSource
+          .getRepository(City)
+          // check every tuples except the one updating
+          .count({ where: { name, id: Not(id) } });
+        // check if body.coords doesn't already exist in db
+        const coordsAlreadyExist = await dataSource
+          .getRepository(City)
+          .count({ where: { latitude, longitude, id: Not(id) } });
+        // if one or another exists, send 409
+        if (nameAlreadyExist > 0 || coordsAlreadyExist > 0) {
+          res.status(409).send("City already exists");
+        } else {
+          await dataSource.getRepository(City).update(id, req.body);
+          res.status(200).send("Updated city");
+        }
       }
-    } catch (err) {
-      res.status(400).send("Error while updating city");
+    } catch (error: any) {
+      // check if error is 'Key ("userAdminCityId")=(id) already exists'
+      if (error.code === "23505") {
+        res.status(409).send("User is already administrator in another city");
+      } else {
+        res.status(400).send("Something went wrong");
+      }
     }
   }
 
@@ -82,6 +114,7 @@ export default class CityController {
   async deleteCity(req: Request, res: Response): Promise<void> {
     try {
       const { id } = req.params;
+      // check if city exists in db
       const cityToDelete = await dataSource
         .getRepository(City)
         .findOneBy({ id });

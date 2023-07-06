@@ -28,7 +28,7 @@ PUT http://localhost:5000/api/poi/302e23b7-5767-4262-8c30-b8cf0094fbce
 Content-Type: application/json
 
 {
-  "user": "161b91c0-a21c-4dc8-ad86-9ebd2ebbe09e"
+  "city": "aaf86c0e-6cba-4ec6-9820-b4d3aa7e1066"
 }
 
 ###

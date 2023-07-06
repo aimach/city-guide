@@ -49,13 +49,15 @@ export class Poi {
   @UpdateDateColumn()
   updated_at: Date;
 
-  @ManyToOne(() => Category, (category) => category.poi)
+  @ManyToOne(() => Category, (category) => category.poi, {
+    onDelete: "SET NULL",
+  })
   category: Category;
 
-  @ManyToOne(() => City, (city) => city.poi)
+  @ManyToOne(() => City, (city) => city.poi, { onDelete: "CASCADE" })
   city: City;
 
-  @ManyToOne(() => User, (user) => user.createdPoi)
+  @ManyToOne(() => User, (user) => user.createdPoi, { onDelete: "SET NULL" })
   user: User;
 
   @ManyToMany(() => User, (user) => user.favouritePoi)

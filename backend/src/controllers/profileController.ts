@@ -24,6 +24,7 @@ export default class ProfileController {
   async getOneProfile(req: Request, res: Response): Promise<void> {
     try {
       const { id } = req.params;
+      // check if profile exists in db
       const profileToRead = await dataSource
         .getRepository(User)
         .findOneBy({ id });
@@ -41,6 +42,7 @@ export default class ProfileController {
   async updateProfile(req: Request, res: Response): Promise<void> {
     try {
       const { id } = req.params;
+      // check if profile exists in db
       const profileToUpdate = await dataSource
         .getRepository(User)
         .findOneBy({ id });
@@ -59,6 +61,7 @@ export default class ProfileController {
   async deleteProfile(req: Request, res: Response): Promise<void> {
     try {
       const { id } = req.params;
+      // check if profile exists in db
       const profileToDelete = await dataSource
         .getRepository(User)
         .findOneBy({ id });
@@ -77,19 +80,21 @@ export default class ProfileController {
   async addFavoritePoiToUser(req: Request, res: Response): Promise<void> {
     const { idUser, idPoi } = req.params;
     try {
+      // check if profile exists in db
       const userToUpdate = await dataSource
         .getRepository(User)
         .findOneBy({ id: idUser });
-      console.log(userToUpdate);
       if (userToUpdate === null) {
         res.status(404).send("User not found");
       } else {
+        // check if POI exists in db
         const poiToAdd = await dataSource
           .getRepository(Poi)
           .findOneBy({ id: idPoi });
         if (poiToAdd === null) {
           res.status(404).send("Point of interest not found");
         } else {
+          // add POI to favourites array
           userToUpdate.favouritePoi = [...userToUpdate.favouritePoi, poiToAdd];
           await dataSource.getRepository(User).save(userToUpdate);
           res.status(200).send("Favorite poi added to user");
@@ -105,19 +110,21 @@ export default class ProfileController {
   async removeFavoritePoiToUser(req: Request, res: Response): Promise<void> {
     const { idUser, idPoi } = req.params;
     try {
+      // check if profile exists in db
       const userToUpdate = await dataSource
         .getRepository(User)
         .findOneBy({ id: idUser });
-      console.log(userToUpdate);
       if (userToUpdate === null) {
         res.status(404).send("User not found");
       } else {
+        // check if POI exists in db
         const poiToRemove = await dataSource
           .getRepository(Poi)
           .findOneBy({ id: idPoi });
         if (poiToRemove === null) {
           res.status(404).send("Point of interest not found");
         } else {
+          // filter favourites array to remove POI
           userToUpdate.favouritePoi = userToUpdate.favouritePoi.filter(
             (poi) => poi.id !== idPoi
           );
@@ -137,19 +144,21 @@ export default class ProfileController {
   async addFavoriteCityToUser(req: Request, res: Response): Promise<void> {
     const { idUser, idCity } = req.params;
     try {
+      // check if user exists in db
       const userToUpdate = await dataSource
         .getRepository(User)
         .findOneBy({ id: idUser });
-      console.log(userToUpdate);
       if (userToUpdate === null) {
         res.status(404).send("User not found");
       } else {
+        // check if city exists in db
         const cityToAdd = await dataSource
           .getRepository(City)
           .findOneBy({ id: idCity });
         if (cityToAdd === null) {
           res.status(404).send("City not found");
         } else {
+          // add city to favourite array
           userToUpdate.favouriteCities = [
             ...userToUpdate.favouriteCities,
             cityToAdd,
@@ -168,19 +177,21 @@ export default class ProfileController {
   async removeFavoriteCityToUser(req: Request, res: Response): Promise<void> {
     const { idUser, idCity } = req.params;
     try {
+      // check if user exists in db
       const userToUpdate = await dataSource
         .getRepository(User)
         .findOneBy({ id: idUser });
-      console.log(userToUpdate);
       if (userToUpdate === null) {
         res.status(404).send("User not found");
       } else {
+        // check if city exists in db
         const cityToRemove = await dataSource
           .getRepository(City)
           .findOneBy({ id: idCity });
         if (cityToRemove === null) {
           res.status(404).send("City not found");
         } else {
+          // filter favourites array to remove city
           userToUpdate.favouriteCities = userToUpdate.favouriteCities.filter(
             (poi) => poi.id !== idCity
           );
