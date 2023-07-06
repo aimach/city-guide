@@ -1,13 +1,10 @@
 import { Request, Response } from 'express';
-import * as dotenv from 'dotenv';
 import { User } from '../entities/User';
 import dataSource from '../dataSource';
 import * as bcrypt from 'bcrypt';
 import { sign } from 'jsonwebtoken';
 import { hash } from 'bcrypt';
 import validator from 'validator';
-
-dotenv.config();
 
 const TOKEN = process.env.TOKEN;
 
@@ -123,6 +120,14 @@ export const AuthController: IController = {
          );
          res.cookie('token', token, { httpOnly: true });
          return res.status(200).send(token);
+      }
+   },
+   logout: async (req: Request, res: Response) => {
+      try {
+         res.clearCookie('token');
+         return res.status(200).send('Sucess');
+      } catch (error) {
+         return res.status(500).send({ error: 'Error' });
       }
    },
 };
