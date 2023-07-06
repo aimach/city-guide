@@ -1,19 +1,132 @@
-@import 'style/variable';
-@import 'style/mixin';
-@import 'style/placeholder';
+@import "style/_variable";
+@import "style/_mixin";
+@import "style/_placeholder";
 
 html {
-    background-color: $primary_color;
+  background-color: $primary_color;
 }
 
 h1 {
-    font-family: 'Poppins', sans-serif;
-    font-size: 40px;
-    font-weight: 700;
-    color: $white_color; 
+  font-family: "Poppins", sans-serif;
+  font-size: 40px;
+  font-weight: 700;
+  color: $white_color;
 }
 
-input {
-    @extend %inputForm;
+//Desktop
+.logoHeader {
+  @include textStyle($white_color, $poppinsFont, 40px, 700);
 }
 
+.subtitleCategory {
+  @include textStyle($white_color, $poppinsFont, 36px, 700);
+}
+
+.profilName {
+  @include textStyle($white_color, $poppinsFont, 32px, 700);
+}
+
+.logoFooter {
+  @include textStyle($white_color, $poppinsFont, 32px, 600);
+}
+
+.textCard {
+  @include textStyle($white_color, $poppinsFont, 24px, 600);
+}
+
+.textFilter {
+  @include textStyle($white_color, $poppinsFont, 24px, 400);
+}
+
+.textButton {
+  @include textStyle($white_color, $poppinsFont, 20px, 600);
+}
+
+.textSearch {
+  @include textStyle($white_color, $poppinsFont, 16px, 500);
+}
+
+.textItemsFilter {
+  @include textStyle($white_color, $poppinsFont, 16px, 500);
+}
+
+.titleResearch {
+  @include textStyle($white_color, $comicNeueFont, 48px, 700);
+}
+
+.presentationText {
+  @include textStyle($white_color, $comicNeueFont, 32px, 700);
+}
+
+.titleCard {
+  @include textStyle($white_color, $comicNeueFont, 30px, 700);
+}
+
+.inputSearchText {
+  @include textStyle($white_color, $comicNeueFont, 24px, 700);
+}
+
+.buttonHomePage {
+  border-radius: 60px;
+  background: #f3df24;
+  @include buttonSize(275px, 74px);
+}
+
+// Mobile
+@media only screen and (max-width: 768px) {
+  .logoHeader {
+    @include textStyle($white_color, $poppinsFont, 24px, 700);
+  }
+
+  .subtitleCategory {
+    @include textStyle($white_color, $poppinsFont, 20px, 700);
+  }
+
+  .profilName {
+    @include textStyle($white_color, $poppinsFont, 18px, 700);
+  }
+
+  .logoFooter {
+    @include textStyle($white_color, $poppinsFont, 18px, 600);
+  }
+
+  .textCard {
+    @include textStyle($white_color, $poppinsFont, 16px, 600);
+  }
+
+  .textFilter {
+    @include textStyle($white_color, $poppinsFont, 16px, 400);
+  }
+
+  .textButton {
+    @include textStyle($white_color, $poppinsFont, 14px, 600);
+  }
+
+  .textSearch {
+    @include textStyle($white_color, $poppinsFont, 12px, 500);
+  }
+
+  .textItemsFilter {
+    @include textStyle($white_color, $poppinsFont, 12px, 500);
+  }
+
+  .titleResearch {
+    @include textStyle($white_color, $comicNeueFont, 36px, 700);
+  }
+
+  .presentationText {
+    @include textStyle($white_color, $comicNeueFont, 24px, 700);
+  }
+
+  .titleCard {
+    @include textStyle($white_color, $comicNeueFont, 30px, 700);
+  }
+
+  .inputSearchText {
+    @include textStyle($white_color, $comicNeueFont, 24px, 700);
+  }
+
+  .buttonHomePage {
+    @include buttonSize(200px, 56px);
+  }
+}
