@@ -2,7 +2,6 @@ import {
   Column,
   ManyToMany,
   PrimaryGeneratedColumn,
-  Point,
   CreateDateColumn,
   UpdateDateColumn,
   ManyToOne,
@@ -17,7 +16,7 @@ export class Poi {
   @PrimaryGeneratedColumn("uuid")
   id: string;
 
-  @Column({ type: "varchar", length: 100, unique: true })
+  @Column({ type: "varchar", length: 100 })
   name: string;
 
   @Column("float")
@@ -51,13 +50,13 @@ export class Poi {
   updated_at: Date;
 
   @ManyToOne(() => Category, (category) => category.poi)
-  category_id: Category;
+  category: Category;
 
   @ManyToOne(() => City, (city) => city.poi)
-  city_id: City;
+  city: City;
 
   @ManyToOne(() => User, (user) => user.createdPoi)
-  user_id: User;
+  user: User;
 
   @ManyToMany(() => User, (user) => user.favouritePoi)
   users_favorite: User[];

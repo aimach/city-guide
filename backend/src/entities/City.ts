@@ -28,7 +28,7 @@ export class City {
   @Column("text")
   image: string;
 
-  @OneToMany(() => Poi, (poi) => poi.city_id)
+  @OneToMany(() => Poi, (poi) => poi.city)
   poi: Poi[];
 
   @ManyToMany(() => User, (user) => user.favouriteCities)

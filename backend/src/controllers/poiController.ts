@@ -3,14 +3,14 @@ import dataSource from "../dataSource";
 import { Poi } from "../entities/Poi";
 
 export default class PoiController {
-  // poiController.getPoi
+  // get all POIs
   async getPoi(req: Request, res: Response): Promise<void> {
     try {
       const allPoi = await dataSource.getRepository(Poi).find({
         relations: {
-          category_id: true,
-          city_id: true,
-          user_id: true,
+          category: true,
+          city: true,
+          user: true,
         },
       });
       res.status(200).send(allPoi);
@@ -20,7 +20,7 @@ export default class PoiController {
     }
   }
 
-  // poiController.getOnePoi
+  // get one POI by id (params)
   async getOnePoi(req: Request, res: Response): Promise<void> {
     try {
       const { id } = req.params;
@@ -35,7 +35,7 @@ export default class PoiController {
     }
   }
 
-  // poiController.createPoi
+  // create POI
   async createPoi(req: Request, res: Response): Promise<void> {
     try {
       const createPoi = await dataSource
@@ -52,7 +52,7 @@ export default class PoiController {
     }
   }
 
-  // poiController.updatePoi
+  // update POI by id (params)
   async updatePoi(req: Request, res: Response): Promise<void> {
     try {
       const { id } = req.params;
@@ -68,7 +68,7 @@ export default class PoiController {
     }
   }
 
-  // poiController.deletePoi
+  // delete POI by id (params)
   async deletePoi(req: Request, res: Response): Promise<void> {
     try {
       const { id } = req.params;

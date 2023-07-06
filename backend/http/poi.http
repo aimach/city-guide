@@ -17,9 +17,9 @@ Content-Type: application/json
   "address": "Lorem ipsum",
   "image": "Lorem ipsum",
   "is_accepted": true,
-  "categoryIdId": null, 
-  "cityIdId": null, 
-  "userIdId": null
+  "category": null, 
+  "city": null, 
+  "user": null
 }
 
 ###
@@ -28,13 +28,7 @@ PUT http://localhost:5000/api/poi/302e23b7-5767-4262-8c30-b8cf0094fbce
 Content-Type: application/json
 
 {
-  "name": "Point d'intérêt de fou",
-  "latitude": 40.5,
-  "longitude": 40.5,
-  "description": "Lorem ipsum",
-  "address": "Lorem ipsum",
-  "image": "Lorem ipsum",
-  "is_accepted": true
+  "user": "161b91c0-a21c-4dc8-ad86-9ebd2ebbe09e"
 }
 
 ###

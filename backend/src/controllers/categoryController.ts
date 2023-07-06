@@ -3,7 +3,7 @@ import dataSource from "../dataSource";
 import { Category } from "../entities/Category";
 
 export default class CategoryController {
-  // categoriesController.getCategories
+  // get all categories
   async getCategories(req: Request, res: Response): Promise<void> {
     try {
       const allCategories = await dataSource.getRepository(Category).find({
@@ -18,7 +18,7 @@ export default class CategoryController {
     }
   }
 
-  // categoriesController.getOneCategory
+  // get one category by id (params)
   async getOneCategory(req: Request, res: Response): Promise<void> {
     try {
       const { id } = req.params;
@@ -35,7 +35,7 @@ export default class CategoryController {
     }
   }
 
-  // categoriesController.createCategory
+  // create category
   async createCategory(req: Request, res: Response): Promise<void> {
     try {
       const createCategory = await dataSource
@@ -52,7 +52,7 @@ export default class CategoryController {
     }
   }
 
-  // categoriesController.updateCategory
+  // update category by id (params)
   async updateCategory(req: Request, res: Response): Promise<void> {
     try {
       const { id } = req.params;
@@ -70,7 +70,7 @@ export default class CategoryController {
     }
   }
 
-  // categoriesController.deleteCategory
+  // delete category by id (params)
   async deleteCategory(req: Request, res: Response): Promise<void> {
     try {
       const { id } = req.params;

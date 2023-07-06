@@ -1,12 +1,11 @@
 import { Request, Response } from "express";
-import { Point } from "typeorm";
 import dataSource from "../dataSource";
 import { User } from "../entities/User";
 import { Poi } from "../entities/Poi";
 import { City } from "../entities/City";
 
 export default class ProfileController {
-  // poiController.getProfile
+  // get all profiles
   async getProfile(req: Request, res: Response): Promise<void> {
     try {
       const allProfiles = await dataSource.getRepository(User).find({
@@ -21,7 +20,7 @@ export default class ProfileController {
     }
   }
 
-  // profileController.getOneProfile
+  // get one profile by id (params)
   async getOneProfile(req: Request, res: Response): Promise<void> {
     try {
       const { id } = req.params;
@@ -38,7 +37,7 @@ export default class ProfileController {
     }
   }
 
-  // profileController.updateProfile
+  // update profile by id (params)
   async updateProfile(req: Request, res: Response): Promise<void> {
     try {
       const { id } = req.params;
@@ -56,7 +55,7 @@ export default class ProfileController {
     }
   }
 
-  // profileController.deleteProfile
+  // delete profile by id (params)
   async deleteProfile(req: Request, res: Response): Promise<void> {
     try {
       const { id } = req.params;
@@ -74,6 +73,7 @@ export default class ProfileController {
     }
   }
 
+  // add poi to favorite array
   async addFavoritePoiToUser(req: Request, res: Response): Promise<void> {
     const { idUser, idPoi } = req.params;
     try {
@@ -101,6 +101,7 @@ export default class ProfileController {
     }
   }
 
+  // remove POI to favorite array
   async removeFavoritePoiToUser(req: Request, res: Response): Promise<void> {
     const { idUser, idPoi } = req.params;
     try {
@@ -132,6 +133,7 @@ export default class ProfileController {
     }
   }
 
+  // add city to favorite array
   async addFavoriteCityToUser(req: Request, res: Response): Promise<void> {
     const { idUser, idCity } = req.params;
     try {
@@ -162,6 +164,7 @@ export default class ProfileController {
     }
   }
 
+  // remove city to farovite array
   async removeFavoriteCityToUser(req: Request, res: Response): Promise<void> {
     const { idUser, idCity } = req.params;
     try {

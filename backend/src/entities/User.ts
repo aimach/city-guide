@@ -40,7 +40,7 @@ export class User {
   city: string;
 
   // ajout de la référence du user dans un poi
-  @OneToMany(() => Poi, (poi) => poi.user_id)
+  @OneToMany(() => Poi, (poi) => poi.user)
   createdPoi: Poi[];
 
   @ManyToMany(() => Poi, (poi) => poi.users_favorite, {

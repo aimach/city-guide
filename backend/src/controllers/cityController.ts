@@ -3,7 +3,7 @@ import dataSource from "../dataSource";
 import { City } from "../entities/City";
 
 export default class CityController {
-  // citiesController.getCities
+  // get all cities
   async getCities(req: Request, res: Response): Promise<void> {
     try {
       const allCities = await dataSource.getRepository(City).find({
@@ -19,7 +19,7 @@ export default class CityController {
     }
   }
 
-  // categoriesController.getOneCity
+  // get one city byd id (params)
   async getOneCity(req: Request, res: Response): Promise<void> {
     try {
       const { id } = req.params;
@@ -40,7 +40,7 @@ export default class CityController {
     }
   }
 
-  // citiesController.createCity
+  // create city
   // je n'arrive pas à vérifier quand l'administrateur de ville existe déjà
   async createCity(req: Request, res: Response): Promise<void> {
     const { name } = req.body;
@@ -59,7 +59,7 @@ export default class CityController {
     }
   }
 
-  // citiesController.updateCity
+  // update city by id (params)
   // je n'arrive pas à vérifier quand l'administrateur de ville existe déjà
   async updateCity(req: Request, res: Response): Promise<void> {
     try {
@@ -78,7 +78,7 @@ export default class CityController {
     }
   }
 
-  // citiesController.deleteCity
+  // delete city
   async deleteCity(req: Request, res: Response): Promise<void> {
     try {
       const { id } = req.params;

@@ -2,7 +2,7 @@ GET http://localhost:5000/api/profile
 
 ###
 
-GET http://localhost:5000/api/profile/5554014c-df4a-4cee-9c98-d173c070f2c2
+GET http://localhost:5000/api/profile/161b91c0-a21c-4dc8-ad86-9ebd2ebbe09e
 
 ###
 
@@ -14,17 +14,11 @@ POST http://localhost:5000/api/profile/fav/city/161b91c0-a21c-4dc8-ad86-9ebd2ebb
 
 ###
 
-PUT http://localhost:5000/api/profile/5554014c-df4a-4cee-9c98-d173c070f2c2
+PUT http://localhost:5000/api/profile/161b91c0-a21c-4dc8-ad86-9ebd2ebbe09e
 Content-Type: application/json
 
 {
-  "id": "5554014c-df4a-4cee-9c98-d173c070f2c2",
-  "username": "Aimach",
-  "email": "aimach@mail.com",
-  "password": "password",
-  "image": null,
-  "role": "free_user",
-  "city": "Toulouse"
+  "username": "aimach"
 }
 
 ###
