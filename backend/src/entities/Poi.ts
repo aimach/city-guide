@@ -54,7 +54,7 @@ export class Poi {
   })
   category: Category;
 
-  @ManyToOne(() => City, (city) => city.poi, { onDelete: "CASCADE" })
+  @ManyToOne(() => City, (city) => city.poi, { onDelete: "SET NULL" })
   city: City;
 
   @ManyToOne(() => User, (user) => user.createdPoi, { onDelete: "SET NULL" })

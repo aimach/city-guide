@@ -2,7 +2,7 @@ GET http://localhost:5000/api/categories
 
 ###
 
-GET http://localhost:5000/api/categories/a513866d-b529-4166-8206-44d27f828910
+GET http://localhost:5000/api/categories/cbcd43fe-fed9-41c4-a9e9-5761b7b7206e
 
 ###
 

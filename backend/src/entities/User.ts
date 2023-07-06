@@ -46,11 +46,16 @@ export class User {
   @ManyToMany(() => Poi, (poi) => poi.users_favorite, {
     cascade: true,
     eager: true,
+    onDelete: "CASCADE",
   })
   @JoinTable()
   favouritePoi: Poi[];
 
-  @ManyToMany(() => City, (city) => city.users, { cascade: true, eager: true })
+  @ManyToMany(() => City, (city) => city.users, {
+    cascade: true,
+    eager: true,
+    onDelete: "CASCADE",
+  })
   @JoinTable()
   favouriteCities: City[];
 }

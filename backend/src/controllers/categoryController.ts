@@ -37,10 +37,10 @@ export default class CategoryController {
     try {
       const { name } = req.body;
       // check if category name already exists in db
-      const createCategory = await dataSource
+      const categoryToCreate = await dataSource
         .getRepository(Category)
         .count({ where: { name } });
-      if (createCategory > 0) {
+      if (categoryToCreate > 0) {
         res.status(409).send("Category already exists");
       } else {
         await dataSource.getRepository(Category).save(req.body);

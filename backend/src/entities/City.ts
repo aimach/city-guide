@@ -31,7 +31,9 @@ export class City {
   @OneToMany(() => Poi, (poi) => poi.city)
   poi: Poi[];
 
-  @ManyToMany(() => User, (user) => user.favouriteCities)
+  @ManyToMany(() => User, (user) => user.favouriteCities, {
+    onDelete: "CASCADE",
+  })
   users: User[];
 
   @OneToOne(() => User, { onDelete: "SET NULL" })
