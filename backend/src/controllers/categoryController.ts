@@ -6,7 +6,11 @@ export default class CategoryController {
   // categoriesController.getCategories
   async getCategories(req: Request, res: Response): Promise<void> {
     try {
-      const allCategories = await dataSource.getRepository(Category).find();
+      const allCategories = await dataSource.getRepository(Category).find({
+        relations: {
+          poi: true,
+        },
+      });
       res.status(200).send(allCategories);
     } catch (err) {
       console.log(err);

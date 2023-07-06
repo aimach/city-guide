@@ -13,6 +13,6 @@ export class Category {
   @Column("text")
   image: string;
 
-  @OneToMany(() => Poi, (poi) => poi.category)
+  @OneToMany(() => Poi, (poi) => poi.category_id)
   poi: Poi[];
 }

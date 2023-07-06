@@ -6,6 +6,14 @@ GET http://localhost:5000/api/profile/5554014c-df4a-4cee-9c98-d173c070f2c2
 
 ###
 
+POST http://localhost:5000/api/profile/fav/poi/161b91c0-a21c-4dc8-ad86-9ebd2ebbe09e/302e23b7-5767-4262-8c30-b8cf0094fbce
+
+###
+
+POST http://localhost:5000/api/profile/fav/city/161b91c0-a21c-4dc8-ad86-9ebd2ebbe09e/26dffae3-e2d6-4f77-9024-5428544a5034
+
+###
+
 PUT http://localhost:5000/api/profile/5554014c-df4a-4cee-9c98-d173c070f2c2
 Content-Type: application/json
 
@@ -22,3 +30,12 @@ Content-Type: application/json
 ###
 
 DELETE http://localhost:5000/api/profile/5554014c-df4a-4cee-9c98-d173c070f2c2
+
+###
+
+DELETE http://localhost:5000/api/profile/fav/poi/161b91c0-a21c-4dc8-ad86-9ebd2ebbe09e/302e23b7-5767-4262-8c30-b8cf0094fbce
+
+###
+
+DELETE http://localhost:5000/api/profile/fav/city/161b91c0-a21c-4dc8-ad86-9ebd2ebbe09e/26dffae3-e2d6-4f77-9024-5428544a5034
+

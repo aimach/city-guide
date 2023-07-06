@@ -1,7 +1,6 @@
 import {
   Column,
   PrimaryGeneratedColumn,
-  Point,
   OneToMany,
   ManyToMany,
   OneToOne,
@@ -19,14 +18,17 @@ export class City {
   @Column({ type: "varchar", length: 100 })
   name: string;
 
-  @Column("point")
-  coordinates: Point;
+  @Column("float")
+  latitude: number;
+
+  @Column("float")
+  longitude: number;
 
   // ajout du type text
   @Column("text")
   image: string;
 
-  @OneToMany(() => Poi, (poi) => poi.city)
+  @OneToMany(() => Poi, (poi) => poi.city_id)
   poi: Poi[];
 
   @ManyToMany(() => User, (user) => user.favouriteCities)
@@ -34,5 +36,5 @@ export class City {
 
   @OneToOne(() => User)
   @JoinColumn()
-  user_admin_city: User;
+  userAdminCity: User;
 }

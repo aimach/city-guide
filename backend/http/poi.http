@@ -11,7 +11,8 @@ Content-Type: application/json
 
 {
   "name": "Point d'intérêt incroyable",
-  "coordinates": "(45.75, 1.44)",
+    "latitude": 40.5,
+  "longitude": 40.5,
   "description": "Lorem ipsum",
   "address": "Lorem ipsum",
   "image": "Lorem ipsum",
@@ -23,16 +24,17 @@ Content-Type: application/json
 
 ###
 
-PUT http://localhost:5000/api/poi/754a2735-f923-41b1-9ec1-217245428702
+PUT http://localhost:5000/api/poi/302e23b7-5767-4262-8c30-b8cf0094fbce
 Content-Type: application/json
 
 {
   "name": "Point d'intérêt de fou",
-  "coordinates": "(45.75,1.44)",
+  "latitude": 40.5,
+  "longitude": 40.5,
   "description": "Lorem ipsum",
   "address": "Lorem ipsum",
   "image": "Lorem ipsum",
-  "is_accepted": true, 
+  "is_accepted": true
 }
 
 ###

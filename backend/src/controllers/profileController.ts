@@ -1,12 +1,19 @@
 import { Request, Response } from "express";
+import { Point } from "typeorm";
 import dataSource from "../dataSource";
 import { User } from "../entities/User";
+import { Poi } from "../entities/Poi";
+import { City } from "../entities/City";
 
 export default class ProfileController {
   // poiController.getProfile
   async getProfile(req: Request, res: Response): Promise<void> {
     try {
-      const allProfiles = await dataSource.getRepository(User).find();
+      const allProfiles = await dataSource.getRepository(User).find({
+        relations: {
+          createdPoi: true,
+        },
+      });
       res.status(200).send(allProfiles);
     } catch (err) {
       console.log(err);
@@ -64,6 +71,123 @@ export default class ProfileController {
       }
     } catch (err) {
       res.status(400).send("Error while deleting user");
+    }
+  }
+
+  async addFavoritePoiToUser(req: Request, res: Response): Promise<void> {
+    const { idUser, idPoi } = req.params;
+    try {
+      const userToUpdate = await dataSource
+        .getRepository(User)
+        .findOneBy({ id: idUser });
+      console.log(userToUpdate);
+      if (userToUpdate === null) {
+        res.status(404).send("User not found");
+      } else {
+        const poiToAdd = await dataSource
+          .getRepository(Poi)
+          .findOneBy({ id: idPoi });
+        if (poiToAdd === null) {
+          res.status(404).send("Point of interest not found");
+        } else {
+          userToUpdate.favouritePoi = [...userToUpdate.favouritePoi, poiToAdd];
+          await dataSource.getRepository(User).save(userToUpdate);
+          res.status(200).send("Favorite poi added to user");
+        }
+      }
+    } catch (err) {
+      console.log(err);
+      res.status(400).send("Error while adding point of interest to favorites");
+    }
+  }
+
+  async removeFavoritePoiToUser(req: Request, res: Response): Promise<void> {
+    const { idUser, idPoi } = req.params;
+    try {
+      const userToUpdate = await dataSource
+        .getRepository(User)
+        .findOneBy({ id: idUser });
+      console.log(userToUpdate);
+      if (userToUpdate === null) {
+        res.status(404).send("User not found");
+      } else {
+        const poiToRemove = await dataSource
+          .getRepository(Poi)
+          .findOneBy({ id: idPoi });
+        if (poiToRemove === null) {
+          res.status(404).send("Point of interest not found");
+        } else {
+          userToUpdate.favouritePoi = userToUpdate.favouritePoi.filter(
+            (poi) => poi.id !== idPoi
+          );
+          await dataSource.getRepository(User).save(userToUpdate);
+          res.status(200).send("Favorite poi remove to user");
+        }
+      }
+    } catch (err) {
+      console.log(err);
+      res
+        .status(400)
+        .send("Error while removing point of interest to favorites");
+    }
+  }
+
+  async addFavoriteCityToUser(req: Request, res: Response): Promise<void> {
+    const { idUser, idCity } = req.params;
+    try {
+      const userToUpdate = await dataSource
+        .getRepository(User)
+        .findOneBy({ id: idUser });
+      console.log(userToUpdate);
+      if (userToUpdate === null) {
+        res.status(404).send("User not found");
+      } else {
+        const cityToAdd = await dataSource
+          .getRepository(City)
+          .findOneBy({ id: idCity });
+        if (cityToAdd === null) {
+          res.status(404).send("City not found");
+        } else {
+          userToUpdate.favouriteCities = [
+            ...userToUpdate.favouriteCities,
+            cityToAdd,
+          ];
+          await dataSource.getRepository(User).save(userToUpdate);
+          res.status(200).send("Favorite city added to user");
+        }
+      }
+    } catch (err) {
+      console.log(err);
+      res.status(400).send("Error while adding city to favorites");
+    }
+  }
+
+  async removeFavoriteCityToUser(req: Request, res: Response): Promise<void> {
+    const { idUser, idCity } = req.params;
+    try {
+      const userToUpdate = await dataSource
+        .getRepository(User)
+        .findOneBy({ id: idUser });
+      console.log(userToUpdate);
+      if (userToUpdate === null) {
+        res.status(404).send("User not found");
+      } else {
+        const cityToRemove = await dataSource
+          .getRepository(City)
+          .findOneBy({ id: idCity });
+        if (cityToRemove === null) {
+          res.status(404).send("City not found");
+        } else {
+          userToUpdate.favouriteCities = userToUpdate.favouriteCities.filter(
+            (poi) => poi.id !== idCity
+          );
+          await dataSource.getRepository(User).save(userToUpdate);
+          res.status(200).send("Favorite city remove to user");
+        }
+      }
+    } catch (err) {
+      console.log(err);
+      res.status(400).send("Error while removing city to favorites");
     }
   }
 }

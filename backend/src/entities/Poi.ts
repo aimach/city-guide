@@ -20,8 +20,11 @@ export class Poi {
   @Column({ type: "varchar", length: 100, unique: true })
   name: string;
 
-  @Column("point")
-  coordinates: Point;
+  @Column("float")
+  latitude: number;
+
+  @Column("float")
+  longitude: number;
 
   // ajout du type text
   @Column("text")
@@ -48,14 +51,14 @@ export class Poi {
   updated_at: Date;
 
   @ManyToOne(() => Category, (category) => category.poi)
-  category: Category;
+  category_id: Category;
 
   @ManyToOne(() => City, (city) => city.poi)
-  city: City;
+  city_id: City;
 
   @ManyToOne(() => User, (user) => user.createdPoi)
-  user: User;
+  user_id: User;
 
-  // @ManyToMany(() => User, (user) => user.favouritePoi)
-  // users: User[];
+  @ManyToMany(() => User, (user) => user.favouritePoi)
+  users_favorite: User[];
 }

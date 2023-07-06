@@ -6,7 +6,13 @@ export default class PoiController {
   // poiController.getPoi
   async getPoi(req: Request, res: Response): Promise<void> {
     try {
-      const allPoi = await dataSource.getRepository(Poi).find();
+      const allPoi = await dataSource.getRepository(Poi).find({
+        relations: {
+          category_id: true,
+          city_id: true,
+          user_id: true,
+        },
+      });
       res.status(200).send(allPoi);
     } catch (err) {
       console.log(err);
