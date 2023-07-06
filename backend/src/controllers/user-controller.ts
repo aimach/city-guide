@@ -96,7 +96,6 @@ export const AuthController: IController = {
 
    login: async (req: Request, res: Response) => {
       const { email, password } = req.body;
-      console.log(TOKEN);
 
       // recuperation de l'email de l'utilisateur
       const getUserByEmail = await dataSource
@@ -124,7 +123,6 @@ export const AuthController: IController = {
          );
          res.cookie('token', token, { httpOnly: true });
          return res.status(200).send(token);
-         // return res.status(200).send('You are well connected !');
       }
    },
 };

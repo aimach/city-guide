@@ -1,11 +1,12 @@
 import express from 'express';
 import { auth } from '../middlewares/auth';
 export const categoriesRoutes = express.Router();
-import * as categoriesController from '../controllers/categorie-controller';
 
-categoriesRoutes.get('/', (req, res) => {
-   res.send('Success');
-});
+categoriesRoutes.get(
+   '/',
+   auth
+   // categoriesController.getCategories
+);
 
 categoriesRoutes.post(
    '/',
