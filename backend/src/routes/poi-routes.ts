@@ -1,16 +1,14 @@
-import PoiController from "../controllers/poiController";
+import { PoiController } from "../controllers/poiController";
 import express from "express";
 import { auth } from "../middlewares/auth";
 export const poiRoutes = express.Router();
 
-const poiController = new PoiController();
+poiRoutes.get("/", PoiController.getPoi);
 
-poiRoutes.get("/", poiController.getPoi);
+poiRoutes.get("/:id", PoiController.getOnePoi);
 
-poiRoutes.get("/:id", poiController.getOnePoi);
+poiRoutes.post("/", auth, PoiController.createPoi);
 
-poiRoutes.post("/", auth, poiController.createPoi);
+poiRoutes.put("/:id", auth, PoiController.updatePoi);
 
-poiRoutes.put("/:id", auth, poiController.updatePoi);
-
-poiRoutes.delete("/:id", auth, poiController.deletePoi);
+poiRoutes.delete("/:id", auth, PoiController.deletePoi);

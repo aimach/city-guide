@@ -1,17 +1,15 @@
 import express from "express";
 import { auth } from "../middlewares/auth";
-import CityController from "../controllers/cityController";
+import { CityController } from "../controllers/cityController";
 
 export const citiesRoutes = express.Router();
 
-const cityController = new CityController();
+citiesRoutes.get("/", CityController.getCities);
 
-citiesRoutes.get("/", cityController.getCities);
+citiesRoutes.get("/:id", CityController.getOneCity);
 
-citiesRoutes.get("/:id", cityController.getOneCity);
+citiesRoutes.post("/", auth, CityController.createCity);
 
-citiesRoutes.post("/", auth, cityController.createCity);
+citiesRoutes.put("/:id", auth, CityController.updateCity);
 
-citiesRoutes.put("/:id", auth, cityController.updateCity);
-
-citiesRoutes.delete("/:id", auth, cityController.deleteCity);
+citiesRoutes.delete("/:id", auth, CityController.deleteCity);

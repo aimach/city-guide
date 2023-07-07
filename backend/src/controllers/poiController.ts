@@ -2,10 +2,12 @@ import { Request, Response } from "express";
 import dataSource from "../dataSource";
 import { Poi } from "../entities/Poi";
 import { Not } from "typeorm";
+import { IController } from "./user-controller";
 
-export default class PoiController {
-  // get all POIs
-  async getPoi(req: Request, res: Response): Promise<void> {
+export const PoiController: IController = {
+  // GET ALL POI
+
+  getPoi: async (req: Request, res: Response): Promise<void> => {
     try {
       const allPoi = await dataSource.getRepository(Poi).find({
         relations: {
@@ -19,10 +21,11 @@ export default class PoiController {
       console.log(err);
       res.status(400).send("Error while reading points of interest");
     }
-  }
+  },
 
-  // get one POI by id (params)
-  async getOnePoi(req: Request, res: Response): Promise<void> {
+  // GET ONE POI BY ID
+
+  getOnePoi: async (req: Request, res: Response): Promise<void> => {
     try {
       const { id } = req.params;
       const poiToRead = await dataSource.getRepository(Poi).findOneBy({ id });
@@ -34,10 +37,11 @@ export default class PoiController {
     } catch (err) {
       res.status(400).send("Error while reading point of interest");
     }
-  }
+  },
 
-  // create POI
-  async createPoi(req: Request, res: Response): Promise<void> {
+  // CREATE POI
+
+  createPoi: async (req: Request, res: Response): Promise<void> => {
     try {
       const { coordinates } = req.body;
       // check if coords doesn't already exist in db
@@ -62,10 +66,11 @@ export default class PoiController {
     } catch (err) {
       res.status(400).send("Something went wrong");
     }
-  }
+  },
 
-  // update POI by id (params)
-  async updatePoi(req: Request, res: Response): Promise<void> {
+  // UPDATE POI BY ID
+
+  updatePoi: async (req: Request, res: Response): Promise<void> => {
     try {
       const { id } = req.params;
       const { coordinates } = req.body;
@@ -104,10 +109,11 @@ export default class PoiController {
     } catch (err) {
       res.status(400).send("Error while updating point of interest");
     }
-  }
+  },
 
-  // delete POI by id (params)
-  async deletePoi(req: Request, res: Response): Promise<void> {
+  // DELETE POI
+
+  deletePoi: async (req: Request, res: Response): Promise<void> => {
     try {
       const { id } = req.params;
       // check if POI exists in db
@@ -121,5 +127,5 @@ export default class PoiController {
     } catch (err) {
       res.status(400).send("Error while deleting point of interest");
     }
-  }
-}
+  },
+};

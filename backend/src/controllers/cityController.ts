@@ -2,10 +2,12 @@ import { Request, Response } from "express";
 import dataSource from "../dataSource";
 import { City } from "../entities/City";
 import { Not } from "typeorm";
+import { IController } from "./user-controller";
 
-export default class CityController {
-  // get all cities
-  async getCities(req: Request, res: Response): Promise<void> {
+export const CityController: IController = {
+  // GET ALL CITIES
+
+  getCities: async (req: Request, res: Response): Promise<void> => {
     try {
       const allCities = await dataSource.getRepository(City).find({
         relations: {
@@ -18,10 +20,11 @@ export default class CityController {
       console.log(err);
       res.status(400).send("Error while reading cities");
     }
-  }
+  },
 
-  // get one city byd id (params)
-  async getOneCity(req: Request, res: Response): Promise<void> {
+  // GET ONE CITY BY ID
+
+  getOneCity: async (req: Request, res: Response): Promise<void> => {
     try {
       const { id } = req.params;
       const cityToRead = await dataSource.getRepository(City).findOne({
@@ -39,10 +42,11 @@ export default class CityController {
     } catch (err) {
       res.status(400).send("Error while reading city");
     }
-  }
+  },
 
-  // create city
-  async createCity(req: Request, res: Response): Promise<void> {
+  // CREATE CITY
+
+  createCity: async (req: Request, res: Response): Promise<void> => {
     const { name, coordinates } = req.body;
     try {
       // check if name doesn't already exist in db
@@ -77,10 +81,11 @@ export default class CityController {
         res.status(400).send("Something went wrong");
       }
     }
-  }
+  },
 
-  // update city by id (params)
-  async updateCity(req: Request, res: Response): Promise<void> {
+  // UPDATE CITY BY ID
+
+  updateCity: async (req: Request, res: Response): Promise<void> => {
     try {
       const { id } = req.params;
       const { name, coordinates } = req.body;
@@ -140,10 +145,11 @@ export default class CityController {
         res.status(400).send("Something went wrong");
       }
     }
-  }
+  },
 
-  // delete city
-  async deleteCity(req: Request, res: Response): Promise<void> {
+  // DELETE CITY
+
+  deleteCity: async (req: Request, res: Response): Promise<void> => {
     try {
       const { id } = req.params;
       // check if city exists in db
@@ -159,5 +165,5 @@ export default class CityController {
     } catch (err) {
       res.status(400).send("Error while deleting city");
     }
-  }
-}
+  },
+};

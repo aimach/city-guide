@@ -6,8 +6,6 @@ import {
   OneToOne,
   JoinColumn,
   Entity,
-  Point,
-  Index,
 } from "typeorm";
 import { Poi } from "./Poi";
 import { User } from "./User";

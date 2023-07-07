@@ -1,17 +1,15 @@
 import express from "express";
 import { auth } from "../middlewares/auth";
-import CategoryController from "../controllers/categoryController";
+import { CategoryController } from "../controllers/categoryController";
 
 export const categoriesRoutes = express.Router();
 
-const categoryController = new CategoryController();
+categoriesRoutes.get("/", CategoryController.getCategories);
 
-categoriesRoutes.get("/", categoryController.getCategories);
+categoriesRoutes.get("/:id", CategoryController.getOneCategory);
 
-categoriesRoutes.get("/:id", categoryController.getOneCategory);
+categoriesRoutes.post("/", auth, CategoryController.createCategory);
 
-categoriesRoutes.post("/", auth, categoryController.createCategory);
+categoriesRoutes.put("/:id", auth, CategoryController.updateCategory);
 
-categoriesRoutes.put("/:id", auth, categoryController.updateCategory);
-
-categoriesRoutes.delete("/:id", auth, categoryController.deleteCategory);
+categoriesRoutes.delete("/:id", auth, CategoryController.deleteCategory);

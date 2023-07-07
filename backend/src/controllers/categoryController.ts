@@ -2,10 +2,12 @@ import { Request, Response } from "express";
 import dataSource from "../dataSource";
 import { Category } from "../entities/Category";
 import { Not } from "typeorm";
+import { IController } from "./user-controller";
 
-export default class CategoryController {
-  // get all categories
-  async getCategories(req: Request, res: Response): Promise<void> {
+export const CategoryController: IController = {
+  // GET ALL CATEGORIES
+
+  getCategories: async (req: Request, res: Response): Promise<void> => {
     try {
       const allCategories = await dataSource.getRepository(Category).find();
       res.status(200).send(allCategories);
@@ -13,10 +15,11 @@ export default class CategoryController {
       console.log(err);
       res.status(400).send("Error while reading categories");
     }
-  }
+  },
 
-  // get one category by id (params)
-  async getOneCategory(req: Request, res: Response): Promise<void> {
+  // GET ONE CATEGORY BY ID
+
+  getOneCategory: async (req: Request, res: Response): Promise<void> => {
     try {
       const { id } = req.params;
       const categoryToRead = await dataSource
@@ -30,10 +33,11 @@ export default class CategoryController {
     } catch (err) {
       res.status(400).send("Error while reading category");
     }
-  }
+  },
 
-  // create category
-  async createCategory(req: Request, res: Response): Promise<void> {
+  // CREATE CATEGORY
+
+  createCategory: async (req: Request, res: Response): Promise<void> => {
     try {
       const { name } = req.body;
       // check if category name already exists in db
@@ -49,10 +53,11 @@ export default class CategoryController {
     } catch (error) {
       res.status(400).send("Something went wrong");
     }
-  }
+  },
 
-  // update category by id (params)
-  async updateCategory(req: Request, res: Response): Promise<void> {
+  // UPDATE CATEGORY BY ID
+
+  updateCategory: async (req: Request, res: Response): Promise<void> => {
     try {
       const { id } = req.params;
       const { name } = req.body;
@@ -78,10 +83,11 @@ export default class CategoryController {
     } catch (err) {
       res.status(400).send("Error while updating category");
     }
-  }
+  },
 
-  // delete category by id (params)
-  async deleteCategory(req: Request, res: Response): Promise<void> {
+  // DELETE CATEGORY BY ID
+
+  deleteCategory: async (req: Request, res: Response): Promise<void> => {
     try {
       const { id } = req.params;
       // check if category exists in db
@@ -97,5 +103,5 @@ export default class CategoryController {
     } catch (err) {
       res.status(400).send("Error while deleting category");
     }
-  }
-}
+  },
+};

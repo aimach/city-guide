@@ -3,10 +3,12 @@ import dataSource from "../dataSource";
 import { User } from "../entities/User";
 import { Poi } from "../entities/Poi";
 import { City } from "../entities/City";
+import { IController } from "./user-controller";
 
-export default class ProfileController {
-  // get all profiles
-  async getProfile(req: Request, res: Response): Promise<void> {
+export const ProfileController: IController = {
+  // GET ALL PROFILES
+
+  getProfile: async (req: Request, res: Response): Promise<void> => {
     try {
       const allProfiles = await dataSource.getRepository(User).find({
         relations: {
@@ -18,10 +20,11 @@ export default class ProfileController {
       console.log(err);
       res.status(400).send("Error while reading users");
     }
-  }
+  },
 
-  // get one profile by id (params)
-  async getOneProfile(req: Request, res: Response): Promise<void> {
+  // GET ONE PROFILE BY ID
+
+  getOneProfile: async (req: Request, res: Response): Promise<void> => {
     try {
       const { id } = req.params;
       // check if profile exists in db
@@ -36,10 +39,11 @@ export default class ProfileController {
     } catch (err) {
       res.status(400).send("Error while reading user");
     }
-  }
+  },
 
-  // update profile by id (params)
-  async updateProfile(req: Request, res: Response): Promise<void> {
+  // UPDATE PROFILE BY ID
+
+  updateProfile: async (req: Request, res: Response): Promise<void> => {
     try {
       const { id } = req.params;
       // check if profile exists in db
@@ -55,10 +59,11 @@ export default class ProfileController {
     } catch (err) {
       res.status(400).send("Error while updating user");
     }
-  }
+  },
 
-  // delete profile by id (params)
-  async deleteProfile(req: Request, res: Response): Promise<void> {
+  // DELETE PROFILE BY ID
+
+  deleteProfile: async (req: Request, res: Response): Promise<void> => {
     try {
       const { id } = req.params;
       // check if profile exists in db
@@ -74,10 +79,11 @@ export default class ProfileController {
     } catch (err) {
       res.status(400).send("Error while deleting user");
     }
-  }
+  },
 
-  // add poi to favorite array
-  async addFavoritePoiToUser(req: Request, res: Response): Promise<void> {
+  // ADD POI TO FAVORITE ARRAY
+
+  addFavoritePoiToUser: async (req: Request, res: Response): Promise<void> => {
     const { idUser, idPoi } = req.params;
     try {
       // check if profile exists in db
@@ -104,10 +110,14 @@ export default class ProfileController {
       console.log(err);
       res.status(400).send("Error while adding point of interest to favorites");
     }
-  }
+  },
 
-  // remove POI to favorite array
-  async removeFavoritePoiToUser(req: Request, res: Response): Promise<void> {
+  // REMOVE POI FROM FAVORITE ARRAY
+
+  removeFavoritePoiToUser: async (
+    req: Request,
+    res: Response
+  ): Promise<void> => {
     const { idUser, idPoi } = req.params;
     try {
       // check if profile exists in db
@@ -138,10 +148,11 @@ export default class ProfileController {
         .status(400)
         .send("Error while removing point of interest to favorites");
     }
-  }
+  },
 
-  // add city to favorite array
-  async addFavoriteCityToUser(req: Request, res: Response): Promise<void> {
+  // ADD CITY TO FAVORITE ARRAY
+
+  addFavoriteCityToUser: async (req: Request, res: Response): Promise<void> => {
     const { idUser, idCity } = req.params;
     try {
       // check if user exists in db
@@ -171,10 +182,14 @@ export default class ProfileController {
       console.log(err);
       res.status(400).send("Error while adding city to favorites");
     }
-  }
+  },
 
-  // remove city to farovite array
-  async removeFavoriteCityToUser(req: Request, res: Response): Promise<void> {
+  // REMOVE CITY FROM FAVORITE ARRAY
+
+  removeFavoriteCityToUser: async (
+    req: Request,
+    res: Response
+  ): Promise<void> => {
     const { idUser, idCity } = req.params;
     try {
       // check if user exists in db
@@ -203,5 +218,5 @@ export default class ProfileController {
       console.log(err);
       res.status(400).send("Error while removing city to favorites");
     }
-  }
-}
+  },
+};
