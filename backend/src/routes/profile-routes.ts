@@ -15,6 +15,7 @@ profileRoutes.post(
   ProfileController.addFavoritePoiToUser
 );
 
+// add city to favorites
 profileRoutes.post(
   "/fav/city/:idUser/:idCity",
   auth,
