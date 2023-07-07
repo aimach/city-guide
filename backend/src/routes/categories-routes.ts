@@ -1,4 +1,5 @@
 import express from "express";
+import { auth } from "../middlewares/auth";
 import CategoryController from "../controllers/categoryController";
 
 export const categoriesRoutes = express.Router();
@@ -9,8 +10,8 @@ categoriesRoutes.get("/", categoryController.getCategories);
 
 categoriesRoutes.get("/:id", categoryController.getOneCategory);
 
-categoriesRoutes.post("/", categoryController.createCategory);
+categoriesRoutes.post("/", auth, categoryController.createCategory);
 
-categoriesRoutes.put("/:id", categoryController.updateCategory);
+categoriesRoutes.put("/:id", auth, categoryController.updateCategory);
 
-categoriesRoutes.delete("/:id", categoryController.deleteCategory);
+categoriesRoutes.delete("/:id", auth, categoryController.deleteCategory);
