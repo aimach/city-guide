@@ -18,11 +18,9 @@ export const AuthController: IController = {
    register: async (req: Request, res: Response) => {
       const { username, email, password } = req.body;
 
-      const checkIfEmpty = (value: string) => {
+      const checkIfEmpty = (value: string): void => {
          if (validator.isEmpty(value, { ignore_whitespace: true })) {
-            return res
-               .status(401)
-               .send({ error: `Please fill the empty field` });
+            res.status(422).send({ error: `Please fill the empty field` });
          }
       };
 
@@ -93,33 +91,36 @@ export const AuthController: IController = {
 
    login: async (req: Request, res: Response) => {
       const { email, password } = req.body;
+      try {
+         // recuperation de l'email de l'utilisateur
+         const getUserByEmail = await dataSource
+            .getRepository(User)
+            .findOneBy({ email });
 
-      // recuperation de l'email de l'utilisateur
-      const getUserByEmail = await dataSource
-         .getRepository(User)
-         .findOneBy({ email });
+         // verificaiton si je n'ai pas d'email
+         if (getUserByEmail === null) {
+            return res.status(404).send({ error: 'Invalid credentials' });
+         }
 
-      // verificaiton si je n'ai pas d'email
-      if (getUserByEmail === null) {
-         return res.status(404).send({ error: 'Invalid credentials' });
-      }
+         const user = getUserByEmail;
+         const validPassword = await bcrypt.compare(password, user.password);
 
-      const user = getUserByEmail;
-      const validPassword = await bcrypt.compare(password, user.password);
-
-      //verification si je n'ai pas le bon mot de passe
-      if (!validPassword) {
-         return res.status(400).send({ error: 'Invalid credentials' });
-      } else {
-         const token = sign(
-            { userId: getUserByEmail.id, role: getUserByEmail.role },
-            TOKEN as string,
-            {
-               expiresIn: '1h',
-            }
-         );
-         res.cookie('token', token, { httpOnly: true });
-         return res.status(200).send(token);
+         //verification si je n'ai pas le bon mot de passe
+         if (!validPassword) {
+            return res.status(400).send({ error: 'Invalid credentials' });
+         } else {
+            const token = sign(
+               { userId: getUserByEmail.id, role: getUserByEmail.role },
+               TOKEN as string,
+               {
+                  expiresIn: '1h',
+               }
+            );
+            res.cookie('token', token, { httpOnly: true });
+            return res.status(200).send(token);
+         }
+      } catch (error) {
+         console.log(error);
       }
    },
    logout: async (req: Request, res: Response) => {
