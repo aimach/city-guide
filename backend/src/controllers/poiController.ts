@@ -3,6 +3,8 @@ import dataSource from "../dataSource";
 import { Poi } from "../entities/Poi";
 import { Not } from "typeorm";
 import { IController } from "./user-controller";
+import fs from "fs";
+import { v4 as uuidv4 } from "uuid";
 
 export const PoiController: IController = {
   // GET ALL POI
@@ -43,8 +45,23 @@ export const PoiController: IController = {
 
   createPoi: async (req: Request, res: Response): Promise<void> => {
     try {
-      const { coordinates } = req.body;
+      // rename file image
+      if (req.file) {
+        const originalname = req.file.originalname;
+        const filename = req.file.filename;
+        const newName = `${uuidv4()}-${originalname}`;
+        fs.rename(
+          `./public/poi/${filename}`,
+          `./public/poi/${newName}`,
+          (err) => {
+            if (err) throw err;
+          }
+        );
+        req.body.image = `/public/poi/${newName}`;
+      }
+
       // check if coords doesn't already exist in db
+      const { coordinates } = req.body;
       const coordsAlreadyExist = await dataSource.getRepository(Poi).count({
         where: {
           coordinates: {

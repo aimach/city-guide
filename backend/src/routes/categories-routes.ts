@@ -5,7 +5,7 @@ import { CategoryController } from "../controllers/categoryController";
 
 export const categoriesRoutes = express.Router();
 
-const upload = multer({ dest: "./public/" });
+const upload = multer({ dest: "./public/categories" });
 
 categoriesRoutes.get("/", CategoryController.getCategories);
 

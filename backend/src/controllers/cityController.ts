@@ -3,6 +3,8 @@ import dataSource from "../dataSource";
 import { City } from "../entities/City";
 import { Not } from "typeorm";
 import { IController } from "./user-controller";
+import fs from "fs";
+import { v4 as uuidv4 } from "uuid";
 
 export const CityController: IController = {
   // GET ALL CITIES
@@ -49,6 +51,21 @@ export const CityController: IController = {
   createCity: async (req: Request, res: Response): Promise<void> => {
     const { name, coordinates } = req.body;
     try {
+      // rename file image
+      if (req.file) {
+        const originalname = req.file.originalname;
+        const filename = req.file.filename;
+        const newName = `${uuidv4()}-${originalname}`;
+        fs.rename(
+          `./public/city/${filename}`,
+          `./public/city/${newName}`,
+          (err) => {
+            if (err) throw err;
+          }
+        );
+        req.body.image = `/public/city/${newName}`;
+      }
+
       // check if name doesn't already exist in db
       const nameAlreadyExist = await dataSource
         .getRepository(City)
