@@ -43,20 +43,29 @@ export default class CityController {
 
   // create city
   async createCity(req: Request, res: Response): Promise<void> {
-    const { name, latitude, longitude } = req.body;
+    const { name, coordinates } = req.body;
     try {
       // check if name doesn't already exist in db
       const nameAlreadyExist = await dataSource
         .getRepository(City)
         .count({ where: { name } });
       // check if coords doesn't already exist in db
-      const coordsAlreadyExist = await dataSource
-        .getRepository(City)
-        .count({ where: { latitude, longitude } });
+      const coordsAlreadyExist = await dataSource.getRepository(City).count({
+        where: {
+          coordinates: {
+            type: "Point",
+            coordinates: [coordinates[0], coordinates[1]],
+          },
+        },
+      });
       // if one or another exists, send 409
       if (nameAlreadyExist > 0 || coordsAlreadyExist > 0) {
         res.status(409).send("City already exists");
       } else {
+        req.body.coordinates = {
+          type: "Point",
+          coordinates: [coordinates[0], coordinates[1]],
+        };
         await dataSource.getRepository(City).save(req.body);
         res.status(201).send("Created city");
       }
@@ -74,7 +83,7 @@ export default class CityController {
   async updateCity(req: Request, res: Response): Promise<void> {
     try {
       const { id } = req.params;
-      const { name, latitude, longitude } = req.body;
+      const { name, coordinates } = req.body;
       // check if city exists by id
       const cityToUpdate = await dataSource
         .getRepository(City)
@@ -83,19 +92,42 @@ export default class CityController {
       if (cityToUpdate === null) {
         res.status(404).send("City not found");
       } else {
-        // check if body.name doesn't already exist in db
-        const nameAlreadyExist = await dataSource
-          .getRepository(City)
-          // check every tuples except the one updating
-          .count({ where: { name, id: Not(id) } });
-        // check if body.coords doesn't already exist in db
-        const coordsAlreadyExist = await dataSource
-          .getRepository(City)
-          .count({ where: { latitude, longitude, id: Not(id) } });
+        let nameAlreadyExist = null;
+        let coordsAlreadyExist = null;
+        if (name !== undefined) {
+          // check if body.name doesn't already exist in db
+          nameAlreadyExist = await dataSource
+            .getRepository(City)
+            // check every tuples except the one updating
+            .count({ where: { name, id: Not(id) } });
+        }
+        if (coordinates !== undefined) {
+          // check if body.coords doesn't already exist in db
+          coordsAlreadyExist = await dataSource.getRepository(City).count({
+            where: {
+              coordinates: {
+                type: "Point",
+                coordinates: [coordinates[0], coordinates[1]],
+              },
+              id: Not(id),
+            },
+          });
+        }
         // if one or another exists, send 409
-        if (nameAlreadyExist > 0 && coordsAlreadyExist > 0) {
+        if (
+          nameAlreadyExist !== null &&
+          nameAlreadyExist > 0 &&
+          coordsAlreadyExist !== null &&
+          coordsAlreadyExist > 0
+        ) {
           res.status(409).send("City already exists");
         } else {
+          if (coordinates !== undefined) {
+            req.body.coordinates = {
+              type: "Point",
+              coordinates: [coordinates[0], coordinates[1]],
+            };
+          }
           await dataSource.getRepository(City).update(id, req.body);
           res.status(200).send("Updated city");
         }

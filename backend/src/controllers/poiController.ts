@@ -39,14 +39,23 @@ export default class PoiController {
   // create POI
   async createPoi(req: Request, res: Response): Promise<void> {
     try {
-      const { latitude, longitude } = req.body;
-      // check if coords alreay exists in db
-      const coordsAlreadyExist = await dataSource
-        .getRepository(Poi)
-        .count({ where: { latitude, longitude } });
+      const { coordinates } = req.body;
+      // check if coords doesn't already exist in db
+      const coordsAlreadyExist = await dataSource.getRepository(Poi).count({
+        where: {
+          coordinates: {
+            type: "Point",
+            coordinates: [coordinates[0], coordinates[1]],
+          },
+        },
+      });
       if (coordsAlreadyExist > 0) {
         res.status(409).send("Point of interest already exists");
       } else {
+        req.body.coordinates = {
+          type: "Point",
+          coordinates: [coordinates[0], coordinates[1]],
+        };
         await dataSource.getRepository(Poi).save(req.body);
         res.status(201).send("Created point of interest");
       }
@@ -59,19 +68,35 @@ export default class PoiController {
   async updatePoi(req: Request, res: Response): Promise<void> {
     try {
       const { id } = req.params;
-      const { latitude, longitude } = req.body;
+      const { coordinates } = req.body;
       // check if POI exists in db
       const poiToUpdate = await dataSource.getRepository(Poi).findOneBy({ id });
       if (poiToUpdate === null) {
         res.status(404).send("Point of interest not found");
       } else {
+        let coordsAlreadyExist = null;
+
         // check if body.coords already exists in db
-        const coordsAlreadyExist = await dataSource
-          .getRepository(Poi)
-          .count({ where: { latitude, longitude, id: Not(id) } });
-        if (coordsAlreadyExist > 0) {
+        if (coordinates !== undefined) {
+          coordsAlreadyExist = await dataSource.getRepository(Poi).count({
+            where: {
+              coordinates: {
+                type: "Point",
+                coordinates: [coordinates[0], coordinates[1]],
+              },
+              id: Not(id),
+            },
+          });
+        }
+        if (coordsAlreadyExist !== null && coordsAlreadyExist > 0) {
           res.status(404).send("Point of interest already exist");
         } else {
+          if (coordinates !== undefined) {
+            req.body.coordinates = {
+              type: "Point",
+              coordinates: [coordinates[0], coordinates[1]],
+            };
+          }
           await dataSource.getRepository(Poi).update(id, req.body);
           res.status(200).send("Updated point of interest");
         }
