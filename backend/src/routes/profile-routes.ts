@@ -1,4 +1,5 @@
 import express from "express";
+import multer from "multer";
 import { auth } from "../middlewares/auth";
 import { ProfileController } from "../controllers/profileController";
 

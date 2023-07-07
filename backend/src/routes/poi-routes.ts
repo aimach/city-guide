@@ -1,5 +1,6 @@
-import { PoiController } from "../controllers/poiController";
 import express from "express";
+import multer from "multer";
+import { PoiController } from "../controllers/poiController";
 import { auth } from "../middlewares/auth";
 export const poiRoutes = express.Router();
 

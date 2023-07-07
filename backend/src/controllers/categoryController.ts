@@ -40,6 +40,7 @@ export const CategoryController: IController = {
   createCategory: async (req: Request, res: Response): Promise<void> => {
     try {
       const { name } = req.body;
+      console.log(req.file);
       // check if category name already exists in db
       const categoryToCreate = await dataSource
         .getRepository(Category)
@@ -47,6 +48,7 @@ export const CategoryController: IController = {
       if (categoryToCreate > 0) {
         res.status(409).send("Category already exists");
       } else {
+        req.body.image = req.file?.filename;
         await dataSource.getRepository(Category).save(req.body);
         res.status(201).send("Created category");
       }

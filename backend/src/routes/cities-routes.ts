@@ -1,4 +1,6 @@
 import express from "express";
+import multer from "multer";
+
 import { auth } from "../middlewares/auth";
 import { CityController } from "../controllers/cityController";
 
