@@ -1,10 +1,13 @@
 import { Request, Response } from 'express';
+import * as dotenv from 'dotenv';
 import { User } from '../entities/User';
 import dataSource from '../dataSource';
 import * as bcrypt from 'bcrypt';
 import { sign } from 'jsonwebtoken';
 import { hash } from 'bcrypt';
 import validator from 'validator';
+
+dotenv.config();
 
 const TOKEN = process.env.TOKEN;
 
@@ -18,9 +21,11 @@ export const AuthController: IController = {
    register: async (req: Request, res: Response) => {
       const { username, email, password } = req.body;
 
-      const checkIfEmpty = (value: string): void => {
+      const checkIfEmpty = (value: string) => {
          if (validator.isEmpty(value, { ignore_whitespace: true })) {
-            res.status(422).send({ error: `Please fill the empty field` });
+            return res
+               .status(401)
+               .send({ error: `Please fill the empty field` });
          }
       };
 
@@ -38,7 +43,7 @@ export const AuthController: IController = {
 
          // Check if email alrealy exists
 
-         if (existingEmail) {
+         if (existingEmail !== null) {
             return res.status(409).send({ error: 'Email already exists' });
          }
 
@@ -47,23 +52,23 @@ export const AuthController: IController = {
          const existingUsername = await dataSource
             .getRepository(User)
             .findOneBy({ username });
-         if (existingUsername) {
+         if (existingUsername !== null) {
             return res.status(409).send({
                error: 'This username is taken, please choose another one',
             });
          }
 
-         if (validator.isEmail(email) === false) {
+         if (!validator.isEmail(email)) {
             return res.status(401).send({ error: 'Incorrect email format' });
          }
 
          if (
-            validator.isStrongPassword(password, {
+            !validator.isStrongPassword(password, {
                minLength: 8,
                minNumbers: 1,
                minUppercase: 1,
                minSymbols: 1,
-            }) === false
+            })
          ) {
             return res.status(401).send({
                error: 'Password must contain 8 characters, 1 digit, 1 uppercase and 1 symbol',
@@ -79,7 +84,7 @@ export const AuthController: IController = {
                expiresIn: '1h',
             }
          );
-         // envoi token dans le cookie
+         // send token to cookie
          res.cookie('token', token, { httpOnly: true });
          return res.status(201).send(token);
       } catch (error) {
@@ -92,12 +97,12 @@ export const AuthController: IController = {
    login: async (req: Request, res: Response) => {
       const { email, password } = req.body;
       try {
-         // recuperation de l'email de l'utilisateur
+         // retrieve user email
          const getUserByEmail = await dataSource
             .getRepository(User)
             .findOneBy({ email });
 
-         // verificaiton si je n'ai pas d'email
+         // check if I don't have email
          if (getUserByEmail === null) {
             return res.status(404).send({ error: 'Invalid credentials' });
          }
@@ -105,7 +110,7 @@ export const AuthController: IController = {
          const user = getUserByEmail;
          const validPassword = await bcrypt.compare(password, user.password);
 
-         //verification si je n'ai pas le bon mot de passe
+         // check if I don't have the right password
          if (!validPassword) {
             return res.status(400).send({ error: 'Invalid credentials' });
          } else {
@@ -123,6 +128,7 @@ export const AuthController: IController = {
          console.log(error);
       }
    },
+
    logout: async (req: Request, res: Response) => {
       try {
          res.clearCookie('token');
@@ -132,5 +138,3 @@ export const AuthController: IController = {
       }
    },
 };
-
-// Voir cookie-parser pour middleware
