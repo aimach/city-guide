@@ -2,7 +2,7 @@ GET http://localhost:5000/api/cities
 
 ###
 
-GET http://localhost:5000/api/cities/23f3604f-98fc-4dca-a958-79edf7124f82
+GET http://localhost:5000/api/cities/dd8d9557-d8a8-47d2-b91e-bf0c779557f0	
 
 ###
 
@@ -10,20 +10,21 @@ POST http://localhost:5000/api/cities
 Content-Type: application/json
 
 {
-  "latitude": 41.5,
-  "longitude": 40.5,
-  "name": "Paris",
+  "coordinates": [34, 36],
+  "name": "Marseille",
   "image": ""
 }
 
 ###
 
 
-PUT http://localhost:5000/api/cities/4817ab55-3d30-4cfe-a386-adf647969f1b
+PUT http://localhost:5000/api/cities/456eaf76-9be5-4b39-ae62-7801e3d0a2fb
 Content-Type: application/json
 
 {
-  "user_admin_city": "645de8ee-22ca-4462-b3b9-1f38069fbe9e"
+  "coordinates": [34, 35],
+  "image": "sdqfsqdfsqdfqsdf",
+  "user_admin_city": null
 }
 
 ###

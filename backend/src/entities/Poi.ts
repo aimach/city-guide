@@ -19,11 +19,13 @@ export class Poi {
   @Column({ type: "varchar", length: 100 })
   name: string;
 
-  @Column("float")
-  latitude: number;
-
-  @Column("float")
-  longitude: number;
+  @Column({ type: "geometry" }) // insert/update : enter [x, y]
+  coordinates:
+    | string
+    | {
+        type: string;
+        coordinates: number[];
+      };
 
   // ajout du type text
   @Column("text")
