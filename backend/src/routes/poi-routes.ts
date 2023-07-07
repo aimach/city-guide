@@ -1,5 +1,5 @@
 import express from 'express';
-
+import { auth } from '../middlewares/auth';
 export const poiRoutes = express.Router();
 
 poiRoutes.get(
@@ -8,16 +8,19 @@ poiRoutes.get(
 );
 
 poiRoutes.post(
-   '/'
+   '/',
+   auth
    // poiController.createPoi
 );
 
 poiRoutes.put(
-   '/:id'
+   '/:id',
+   auth
    // poiController.updatePoi
 );
 
 poiRoutes.delete(
-   '/:id'
+   '/:id',
+   auth
    // poiController.deletePoi
 );
