@@ -65,6 +65,9 @@ export const PoiController: IController = {
   // CREATE POI
 
   createPoi: async (req: Request, res: Response): Promise<void> => {
+    // VALIDATOR {description: string, address: string, is_accepted: boolean, created_ad: timestamp, updated_at: timestamp,
+    // name: string, image: string, categoryId: uuid, cityId: uuid, userId: uuid, coordinates: [x, y] }
+    // les 3 clés étrangères peuvent être null mais sinon uuid
     try {
       // check if coords doesn't already exist in db
       const { coordinates } = req.body;
@@ -112,6 +115,10 @@ export const PoiController: IController = {
   // UPDATE POI BY ID
 
   updatePoi: async (req: Request, res: Response): Promise<void> => {
+    // VALIDATOR {id: uuid, description: string, address: string, is_accepted: boolean, created_ad: timestamp, updated_at: timestamp,
+    // name: string, image: string, categoryId: uuid, cityId: uuid, userId: uuid, coordinates: [x, y] }
+    // les 3 clés étrangères peuvent être null mais sinon uuid
+
     try {
       const { id } = req.params;
       const { coordinates } = req.body;
@@ -176,6 +183,7 @@ export const PoiController: IController = {
   // DELETE POI
 
   deletePoi: async (req: Request, res: Response): Promise<void> => {
+    // VALIDATOR verifier id isUUID
     try {
       const { id } = req.params;
       // check if POI exists in db

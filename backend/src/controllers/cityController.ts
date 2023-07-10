@@ -50,6 +50,9 @@ export const CityController: IController = {
   // CREATE CITY
 
   createCity: async (req: Request, res: Response): Promise<void> => {
+    // VALIDATOR { name : string, image : string, coordinates: [x, y], userAdminCityId : uuid }
+    // userAdminCityId peut être null
+
     const { name, coordinates } = req.body;
     try {
       // check if name doesn't already exist in db
@@ -109,6 +112,10 @@ export const CityController: IController = {
   // UPDATE CITY BY ID
 
   updateCity: async (req: Request, res: Response): Promise<void> => {
+    // VALIDATOR { id: uuid, name : string, image : string, coordinates: [x, y], userAdminCityId : uuid }
+    // userAdminCityId peut être null
+    // VALIDATOR s'assurer que id isUUID ?
+
     try {
       const { id } = req.params;
       const { name, coordinates } = req.body;
@@ -195,6 +202,8 @@ export const CityController: IController = {
   // DELETE CITY
 
   deleteCity: async (req: Request, res: Response): Promise<void> => {
+    // VALIDATOR s'assurer que id isUUID ?
+
     try {
       const { id } = req.params;
       // check if city exists in db

@@ -68,6 +68,10 @@ export const ProfileController: IController = {
   // UPDATE PROFILE BY ID
 
   updateProfile: async (req: Request, res: Response): Promise<void> => {
+    // VALIDATOR { username: string, image: string, role: enum, city: string, email: string, password: string }
+    // city peut être null
+    // pour le role, vérifier si ça matche un des trois rôles
+
     try {
       const { id } = req.params;
       const { username, email } = req.body;
@@ -132,6 +136,8 @@ export const ProfileController: IController = {
   // DELETE PROFILE BY ID
 
   deleteProfile: async (req: Request, res: Response): Promise<void> => {
+    // VALIDATOR verifier id isUUID
+
     try {
       const { id } = req.params;
 

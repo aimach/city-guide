@@ -6,6 +6,7 @@ import { IController } from "./user-controller";
 import fs from "fs";
 import { unlink } from "fs/promises";
 import { v4 as uuidv4 } from "uuid";
+import validator from "validator";
 
 export const CategoryController: IController = {
   // GET ALL CATEGORIES
@@ -41,6 +42,19 @@ export const CategoryController: IController = {
   // CREATE CATEGORY
 
   createCategory: async (req: Request, res: Response): Promise<void> => {
+    // validate format
+    const checkIfEmptyAndNotAString = (value: string): void => {
+      if (validator.isEmpty(value, { ignore_whitespace: true })) {
+        res.status(422).send({ error: `Please fill the empty field` });
+      }
+      if (!validator.isAlpha(value) || typeof value !== "string") {
+        res.status(400).send({ error: `Field must contains only characters` });
+      }
+    };
+
+    const inputs: string[] = Object.values(req.body);
+    inputs.forEach((value) => checkIfEmptyAndNotAString(value));
+
     try {
       // check if category name already exists in db
       const { name } = req.body;
@@ -77,6 +91,19 @@ export const CategoryController: IController = {
   // UPDATE CATEGORY BY ID
 
   updateCategory: async (req: Request, res: Response): Promise<void> => {
+    // validate format
+    const checkIfEmptyAndNotAString = (value: string): void => {
+      if (validator.isEmpty(value, { ignore_whitespace: true })) {
+        res.status(422).send({ error: `Please fill the empty field` });
+      }
+      if (!validator.isAlpha(value) || typeof value !== "string") {
+        res.status(400).send({ error: `Field must contains only characters` });
+      }
+    };
+
+    const inputs: string[] = Object.values(req.body);
+    inputs.forEach((value) => checkIfEmptyAndNotAString(value));
+
     try {
       const { id } = req.params;
       const { name } = req.body;
