@@ -1,6 +1,17 @@
 @mixin flexLayout($justify, $align) {
-    display: flex;
-    justify-content: $justify;
-    align-items: $align;
+  display: flex;
+  justify-content: $justify;
+  align-items: $align;
 }
 
+@mixin buttonSize($width, $height) {
+  width: $width;
+  height: $height;
+  flex-shrink: 0;
+}
+@mixin textStyle($color, $fontFamily, $fontSize, $fontWeight) {
+  color: $color;
+  font-family: $fontFamily;
+  font-size: $fontSize;
+  font-weight: $fontWeight;
+}
