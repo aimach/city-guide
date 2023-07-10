@@ -12,17 +12,15 @@ Content-Type: application/json
 
 {
   "name": "restaurant", 
-  "image": ""
 }
 
 ###
 
-PUT http://localhost:5000/api/categories/3ec194ab-80f9-4c46-98f8-0428e110b175
+PUT http://localhost:5000/api/categories/e28c1416-4d14-41fd-972a-95f706891523
 Content-Type: application/json
 
 {
-  "name": "Bar", 
-  "image": ""
+  "name": "Bar"
 }
 
 ###

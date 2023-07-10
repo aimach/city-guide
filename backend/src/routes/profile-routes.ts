@@ -1,7 +1,10 @@
 import express from "express";
 import multer from "multer";
+
 import { auth } from "../middlewares/auth";
 import { ProfileController } from "../controllers/profileController";
+
+const upload = multer({ dest: "./public/user" });
 
 export const profileRoutes = express.Router();
 
@@ -23,7 +26,12 @@ profileRoutes.post(
   ProfileController.addFavoriteCityToUser
 );
 
-profileRoutes.put("/:id", auth, ProfileController.updateProfile);
+profileRoutes.put(
+  "/:id",
+  auth,
+  upload.single("image"),
+  ProfileController.updateProfile
+);
 
 profileRoutes.delete("/:id", auth, ProfileController.deleteProfile);
 
@@ -37,5 +45,6 @@ profileRoutes.delete(
 // delete city from favorites
 profileRoutes.delete(
   "/fav/city/:idUser/:idCity",
+  auth,
   ProfileController.removeFavoriteCityToUser
 );

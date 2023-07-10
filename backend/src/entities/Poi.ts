@@ -27,27 +27,21 @@ export class Poi {
         coordinates: number[];
       };
 
-  // ajout du type text
   @Column("text")
   description: string;
 
-  // ajout du type text
   @Column("text")
   address: string;
 
-  // ajout du type text
   @Column("text")
   image: string;
 
-  // ajout du type boolean
   @Column("boolean")
   is_accepted: boolean;
 
-  // ajout du type date (comme indiqué dans la doc)
   @CreateDateColumn()
   created_at: Date;
 
-  // ajout du type date (comme indiqué dans la doc)
   @UpdateDateColumn()
   updated_at: Date;
 

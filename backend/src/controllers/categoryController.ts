@@ -4,6 +4,7 @@ import { Category } from "../entities/Category";
 import { Not } from "typeorm";
 import { IController } from "./user-controller";
 import fs from "fs";
+import { unlink } from "fs/promises";
 import { v4 as uuidv4 } from "uuid";
 
 export const CategoryController: IController = {
@@ -41,32 +42,33 @@ export const CategoryController: IController = {
 
   createCategory: async (req: Request, res: Response): Promise<void> => {
     try {
+      // check if category name already exists in db
+      const { name } = req.body;
+      const nameAlreadyExist = await dataSource
+        .getRepository(Category)
+        .count({ where: { name } });
+      if (nameAlreadyExist > 0) {
+        res.status(409).send("Category already exists");
+        return;
+      }
+
       // rename file image
       if (req.file) {
         const originalname = req.file.originalname;
         const filename = req.file.filename;
         const newName = `${uuidv4()}-${originalname}`;
         fs.rename(
-          `./public/categories/${filename}`,
-          `./public/categories/${newName}`,
+          `./public/category/${filename}`,
+          `./public/category/${newName}`,
           (err) => {
             if (err) throw err;
           }
         );
-        req.body.image = `/public/categories/${newName}`;
+        req.body.image = `/public/category/${newName}`;
       }
 
-      const { name } = req.body;
-      // check if category name already exists in db
-      const categoryToCreate = await dataSource
-        .getRepository(Category)
-        .count({ where: { name } });
-      if (categoryToCreate > 0) {
-        res.status(409).send("Category already exists");
-      } else {
-        await dataSource.getRepository(Category).save(req.body);
-        res.status(201).send("Created category");
-      }
+      await dataSource.getRepository(Category).save(req.body);
+      res.status(201).send("Created category");
     } catch (error) {
       res.status(400).send("Something went wrong");
     }
@@ -78,26 +80,54 @@ export const CategoryController: IController = {
     try {
       const { id } = req.params;
       const { name } = req.body;
-      // check if category exists in db
+
+      // check if the category exists in db
       const categoryToUpdate = await dataSource
         .getRepository(Category)
         .findOneBy({ id });
+
       if (categoryToUpdate === null) {
         res.status(404).send("Category not found");
-      } else {
-        // check if body.name already exists in db
+        return;
+      }
+
+      // check if body.name already exists in db
+      if (name) {
         const nameAlreadyExist = await dataSource
           .getRepository(Category)
           // check every tuples except the one updating
           .count({ where: { name, id: Not(id) } });
+
         if (nameAlreadyExist > 0) {
           res.status(409).send("Category name already exist");
-        } else {
-          await dataSource.getRepository(Category).update(id, req.body);
-          res.status(200).send("Updated category");
+          return;
         }
       }
+
+      // rename the new file and delete the old one
+      if (req.file) {
+        // rename
+        const originalname = req.file.originalname;
+        const filename = req.file.filename;
+        const newName = `${uuidv4()}-${originalname}`;
+        fs.rename(
+          `./public/category/${filename}`,
+          `./public/category/${newName}`,
+          (err) => {
+            if (err) throw err;
+          }
+        );
+        req.body.image = `/public/category/${newName}`;
+        // delete
+        if (categoryToUpdate.image !== null) {
+          await unlink("." + categoryToUpdate.image);
+        }
+      }
+
+      await dataSource.getRepository(Category).update(id, req.body);
+      res.status(200).send("Updated category");
     } catch (err) {
+      console.log(err);
       res.status(400).send("Error while updating category");
     }
   },
@@ -107,16 +137,24 @@ export const CategoryController: IController = {
   deleteCategory: async (req: Request, res: Response): Promise<void> => {
     try {
       const { id } = req.params;
+
       // check if category exists in db
       const categoryToDelete = await dataSource
         .getRepository(Category)
         .findOneBy({ id });
       if (categoryToDelete === null) {
         res.status(404).send("Category not found");
-      } else {
-        await dataSource.getRepository(Category).delete(id);
-        res.status(200).send("Deleted category");
+        return;
       }
+
+      await dataSource.getRepository(Category).delete(id);
+
+      // delete image in public directory
+      if (categoryToDelete.image !== null) {
+        await unlink("." + categoryToDelete.image);
+      }
+
+      res.status(200).send("Deleted category");
     } catch (err) {
       res.status(400).send("Error while deleting category");
     }

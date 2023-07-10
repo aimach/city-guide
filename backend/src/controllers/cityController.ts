@@ -4,6 +4,7 @@ import { City } from "../entities/City";
 import { Not } from "typeorm";
 import { IController } from "./user-controller";
 import fs from "fs";
+import { unlink } from "fs/promises";
 import { v4 as uuidv4 } from "uuid";
 
 export const CityController: IController = {
@@ -51,6 +52,27 @@ export const CityController: IController = {
   createCity: async (req: Request, res: Response): Promise<void> => {
     const { name, coordinates } = req.body;
     try {
+      // check if name doesn't already exist in db
+      const nameAlreadyExist = await dataSource
+        .getRepository(City)
+        .count({ where: { name } });
+
+      // check if coords doesn't already exist in db
+      const coordsAlreadyExist = await dataSource.getRepository(City).count({
+        where: {
+          coordinates: {
+            type: "Point",
+            coordinates: [coordinates[0], coordinates[1]],
+          },
+        },
+      });
+
+      // if one or another exists, send 409
+      if (nameAlreadyExist > 0 || coordsAlreadyExist > 0) {
+        res.status(409).send("City already exists");
+        return;
+      }
+
       // rename file image
       if (req.file) {
         const originalname = req.file.originalname;
@@ -66,30 +88,14 @@ export const CityController: IController = {
         req.body.image = `/public/city/${newName}`;
       }
 
-      // check if name doesn't already exist in db
-      const nameAlreadyExist = await dataSource
-        .getRepository(City)
-        .count({ where: { name } });
-      // check if coords doesn't already exist in db
-      const coordsAlreadyExist = await dataSource.getRepository(City).count({
-        where: {
-          coordinates: {
-            type: "Point",
-            coordinates: [coordinates[0], coordinates[1]],
-          },
-        },
-      });
-      // if one or another exists, send 409
-      if (nameAlreadyExist > 0 || coordsAlreadyExist > 0) {
-        res.status(409).send("City already exists");
-      } else {
-        req.body.coordinates = {
-          type: "Point",
-          coordinates: [coordinates[0], coordinates[1]],
-        };
-        await dataSource.getRepository(City).save(req.body);
-        res.status(201).send("Created city");
-      }
+      // format coordinates
+      req.body.coordinates = {
+        type: "Point",
+        coordinates: [coordinates[0], coordinates[1]],
+      };
+
+      await dataSource.getRepository(City).save(req.body);
+      res.status(201).send("Created city");
     } catch (error: any) {
       // check if error is 'Key ("userAdminCityId")=(id) already exists'
       if (error.code === "23505") {
@@ -106,54 +112,76 @@ export const CityController: IController = {
     try {
       const { id } = req.params;
       const { name, coordinates } = req.body;
+
       // check if city exists by id
       const cityToUpdate = await dataSource
         .getRepository(City)
         .findOneBy({ id });
-      // if city doesn't exist, send 404
+
       if (cityToUpdate === null) {
         res.status(404).send("City not found");
-      } else {
-        let nameAlreadyExist = null;
-        let coordsAlreadyExist = null;
-        if (name !== undefined) {
-          // check if body.name doesn't already exist in db
-          nameAlreadyExist = await dataSource
-            .getRepository(City)
-            // check every tuples except the one updating
-            .count({ where: { name, id: Not(id) } });
-        }
-        if (coordinates !== undefined) {
-          // check if body.coords doesn't already exist in db
-          coordsAlreadyExist = await dataSource.getRepository(City).count({
-            where: {
-              coordinates: {
-                type: "Point",
-                coordinates: [coordinates[0], coordinates[1]],
-              },
-              id: Not(id),
-            },
-          });
-        }
-        // if one or another exists, send 409
-        if (
-          nameAlreadyExist !== null &&
-          nameAlreadyExist > 0 &&
-          coordsAlreadyExist !== null &&
-          coordsAlreadyExist > 0
-        ) {
+        return;
+      }
+
+      // check if body.name already exists in db
+      let nameAlreadyExist = null;
+      let coordsAlreadyExist = null;
+      if (name !== undefined) {
+        nameAlreadyExist = await dataSource
+          .getRepository(City)
+          // check every tuples except the one updating
+          .count({ where: { name, id: Not(id) } });
+        if (nameAlreadyExist > 0) {
           res.status(409).send("City already exists");
-        } else {
-          if (coordinates !== undefined) {
-            req.body.coordinates = {
-              type: "Point",
-              coordinates: [coordinates[0], coordinates[1]],
-            };
-          }
-          await dataSource.getRepository(City).update(id, req.body);
-          res.status(200).send("Updated city");
+          return;
         }
       }
+
+      // check if body.coordinates already exists in db
+      if (coordinates !== undefined) {
+        coordsAlreadyExist = await dataSource.getRepository(City).count({
+          where: {
+            coordinates: {
+              type: "Point",
+              coordinates: [coordinates[0], coordinates[1]],
+            },
+            id: Not(id),
+          },
+        });
+        if (coordsAlreadyExist > 0) {
+          res.status(409).send("City already exists");
+          return;
+        }
+        // format coordinates
+        req.body.coordinates = {
+          type: "Point",
+          coordinates: [coordinates[0], coordinates[1]],
+        };
+      }
+
+      // if file, rename the new file and delete the old one
+      if (req.file) {
+        // rename the new file
+        const originalname = req.file.originalname;
+        const filename = req.file.filename;
+        const newName = `${uuidv4()}-${originalname}`;
+        fs.rename(
+          `./public/city/${filename}`,
+          `./public/city/${newName}`,
+          (err) => {
+            if (err) throw err;
+          }
+        );
+        req.body.image = `/public/city/${newName}`;
+
+        // delete the older file
+        if (cityToUpdate.image !== null) {
+          await unlink("." + cityToUpdate.image);
+        }
+      }
+
+      await dataSource.getRepository(City).update(id, req.body);
+      res.status(200).send("Updated city");
     } catch (error: any) {
       // check if error is 'Key ("userAdminCityId")=(id) already exists'
       if (error.code === "23505") {
@@ -175,8 +203,14 @@ export const CityController: IController = {
         .findOneBy({ id });
       if (cityToDelete === null) {
         res.status(404).send("City not found");
-      } else {
-        await dataSource.getRepository(City).delete(id);
+        return;
+      }
+
+      await dataSource.getRepository(City).delete(id);
+      // delete image in public directory
+      if (cityToDelete.image !== null) {
+        await unlink("." + cityToDelete.image);
+
         res.status(200).send("Deleted city");
       }
     } catch (err) {

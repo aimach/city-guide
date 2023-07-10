@@ -5,7 +5,7 @@ import { CategoryController } from "../controllers/categoryController";
 
 export const categoriesRoutes = express.Router();
 
-const upload = multer({ dest: "./public/categories" });
+const upload = multer({ dest: "./public/category" });
 
 categoriesRoutes.get("/", CategoryController.getCategories);
 
@@ -13,11 +13,16 @@ categoriesRoutes.get("/:id", CategoryController.getOneCategory);
 
 categoriesRoutes.post(
   "/",
-  // auth,
+  auth,
   upload.single("image"),
   CategoryController.createCategory
 );
 
-categoriesRoutes.put("/:id", auth, CategoryController.updateCategory);
+categoriesRoutes.put(
+  "/:id",
+  auth,
+  upload.single("image"),
+  CategoryController.updateCategory
+);
 
 categoriesRoutes.delete("/:id", auth, CategoryController.deleteCategory);
