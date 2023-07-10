@@ -17,5 +17,5 @@
     "jsx": "react-jsx",
     "types": ["prop-types"]
   },
-  "include": ["src"]
+  "include": ["src", "./scss.d.ts"]
 }
