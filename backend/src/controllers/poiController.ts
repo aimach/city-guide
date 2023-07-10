@@ -12,16 +12,36 @@ export const PoiController: IController = {
 
   getPoi: async (req: Request, res: Response): Promise<void> => {
     try {
-      const allPoi = await dataSource.getRepository(Poi).find({
+      let searchQueries = {};
+
+      // if query in url, add finding options
+      if (req.query) {
+        const city = req.query.city as string;
+        const category = req.query.category as string;
+        if (city) {
+          searchQueries = { city: { name: city } };
+        } else if (category) {
+          searchQueries = { category: { name: category } };
+        } else if (city && category) {
+          searchQueries = {
+            category: { name: category },
+            city: { name: city },
+          };
+        }
+      }
+
+      // get all poi
+      let allPoi = await dataSource.getRepository(Poi).find({
         relations: {
           category: true,
           city: true,
           user: true,
         },
+        where: searchQueries,
       });
+
       res.status(200).send(allPoi);
     } catch (err) {
-      console.log(err);
       res.status(400).send("Error while reading points of interest");
     }
   },
