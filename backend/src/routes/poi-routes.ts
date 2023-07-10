@@ -1,26 +1,16 @@
-import express from 'express';
-import { auth } from '../middlewares/auth';
+import express from "express";
+import multer from "multer";
+import { PoiController } from "../controllers/poiController";
+import { auth } from "../middlewares/auth";
 export const poiRoutes = express.Router();
+const upload = multer({ dest: "./public/poi" });
 
-poiRoutes.get(
-   '/'
-   // poiController.getPoi
-);
+poiRoutes.get("/", PoiController.getPoi);
 
-poiRoutes.post(
-   '/',
-   auth
-   // poiController.createPoi
-);
+poiRoutes.get("/:id", PoiController.getOnePoi);
 
-poiRoutes.put(
-   '/:id',
-   auth
-   // poiController.updatePoi
-);
+poiRoutes.post("/", auth, upload.single("image"), PoiController.createPoi);
 
-poiRoutes.delete(
-   '/:id',
-   auth
-   // poiController.deletePoi
-);
+poiRoutes.put("/:id", auth, upload.single("image"), PoiController.updatePoi);
+
+poiRoutes.delete("/:id", auth, PoiController.deletePoi);

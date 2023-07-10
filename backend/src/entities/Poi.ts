@@ -2,7 +2,6 @@ import {
   Column,
   ManyToMany,
   PrimaryGeneratedColumn,
-  Point,
   CreateDateColumn,
   UpdateDateColumn,
   ManyToOne,
@@ -17,48 +16,46 @@ export class Poi {
   @PrimaryGeneratedColumn("uuid")
   id: string;
 
-  @Column({ type: "varchar", length: 100, unique: true })
+  @Column({ type: "varchar", length: 100 })
   name: string;
 
-  @Column("point")
-  coordinates: Point;
+  @Column({ type: "geometry" }) // insert/update : enter [x, y]
+  coordinates:
+    | string
+    | {
+        type: string;
+        coordinates: number[];
+      };
 
-  // ajout du type text
   @Column("text")
   description: string;
 
-  // ajout du type text
   @Column("text")
   address: string;
 
-  // ajout du type text
   @Column("text")
   image: string;
 
-  // ajout du type boolean
   @Column("boolean")
   is_accepted: boolean;
 
-  // ajout du type date (comme indiqué dans la doc)
   @CreateDateColumn()
   created_at: Date;
 
-  // ajout du type date (comme indiqué dans la doc)
   @UpdateDateColumn()
   updated_at: Date;
 
-  // changement du nom du champ de category à category_id
-  @ManyToOne(() => Category, (category) => category.poi)
-  category_id: Category;
+  @ManyToOne(() => Category, (category) => category.poi, {
+    onDelete: "SET NULL",
+  })
+  category: Category;
 
-  // changement du nom du champ de city à city_id
-  @ManyToOne(() => City, (city) => city.poi)
-  city_id: City;
+  @ManyToOne(() => City, (city) => city.poi, { onDelete: "SET NULL" })
+  city: City;
 
-  // ajout de la référence du user dans un poi
-  @ManyToOne(() => User, (user) => user.createdPoi)
-  user_id: User;
+  @ManyToOne(() => User, (user) => user.createdPoi, { onDelete: "SET NULL" })
+  user: User;
 
   @ManyToMany(() => User, (user) => user.favouritePoi)
-  users: User[];
+  users_favorite: User[];
 }
