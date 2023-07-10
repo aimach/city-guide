@@ -13,11 +13,20 @@ export const ProfileController: IController = {
 
   getProfile: async (req: Request, res: Response): Promise<void> => {
     try {
-      const allProfiles = await dataSource.getRepository(User).find({
-        relations: {
-          createdPoi: true,
-        },
-      });
+      const allProfiles = await dataSource
+        .getRepository(User)
+        .createQueryBuilder("user")
+        .select([
+          "user.id",
+          "user.username",
+          "user.image",
+          "user.role",
+          "user.city",
+          "user.email",
+        ])
+        .leftJoinAndSelect("user.createdPoi", "createdPoi")
+        .getMany();
+
       res.status(200).send(allProfiles);
     } catch (err) {
       console.log(err);
@@ -33,7 +42,19 @@ export const ProfileController: IController = {
       // check if profile exists in db
       const profileToRead = await dataSource
         .getRepository(User)
-        .findOneBy({ id });
+        .createQueryBuilder("user")
+        .select([
+          "user.id",
+          "user.username",
+          "user.image",
+          "user.role",
+          "user.city",
+          "user.email",
+        ])
+        .leftJoinAndSelect("user.createdPoi", "createdPoi")
+        .where("user.id = :id", { id })
+        .getOne();
+
       if (profileToRead === null) {
         res.status(404).send("User not found");
       } else {
