@@ -43,7 +43,7 @@ export const PoiController: IController = {
 
       res.status(200).send(allPoi);
     } catch (err) {
-      res.status(400).send("Error while reading points of interest");
+      res.status(400).send({ error: "Error while reading points of interest" });
     }
   },
 
@@ -54,27 +54,23 @@ export const PoiController: IController = {
       const { id } = req.params;
       const poiToRead = await dataSource.getRepository(Poi).findOneBy({ id });
       if (poiToRead === null) {
-        res.status(404).send("Point of interest not found");
+        res.status(404).send({ error: "Point of interest not found" });
       } else {
         res.status(200).send(poiToRead);
       }
     } catch (err) {
-      res.status(400).send("Error while reading point of interest");
+      res.status(400).send({ error: "Error while reading point of interest" });
     }
   },
 
   // CREATE POI
 
   createPoi: async (req: Request, res: Response): Promise<void> => {
-    // VALIDATOR {description: string, address: string, is_accepted: boolean, created_ad: timestamp, updated_at: timestamp,
-    // name: string, image: string, categoryId: uuid, cityId: uuid, userId: uuid, coordinates: [x, y] }
-    // les 3 clés étrangères peuvent être null mais sinon uuid
     const {
       description,
       address,
       is_accepted,
       name,
-      image,
       categoryId,
       cityId,
       userId,
@@ -92,10 +88,11 @@ export const PoiController: IController = {
       }
     };
 
-    const inputString: string[] = [description, image, name, address];
+    const inputString: string[] = [description, name, address];
     inputString.forEach((value) => checkIfStringAndNotEmpty(value));
 
     // check name
+
     if (
       !validator.matches(
         name,
@@ -108,20 +105,17 @@ export const PoiController: IController = {
     }
 
     // check address
-    // ^(([\u00c0-\u01ffa-zA-Z\d])+(?:['-\s][\u00c0-\u01ffa-zA-Z]+)*\s)+((\d{5})*\s)([\u00c0-\u01ffa-zA-Z])+(?:['-\s][\u00c0-\u01ffa-zA-Z]+)*\s+$
-    // ^([1-9][0-9]*(?:-[1-9][0-9]*)*)[\s,-]+(?:(bis|ter|qua)[\s,-]+)?([\w]+[\-\w]*)[\s,]+([-\w].+)$
+
     if (
       !validator.matches(
         address,
-        /^([1-9][0-9]*(?:-[1-9][0-9]*)*)[\s,-]+(?:(bis|ter|qua)[\s,-]+)?([\w]+[\-\w]*)[\s,]+([-\w].+)$/
+        /^(([\u00c0-\u01ffa-zA-Z\d])+(?:['-\s][\u00c0-\u01ffa-zA-Z]+)*\s)+((\d{5})*\s)([\u00c0-\u01ffa-zA-Z])+(?:['-\s][\u00c0-\u01ffa-zA-Z]+)*\s*$/
       )
     ) {
       res.status(400).send({
-        error: `Field must contains only characters (min: 2, max: 100)`,
+        error: `Incorrect format of address`,
       });
     }
-
-    // check image
 
     // check if foreign key are uuid type
 
@@ -141,7 +135,7 @@ export const PoiController: IController = {
     // check if is_accepted is boolean
 
     if (typeof is_accepted !== "boolean") {
-      res.status(400).send("is_accepted must be a boolean");
+      res.status(400).send({ error: "is_accepted must be a boolean" });
     }
 
     try {
@@ -155,7 +149,7 @@ export const PoiController: IController = {
         },
       });
       if (coordsAlreadyExist > 0) {
-        res.status(409).send("Point of interest already exists");
+        res.status(409).send({ error: "Point of interest already exists" });
         return;
       }
 
@@ -178,30 +172,102 @@ export const PoiController: IController = {
           }
         );
         req.body.image = `/public/poi/${newName}`;
+      } else {
+        res.status(400).send({ error: "An image is required" });
       }
 
       await dataSource.getRepository(Poi).save(req.body);
       res.status(201).send("Created point of interest");
     } catch (err) {
-      res.status(400).send("Something went wrong");
+      res.status(400).send({ error: "Something went wrong" });
     }
   },
 
   // UPDATE POI BY ID
 
   updatePoi: async (req: Request, res: Response): Promise<void> => {
-    // VALIDATOR {id: uuid, description: string, address: string, is_accepted: boolean, created_ad: timestamp, updated_at: timestamp,
-    // name: string, image: string, categoryId: uuid, cityId: uuid, userId: uuid, coordinates: [x, y] }
-    // les 3 clés étrangères peuvent être null mais sinon uuid
+    const {
+      description,
+      address,
+      is_accepted,
+      name,
+      categoryId,
+      cityId,
+      userId,
+      coordinates,
+    } = req.body;
+    const { id } = req.params;
+
+    // check if input with string are alpha and not empty
+
+    const checkIfStringAndNotEmpty = (value: string): void => {
+      if (
+        validator.isEmpty(value, { ignore_whitespace: true }) ||
+        typeof value !== "string"
+      ) {
+        res.status(400).send({ error: `Field must contains only characters` });
+      }
+    };
+
+    const inputString: string[] = [description, name, address];
+    inputString.forEach((value) => {
+      if (value) checkIfStringAndNotEmpty(value);
+    });
+
+    // check name
+
+    if (
+      name &&
+      !validator.matches(
+        name,
+        /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð '-]{2,100}$/
+      )
+    ) {
+      res.status(400).send({
+        error: `Field must contains only characters (min: 2, max: 100)`,
+      });
+    }
+
+    // check address
+
+    if (
+      address &&
+      !validator.matches(
+        address,
+        /^(([\u00c0-\u01ffa-zA-Z\d])+(?:['-\s][\u00c0-\u01ffa-zA-Z]+)*\s)+((\d{5})*\s)([\u00c0-\u01ffa-zA-Z])+(?:['-\s][\u00c0-\u01ffa-zA-Z]+)*\s*$/
+      )
+    ) {
+      res.status(400).send({
+        error: `Incorrect format of address`,
+      });
+    }
+
+    // check if foreign key are uuid type
+
+    const checkIfUUID = (value: string): void => {
+      if (!validator.isUUID(value)) {
+        res.status(400).send({
+          error: "Incorrect format of foreign key (must be uuid)",
+        });
+      }
+    };
+
+    const foreignKeys: string[] = [categoryId, cityId, userId];
+    foreignKeys.forEach((value) => {
+      if (value) checkIfUUID(value);
+    });
+
+    // check if is_accepted is boolean
+
+    if (is_accepted && typeof is_accepted !== "boolean") {
+      res.status(400).send({ error: "is_accepted must be a boolean" });
+    }
 
     try {
-      const { id } = req.params;
-      const { coordinates } = req.body;
-
       // check if POI exists in db
       const poiToUpdate = await dataSource.getRepository(Poi).findOneBy({ id });
       if (poiToUpdate === null) {
-        res.status(404).send("Point of interest not found");
+        res.status(404).send({ error: "Point of interest not found" });
         return;
       }
 
@@ -217,7 +283,7 @@ export const PoiController: IController = {
           },
         });
         if (coordsAlreadyExist > 0) {
-          res.status(404).send("Point of interest already exist");
+          res.status(404).send({ error: "Point of interest already exist" });
           return;
         }
 
@@ -246,12 +312,14 @@ export const PoiController: IController = {
         if (poiToUpdate.image !== null) {
           await unlink("." + poiToUpdate.image);
         }
+      } else {
+        res.status(400).send({ error: "An image is required" });
       }
 
       await dataSource.getRepository(Poi).update(id, req.body);
       res.status(200).send("Updated point of interest");
     } catch (err) {
-      res.status(400).send("Error while updating point of interest");
+      res.status(400).send({ error: "Error while updating point of interest" });
     }
   },
 
@@ -264,7 +332,7 @@ export const PoiController: IController = {
       // check if POI exists in db
       const poiToDelete = await dataSource.getRepository(Poi).findOneBy({ id });
       if (poiToDelete === null) {
-        res.status(404).send("Point of interest not found");
+        res.status(404).send({ error: "Point of interest not found" });
         return;
       }
 
@@ -277,7 +345,7 @@ export const PoiController: IController = {
 
       res.status(200).send("Deleted point of interest");
     } catch (err) {
-      res.status(400).send("Error while deleting point of interest");
+      res.status(400).send({ error: "Error while deleting point of interest" });
     }
   },
 };

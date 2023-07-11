@@ -20,7 +20,7 @@ categoriesRoutes.post(
 
 categoriesRoutes.put(
   "/:id",
-  auth,
+  // auth,
   upload.single("image"),
   CategoryController.updateCategory
 );

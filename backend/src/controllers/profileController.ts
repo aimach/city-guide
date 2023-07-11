@@ -7,6 +7,7 @@ import { IController } from "./user-controller";
 import fs from "fs";
 import { unlink } from "fs/promises";
 import { v4 as uuidv4 } from "uuid";
+import validator from "validator";
 
 export const ProfileController: IController = {
   // GET ALL PROFILES
@@ -30,7 +31,7 @@ export const ProfileController: IController = {
       res.status(200).send(allProfiles);
     } catch (err) {
       console.log(err);
-      res.status(400).send("Error while reading users");
+      res.status(400).send({ error: "Error while reading users" });
     }
   },
 
@@ -56,26 +57,49 @@ export const ProfileController: IController = {
         .getOne();
 
       if (profileToRead === null) {
-        res.status(404).send("User not found");
+        res.status(404).send({ error: "User not found" });
       } else {
         res.status(200).send(profileToRead);
       }
     } catch (err) {
-      res.status(400).send("Error while reading user");
+      res.status(400).send({ error: "Error while reading user" });
     }
   },
 
   // UPDATE PROFILE BY ID
 
   updateProfile: async (req: Request, res: Response): Promise<void> => {
-    // VALIDATOR { username: string, image: string, role: enum, city: string, email: string, password: string }
-    // city peut être null
-    // pour le role, vérifier si ça matche un des trois rôles
+    const { id, userId } = req.params;
+    const { username, email, city, password, role } = req.body;
+
+    // check if input with string are alpha and not empty
+
+    const checkIfStringAndNotEmpty = (value: string): void => {
+      if (
+        validator.isEmpty(value, { ignore_whitespace: true }) ||
+        typeof value !== "string"
+      ) {
+        res.status(400).send({ error: `Field must contains only characters` });
+      }
+    };
+
+    const inputString: string[] = [username, email, city, password];
+    inputString.forEach((value) => {
+      if (value) checkIfStringAndNotEmpty(value);
+    });
+
+    // check enum in role
+    if (
+      role &&
+      !validator.contains(
+        role,
+        "admin" || "admin_city" || "free_user" || "premium_user"
+      )
+    ) {
+      res.status(400).send({ error: "User role does not exist" });
+    }
 
     try {
-      const { id, userId } = req.params;
-      const { username, email } = req.body;
-
       const currentUser = await dataSource
         .getRepository(User)
         .findOne({ where: { id: userId } });
@@ -105,7 +129,17 @@ export const ProfileController: IController = {
           .getRepository(User)
           .count({ where: { username } });
         if (usernameAlreadyExist > 0) {
-          res.status(409).send("Username already exists");
+          res.status(409).send({ error: "Username already exists" });
+        }
+        if (
+          !validator.matches(
+            username,
+            /^(?=.*[a-zA-Z]{1,})(?=.*[\d]{0,})[a-zA-Z0-9]{3,20}$/
+          )
+        ) {
+          res.status(401).send({
+            error: "Username must contain 3 to 20 characters and no symbol",
+          });
         }
       }
 
@@ -115,7 +149,10 @@ export const ProfileController: IController = {
           .getRepository(User)
           .count({ where: { email } });
         if (emailAlreadyExist > 0) {
-          res.status(409).send("Email already exists");
+          res.status(409).send({ error: "Email already exists" });
+        }
+        if (!validator.isEmail(email)) {
+          res.status(401).send({ error: "Incorrect email format" });
         }
       }
 
@@ -143,15 +180,13 @@ export const ProfileController: IController = {
       await dataSource.getRepository(User).update(id, req.body);
       res.status(200).send("Updated user");
     } catch (err) {
-      res.status(400).send("Error while updating user");
+      res.status(400).send({ error: "Error while updating user" });
     }
   },
 
   // DELETE PROFILE BY ID
 
   deleteProfile: async (req: Request, res: Response): Promise<void> => {
-    // VALIDATOR verifier id isUUID
-
     try {
       const { id, userId } = req.params;
 
@@ -164,7 +199,7 @@ export const ProfileController: IController = {
         .getRepository(User)
         .findOneBy({ id });
       if (profileToDelete === null) {
-        res.status(404).send("User not found");
+        res.status(404).send({ error: "User not found" });
         return;
       }
 
@@ -186,7 +221,7 @@ export const ProfileController: IController = {
 
       res.status(200).send("Deleted user");
     } catch (err) {
-      res.status(400).send("Error while deleting user");
+      res.status(400).send({ error: "Error while deleting user" });
     }
   },
 
@@ -200,7 +235,7 @@ export const ProfileController: IController = {
         .getRepository(User)
         .findOneBy({ id: idUser });
       if (userToUpdate === null) {
-        res.status(404).send("User not found");
+        res.status(404).send({ error: "User not found" });
         return;
       }
 
@@ -209,7 +244,7 @@ export const ProfileController: IController = {
         .getRepository(Poi)
         .findOneBy({ id: idPoi });
       if (poiToAdd === null) {
-        res.status(404).send("Point of interest not found");
+        res.status(404).send({ error: "Point of interest not found" });
         return;
       }
 
@@ -219,7 +254,9 @@ export const ProfileController: IController = {
       res.status(200).send("Favorite poi added to user");
     } catch (err) {
       console.log(err);
-      res.status(400).send("Error while adding point of interest to favorites");
+      res
+        .status(400)
+        .send({ error: "Error while adding point of interest to favorites" });
     }
   },
 
@@ -236,7 +273,7 @@ export const ProfileController: IController = {
         .getRepository(User)
         .findOneBy({ id: idUser });
       if (userToUpdate === null) {
-        res.status(404).send("User not found");
+        res.status(404).send({ error: "User not found" });
         return;
       }
 
@@ -245,7 +282,7 @@ export const ProfileController: IController = {
         .getRepository(Poi)
         .findOneBy({ id: idPoi });
       if (poiToRemove === null) {
-        res.status(404).send("Point of interest not found");
+        res.status(404).send({ error: "Point of interest not found" });
         return;
       }
 
@@ -259,7 +296,7 @@ export const ProfileController: IController = {
       console.log(err);
       res
         .status(400)
-        .send("Error while removing point of interest to favorites");
+        .send({ error: "Error while removing point of interest to favorites" });
     }
   },
 
@@ -273,7 +310,7 @@ export const ProfileController: IController = {
         .getRepository(User)
         .findOneBy({ id: idUser });
       if (userToUpdate === null) {
-        res.status(404).send("User not found");
+        res.status(404).send({ error: "User not found" });
         return;
       }
 
@@ -282,7 +319,7 @@ export const ProfileController: IController = {
         .getRepository(City)
         .findOneBy({ id: idCity });
       if (cityToAdd === null) {
-        res.status(404).send("City not found");
+        res.status(404).send({ error: "City not found" });
         return;
       }
 
@@ -295,7 +332,7 @@ export const ProfileController: IController = {
       res.status(200).send("Favorite city added to user");
     } catch (err) {
       console.log(err);
-      res.status(400).send("Error while adding city to favorites");
+      res.status(400).send({ error: "Error while adding city to favorites" });
     }
   },
 
@@ -312,7 +349,7 @@ export const ProfileController: IController = {
         .getRepository(User)
         .findOneBy({ id: idUser });
       if (userToUpdate === null) {
-        res.status(404).send("User not found");
+        res.status(404).send({ error: "User not found" });
         return;
       }
 
@@ -321,7 +358,7 @@ export const ProfileController: IController = {
         .getRepository(City)
         .findOneBy({ id: idCity });
       if (cityToRemove === null) {
-        res.status(404).send("City not found");
+        res.status(404).send({ error: "City not found" });
         return;
       }
 
@@ -333,7 +370,7 @@ export const ProfileController: IController = {
       res.status(200).send("Favorite city remove to user");
     } catch (err) {
       console.log(err);
-      res.status(400).send("Error while removing city to favorites");
+      res.status(400).send({ error: "Error while removing city to favorites" });
     }
   },
 };

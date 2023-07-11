@@ -22,7 +22,7 @@ export const CityController: IController = {
       res.status(200).send(allCities);
     } catch (err) {
       console.log(err);
-      res.status(400).send("Error while reading cities");
+      res.status(400).send({ error: "Error while reading cities" });
     }
   },
 
@@ -39,12 +39,12 @@ export const CityController: IController = {
         },
       });
       if (cityToRead === null) {
-        res.status(404).send("City not found");
+        res.status(404).send({ error: "City not found" });
       } else {
         res.status(200).send(cityToRead);
       }
     } catch (err) {
-      res.status(400).send("Error while reading city");
+      res.status(400).send({ error: "Error while reading city" });
     }
   },
 
@@ -113,7 +113,7 @@ export const CityController: IController = {
 
       // if one or another exists, send 409
       if (nameAlreadyExist > 0 || coordsAlreadyExist > 0) {
-        res.status(409).send("City already exists");
+        res.status(409).send({ error: "City already exists" });
         return;
       }
 
@@ -143,9 +143,11 @@ export const CityController: IController = {
     } catch (error: any) {
       // check if error is 'Key ("userAdminCityId")=(id) already exists'
       if (error.code === "23505") {
-        res.status(409).send("User is already administrator in another city");
+        res
+          .status(409)
+          .send({ error: "User is already administrator in another city" });
       } else {
-        res.status(400).send("Something went wrong");
+        res.status(400).send({ error: "Something went wrong" });
       }
     }
   },
@@ -206,7 +208,7 @@ export const CityController: IController = {
         .findOneBy({ id });
 
       if (cityToUpdate === null) {
-        res.status(404).send("City not found");
+        res.status(404).send({ error: "City not found" });
         return;
       }
 
@@ -219,7 +221,7 @@ export const CityController: IController = {
           // check every tuples except the one updating
           .count({ where: { name, id: Not(id) } });
         if (nameAlreadyExist > 0) {
-          res.status(409).send("City already exists");
+          res.status(409).send({ error: "City already exists" });
           return;
         }
       }
@@ -236,7 +238,7 @@ export const CityController: IController = {
           },
         });
         if (coordsAlreadyExist > 0) {
-          res.status(409).send("City already exists");
+          res.status(409).send({ error: "City already exists" });
           return;
         }
         // format coordinates
@@ -272,9 +274,11 @@ export const CityController: IController = {
     } catch (error: any) {
       // check if error is 'Key ("userAdminCityId")=(id) already exists'
       if (error.code === "23505") {
-        res.status(409).send("User is already administrator in another city");
+        res
+          .status(409)
+          .send({ error: "User is already administrator in another city" });
       } else {
-        res.status(400).send("Something went wrong");
+        res.status(400).send({ error: "Something went wrong" });
       }
     }
   },
@@ -289,7 +293,7 @@ export const CityController: IController = {
         .getRepository(City)
         .findOneBy({ id });
       if (cityToDelete === null) {
-        res.status(404).send("City not found");
+        res.status(404).send({ error: "City not found" });
         return;
       }
 
@@ -298,10 +302,10 @@ export const CityController: IController = {
       if (cityToDelete.image !== null) {
         await unlink("." + cityToDelete.image);
 
-        res.status(200).send("Deleted city");
+        res.status(200).send({ error: "Deleted city" });
       }
     } catch (err) {
-      res.status(400).send("Error while deleting city");
+      res.status(400).send({ error: "Error while deleting city" });
     }
   },
 };

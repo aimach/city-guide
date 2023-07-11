@@ -17,7 +17,7 @@ export const CategoryController: IController = {
       res.status(200).send(allCategories);
     } catch (err) {
       console.log(err);
-      res.status(400).send("Error while reading categories");
+      res.status(400).send({ error: "Error while reading categories" });
     }
   },
 
@@ -30,12 +30,12 @@ export const CategoryController: IController = {
         .getRepository(Category)
         .findOneBy({ id });
       if (categoryToRead === null) {
-        res.status(404).send("Category not found");
+        res.status(404).send({ error: "Category not found" });
       } else {
         res.status(200).send(categoryToRead);
       }
     } catch (err) {
-      res.status(400).send("Error while reading category");
+      res.status(400).send({ error: "Error while reading category" });
     }
   },
 
@@ -53,12 +53,12 @@ export const CategoryController: IController = {
     };
 
     try {
-      // check if category name already exists in db
       const { name } = req.body;
 
       const inputs: string[] = Object.values(req.body);
       inputs.forEach((value) => checkIfEmptyAndNotAString(value));
 
+      // Check format of category's name
       if (
         !validator.matches(
           name,
@@ -71,11 +71,14 @@ export const CategoryController: IController = {
         return;
       }
 
+      // check if category name already exists in db
       const nameAlreadyExist = await dataSource
         .getRepository(Category)
         .count({ where: { name } });
       if (nameAlreadyExist > 0) {
-        res.status(409).send("Category already exists");
+        res.status(409).send({
+          error: `Category already exists`,
+        });
         return;
       }
 
@@ -97,7 +100,7 @@ export const CategoryController: IController = {
       await dataSource.getRepository(Category).save(req.body);
       res.status(201).send("Created category");
     } catch (error) {
-      res.status(400).send("Something went wrong");
+      res.status(400).send({ error: "Something went wrong" });
     }
   },
 
@@ -140,7 +143,7 @@ export const CategoryController: IController = {
         .findOneBy({ id });
 
       if (categoryToUpdate === null) {
-        res.status(404).send("Category not found");
+        res.status(404).send({ error: "Category not found" });
         return;
       }
 
@@ -152,7 +155,7 @@ export const CategoryController: IController = {
           .count({ where: { name, id: Not(id) } });
 
         if (nameAlreadyExist > 0) {
-          res.status(409).send("Category name already exist");
+          res.status(409).send({ error: "Category name already exist" });
           return;
         }
       }
@@ -175,13 +178,14 @@ export const CategoryController: IController = {
         if (categoryToUpdate.image !== null) {
           await unlink("." + categoryToUpdate.image);
         }
+      } else {
+        res.status(400).send({ error: "An image is required" });
       }
 
       await dataSource.getRepository(Category).update(id, req.body);
       res.status(200).send("Updated category");
     } catch (err) {
-      console.log(err);
-      res.status(400).send("Error while updating category");
+      res.status(400).send({ error: "Error while updating category" });
     }
   },
 
@@ -196,7 +200,7 @@ export const CategoryController: IController = {
         .getRepository(Category)
         .findOneBy({ id });
       if (categoryToDelete === null) {
-        res.status(404).send("Category not found");
+        res.status(404).send({ error: "Category not found" });
         return;
       }
 
@@ -209,7 +213,7 @@ export const CategoryController: IController = {
 
       res.status(200).send("Deleted category");
     } catch (err) {
-      res.status(400).send("Error while deleting category");
+      res.status(400).send({ error: "Error while deleting category" });
     }
   },
 };
