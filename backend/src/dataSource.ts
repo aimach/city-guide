@@ -3,12 +3,7 @@ import { User } from "./entities/User";
 import { Category } from "./entities/Category";
 import { City } from "./entities/City";
 import { Poi } from "./entities/Poi";
-import { DataSource } from 'typeorm';
 // import path from 'path';
-import { User } from './entities/User';
-import { Category } from './entities/Category';
-import { City } from './entities/City';
-import { Poi } from './entities/Poi';
 
 const dataSource = new DataSource({
   type: "postgres",

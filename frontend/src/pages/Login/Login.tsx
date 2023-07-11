@@ -1,6 +1,6 @@
-import './Login.module.scss';
-import { useContext } from 'react';
-import { UserContext } from '../../contexts/UserContext';
+// import { useContext } from 'react';
+// import { UserContext } from '../../contexts/UserContext';
+import '../../style/form.module.scss';
 import { useForm } from "react-hook-form";
 import { useNavigate } from 'react-router-dom';
 
@@ -10,19 +10,28 @@ export interface FormProps {
 }
 
 const Login = () => {
-  const {setIsAuthenticated} = useContext(UserContext);
+  // const {setIsAuthenticated} = useContext(UserContext);
   const {handleSubmit, register} = useForm<FormProps>();
   const navigate = useNavigate();
   const onSubmit = async(userData: FormProps) => {
-    await fetch('http://localhost:5000/api/auth/login', {
-      method: "POST",
-      headers: { 
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(userData) 
+    try {
+          const response = await fetch('http://localhost:5000/api/auth/login', {
+          method: "POST",
+          headers: { 
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(userData) 
     })
-    .then(response => response.json())
-    .then(data =>(localStorage.setItem("jwt_autorization", data.token)));
+      const data = await response.json()
+      if(data.token) {
+        localStorage.setItem("jwt_autorization", data.token)
+        navigate("/")
+        return
+      }
+    }
+    catch(error) {
+      console.log(error)
+    }
   }
 
   if(localStorage.getItem("jwt_autorization") && localStorage.getItem("jwt_autorization") !== undefined) {

@@ -1,9 +1,11 @@
-import React, { useContext } from 'react'
-import { Link, Outlet } from 'react-router-dom'
-import { UserContext } from '../../../contexts/UserContext'
+// import React, { useContext } from 'react'
+import { Link } from 'react-router-dom'
+// import { UserContext } from '../../../contexts/UserContext'
 
 const Header = () => {
-  const {isAuthenticated, logout} = useContext(UserContext)
+  const isAuthenticated = true
+
+  // const {isAuthenticated, logout} = useContext(UserContext)
 
   // console.log('isAuthenticated', isAuthenticated)
 
@@ -27,12 +29,10 @@ const Header = () => {
   return (
     <header>
       <h1>City Guide</h1>
-      {isAuthenticated ? (
-        <button onClick={logout}>Déconnexion</button>
-      ) :(<nav>
+      <nav>
           <Link to="/register">Inscription</Link>
           <Link to="/login">Connexion</Link>
-      </nav>)}
+      </nav>
     </header>
   )
 }

@@ -1,19 +1,27 @@
-import React, { useContext } from 'react'
+// import React, { useContext } from 'react'
 import Header from '../../components/common/header/Header'
-import { UserContext } from '../../contexts/UserContext'
+import { UserContext, UserProvider } from '../../contexts/UserContext'
 import { useNavigate } from 'react-router-dom'
+import InteractiveMap from '../../components/interactiveMap/InteractiveMap';
+import { useContext } from 'react'
 
 const HomePage = () => {
   const navigate = useNavigate();
+  const {isAuthenticated, setIsAuthenticated, logout} = useContext(UserContext);
   // On vérifie si l'utilisateur est connecté.
   if(!localStorage.getItem("jwt_autorization") || localStorage.getItem("jwt_autorization") === undefined) {
-    console.error('erreur de connexion');
-    // navigate('/login');
+      setIsAuthenticated(false);
+      navigate('/login');
+      console.error(isAuthenticated + 'erreur de connexion');
   }
-
+  else setIsAuthenticated(true);
+  
   return (
     <>
-     <Header/>
+    <UserProvider>
+      <Header/>
+      <InteractiveMap />
+    </UserProvider>
     </>
   )
 }

@@ -10,7 +10,7 @@ form {
     border-radius: 20px;
     border: 3px solid #FFE600;
     background: #F3DF24;
-    @include m.flexLayout(center, center);
+    @include m.flexLayout(center, center, column);
     width: 40%;
     gap: 1em;
 

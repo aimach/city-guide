@@ -1,12 +1,11 @@
 import "./App.scss";
-import InteractiveMap from "./components/interactiveMap/InteractiveMap";
-import './App.scss';
 import { createBrowserRouter,createRoutesFromElements, Outlet, Route, RouterProvider } from 'react-router-dom';
 import Register from './pages/Register/Register';
 import Login from './pages/Login/Login';
 import HomePage from './pages/HomePage/HomePage';
 import { UserProvider } from './contexts/UserContext';
- 
+ import * as React from "react";
+
 const Root = () => {
   return (
     <UserProvider>
@@ -28,21 +27,10 @@ function App() {
 
  
   return (
-    <>
-    <div className="App">
-      <header className="App-header">
-        <h1>City Guide</h1>
-      </header>
-      <div>
-        <InteractiveMap />
-      </div>
-    </div>
-    <RouterProvider router={router}/>
-    </>
+    <React.StrictMode>
+      <RouterProvider router={router}/>
+  </React.StrictMode>
   );
-
-
-
 }
 
 export default App;
