@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import dataSource from "../dataSource";
-import { User } from "../entities/User";
+import { User, UserRole } from "../entities/User";
 import { Poi } from "../entities/Poi";
 import { City } from "../entities/City";
 import { IController } from "./user-controller";
@@ -73,15 +73,29 @@ export const ProfileController: IController = {
     // pour le role, vérifier si ça matche un des trois rôles
 
     try {
-      const { id } = req.params;
+      const { id, userId } = req.params;
       const { username, email } = req.body;
+
+      const currentUser = await dataSource
+        .getRepository(User)
+        .findOne({ where: { id: userId } });
 
       // check if profile exists in db
       const profileToUpdate = await dataSource
         .getRepository(User)
         .findOneBy({ id });
       if (profileToUpdate === null) {
-        res.status(404).send("User not found");
+        res.status(404).send({ error: "User not found" });
+        return;
+      }
+
+      if (
+        currentUser?.id !== profileToUpdate.id &&
+        currentUser?.role !== UserRole.ADMIN
+      ) {
+        res
+          .status(403)
+          .send({ error: "You are not authorized to update this profile" });
         return;
       }
 
@@ -139,7 +153,11 @@ export const ProfileController: IController = {
     // VALIDATOR verifier id isUUID
 
     try {
-      const { id } = req.params;
+      const { id, userId } = req.params;
+
+      const currentUser = await dataSource
+        .getRepository(User)
+        .findOne({ where: { id: userId } });
 
       // check if profile exists in db
       const profileToDelete = await dataSource
@@ -150,6 +168,15 @@ export const ProfileController: IController = {
         return;
       }
 
+      if (
+        currentUser?.id !== profileToDelete.id &&
+        currentUser?.role !== UserRole.ADMIN
+      ) {
+        res
+          .status(403)
+          .send({ error: "You are not authorized to delete this profile" });
+        return;
+      }
       await dataSource.getRepository(User).delete(id);
 
       // delete image in public directory

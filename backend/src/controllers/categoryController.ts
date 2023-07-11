@@ -47,17 +47,30 @@ export const CategoryController: IController = {
       if (validator.isEmpty(value, { ignore_whitespace: true })) {
         res.status(422).send({ error: `Please fill the empty field` });
       }
-      if (!validator.isAlpha(value) || typeof value !== "string") {
+      if (typeof value !== "string") {
         res.status(400).send({ error: `Field must contains only characters` });
       }
     };
 
-    const inputs: string[] = Object.values(req.body);
-    inputs.forEach((value) => checkIfEmptyAndNotAString(value));
-
     try {
       // check if category name already exists in db
       const { name } = req.body;
+
+      const inputs: string[] = Object.values(req.body);
+      inputs.forEach((value) => checkIfEmptyAndNotAString(value));
+
+      if (
+        !validator.matches(
+          name,
+          /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð '-]{2,100}$/
+        )
+      ) {
+        res.status(400).send({
+          error: `Field must contains only characters (min: 2, max: 100)`,
+        });
+        return;
+      }
+
       const nameAlreadyExist = await dataSource
         .getRepository(Category)
         .count({ where: { name } });
@@ -92,21 +105,34 @@ export const CategoryController: IController = {
 
   updateCategory: async (req: Request, res: Response): Promise<void> => {
     // validate format
+
     const checkIfEmptyAndNotAString = (value: string): void => {
       if (validator.isEmpty(value, { ignore_whitespace: true })) {
         res.status(422).send({ error: `Please fill the empty field` });
       }
-      if (!validator.isAlpha(value) || typeof value !== "string") {
+      if (typeof value !== "string") {
         res.status(400).send({ error: `Field must contains only characters` });
       }
     };
 
-    const inputs: string[] = Object.values(req.body);
-    inputs.forEach((value) => checkIfEmptyAndNotAString(value));
-
     try {
       const { id } = req.params;
       const { name } = req.body;
+
+      const inputs: string[] = Object.values(req.body);
+      inputs.forEach((value) => checkIfEmptyAndNotAString(value));
+
+      if (
+        !validator.matches(
+          name,
+          /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð '-]{2,100}$/
+        )
+      ) {
+        res.status(400).send({
+          error: `Field must contains only characters (min: 2, max: 100)`,
+        });
+        return;
+      }
 
       // check if the category exists in db
       const categoryToUpdate = await dataSource

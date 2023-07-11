@@ -6,6 +6,7 @@ import { IController } from "./user-controller";
 import fs from "fs";
 import { unlink } from "fs/promises";
 import { v4 as uuidv4 } from "uuid";
+import validator from "validator";
 
 export const CityController: IController = {
   // GET ALL CITIES
@@ -50,11 +51,51 @@ export const CityController: IController = {
   // CREATE CITY
 
   createCity: async (req: Request, res: Response): Promise<void> => {
-    // VALIDATOR { name : string, image : string, coordinates: [x, y], userAdminCityId : uuid }
-    // userAdminCityId peut être null
-
-    const { name, coordinates } = req.body;
     try {
+      const { name, image, coordinates, userAdminCityId } = req.body;
+
+      // check if name is alpha or not empty
+      // isAlpha check if string because only letters
+      if (
+        !validator.matches(
+          name,
+          /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð '-]{2,100}$/
+        ) ||
+        validator.isEmpty(name, { ignore_whitespace: true })
+      ) {
+        res.status(400).send({
+          error: `Field must contains only characters (min: 2, max: 100)`,
+        });
+      }
+
+      // check if image is alpha or not empty
+
+      if (
+        !validator.isAlpha(image) ||
+        (typeof image !== "string" &&
+          validator.isEmpty(image, { ignore_whitespace: true }))
+      ) {
+        res.status(400).send({ error: `Field must contains only characters` });
+      }
+
+      // check if coordinates are type [number, number]
+
+      if (
+        coordinates.length > 2 ||
+        coordinates.find((cd: number) => typeof cd !== "number")
+      ) {
+        res.status(400).send({
+          error: "Incorrect format of coordinates (must be [lat, long])",
+        });
+      }
+
+      // check if userAdminCity is UUID type
+      if (userAdminCityId && !validator.isUUID(userAdminCityId)) {
+        res
+          .status(400)
+          .send({ error: "Incorrect format of admin city id (must be uuid)" });
+      }
+
       // check if name doesn't already exist in db
       const nameAlreadyExist = await dataSource
         .getRepository(City)
@@ -112,14 +153,53 @@ export const CityController: IController = {
   // UPDATE CITY BY ID
 
   updateCity: async (req: Request, res: Response): Promise<void> => {
-    // VALIDATOR { id: uuid, name : string, image : string, coordinates: [x, y], userAdminCityId : uuid }
-    // userAdminCityId peut être null
-    // VALIDATOR s'assurer que id isUUID ?
+    const { id } = req.params;
+
+    const { name, image, coordinates, userAdminCityId } = req.body;
+
+    // check if name is alpha or not empty
+
+    if (
+      name &&
+      (!validator.matches(
+        name,
+        /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð '-]{2,100}$/
+      ) ||
+        validator.isEmpty(name, { ignore_whitespace: true }))
+    ) {
+      res.status(400).send({ error: `Field must contains only characters` });
+    }
+
+    // check if image is alpha or not empty
+
+    if (
+      image &&
+      (!validator.isAlpha(image) || // isAlpha check if string because only letters validator.isEmpty(image)
+        validator.isEmpty(name))
+    ) {
+      res.status(400).send({ error: `Field must contains only characters` });
+    }
+
+    // check if coordinates are type [number, number]
+
+    if (
+      coordinates &&
+      (coordinates.length > 2 ||
+        coordinates.find((cd: number) => typeof cd !== "number"))
+    ) {
+      res.status(400).send({
+        error: "Incorrect format of coordinates (must be [lat, long])",
+      });
+    }
+
+    // check if userAdminCity is UUID type
+    if (userAdminCityId && !validator.isUUID(userAdminCityId)) {
+      res
+        .status(400)
+        .send({ error: "Incorrect format of admin city id (must be uuid)" });
+    }
 
     try {
-      const { id } = req.params;
-      const { name, coordinates } = req.body;
-
       // check if city exists by id
       const cityToUpdate = await dataSource
         .getRepository(City)
@@ -202,8 +282,6 @@ export const CityController: IController = {
   // DELETE CITY
 
   deleteCity: async (req: Request, res: Response): Promise<void> => {
-    // VALIDATOR s'assurer que id isUUID ?
-
     try {
       const { id } = req.params;
       // check if city exists in db
