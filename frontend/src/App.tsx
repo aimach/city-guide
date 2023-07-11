@@ -1,5 +1,5 @@
 import "./App.scss";
-import InteractiveMap from "./Components/interactiveMap/InteractiveMap";
+import InteractiveMap from "./components/interactiveMap/InteractiveMap";
 
 function App() {
   return (
