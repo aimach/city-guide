@@ -3,59 +3,67 @@
 
 //Desktop
 .logoHeader {
-  @include m.textStyle(v.$white_color, v.$poppinsFont, 40px, 700);
+	@include m.textStyle(v.$cream_color, v.$poppinsFont, 40px, 700);
 }
 
 .subtitleCategory {
-  @include m.textStyle(v.$white_color, v.$poppinsFont, 36px, 700);
+	@include m.textStyle(v.$cream_color, v.$poppinsFont, 36px, 700);
 }
 
 .profilName {
-  @include m.textStyle(v.$white_color, v.$poppinsFont, 32px, 700);
+	@include m.textStyle(v.$cream_color, v.$poppinsFont, 32px, 700);
 }
 
 .logoFooter {
-  @include m.textStyle(v.$white_color, v.$poppinsFont, 32px, 600);
+	@include m.textStyle(v.$cream_color, v.$poppinsFont, 32px, 600);
 }
 
 .textCard {
-  @include m.textStyle(v.$white_color, v.$poppinsFont, 24px, 600);
+	@include m.textStyle(v.$cream_color, v.$poppinsFont, 24px, 600);
 }
 
 .textFilter {
-  @include m.textStyle(v.$white_color, v.$poppinsFont, 24px, 400);
+	@include m.textStyle(v.$cream_color, v.$poppinsFont, 24px, 400);
 }
 
 .textButton {
-  @include m.textStyle(v.$white_color, v.$poppinsFont, 20px, 600);
+	@include m.textStyle(v.$cream_color, v.$poppinsFont, 20px, 600);
 }
 
 .textSearch {
-  @include m.textStyle(v.$white_color, v.$poppinsFont, 16px, 500);
+	@include m.textStyle(v.$cream_color, v.$poppinsFont, 16px, 500);
 }
 
 .textItemsFilter {
-  @include m.textStyle(v.$white_color, v.$poppinsFont, 16px, 500);
+	@include m.textStyle(v.$cream_color, v.$poppinsFont, 16px, 500);
 }
 
 .titleResearch {
-  @include m.textStyle(v.$white_color, v.$comicNeueFont, 48px, 700);
+	@include m.textStyle(v.$cream_color, v.$comicNeueFont, 48px, 700);
 }
 
 .presentationText {
-  @include m.textStyle(v.$white_color, v.$comicNeueFont, 32px, 700);
+	@include m.textStyle(v.$cream_color, v.$comicNeueFont, 32px, 700);
 }
 
 .titleCard {
-  @include m.textStyle(v.$white_color, v.$comicNeueFont, 30px, 700);
+	@include m.textStyle(v.$cream_color, v.$comicNeueFont, 30px, 700);
 }
 
 .inputSearchText {
-  @include m.textStyle(v.$white_color, v.$comicNeueFont, 24px, 700);
+	@include m.textStyle(v.$cream_color, v.$comicNeueFont, 24px, 700);
 }
 
 .buttonHomePage {
-  border-radius: 20px;
-  background: #f3df24;
-  @include m.buttonSize(275px, 74px);
+	border-radius: 20px;
+	background: v.$secondary_color;
+	@include m.buttonSize(275px, 74px);
 }
+
+// h1,
+// h2,
+// h3,
+// h4,
+// h5 {
+// 	margin: unset;
+// }
