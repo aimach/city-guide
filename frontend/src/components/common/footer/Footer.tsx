@@ -17,7 +17,16 @@ const Footer = () => {
 				<div className={`${styles.titleLogoFooter}`}>
 					<h3 className="logoFooter">City Guide</h3>
 					<div className={`${styles.imageLayout}`}>
-						<img src="/picto_footer.png" alt="picto_footer" />
+						<img
+							src="/picto_footer.png"
+							alt="picto_footer"
+							className={`${styles.image01}`}
+						/>
+						<img
+							src="/picto_avion.png"
+							alt="picto_avion"
+							className={`${styles.image02}`}
+						/>
 					</div>
 				</div>
 				<div className={`${styles.categoryFooter}`}>
@@ -64,7 +73,7 @@ const Footer = () => {
 				</div>
 			</section>
 			<p className={`${styles.mentionFooter}`}>
-				Loremipsumdolorsitametconsecteturadipisicing
+				Loremipsumdolorsitametconsecteturadip
 			</p>
 		</div>
 	);

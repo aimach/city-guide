@@ -6,8 +6,10 @@
 	padding-bottom: 30px;
 }
 .sectionFooter {
-	display: flex;
-	justify-content: center;
+	// display: flex;
+	// justify-content: center;
+	@include m.flexLayout(center, unset);
+
 	width: 100%;
 	padding-bottom: 100px;
 	.titleLogoFooter {
@@ -17,15 +19,22 @@
 		@include m.flexLayout(center, unset);
 		padding-top: 30px;
 	}
+	.imageLayout > .image02 {
+		display: none;
+	}
 
 	.categoryFooter {
 		padding-top: 6px;
-		display: flex;
-		justify-content: flex-end;
+		// display: flex;
+		// justify-content: flex-end;
+		@include m.flexLayout(flex-end, unset);
+
 		width: 75%;
 		.bibi {
-			display: flex;
-			justify-content: space-between;
+			// display: flex;
+			// justify-content: space-between;
+			@include m.flexLayout(space-between, unset);
+
 			width: 80%;
 		}
 	}
@@ -62,16 +71,17 @@ ul {
 	}
 }
 .subtitleFooter {
-	border-top: 1px solid v.$white_color;
-	border-bottom: 1px solid v.$white_color;
+	border-top: 1px solid v.$cream_color;
+	border-bottom: 1px solid v.$cream_color;
 }
 .mentionFooter {
 	color: v.$white_color;
 	font-size: 10px;
 	text-align: center;
 	font-family: v.$poppinsFont;
-	display: flex;
-	justify-content: center;
+	// display: flex;
+	// justify-content: center;
+	@include m.flexLayout(center, unset);
 	width: 100%;
 }
 
@@ -94,12 +104,30 @@ ul {
 		display: block;
 
 		.titleLogoFooter {
-			display: flex;
+			// display: flex;
+			// align-items: center;
 			flex-direction: column;
-			align-items: center;
+			@include m.flexLayout(unset, center);
+
+			// display: flex;
+			// flex-direction: row-reverse;
+			// align-items: flex-end;
+			// justify-content: space-around;
+			// @include m.flexLayout(space-around, flex-end);
 			.logoFooter {
 				font-size: 32px;
 			}
+		}
+		.imageLayout > .image01 {
+			// display: none;
+			display: block;
+		}
+		.imageLayout > .image02 {
+			// width: 113px;
+			// height: 145px;
+			// color: v.$secondary_color;
+			// display: block;
+			display: none;
 		}
 
 		.categoryFooter {
