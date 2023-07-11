@@ -34,7 +34,6 @@ export const CityController: IController = {
     } catch (err) {
       console.log(err);
       res.status(400).send({ error: "Error while reading cities" });
-      await unlink(`./public/category/${req.file?.filename}`);
     }
   },
 
@@ -52,13 +51,12 @@ export const CityController: IController = {
       });
       if (cityToRead === null) {
         res.status(404).send({ error: "City not found" });
-        await unlink(`./public/category/${req.file?.filename}`);
+        await unlink(`./public/city/${req.file?.filename}`);
       } else {
         res.status(200).send(cityToRead);
       }
     } catch (err) {
       res.status(400).send({ error: "Error while reading city" });
-      await unlink(`./public/category/${req.file?.filename}`);
     }
   },
 
@@ -78,7 +76,7 @@ export const CityController: IController = {
         res.status(403).send({
           error: "You are not authorized to create a city",
         });
-        await unlink(`./public/category/${req.file?.filename}`);
+        await unlink(`./public/city/${req.file?.filename}`);
         return;
       }
 
@@ -94,7 +92,7 @@ export const CityController: IController = {
         res.status(400).send({
           error: `Field must contains only characters (min: 2, max: 100)`,
         });
-        await unlink(`./public/category/${req.file?.filename}`);
+        await unlink(`./public/city/${req.file?.filename}`);
         return;
       }
 
@@ -104,7 +102,7 @@ export const CityController: IController = {
         res.status(400).send({
           error: "Incorrect format of coordinates (must be [lat, long])",
         });
-        await unlink(`./public/category/${req.file?.filename}`);
+        await unlink(`./public/city/${req.file?.filename}`);
         return;
       }
 
@@ -113,7 +111,7 @@ export const CityController: IController = {
         res.status(400).send({
           error: "Incorrect format of admin city id (must be uuid)",
         });
-        await unlink(`./public/category/${req.file?.filename}`);
+        await unlink(`./public/city/${req.file?.filename}`);
         return;
       }
 
@@ -135,7 +133,7 @@ export const CityController: IController = {
       // if one or another exists, send 409
       if (nameAlreadyExist > 0 || coordsAlreadyExist > 0) {
         res.status(409).send({ error: "City already exists" });
-        await unlink(`./public/category/${req.file?.filename}`);
+        await unlink(`./public/city/${req.file?.filename}`);
         return;
       }
 
@@ -171,10 +169,10 @@ export const CityController: IController = {
         res.status(409).send({
           error: "User is already administrator in another city",
         });
-        await unlink(`./public/category/${req.file?.filename}`);
+        await unlink(`./public/city/${req.file?.filename}`);
       } else {
         res.status(400).send({ error: error.message });
-        await unlink(`./public/category/${req.file?.filename}`);
+        await unlink(`./public/city/${req.file?.filename}`);
       }
     }
   },
@@ -198,7 +196,7 @@ export const CityController: IController = {
         res.status(403).send({
           error: "You are not authorized to update a city",
         });
-        await unlink(`./public/category/${req.file?.filename}`);
+        await unlink(`./public/city/${req.file?.filename}`);
         return;
       }
 
@@ -215,7 +213,7 @@ export const CityController: IController = {
         res.status(400).send({
           error: `Field must contains only characters`,
         });
-        await unlink(`./public/category/${req.file?.filename}`);
+        await unlink(`./public/city/${req.file?.filename}`);
         return;
       }
 
@@ -225,7 +223,7 @@ export const CityController: IController = {
         res.status(400).send({
           error: `Field must contains only characters`,
         });
-        await unlink(`./public/category/${req.file?.filename}`);
+        await unlink(`./public/city/${req.file?.filename}`);
         return;
       }
 
@@ -239,7 +237,7 @@ export const CityController: IController = {
         res.status(400).send({
           error: "Incorrect format of coordinates (must be [lat, long])",
         });
-        await unlink(`./public/category/${req.file?.filename}`);
+        await unlink(`./public/city/${req.file?.filename}`);
         return;
       }
 
@@ -249,7 +247,7 @@ export const CityController: IController = {
         res.status(400).send({
           error: "Incorrect format of admin city id (must be uuid)",
         });
-        await unlink(`./public/category/${req.file?.filename}`);
+        await unlink(`./public/city/${req.file?.filename}`);
         return;
       }
 
@@ -260,7 +258,7 @@ export const CityController: IController = {
 
       if (cityToUpdate === null) {
         res.status(404).send({ error: "City not found" });
-        await unlink(`./public/category/${req.file?.filename}`);
+        await unlink(`./public/city/${req.file?.filename}`);
         return;
       }
 
@@ -275,7 +273,7 @@ export const CityController: IController = {
           .count({ where: { name, id: Not(id) } });
         if (nameAlreadyExist > 0) {
           res.status(409).send({ error: "City already exists" });
-          await unlink(`./public/category/${req.file?.filename}`);
+          await unlink(`./public/city/${req.file?.filename}`);
           return;
         }
       }
@@ -293,7 +291,7 @@ export const CityController: IController = {
         });
         if (coordsAlreadyExist > 0) {
           res.status(409).send({ error: "City already exists" });
-          await unlink(`./public/category/${req.file?.filename}`);
+          await unlink(`./public/city/${req.file?.filename}`);
           return;
         }
         // format coordinates
@@ -332,10 +330,10 @@ export const CityController: IController = {
         res.status(409).send({
           error: "User is already administrator in another city",
         });
-        await unlink(`./public/category/${req.file?.filename}`);
+        await unlink(`./public/city/${req.file?.filename}`);
       } else {
         res.status(400).send({ error: error.message });
-        await unlink(`./public/category/${req.file?.filename}`);
+        await unlink(`./public/city/${req.file?.filename}`);
       }
     }
   },
@@ -355,7 +353,6 @@ export const CityController: IController = {
         res.status(403).send({
           error: "You are not authorized to delete a city",
         });
-        await unlink(`./public/category/${req.file?.filename}`);
 
         return;
       }
@@ -365,7 +362,6 @@ export const CityController: IController = {
         .findOneBy({ id });
       if (cityToDelete === null) {
         res.status(404).send({ error: "City not found" });
-        await unlink(`./public/category/${req.file?.filename}`);
         return;
       }
 
@@ -378,7 +374,6 @@ export const CityController: IController = {
       }
     } catch (err) {
       res.status(400).send({ error: "Error while deleting city" });
-      await unlink(`./public/category/${req.file?.filename}`);
     }
   },
 };
