@@ -5,7 +5,7 @@ import { UserContext } from '../../../contexts/UserContext'
 const Header = () => {
   const {isAuthenticated, logout} = useContext(UserContext)
 
-  console.log('isAuthenticated', isAuthenticated)
+  // console.log('isAuthenticated', isAuthenticated)
 
   // Dans le cours
   // =================

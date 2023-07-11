@@ -92,7 +92,7 @@ export const AuthController: IController = {
          );
          // send token to cookie
          res.cookie('token', token, { httpOnly: true });
-         return res.status(201).send(token);
+         return res.status(201).send({token});
       } catch (error) {
          console.log(error);
       }
@@ -127,8 +127,8 @@ export const AuthController: IController = {
                   expiresIn: '1h',
                }
             );
-            res.cookie('token', token, { httpOnly: true });
-            return res.status(200).send(token);
+            res.cookie('token', token);
+            return res.status(200).send({token});
          }
       } catch (error) {
          console.log(error);

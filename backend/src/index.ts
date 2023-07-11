@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import dataSource from "./dataSource";
 import cookieParser from "cookie-parser";
+import dotenv from "dotenv";
 import {
 	authRoutes,
 	poiRoutes,
@@ -9,6 +10,8 @@ import {
 	citiesRoutes,
 	categoriesRoutes,
 } from "./routes";
+
+dotenv.config();
 
 const app = express();
 app.use(express.json());
