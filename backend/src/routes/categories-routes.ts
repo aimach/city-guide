@@ -1,27 +1,28 @@
-import express from 'express';
-import { auth } from '../middlewares/auth';
+import express from "express";
+import multer from "multer";
+import { auth } from "../middlewares/auth";
+import { CategoryController } from "../controllers/categoryController";
+
 export const categoriesRoutes = express.Router();
 
-categoriesRoutes.get(
-   '/',
-   auth
-   // categoriesController.getCategories
-);
+const upload = multer({ dest: "./public/category" });
+
+categoriesRoutes.get("/", CategoryController.getCategories);
+
+categoriesRoutes.get("/:id", CategoryController.getOneCategory);
 
 categoriesRoutes.post(
-   '/',
-   auth
-   // categoriesController.createCategory
+  "/",
+  auth,
+  upload.single("image"),
+  CategoryController.createCategory
 );
 
 categoriesRoutes.put(
-   '/:id',
-   auth
-   // categoriesController.updateCategory
+  "/:id",
+  auth,
+  upload.single("image"),
+  CategoryController.updateCategory
 );
 
-categoriesRoutes.delete(
-   '/:id',
-   auth
-   // categoriesController.deleteCategory
-);
+categoriesRoutes.delete("/:id", auth, CategoryController.deleteCategory);

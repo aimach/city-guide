@@ -1,0 +1,41 @@
+
+GET http://localhost:5000/api/profile
+
+###
+
+GET http://localhost:5000/api/profile/63109642-463e-4dbb-b67c-c0de6b09d063
+
+###
+
+POST http://localhost:5000/api/profile/fav/poi/645de8ee-22ca-4462-b3b9-1f38069fbe9e/0ca1a997-b4d9-40c7-be61-8250bea4dc04
+
+###
+
+POST http://localhost:5000/api/profile/fav/city/645de8ee-22ca-4462-b3b9-1f38069fbe9e/4817ab55-3d30-4cfe-a386-adf647969f1b
+
+###
+
+PUT http://localhost:5000/api/profile/63109642-463e-4dbb-b67c-c0de6b09d063
+Content-Type: application/json
+
+{
+  "username": "aimach", 
+  "image": null, 
+  "role": "free_user", 
+  "city": "Toulouse", 
+  "email": "aimach@mail.fr",
+  "password": "password"
+}
+
+###
+
+DELETE http://localhost:5000/api/profile/63109642-463e-4dbb-b67c-c0de6b09d063	
+
+###
+
+DELETE http://localhost:5000/api/profile/fav/poi/645de8ee-22ca-4462-b3b9-1f38069fbe9e/0ca1a997-b4d9-40c7-be61-8250bea4dc04
+
+###
+
+DELETE http://localhost:5000/api/profile/fav/city/645de8ee-22ca-4462-b3b9-1f38069fbe9e/4817ab55-3d30-4cfe-a386-adf647969f1b
+

@@ -1,0 +1,35 @@
+GET http://localhost:5000/api/poi
+
+###
+
+GET http://localhost:5000/api/poi/0ca1a997-b4d9-40c7-be61-8250bea4dc04
+
+###
+
+POST http://localhost:5000/api/poi
+Content-Type: application/json
+
+{
+  "name": "Point d'intérêt incroyable",
+  "coordinates": [45, 43],
+  "description": "Lorem ipsum",
+  "address": "Lorem ipsum",
+  "image": "Lorem ipsum",
+  "is_accepted": true,
+  "category": null, 
+  "city": null, 
+  "user": null
+}
+
+###
+
+PUT http://localhost:5000/api/poi/d9329826-fd97-43c6-95e9-eb5a09237a33
+Content-Type: application/json
+
+{
+    "coordinates": [34, 45]
+}
+
+###
+
+DELETE http://localhost:5000/api/poi/2e91db0d-9fb1-44ae-a26c-8c1f0decc182
