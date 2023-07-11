@@ -2,6 +2,8 @@
 
 #lancer le projet
 docker compose up
+#Après l'installation de package
+docker compose up --build
 
 #bug
 

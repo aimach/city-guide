@@ -1,5 +1,6 @@
 import "./App.scss";
 import Footer from "./components/common/footer/Footer";
+import InteractiveMap from "./components/interactiveMap/InteractiveMap";
 
 function App() {
 	return (
@@ -7,7 +8,9 @@ function App() {
 			<header className="App-header">
 				<h1>City Guide</h1>
 			</header>
-			<div></div>
+			<div>
+				<InteractiveMap />
+			</div>
 			<Footer />
 		</div>
 	);
