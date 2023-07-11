@@ -46,9 +46,11 @@ export const CategoryController: IController = {
     const checkIfEmptyAndNotAString = (value: string): void => {
       if (validator.isEmpty(value, { ignore_whitespace: true })) {
         res.status(422).send({ error: `Please fill the empty field` });
+        return;
       }
       if (typeof value !== "string") {
         res.status(400).send({ error: `Field must contains only characters` });
+        return;
       }
     };
 
@@ -95,6 +97,9 @@ export const CategoryController: IController = {
           }
         );
         req.body.image = `/public/category/${newName}`;
+      } else {
+        res.status(400).send({ error: "An image is required" });
+        return;
       }
 
       await dataSource.getRepository(Category).save(req.body);
@@ -120,12 +125,17 @@ export const CategoryController: IController = {
 
     try {
       const { id } = req.params;
-      const { name } = req.body;
+      const { name, image } = req.body;
+
+      // check if values are string and not empty
 
       const inputs: string[] = Object.values(req.body);
       inputs.forEach((value) => checkIfEmptyAndNotAString(value));
 
+      // check if name contains only characters
+
       if (
+        name &&
         !validator.matches(
           name,
           /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð '-]{2,100}$/
@@ -133,6 +143,14 @@ export const CategoryController: IController = {
       ) {
         res.status(400).send({
           error: `Field must contains only characters (min: 2, max: 100)`,
+        });
+        return;
+      }
+
+      // check if image is an object
+      if (image && typeof image !== "object") {
+        res.status(400).send({
+          error: `Field image must contains a file`,
         });
         return;
       }
@@ -175,11 +193,9 @@ export const CategoryController: IController = {
         );
         req.body.image = `/public/category/${newName}`;
         // delete
-        if (categoryToUpdate.image !== null) {
+        if (categoryToUpdate.image) {
           await unlink("." + categoryToUpdate.image);
         }
-      } else {
-        res.status(400).send({ error: "An image is required" });
       }
 
       await dataSource.getRepository(Category).update(id, req.body);

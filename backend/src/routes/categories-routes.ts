@@ -13,16 +13,20 @@ categoriesRoutes.get("/:id", CategoryController.getOneCategory);
 
 categoriesRoutes.post(
   "/",
-  auth,
+  // auth,
   upload.single("image"),
   CategoryController.createCategory
 );
 
 categoriesRoutes.put(
   "/:id",
-  auth,
+  // auth,
   upload.single("image"),
   CategoryController.updateCategory
 );
 
-categoriesRoutes.delete("/:id", auth, CategoryController.deleteCategory);
+categoriesRoutes.delete(
+  "/:id",
+  // auth,
+  CategoryController.deleteCategory
+);

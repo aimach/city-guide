@@ -12,7 +12,12 @@ citiesRoutes.get("/", CityController.getCities);
 
 citiesRoutes.get("/:id", CityController.getOneCity);
 
-citiesRoutes.post("/", auth, upload.single("image"), CityController.createCity);
+citiesRoutes.post(
+  "/",
+  // auth,
+  upload.single("image"),
+  CityController.createCity
+);
 
 citiesRoutes.put(
   "/:id",
