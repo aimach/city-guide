@@ -23,6 +23,7 @@ export const CityController: IController = {
     } catch (err) {
       console.log(err);
       res.status(400).send({ error: "Error while reading cities" });
+      await unlink(`./public/category/${req.file?.filename}`);
     }
   },
 
@@ -40,11 +41,13 @@ export const CityController: IController = {
       });
       if (cityToRead === null) {
         res.status(404).send({ error: "City not found" });
+        await unlink(`./public/category/${req.file?.filename}`);
       } else {
         res.status(200).send(cityToRead);
       }
     } catch (err) {
       res.status(400).send({ error: "Error while reading city" });
+      await unlink(`./public/category/${req.file?.filename}`);
     }
   },
 
@@ -55,17 +58,16 @@ export const CityController: IController = {
       const { name, image, coordinates, userAdminCityId } = req.body;
 
       // check if name is alpha or not empty
-      // isAlpha check if string because only letters
       if (
         !validator.matches(
           name,
           /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð '-]{2,100}$/
-        ) ||
-        validator.isEmpty(name, { ignore_whitespace: true })
+        )
       ) {
         res.status(400).send({
           error: `Field must contains only characters (min: 2, max: 100)`,
         });
+        await unlink(`./public/category/${req.file?.filename}`);
       }
 
       // check if image is alpha or not empty
@@ -76,6 +78,7 @@ export const CityController: IController = {
           validator.isEmpty(image, { ignore_whitespace: true }))
       ) {
         res.status(400).send({ error: `Field must contains only characters` });
+        await unlink(`./public/category/${req.file?.filename}`);
       }
 
       // check if coordinates are type [number, number]
@@ -87,6 +90,7 @@ export const CityController: IController = {
         res.status(400).send({
           error: "Incorrect format of coordinates (must be [lat, long])",
         });
+        await unlink(`./public/category/${req.file?.filename}`);
       }
 
       // check if userAdminCity is UUID type
@@ -94,6 +98,7 @@ export const CityController: IController = {
         res
           .status(400)
           .send({ error: "Incorrect format of admin city id (must be uuid)" });
+        await unlink(`./public/category/${req.file?.filename}`);
       }
 
       // check if name doesn't already exist in db
@@ -114,6 +119,7 @@ export const CityController: IController = {
       // if one or another exists, send 409
       if (nameAlreadyExist > 0 || coordsAlreadyExist > 0) {
         res.status(409).send({ error: "City already exists" });
+        await unlink(`./public/category/${req.file?.filename}`);
         return;
       }
 
@@ -146,8 +152,10 @@ export const CityController: IController = {
         res
           .status(409)
           .send({ error: "User is already administrator in another city" });
+        await unlink(`./public/category/${req.file?.filename}`);
       } else {
         res.status(400).send({ error: "Something went wrong" });
+        await unlink(`./public/category/${req.file?.filename}`);
       }
     }
   },
@@ -170,6 +178,7 @@ export const CityController: IController = {
         validator.isEmpty(name, { ignore_whitespace: true }))
     ) {
       res.status(400).send({ error: `Field must contains only characters` });
+      await unlink(`./public/category/${req.file?.filename}`);
     }
 
     // check if image is alpha or not empty
@@ -180,6 +189,7 @@ export const CityController: IController = {
         validator.isEmpty(name))
     ) {
       res.status(400).send({ error: `Field must contains only characters` });
+      await unlink(`./public/category/${req.file?.filename}`);
     }
 
     // check if coordinates are type [number, number]
@@ -192,6 +202,7 @@ export const CityController: IController = {
       res.status(400).send({
         error: "Incorrect format of coordinates (must be [lat, long])",
       });
+      await unlink(`./public/category/${req.file?.filename}`);
     }
 
     // check if userAdminCity is UUID type
@@ -199,6 +210,7 @@ export const CityController: IController = {
       res
         .status(400)
         .send({ error: "Incorrect format of admin city id (must be uuid)" });
+      await unlink(`./public/category/${req.file?.filename}`);
     }
 
     try {
@@ -222,6 +234,8 @@ export const CityController: IController = {
           .count({ where: { name, id: Not(id) } });
         if (nameAlreadyExist > 0) {
           res.status(409).send({ error: "City already exists" });
+          await unlink(`./public/category/${req.file?.filename}`);
+
           return;
         }
       }
@@ -239,6 +253,8 @@ export const CityController: IController = {
         });
         if (coordsAlreadyExist > 0) {
           res.status(409).send({ error: "City already exists" });
+          await unlink(`./public/category/${req.file?.filename}`);
+
           return;
         }
         // format coordinates
@@ -277,8 +293,10 @@ export const CityController: IController = {
         res
           .status(409)
           .send({ error: "User is already administrator in another city" });
+        await unlink(`./public/category/${req.file?.filename}`);
       } else {
         res.status(400).send({ error: "Something went wrong" });
+        await unlink(`./public/category/${req.file?.filename}`);
       }
     }
   },
@@ -294,6 +312,8 @@ export const CityController: IController = {
         .findOneBy({ id });
       if (cityToDelete === null) {
         res.status(404).send({ error: "City not found" });
+        await unlink(`./public/category/${req.file?.filename}`);
+
         return;
       }
 
@@ -306,6 +326,7 @@ export const CityController: IController = {
       }
     } catch (err) {
       res.status(400).send({ error: "Error while deleting city" });
+      await unlink(`./public/category/${req.file?.filename}`);
     }
   },
 };

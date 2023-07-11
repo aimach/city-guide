@@ -10,15 +10,11 @@ POST http://localhost:5000/api/poi
 Content-Type: application/json
 
 {
-  "name": "Point d'intérêt incroyable",
-  "coordinates": [45, 43],
-  "description": "Lorem ipsum",
-  "address": "Lorem ipsum",
-  "image": "Lorem ipsum",
-  "is_accepted": true,
-  "category": null, 
-  "city": null, 
-  "user": null
+  "description":"un autre incroyable point d'intérêt au coeur de Toulouse !",
+"address":"76 allées Jean Jaurès 31000 Toulouse",
+"is_accepted":true,
+"name":"un point d'intérêt",
+"coordinates":[45.34, 46]
 }
 
 ###

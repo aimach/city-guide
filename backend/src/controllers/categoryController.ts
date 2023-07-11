@@ -7,6 +7,7 @@ import fs from "fs";
 import { unlink } from "fs/promises";
 import { v4 as uuidv4 } from "uuid";
 import validator from "validator";
+import { User, UserRole } from "../entities/User";
 
 export const CategoryController: IController = {
   // GET ALL CATEGORIES
@@ -42,20 +43,37 @@ export const CategoryController: IController = {
   // CREATE CATEGORY
 
   createCategory: async (req: Request, res: Response): Promise<void> => {
+    // check if user is admin
+    const { userId } = req.params;
+
+    const currentUser = await dataSource
+      .getRepository(User)
+      .findOne({ where: { id: userId } });
+
+    if (currentUser?.role !== UserRole.ADMIN) {
+      res.status(403).send({
+        error: "You are not authorized to create a category",
+      });
+      await unlink(`./public/category/${req.file?.filename}`);
+    }
+
     // validate format
-    const checkIfEmptyAndNotAString = (value: string): void => {
+    const checkIfEmptyAndNotAString = async (value: string): Promise<void> => {
       if (validator.isEmpty(value, { ignore_whitespace: true })) {
         res.status(422).send({ error: `Please fill the empty field` });
+        await unlink(`./public/category/${req.file?.filename}`);
         return;
       }
       if (typeof value !== "string") {
         res.status(400).send({ error: `Field must contains only characters` });
+        await unlink(`./public/category/${req.file?.filename}`);
+
         return;
       }
     };
 
     try {
-      const { name } = req.body;
+      const { name, image } = req.body;
 
       const inputs: string[] = Object.values(req.body);
       inputs.forEach((value) => checkIfEmptyAndNotAString(value));
@@ -70,6 +88,16 @@ export const CategoryController: IController = {
         res.status(400).send({
           error: `Field must contains only characters (min: 2, max: 100)`,
         });
+        await unlink(`./public/category/${req.file?.filename}`);
+        return;
+      }
+
+      // check if image is an object
+      if (image && typeof image !== "object") {
+        res.status(400).send({
+          error: `Field image must contains a file`,
+        });
+        await unlink(`./public/category/${req.file?.filename}`);
         return;
       }
 
@@ -81,6 +109,7 @@ export const CategoryController: IController = {
         res.status(409).send({
           error: `Category already exists`,
         });
+        await unlink(`./public/category/${req.file?.filename}`);
         return;
       }
 
@@ -106,12 +135,26 @@ export const CategoryController: IController = {
       res.status(201).send("Created category");
     } catch (error) {
       res.status(400).send({ error: "Something went wrong" });
+      await unlink(`./public/category/${req.file?.filename}`);
     }
   },
 
   // UPDATE CATEGORY BY ID
 
   updateCategory: async (req: Request, res: Response): Promise<void> => {
+    // check if user is admin
+    const { userId } = req.params;
+
+    const currentUser = await dataSource
+      .getRepository(User)
+      .findOne({ where: { id: userId } });
+
+    if (currentUser?.role !== UserRole.ADMIN) {
+      res.status(403).send({
+        error: "You are not authorized to create a category",
+      });
+    }
+
     // validate format
 
     const checkIfEmptyAndNotAString = (value: string): void => {
@@ -208,6 +251,19 @@ export const CategoryController: IController = {
   // DELETE CATEGORY BY ID
 
   deleteCategory: async (req: Request, res: Response): Promise<void> => {
+    // check if user is admin
+    const { userId } = req.params;
+
+    const currentUser = await dataSource
+      .getRepository(User)
+      .findOne({ where: { id: userId } });
+
+    if (currentUser?.role !== UserRole.ADMIN) {
+      res.status(403).send({
+        error: "You are not authorized to create a category",
+      });
+    }
+
     try {
       const { id } = req.params;
 
