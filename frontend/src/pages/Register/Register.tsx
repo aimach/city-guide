@@ -25,7 +25,6 @@ const Register = () => {
     .then(response => response.json())
     // .then(data =>(localStorage.setItem("jwt_autorization", JSON.parse(data.token))));
     .then(data => console.log(data))
-     .catch(error => console.error(error));
     // if(localStorage.getItem("jwt_autorization") && localStorage.getItem("jwt_autorization") !== undefined) {
     //   navigate('/')
     // }

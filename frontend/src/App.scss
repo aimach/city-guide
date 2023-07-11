@@ -1,11 +1,19 @@
-@import 'style/variable';
-@import 'style/mixin';
-@import 'style/placeholder';
+@use "style/variable" as v;
+@use "style/mixin";
+@use "style/placeholder";
+@use "style/desktop";
+@use "style/mobile";
 
 html {
-    background-color: $primary_color;
+  background-color: v.$primary_color;
 }
 
+h1 {
+  font-family: "Poppins", sans-serif;
+  font-size: 40px;
+  font-weight: 700;
+  color: v.$white_color;
+}
 body {
     margin: 0;
 }

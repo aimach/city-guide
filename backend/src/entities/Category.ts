@@ -9,10 +9,9 @@ export class Category {
   @Column({ type: "varchar", length: 100, unique: true })
   name: string;
 
-  // ajout du type text
   @Column("text")
   image: string;
 
-  @OneToMany(() => Poi, (poi) => poi.category_id)
+  @OneToMany(() => Poi, (poi) => poi.category)
   poi: Poi[];
 }

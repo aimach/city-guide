@@ -1,3 +1,5 @@
+import "./App.scss";
+import InteractiveMap from "./components/interactiveMap/InteractiveMap";
 import './App.scss';
 import { createBrowserRouter,createRoutesFromElements, Outlet, Route, RouterProvider } from 'react-router-dom';
 import Register from './pages/Register/Register';
@@ -26,6 +28,14 @@ function App() {
 
  
   return (
+    <div className="App">
+      <header className="App-header">
+        <h1>City Guide</h1>
+      </header>
+      <div>
+        <InteractiveMap />
+      </div>
+    </div>
     <RouterProvider router={router}/>
   );
 

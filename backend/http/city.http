@@ -1,0 +1,32 @@
+GET http://localhost:5000/api/cities
+
+###
+
+GET http://localhost:5000/api/cities/dd8d9557-d8a8-47d2-b91e-bf0c779557f0	
+
+###
+
+POST http://localhost:5000/api/cities
+Content-Type: application/json
+
+{
+  "coordinates": [34, 36],
+  "name": "Marseille",
+  "image": ""
+}
+
+###
+
+
+PUT http://localhost:5000/api/cities/456eaf76-9be5-4b39-ae62-7801e3d0a2fb
+Content-Type: application/json
+
+{
+  "coordinates": [34, 35],
+  "image": "sdqfsqdfsqdfqsdf",
+  "user_admin_city": null
+}
+
+###
+
+DELETE http://localhost:5000/api/cities/23f3604f-98fc-4dca-a958-79edf7124f82
