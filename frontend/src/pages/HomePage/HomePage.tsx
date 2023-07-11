@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import Header from '../../Components/common/header/Header'
+import Header from '../../components/common/header/Header'
 import { UserContext } from '../../contexts/UserContext'
 import { useNavigate } from 'react-router-dom'
 

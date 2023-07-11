@@ -37,17 +37,17 @@ h1, h3 {
 
 // COLORS
 h2, h3 {
-    color: $primary_color;
+    color: v.$primary_color;
 }
 
 h1 {
     font-size: 40px;
-    color: $white_color; 
+    color: v.$white_color; 
 }
 
 h2 {
     font-size: 36px;
-    color: $white_color;
+    color: v.$white_color;
     text-align: center;
 }
 

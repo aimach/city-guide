@@ -1,4 +1,4 @@
-import './login.scss';
+import './Login.module.scss';
 import { useContext } from 'react';
 import { UserContext } from '../../contexts/UserContext';
 import { useForm } from "react-hook-form";

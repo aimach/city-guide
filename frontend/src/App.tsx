@@ -28,6 +28,7 @@ function App() {
 
  
   return (
+    <>
     <div className="App">
       <header className="App-header">
         <h1>City Guide</h1>
@@ -37,6 +38,7 @@ function App() {
       </div>
     </div>
     <RouterProvider router={router}/>
+    </>
   );
 
 
