@@ -1,6 +1,8 @@
 import { useForm } from "react-hook-form"
 import '../../style/form.module.scss'
 import { useNavigate } from "react-router-dom"
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCoffee } from '@fortawesome/free-solid-svg-icons'
 
 export interface FormProps {
   email: string
@@ -43,16 +45,23 @@ const Register = () => {
     <section>
     <form onSubmit={handleSubmit(onSubmit)}>
       <h3>Inscription</h3>
-      <input type="text" placeholder='Adresse mail' 
-      {...register("email", {
-        required: "Vous devez renseigner ce champ"
-      })}
-      />
-      <input type="text" placeholder="Nom d'utilisateur" 
-      {...register("username", {
-        required: "Vous devez renseigner ce champ"
-      })}
-      />
+      <div>
+         <input type="text" placeholder='Adresse mail' 
+         {...register("email", {
+           required: "Vous devez renseigner ce champ"
+         })}
+         />
+         <div className="containerIcon">
+           <FontAwesomeIcon icon={faCoffee} />
+         </div>
+      </div>
+      <div>
+         <input type="text" placeholder="Nom d'utilisateur" 
+         {...register("username", {
+           required: "Vous devez renseigner ce champ"
+         })}
+         />
+      </div>
 
           <input type="password" placeholder='Mot de passe'
           {...register("password", {

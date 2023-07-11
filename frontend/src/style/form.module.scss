@@ -1,9 +1,12 @@
 @use './mixin' as m;
+@use './placeholder';
 
 section {
     height: 100vh;
     @include m.flexLayout(center, center);
 }
+
+
 
 // FORM 
 form {
@@ -13,17 +16,27 @@ form {
     @include m.flexLayout(center, center, column);
     width: 40%;
     gap: 1em;
+    
 
-    .containerInput {
-        position: relative;
-        width: 70%;
-        display: flex;
-        @include m.flexLayout(center, center);
-    }
+    div {
+            position: relative;
+            width: 70%;
+            display: flex;
+            @include m.flexLayout(center, center);
 
+            div {
+                    position: absolute;
+                    @include m.flexLayout(center, center);
+                    left: -30px;
+                    height: 100%;
+                    z-index: 2;
+            }
+        }
+
+   
     .containerIcon {
         position: absolute;
-        @include m.flexLayout(center, center, );
+        @include m.flexLayout(center, center);
         left: -30px;
         height: 100%;
         z-index: 2;
@@ -32,12 +45,9 @@ form {
     input[type=text],
     input[type=email],
     input[type=password] {
-        border-radius: 10px;
-        background: var(--cream, #F5F6E2);
-        padding: 1em 3em;
-        width: 100%;
-        position: relative;
-        border: none;
+       @extend %inputForm;
+       @include m.buttonSize(100%, auto);
+       padding: 1em;
     }
 
     input::placeholder {
