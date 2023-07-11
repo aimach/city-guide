@@ -1,0 +1,18 @@
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.menu {
+  display: flex;
+  width: 50vw;
+  justify-content: space-between;
+  ul {
+    display: flex;
+    gap: 2rem;
+    li {
+      list-style-type: none;
+    }
+  }
+}

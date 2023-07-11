@@ -1,12 +1,11 @@
 import "./App.scss";
+import Header from "./components/common/header/Header";
 import InteractiveMap from "./components/interactiveMap/InteractiveMap";
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <h1>City Guide</h1>
-      </header>
+      <Header />
       <div>
         <InteractiveMap />
       </div>
