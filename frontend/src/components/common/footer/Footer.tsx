@@ -21,48 +21,50 @@ const Footer = () => {
 					</div>
 				</div>
 				<div className={`${styles.categoryFooter}`}>
-					<div>
-						<h4 className={`${styles.subtitleFooter} textCard`}>Contact</h4>
-						<ul className={`textSearch`}>
-							<li>Nous contacter</li>
-							<li>FAQ</li>
-						</ul>
-					</div>
-					<div>
-						<h4 className={`${styles.subtitleFooter} textCard `}>A propos</h4>
-						<ul className={`textSearch`}>
-							<li>À propos</li>
-							<li>Presse</li>
-							<li>
-								Conditions générales <br />
-								d’utilisation
-							</li>
-						</ul>
-					</div>
-					<div>
-						<h4 className={`${styles.subtitleFooter} textCard`}>
-							Réseaux sociaux
-						</h4>
-						<div className={`${styles.layoutPicto}`}>
-							<FontAwesomeIcon
-								icon={faInstagram}
-								className={`${styles.iconColor}`}
-							/>
-							<FontAwesomeIcon
-								icon={faSquareFacebook}
-								className={`${styles.iconColor}`}
-							/>
-							<FontAwesomeIcon
-								icon={faLinkedin}
-								className={`${styles.iconColor}`}
-							/>
+					<div className={`${styles.bibi}`}>
+						<div>
+							<h4 className={`${styles.subtitleFooter} textCard`}>Contact</h4>
+							<ul className={`textSearch`}>
+								<li>Nous contacter</li>
+								<li>FAQ</li>
+							</ul>
 						</div>
-						<p className={`textSearch`}>Politiques de confidentialité</p>
+						<div>
+							<h4 className={`${styles.subtitleFooter} textCard `}>A propos</h4>
+							<ul className={`textSearch`}>
+								<li>À propos</li>
+								<li>Presse</li>
+								<li>
+									Conditions générales <br />
+									d’utilisation
+								</li>
+							</ul>
+						</div>
+						<div>
+							<h4 className={`${styles.subtitleFooter} textCard`}>
+								Réseaux sociaux
+							</h4>
+							<div className={`${styles.layoutPicto}`}>
+								<FontAwesomeIcon
+									icon={faInstagram}
+									className={`${styles.iconColor}`}
+								/>
+								<FontAwesomeIcon
+									icon={faSquareFacebook}
+									className={`${styles.iconColor}`}
+								/>
+								<FontAwesomeIcon
+									icon={faLinkedin}
+									className={`${styles.iconColor}`}
+								/>
+							</div>
+							<p className={`textSearch`}>Politiques de confidentialité</p>
+						</div>
 					</div>
 				</div>
 			</section>
 			<p className={`${styles.mentionFooter}`}>
-				Loremipsumdolorsitametconsecteturadipisicingelit.Omnis,iste
+				Loremipsumdolorsitametconsecteturadipisicing
 			</p>
 		</div>
 	);

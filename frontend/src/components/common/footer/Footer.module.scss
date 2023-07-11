@@ -3,30 +3,31 @@
 
 .mainFooter {
 	padding-top: 300px;
-	padding-right: 108px;
 	padding-bottom: 30px;
-	padding-left: 108px;
 }
 .sectionFooter {
 	display: flex;
-	padding-bottom: 104px;
+	justify-content: center;
+	width: 100%;
+	padding-bottom: 100px;
 	.titleLogoFooter {
-		// flex: 1;
 		display: block;
-		// text-align: center;
 	}
 	.imageLayout {
 		@include m.flexLayout(center, unset);
-		padding-top: 50px;
+		padding-top: 30px;
 	}
-	// .titleLogoFooter > img {
-	// 	padding-top: 50px;
-	// }
+
 	.categoryFooter {
-		@include m.flexLayout(space-between, unset);
 		padding-top: 6px;
-		padding-left: 150px;
-		flex: 3;
+		display: flex;
+		justify-content: flex-end;
+		width: 75%;
+		.bibi {
+			display: flex;
+			justify-content: space-between;
+			width: 80%;
+		}
 	}
 }
 h3,
@@ -60,51 +61,60 @@ ul {
 		padding-top: 26px;
 	}
 }
-// .resizeList {
-// 	width: 80%;
-// }
 .subtitleFooter {
 	border-top: 1px solid v.$white_color;
 	border-bottom: 1px solid v.$white_color;
 }
 .mentionFooter {
-	color: white;
+	color: v.$white_color;
 	font-size: 10px;
 	text-align: center;
 	font-family: v.$poppinsFont;
+	display: flex;
+	justify-content: center;
+	width: 100%;
 }
 
-@media (max-width: 1200px) {
+@media (max-width: 1000px) {
 	.sectionFooter {
-		.titleLogoFooter {
-			flex: 1;
-		}
 		.categoryFooter {
-			display: block;
-			flex: 1;
+			width: 60%;
+
+			.bibi {
+				display: block;
+			}
+			.bibi > div {
+				padding-bottom: 30px;
+			}
 		}
-		.imageLayout {
-			width: 43%;
-		}
-	}
-	.categoryFooter > div {
-		padding-bottom: 30px;
 	}
 }
-// @media (max-width: 900px) {
-// 	.sectionFooter {
-// 		.titleLogoFooter {
-// 			flex: 1;
-// 		}
-// 		.categoryFooter {
-// 			display: block;
-// 			flex: 1;
-// 		}
-// 		.imageLayout {
-// 			width: 43%;
-// 		}
-// 	}
-// 	.categoryFooter > div {
-// 		padding-bottom: 30px;
-// 	}
-// }
+@media (max-width: 770px) {
+	.sectionFooter {
+		display: block;
+
+		.titleLogoFooter {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			.logoFooter {
+				font-size: 32px;
+			}
+		}
+
+		.categoryFooter {
+			padding-top: 60px;
+
+			width: 100%;
+			display: flex;
+			justify-content: center;
+
+			.bibi > .textCard {
+				font-size: 24px;
+			}
+			.bibi > .textSearch {
+				font-size: 16px;
+			}
+		}
+	}
+}
