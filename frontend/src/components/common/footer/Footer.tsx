@@ -30,7 +30,7 @@ const Footer = () => {
 					</div>
 				</div>
 				<div className={`${styles.categoryFooter}`}>
-					<div className={`${styles.bibi}`}>
+					<div className={`${styles.layoutCategory}`}>
 						<div>
 							<h4 className={`${styles.subtitleFooter} textCard`}>Contact</h4>
 							<ul className={`textSearch`}>

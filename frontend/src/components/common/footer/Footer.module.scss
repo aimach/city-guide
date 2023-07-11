@@ -6,8 +6,6 @@
 	padding-bottom: 30px;
 }
 .sectionFooter {
-	// display: flex;
-	// justify-content: center;
 	@include m.flexLayout(center, unset);
 
 	width: 100%;
@@ -25,14 +23,10 @@
 
 	.categoryFooter {
 		padding-top: 6px;
-		// display: flex;
-		// justify-content: flex-end;
 		@include m.flexLayout(flex-end, unset);
 
 		width: 75%;
-		.bibi {
-			// display: flex;
-			// justify-content: space-between;
+		.layoutCategory {
 			@include m.flexLayout(space-between, unset);
 
 			width: 80%;
@@ -79,8 +73,6 @@ ul {
 	font-size: 10px;
 	text-align: center;
 	font-family: v.$poppinsFont;
-	// display: flex;
-	// justify-content: center;
 	@include m.flexLayout(center, unset);
 	width: 100%;
 }
@@ -90,10 +82,10 @@ ul {
 		.categoryFooter {
 			width: 60%;
 
-			.bibi {
+			.layoutCategory {
 				display: block;
 			}
-			.bibi > div {
+			.layoutCategory > div {
 				padding-bottom: 30px;
 			}
 		}
@@ -137,10 +129,10 @@ ul {
 			display: flex;
 			justify-content: center;
 
-			.bibi > .textCard {
+			.layoutCategory > .textCard {
 				font-size: 24px;
 			}
-			.bibi > .textSearch {
+			.layoutCategory > .textSearch {
 				font-size: 16px;
 			}
 		}
