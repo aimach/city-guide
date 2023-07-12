@@ -64,33 +64,6 @@ const Footer = () => {
 								<p className={`textSearch`}>Politiques de confidentialité</p>
 							</div>
 						</div>
-						{/* <div className={`${styles.mobileCategoryFooter}`}>
-							<h4 className={`${styles.mobileTitleFooter} titleResearch`}>
-								A propos
-							</h4>
-							<ul className={`textSearch`}>
-								<li>FAQ</li>
-								<li>Conditions générales d’utilisation</li>
-								<li>Politiques de confidentialité</li>
-								<li>Presse</li>
-							</ul>
-							<div className={`${styles.centerPicto}`}>
-								<div className={`${styles.layoutPicto}`}>
-									<FontAwesomeIcon
-										icon={faInstagram}
-										className={`${styles.iconColor}`}
-									/>
-									<FontAwesomeIcon
-										icon={faSquareFacebook}
-										className={`${styles.iconColor}`}
-									/>
-									<FontAwesomeIcon
-										icon={faLinkedin}
-										className={`${styles.iconColor}`}
-									/>
-								</div>
-							</div>
-						</div> */}
 					</div>
 				</section>
 			</div>
