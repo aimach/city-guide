@@ -1,0 +1,76 @@
+@use "../../../style/mixin" as m;
+@use "../../../style/variable" as v;
+
+// DESKTOP STYLE
+
+.headerDesktop {
+  @include m.flexLayout(space-between, center);
+  padding: 2rem;
+  border-bottom: 1px solid v.$secondary_color;
+}
+
+.menu {
+  @include m.flexLayout(space-between, center);
+  ul {
+    display: flex;
+    li {
+      list-style-type: none;
+      margin-right: 2rem;
+      padding: 0;
+      &:hover {
+        transition: color 0.5s ease;
+        color: v.$secondary_color;
+      }
+    }
+  }
+}
+
+.buttonHeader {
+  @include m.unbuttonize;
+  @include m.buttonColor(v.$secondary_color, v.$primary_color);
+  padding: 0.2rem 0.5rem 0.2rem 0.5rem;
+  border-radius: 0.5rem;
+  &:hover {
+    @include m.buttonColor(v.$cream_color, v.$primary_color);
+    transition: background-color 0.4s ease;
+  }
+}
+
+.avatarButton {
+  @include m.buttonSize(50px, 50px);
+  border-radius: 50%;
+  border: 2px solid v.$secondary_color;
+  background-color: v.$primary_color;
+}
+
+// MIDDLE SIZE STYLE
+// style management between desktop and mobile for a better responsive
+
+@media (max-width: 1000px) {
+  .headerDesktop {
+    @include m.flexLayout(center, center);
+    flex-direction: column;
+  }
+}
+
+// MOBILE STYLE
+
+@media (max-width: 768px) {
+  .headerMobile {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: v.$white_color;
+    border-radius: 0.5rem 0.5rem 0 0;
+    nav {
+      @include m.flexLayout(space-around, center);
+      padding: 1rem;
+    }
+  }
+
+  .iconStyle {
+    color: v.$gray_color;
+    width: 38px;
+    height: 38px;
+  }
+}
