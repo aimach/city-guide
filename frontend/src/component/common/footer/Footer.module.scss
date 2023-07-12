@@ -28,9 +28,6 @@ p {
 		height: 111px;
 		width: 86px;
 	}
-	.imageLayout > .image02 {
-		display: none;
-	}
 
 	.categoryFooter {
 		padding-top: 6px;
@@ -41,9 +38,6 @@ p {
 			@include m.flexLayout(space-between, unset);
 
 			width: 80%;
-		}
-		.mobileCategoryFooter {
-			display: none;
 		}
 	}
 }
@@ -82,58 +76,6 @@ ul {
 			}
 			.layoutCategory > div {
 				padding-bottom: 30px;
-			}
-		}
-	}
-}
-
-@media (max-width: 768px) {
-	.mobileImage {
-		background-image: url("./ligne_footer_resize.svg");
-		background-repeat: no-repeat;
-		background-position: top 120% right 54%;
-	}
-	.sectionFooter {
-		display: block;
-
-		.titleLogoFooter {
-			display: none;
-		}
-		.imageLayout > .image01 {
-			display: none;
-		}
-
-		.categoryFooter {
-			width: 100%;
-			display: flex;
-			justify-content: center;
-
-			.layoutCategory {
-				display: none;
-			}
-			.mobileCategoryFooter {
-				display: block;
-			}
-		}
-
-		.mobileCategoryFooter {
-			text-align: center;
-
-			.mobileTitleFooter {
-				padding-bottom: 80px;
-			}
-			li {
-				padding-top: 60px;
-			}
-			.mobileLigneVague {
-				position: absolute;
-			}
-			.centerPicto {
-				@include m.flexLayout(center, unset);
-			}
-			.layoutPicto {
-				padding-top: 120px;
-				padding-bottom: 115px;
 			}
 		}
 	}

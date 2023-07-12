@@ -19,11 +19,6 @@ const Footer = () => {
 								alt="picto_footer"
 								className={`${styles.image01}`}
 							/>
-							<img
-								src="/picto_avion.png"
-								alt="picto_avion"
-								className={`${styles.image02}`}
-							/>
 						</div>
 					</div>
 					<div className={`${styles.categoryFooter}`}>
@@ -69,7 +64,7 @@ const Footer = () => {
 								<p className={`textSearch`}>Politiques de confidentialité</p>
 							</div>
 						</div>
-						<div className={`${styles.mobileCategoryFooter}`}>
+						{/* <div className={`${styles.mobileCategoryFooter}`}>
 							<h4 className={`${styles.mobileTitleFooter} titleResearch`}>
 								A propos
 							</h4>
@@ -95,7 +90,7 @@ const Footer = () => {
 									/>
 								</div>
 							</div>
-						</div>
+						</div> */}
 					</div>
 				</section>
 			</div>
