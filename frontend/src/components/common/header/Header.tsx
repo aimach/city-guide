@@ -11,6 +11,7 @@ type headerProps = {
 };
 
 const Header = ({ size }: headerProps) => {
+  // waiting for user context
   const userRole: string = "free";
 
   return (
