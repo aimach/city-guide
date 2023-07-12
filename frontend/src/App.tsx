@@ -1,9 +1,8 @@
 import "./App.scss";
-import HeaderDesktop from "./components/common/header/HeaderDesktop";
+import Header from "./components/common/header/Header";
 import Footer from "./components/common/footer/Footer";
 import InteractiveMap from "./components/interactiveMap/InteractiveMap";
 import { useEffect, useState } from "react";
-import HeaderMobile from "./components/common/header/HeaderMobile";
 
 function App() {
   // get window size to display header
@@ -15,16 +14,15 @@ function App() {
 
   useEffect(() => {
     window.addEventListener("resize", updateDimension);
-  }, []);
+  }, [windowSize]);
 
   return (
     <div className="App">
-      {windowSize > 768 && <HeaderDesktop />}
+      <Header size={windowSize > 768 ? "desktop" : "mobile"} />
       <div>
         <InteractiveMap />
       </div>
-      {windowSize < 768 && <HeaderMobile />}
-      {/* <Footer /> */}
+      <Footer />
     </div>
   );
 }
