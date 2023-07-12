@@ -60,10 +60,6 @@
 	@include m.buttonSize(275px, 74px);
 }
 
-// h1,
-// h2,
-// h3,
-// h4,
-// h5 {
-// 	margin: unset;
-// }
+.titleFooter {
+	@include m.textStyle(v.$cream_color, v.$poppinsFont, 32px, 700);
+}

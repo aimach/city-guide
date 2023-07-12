@@ -1,6 +1,12 @@
 @use "../../../style/variable" as v;
 @use "../../../style/mixin" as m;
 
+h3,
+h4,
+p {
+	margin: unset;
+}
+
 .mainFooter {
 	padding-top: 300px;
 	padding-bottom: 30px;
@@ -17,6 +23,10 @@
 		@include m.flexLayout(center, unset);
 		padding-top: 30px;
 	}
+	.imageLayout > .imgage01 {
+		height: 111px;
+		width: 86px;
+	}
 	.imageLayout > .image02 {
 		display: none;
 	}
@@ -32,16 +42,6 @@
 			width: 80%;
 		}
 	}
-}
-h3,
-h4,
-p {
-	margin: unset;
-}
-
-img {
-	height: 111px;
-	width: 86px;
 }
 
 .layoutPicto {
@@ -81,7 +81,6 @@ ul {
 	.sectionFooter {
 		.categoryFooter {
 			width: 60%;
-
 			.layoutCategory {
 				display: block;
 			}
@@ -96,30 +95,20 @@ ul {
 		display: block;
 
 		.titleLogoFooter {
-			// display: flex;
-			// align-items: center;
-			flex-direction: column;
-			@include m.flexLayout(unset, center);
-
-			// display: flex;
-			// flex-direction: row-reverse;
-			// align-items: flex-end;
-			// justify-content: space-around;
-			// @include m.flexLayout(space-around, flex-end);
-			.logoFooter {
-				font-size: 32px;
-			}
+			@include m.flexLayout(space-between, flex-end);
+			width: 80%;
+			margin: 0 auto;
+			flex-direction: row-reverse;
 		}
 		.imageLayout > .image01 {
-			// display: none;
-			display: block;
+			display: none;
 		}
 		.imageLayout > .image02 {
-			// width: 113px;
-			// height: 145px;
-			// color: v.$secondary_color;
-			// display: block;
-			display: none;
+			width: 113px;
+			height: 145px;
+			color: v.$secondary_color;
+			display: block;
+			padding-bottom: 14px;
 		}
 
 		.categoryFooter {
@@ -128,13 +117,6 @@ ul {
 			width: 100%;
 			display: flex;
 			justify-content: center;
-
-			.layoutCategory > .textCard {
-				font-size: 24px;
-			}
-			.layoutCategory > .textSearch {
-				font-size: 16px;
-			}
 		}
 	}
 }

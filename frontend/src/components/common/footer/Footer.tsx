@@ -1,6 +1,3 @@
-// import "./Footer.module.scss";
-// import picto_footer from "@/assets/picto_footer.png";
-// import picto_footer from "./../../../assets/picto_footer.png";
 import styles from "./Footer.module.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -13,9 +10,8 @@ const Footer = () => {
 	return (
 		<div className={`${styles.mainFooter}`}>
 			<section className={`${styles.sectionFooter}`}>
-				{/* <section className={`sectionFooter`}> */}
 				<div className={`${styles.titleLogoFooter}`}>
-					<h3 className="logoFooter">City Guide</h3>
+					<h3 className={`titleFooter`}>City Guide</h3>
 					<div className={`${styles.imageLayout}`}>
 						<img
 							src="/picto_footer.png"
@@ -72,9 +68,7 @@ const Footer = () => {
 					</div>
 				</div>
 			</section>
-			<p className={`${styles.mentionFooter}`}>
-				Loremipsumdolorsitametconsecteturadip
-			</p>
+			<p className={`${styles.mentionFooter}`}>&#9426;Loremipsumdolorsitamet</p>
 		</div>
 	);
 };
