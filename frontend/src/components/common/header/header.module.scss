@@ -3,7 +3,8 @@
 
 header {
   @include m.flexLayout(space-between, center);
-  margin: 0 2rem 0 2rem;
+  padding: 0 2rem 0 2rem;
+  border-bottom: 1px solid v.$secondary_color;
 }
 
 .menu {
@@ -25,4 +26,7 @@ header {
   @include m.buttonColor(v.$secondary_color, v.$primary_color);
   padding: 0.2rem 0.5rem 0.2rem 0.5rem;
   border-radius: 0.5rem;
+  &:hover {
+    @include m.buttonColor(v.$cream_color, v.$primary_color);
+  }
 }
