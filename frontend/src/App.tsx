@@ -1,6 +1,7 @@
 import "./App.scss";
-import Footer from "./components/common/footer/Footer";
-import InteractiveMap from "./components/interactiveMap/InteractiveMap";
+import Footer from "./component/common/footer/Footer";
+import InteractiveMap from "./component/interactiveMap/InteractiveMap";
+// import About from "./pages/About/About";
 
 function App() {
 	return (
@@ -12,6 +13,7 @@ function App() {
 				<InteractiveMap />
 			</div>
 			<Footer />
+			{/* <About /> */}
 		</div>
 	);
 }

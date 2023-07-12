@@ -11,6 +11,7 @@ p {
 	padding-top: 300px;
 	padding-bottom: 30px;
 }
+
 .sectionFooter {
 	@include m.flexLayout(center, unset);
 
@@ -26,9 +27,6 @@ p {
 	.imageLayout > .imgage01 {
 		height: 111px;
 		width: 86px;
-	}
-	.imageLayout > .image02 {
-		display: none;
 	}
 
 	.categoryFooter {
@@ -79,36 +77,6 @@ ul {
 			.layoutCategory > div {
 				padding-bottom: 30px;
 			}
-		}
-	}
-}
-@media (max-width: 770px) {
-	.sectionFooter {
-		display: block;
-
-		.titleLogoFooter {
-			@include m.flexLayout(space-between, flex-end);
-			width: 80%;
-			margin: 0 auto;
-			flex-direction: row-reverse;
-		}
-		.imageLayout > .image01 {
-			display: none;
-		}
-		.imageLayout > .image02 {
-			width: 113px;
-			height: 145px;
-			color: v.$secondary_color;
-			display: block;
-			padding-bottom: 14px;
-		}
-
-		.categoryFooter {
-			padding-top: 60px;
-
-			width: 100%;
-			display: flex;
-			justify-content: center;
 		}
 	}
 }
