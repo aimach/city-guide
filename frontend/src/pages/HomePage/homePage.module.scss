@@ -1,0 +1,26 @@
+@use "../../style/variable" as v;
+@use "../../style/mixin" as m;
+
+.backgroundWave {
+  width: 100vw;
+  height: 100vh;
+  background-image: url("./big-wave.svg");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.presentationSection {
+  width: 50vw;
+  height: 50vh;
+  margin-left: 5rem;
+  @include m.flexLayout(space-around, flex-start);
+  flex-direction: column;
+}
+
+.presentationButton {
+  color: v.$primary_color;
+  &:hover {
+    @include m.buttonColor(v.$cream_color, v.$primary_color);
+    transition: background-color 0.4s ease;
+  }
+}
