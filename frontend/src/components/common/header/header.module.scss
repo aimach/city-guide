@@ -1,18 +1,28 @@
+@use "../../../style/mixin" as m;
+@use "../../../style/variable" as v;
+
 header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  @include m.flexLayout(space-between, center);
+  margin: 0 2rem 0 2rem;
 }
 
 .menu {
-  display: flex;
-  width: 50vw;
-  justify-content: space-between;
+  @include m.flexLayout(space-between, center);
   ul {
     display: flex;
-    gap: 2rem;
     li {
       list-style-type: none;
+      margin-right: 2rem;
+      &:hover {
+        color: v.$secondary_color;
+      }
     }
   }
+}
+
+.buttonHeader {
+  @include m.unbuttonize;
+  @include m.buttonColor(v.$secondary_color, v.$primary_color);
+  padding: 0.2rem 0.5rem 0.2rem 0.5rem;
+  border-radius: 0.5rem;
 }

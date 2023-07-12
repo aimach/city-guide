@@ -10,8 +10,9 @@ const Header = () => {
           <li>Abonnement</li>
           <li>Connexion</li>
         </ul>
-        <button>Nous rejoindre</button>
-        {/* <img src="" alt="language" /> */}
+        <button className={`${style.buttonHeader} textButton`}>
+          Nous rejoindre
+        </button>
       </nav>
     </header>
   );
