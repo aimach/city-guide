@@ -47,7 +47,7 @@
 }
 
 .titleCard {
-  @include m.textStyle(v.$white_color, v.$comicNeueFont, 30px, 700);
+  @include m.textStyle(v.$white_color, v.$poppinsFont, 24px, 600);
 }
 
 .inputSearchText {

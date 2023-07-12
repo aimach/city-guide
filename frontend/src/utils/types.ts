@@ -41,4 +41,4 @@ export type City = {
    userAdminCity: User | null;
 };
 
-export type DataType = City[] | Poi[] | User[] | Category[];
+export type DataType = City[] | Poi[] | Category[];
