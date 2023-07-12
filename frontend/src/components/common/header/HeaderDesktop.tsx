@@ -1,8 +1,8 @@
-import style from "./header.module.scss";
+import style from "./headerDesktop.module.scss";
 
-const Header = () => {
+const HeaderDesktop = () => {
   return (
-    <header>
+    <header className={`${style.headerDesktop}`}>
       <h1>City Guide</h1>
       <nav className={`textButton ${style.menu}`}>
         <ul>
@@ -18,4 +18,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default HeaderDesktop;

@@ -1,7 +1,7 @@
 @use "../../../style/mixin" as m;
 @use "../../../style/variable" as v;
 
-header {
+.headerDesktop {
   @include m.flexLayout(space-between, center);
   padding: 0 2rem 0 2rem;
   border-bottom: 1px solid v.$secondary_color;
