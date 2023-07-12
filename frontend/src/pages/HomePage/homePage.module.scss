@@ -9,6 +9,8 @@
   background-size: cover;
 }
 
+// PRESENTATION SECTION
+
 .presentationSection {
   width: 50vw;
   height: 50vh;
@@ -22,5 +24,29 @@
   &:hover {
     @include m.buttonColor(v.$cream_color, v.$primary_color);
     transition: background-color 0.4s ease;
+  }
+}
+
+// MAP SECTION
+
+.mapSection {
+  @include m.flexLayout(space-around, center);
+  flex-direction: column;
+  margin-top: 5rem;
+  gap: 1rem;
+  position: relative;
+}
+
+.mapButton {
+  position: absolute;
+  top: 20px;
+}
+
+// SEARCH SECTION
+
+.searchSection {
+  background-color: v.$cream_color;
+  &BottomLine {
+    border-bottom: 1px solid v.$primary_color;
   }
 }

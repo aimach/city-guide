@@ -19,11 +19,26 @@ const HomePage = () => {
           </button>
         </div>
       </section>
-      <section>
+      <section className={`${style.mapSection}`}>
+        <button
+          className={`buttonHomePage textButton ${style.presentationButton} ${style.mapButton}`}
+        >
+          Voir la carte
+        </button>
         <InteractiveMap />
       </section>
-      <section>
-        <h2>Trouvez votre point d'intérêt !</h2>
+      <section className={`${style.searchSection}`}>
+        <div className={`${style.searchSectionBottomLine}`}>
+          <h2>Trouvez votre point d'intérêt !</h2>
+          <h3>Laissez vous porter,</h3>
+          <h3>nous allons vous faire découvrir des merveilles</h3>
+        </div>
+        <div className={`${style.searchSectionBottomLine}`}>
+          <p>Composant avec barre de recherche et filtres</p>
+        </div>
+        <div className={`${style.searchSectionBottomLine}`}>
+          <h2>Choisis une ville et trouve ses points d'intérêt</h2>
+        </div>
       </section>
     </>
   );
