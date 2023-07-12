@@ -2,6 +2,7 @@ import "./App.scss";
 import Header from "./components/common/header/Header";
 import Footer from "./components/common/footer/Footer";
 import InteractiveMap from "./components/interactiveMap/InteractiveMap";
+// import About from "./pages/About/About";
 import { useEffect, useState } from "react";
 
 function App() {
@@ -22,8 +23,10 @@ function App() {
       <div>
         <InteractiveMap />
       </div>
-      {/* <Footer /> */}
+      <Footer />
+      {/* <About /> */}
     </div>
   );
 }
+
 export default App;
