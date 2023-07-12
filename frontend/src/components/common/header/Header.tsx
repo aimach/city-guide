@@ -11,7 +11,7 @@ type headerProps = {
 };
 
 const Header = ({ size }: headerProps) => {
-  const userRole: string = "user";
+  const userRole: string = "free";
 
   return (
     <header

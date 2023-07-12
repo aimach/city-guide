@@ -22,7 +22,7 @@ function App() {
       <div>
         <InteractiveMap />
       </div>
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 }
