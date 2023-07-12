@@ -1,6 +1,6 @@
 import "./App.scss";
-import Footer from "./components/common/footer/Footer";
-import InteractiveMap from "./components/interactiveMap/InteractiveMap";
+import Footer from "./Components/common/footer/Footer";
+import InteractiveMap from "./Components/interactiveMap/InteractiveMap";
 
 function App() {
 	return (
