@@ -1,0 +1,10 @@
+@use "../../style/variable" as v;
+@use "../../style/mixin" as m;
+
+.filter {
+	border-top: 1px solid v.$primary_color;
+	border-bottom: 1px solid v.$primary_color;
+	p {
+		padding: 20px;
+	}
+}

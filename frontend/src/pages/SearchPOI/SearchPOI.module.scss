@@ -2,5 +2,16 @@
 @use "../../style/mixin" as m;
 
 .mainSearchPOI {
-	background-image: url(./fond_vague_creme.png);
+	// background-image: url(./fond_vague_creme.png);
+	background-color: v.$cream_color;
+}
+// .waveSearchPOI {
+// 	background-image: url(./fond_vague_creme.png);
+// 	background-repeat: no-repeat;
+// }
+.titleSearchPOI {
+	text-align: center;
+	padding-bottom: 50px;
+	padding-top: 50px;
+	border-bottom: 1px solid v.$primary_color;
 }
