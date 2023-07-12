@@ -3,7 +3,7 @@
 
 .headerDesktop {
   @include m.flexLayout(space-between, center);
-  padding: 0 2rem 0 2rem;
+  padding: 2rem;
   border-bottom: 1px solid v.$secondary_color;
 }
 
@@ -28,5 +28,12 @@
   border-radius: 0.5rem;
   &:hover {
     @include m.buttonColor(v.$cream_color, v.$primary_color);
+  }
+}
+
+@media (max-width: 1000px) {
+  .headerDesktop {
+    @include m.flexLayout(center, center);
+    flex-direction: column;
   }
 }
