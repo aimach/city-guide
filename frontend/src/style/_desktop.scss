@@ -63,3 +63,10 @@
 .titleFooter {
 	@include m.textStyle(v.$cream_color, v.$poppinsFont, 32px, 700);
 }
+
+.titlePOI {
+	@include m.textStyle(v.$primary_color, v.$poppinsFont, 38px, 500);
+}
+.subtitlePOI {
+	@include m.textStyle(v.$primary_color, v.$poppinsFont, 22px, 500);
+}
