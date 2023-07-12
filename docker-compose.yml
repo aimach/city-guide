@@ -5,6 +5,7 @@ services:
       - 5000:5000
     volumes:
       - ./backend/src:/app/src
+      - ./backend/public:/app/public
 
   frontend:
     build: ./frontend
