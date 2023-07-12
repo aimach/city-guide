@@ -68,14 +68,6 @@ ul {
 	border-top: 1px solid v.$cream_color;
 	border-bottom: 1px solid v.$cream_color;
 }
-.mentionFooter {
-	color: v.$white_color;
-	font-size: 10px;
-	text-align: center;
-	font-family: v.$poppinsFont;
-	@include m.flexLayout(center, unset);
-	width: 100%;
-}
 
 @media (max-width: 1000px) {
 	.sectionFooter {

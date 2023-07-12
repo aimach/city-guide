@@ -68,7 +68,6 @@ const Footer = () => {
 					</div>
 				</div>
 			</section>
-			<p className={`${styles.mentionFooter}`}>&#9426;Loremipsumdolorsitamet</p>
 		</div>
 	);
 };
