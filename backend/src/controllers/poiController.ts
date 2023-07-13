@@ -21,17 +21,19 @@ export const PoiController: IController = {
       if (req.query) {
         const city = req.query.city as string;
         const category = req.query.category as string;
-        if (city) {
-          searchQueries = { city: { name: city } };
-        } else if (category) {
-          searchQueries = { category: { name: category } };
-        } else if (city && category) {
+        if (city && category) {
           searchQueries = {
             category: { name: category },
             city: { name: city },
           };
+        } else if (city && category === undefined) {
+          searchQueries = { city: { name: city } };
+        } else if (category && city === undefined) {
+          searchQueries = { category: { name: category } };
         }
       }
+
+      // get poi is accepted or no depending of user status (admin or not)
 
       // get all poi
       let allPoi = await dataSource.getRepository(Poi).find({
