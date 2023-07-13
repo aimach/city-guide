@@ -6,7 +6,6 @@
 .headerDesktop {
   @include m.flexLayout(space-between, center);
   padding: 2rem;
-  border-bottom: 1px solid v.$secondary_color;
   position: sticky;
   top: 0;
   background-color: v.$primary_color;
@@ -68,8 +67,11 @@
     background-color: v.$white_color;
     border-radius: 0.5rem 0.5rem 0 0;
     nav {
-      @include m.flexLayout(space-around, center);
-      padding: 1rem;
+      @include m.flexLayout(space-between, center);
+      padding-top: 1rem;
+      padding-bottom: 1rem;
+      margin: 0 auto;
+      width: 85%;
     }
   }
 
