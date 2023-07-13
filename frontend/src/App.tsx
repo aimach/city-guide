@@ -1,7 +1,10 @@
 import "./App.scss";
-import Footer from "./components/common/footer/Footer";
+// import Footer from "./components/common/footer/Footer";
 import InteractiveMap from "./components/interactiveMap/InteractiveMap";
+import Footer from "./components/common/footer/Footer";
 import SearchPOI from "./pages/SearchPOI/SearchPOI";
+
+// import About from "./pages/About/About";
 
 function App() {
 	return (
@@ -14,6 +17,7 @@ function App() {
 			</div>
 			<SearchPOI />
 			<Footer />
+			{/* <About /> */}
 		</div>
 	);
 }
