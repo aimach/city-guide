@@ -1,6 +1,6 @@
 .env
 node_modules/
-public/user/*
-public/city/*
 public/category/*
+public/city/*
+public/user/*
 public/poi/*
