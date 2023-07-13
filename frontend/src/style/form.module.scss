@@ -1,54 +1,72 @@
 @use './mixin' as m;
+@use './variable' as v;
 @use './placeholder';
 
 section {
     height: 100vh;
-    @include m.flexLayout(center, center);
-}
+    @include m.flexLayout(center, center, column);
+    background: url("../../public/bg-wave.svg"), url('../../public/Illu_man.svg');
+    // background-position: -40px -175px,left 15% bottom 20%;
+    background-position: 100% 320%,left 17% bottom 20%;
+    background-size: auto, 11%;
+    background-repeat: no-repeat, no-repeat;
 
-
-
+    h2 {
+            color: var(--dark-purple, #090F43);
+            font-family: v.$comicNeueFont;
+            font-size: 48px;
+            font-weight: 700;
+            margin-top: -1.5em;
+    }
+        
+       
+    
+        
 // FORM 
 form {
     border-radius: 20px;
     border: 3px solid #FFE600;
     background: #F3DF24;
     @include m.flexLayout(center, center, column);
-    width: 40%;
+    // width: 40%;
+    width: 668px;
+    height: 556px;
     gap: 1em;
-    
+    padding: 2em;
 
-    div {
-            position: relative;
-            width: 70%;
-            display: flex;
-            @include m.flexLayout(center, center);
-
-            div {
-                    position: absolute;
-                    @include m.flexLayout(center, center);
-                    left: -30px;
-                    height: 100%;
-                    z-index: 2;
-            }
-        }
-
-   
-    .containerIcon {
-        position: absolute;
-        @include m.flexLayout(center, center);
-        left: -30px;
-        height: 100%;
-        z-index: 2;
+    h3 {
+        @include m.flexLayout(start, start, column);
     }
 
+    p {
+        margin: 0;
+        font-family: v.$poppinsFont;
+        color: red;
+        font-weight: 500;
+        text-align: center;
+    }
+  
+    div {
+        position: relative;
+        width: 100%;
+        display: flex;
+        @include m.flexLayout(center, center); 
+    }
     input[type=text],
     input[type=email],
     input[type=password] {
-       @extend %inputForm;
-       @include m.buttonSize(100%, auto);
-       padding: 1em;
+        @extend %inputForm;
+        @include m.buttonSize(80%, auto);
+        padding: 1em;
+        text-indent: 40px;
+        border: none;
     }
+    svg {
+        position: absolute;
+        left: 65px;
+        z-index: 2;
+    }
+  
 
     input::placeholder {
         color: var(--dark-purple, #090F43);
@@ -77,17 +95,17 @@ form {
         color: #090F43;
         text-align: center;
         font-size: 16px;
-        font-family: Poppins;
+        font-family: v.$poppinsFont;
         font-style: normal;
         font-weight: 500;
         line-height: normal;
     }
 
-    .container--DownloadApp {
+    div {
         display: flex;
         gap: 1em;
 
-        * {
+        img {
             width: 100px;
             height: auto;
         }
@@ -99,3 +117,5 @@ form {
         font-weight: 500;
     }
 }
+}
+

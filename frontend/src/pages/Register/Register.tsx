@@ -1,79 +1,142 @@
-import { useForm } from "react-hook-form"
-import '../../style/form.module.scss'
-import { useNavigate } from "react-router-dom"
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCoffee } from '@fortawesome/free-solid-svg-icons'
+import { useForm } from "react-hook-form";
+import "../../style/form.module.scss";
+import { useNavigate } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUser, faAt, faKey } from "@fortawesome/free-solid-svg-icons";
+import { Link } from "react-router-dom";
 
 export interface FormProps {
-  email: string
-  password: string
-  username :string
+  email: string;
+  password: string;
+  username: string;
 }
 
 const Register = () => {
-  const {handleSubmit, register} = useForm<FormProps>();
+  const {
+    handleSubmit,
+    register,
+    setError,
+    formState: { errors },
+  } = useForm<FormProps>({
+    defaultValues: {
+      email: "",
+      username: "",
+      password: "",
+    },
+  });
 
   const navigate = useNavigate();
 
   const onSubmit = async (userData: FormProps) => {
     try {
-      const response = await fetch('http://localhost:5000/api/auth/register', {
+      const response = await fetch("http://localhost:5000/api/auth/register", {
         method: "POST",
-        credentials: "same-origin",
-        headers: { 
-          'Content-Type': 'application/json',
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
         },
-        body: JSON.stringify(userData) 
-      })
-      
-      const data = await response.json()
-      if (data.token) {
-        localStorage.setItem("jwt_autorization", data.token)
-        navigate('/')
-        return
+        body: JSON.stringify(userData),
+      });
+
+      const data = await response.json();
+
+      console.log(data);
+      if (response.status !== 201) {
+        // On gère l'erreur à ce niveau
+        // Object.keys(data.errors) = ['email', 'username', 'password']
+        // Pour chaque paramètre de data.errors, on va afficher le message d'erreur dans le champ correspondant
+        for (const errorKey of Object.keys(data.errors)) {
+          // typeof errorKey = string
+          // Au niveau de setError, on s'attend à "email" | "password" | "username" | `root.${string}` | "root"
+          // On doit donc caster errorKey en keyof FormProps
+          setError(errorKey as keyof FormProps, {
+            message: data.errors[errorKey],
+          });
+        }
+
+        return;
       }
 
       // Handle other cases here
-
-    } catch (error) {
-      console.error(error);
+    } catch (error: any) {
+      console.log("error", error.message);
     }
-  }
-
+  };
 
   return (
     <section>
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <h3>Inscription</h3>
-      <div>
-         <input type="text" placeholder='Adresse mail' 
-         {...register("email", {
-           required: "Vous devez renseigner ce champ"
-         })}
-         />
-         <div className="containerIcon">
-           <FontAwesomeIcon icon={faCoffee} />
-         </div>
-      </div>
-      <div>
-         <input type="text" placeholder="Nom d'utilisateur" 
-         {...register("username", {
-           required: "Vous devez renseigner ce champ"
-         })}
-         />
-      </div>
+      <h2>Nous rejoindre</h2>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <h3>Inscription</h3>
 
-          <input type="password" placeholder='Mot de passe'
-          {...register("password", {
-            required: "Vous devez renseigner ce champ"
-        })}
-        />
+        <div className="input-wrapper">
+          <FontAwesomeIcon icon={faAt} className="icon" />
+          <input
+            type="text"
+            placeholder="Adresse mail"
+            {...register("email", {
+              required: "Vous devez renseigner ce champ",
+            })}
+          />
+        </div>
+        {errors.email && <p className="error">{errors.email.message}</p>}
 
-    <input type="submit" value="Explorer"/>
+        <div className="input-wrapper">
+          <FontAwesomeIcon icon={faUser} className="icon" />
+          <input
+            type="text"
+            placeholder="Nom d'utilisateur"
+            {...register("username", {
+              required: "Vous devez renseigner ce champ",
+            })}
+          />
+          {/* 
+            
+               Opérateurs logiques, la logique booléenne en JavaScript
 
-    </form>
+               && = et logique
+
+               Si `errors.username` est égal à false, ou '', ou `undefined`, ou `null`, ou 0, ou NaN,
+               (errors.username) && (<p className="error">{errors.username.message}</p>) -> false -> rien ne s'affiche.
+
+               true && true && false -> false
+               true && true && true -> true
+               true && false && true -> false
+               true && false && false -> false
+               false && true && true && true && true -> false
+               '' && true && true && true && true -> ''
+            
+            */}
+        </div>
+        {errors.username && <p className="error">{errors.username.message}</p>}
+
+        <div className="input-wrapper">
+          <FontAwesomeIcon icon={faKey} className="icon" />
+          <input
+            type="password"
+            placeholder="Mot de passe"
+            {...register("password", {
+              required: "Vous devez renseigner ce champ",
+            })}
+          />
+        </div>
+        {errors.password && <p className="error">{errors.password.message}</p>}
+
+        <input type="submit" value="Explorer" />
+        <Link to="/login">Vous avez déjà un compte ? Connectez-vous ici !</Link>
+        <span>Téléchargez l’application ici !</span>
+        <div id="logoStore-wrapper">
+          <img src="/appleDownload.svg" alt="Apple Store" />
+          <img src="/google-play-badge.png" alt="Google Store" />
+        </div>
+
+        {errors.root?.serverError && (
+          <p className="error">{errors.root.serverError.message}</p>
+        )}
+      </form>
     </section>
-  )
-}
+  );
+};
 
-export default Register
+export default Register;

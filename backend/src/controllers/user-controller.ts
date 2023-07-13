@@ -19,10 +19,12 @@ export const AuthController: IController = {
   register: async (req: Request, res: Response) => {
     const { username, email, password } = req.body;
 
-    const checkIfEmpty = (value: string): void => {
+    const checkIfEmpty = (key: string, value: string): boolean => {
       if (validator.isEmpty(value, { ignore_whitespace: true })) {
-        res.status(422).send({ error: `Please fill the empty field` });
+        res.status(422).send({ errors: { [key]: "Ce champ est requis" } });
+        return true;
       }
+      return false;
     };
 
     try {
@@ -30,8 +32,15 @@ export const AuthController: IController = {
       userToCreate = { ...userToCreate, email, password, username };
 
       // Check if one of fields is empty
-      const inputs: string[] = Object.values(req.body);
-      inputs.forEach((value) => checkIfEmpty(value));
+
+      // On liste les clés de l'objet req.body.
+      const inputs: string[] = ["email", "password", "username"];
+
+      // On utilise la méthode some() pour vérifier s'il y a au moins une erreur.
+      const someError: boolean = inputs.some((key) =>
+        checkIfEmpty(key, req.body[key])
+      );
+      if (someError) return;
 
       const existingEmail = await dataSource
         .getRepository(User)
@@ -40,7 +49,9 @@ export const AuthController: IController = {
       // Check if email alrealy exists
 
       if (existingEmail !== null) {
-        return res.status(409).send({ error: "Email already exists" });
+        return res
+          .status(409)
+          .send({ errors: { email: "Cet email est déjà utilisé" } });
       }
 
       // Check if username is already taken
@@ -50,12 +61,14 @@ export const AuthController: IController = {
         .findOneBy({ username });
       if (existingUsername !== null) {
         return res.status(409).send({
-          error: "This username is taken, please choose another one",
+          errors: { username: "Ce nom d'utilisateur est déjà utilisé" },
         });
       }
 
       if (!validator.isEmail(email)) {
-        return res.status(401).send({ error: "Incorrect email format" });
+        return res
+          .status(401)
+          .send({ errors: { email: "Cet email est invalide" } });
       }
 
       if (
@@ -65,7 +78,10 @@ export const AuthController: IController = {
         )
       ) {
         return res.status(401).send({
-          error: "Username must contain 3 to 20 characters without symbol",
+          errors: {
+            username:
+              "Le nom d'utilisateur doit contenir entre 3 et 20 caractères sans symboles",
+          },
         });
       }
 
@@ -78,8 +94,10 @@ export const AuthController: IController = {
         })
       ) {
         return res.status(401).send({
-          error:
-            "Password must contain 8 characters, 1 digit, 1 uppercase and 1 symbol",
+          errors: {
+            password:
+              "Le mot de passe doit contenir au moins 8 caractères, 1 chiffre, une majuscule et 1 symbole",
+          },
         });
       }
       const hashedPassword = await hash(password, 10);
@@ -92,7 +110,7 @@ export const AuthController: IController = {
           expiresIn: "1h",
         }
       );
-      // send token to cookie
+      res.cookie("jwt", token, { httpOnly: true });
 
       return res.status(201).send({ token });
     } catch (error) {
@@ -129,6 +147,7 @@ export const AuthController: IController = {
             expiresIn: "1h",
           }
         );
+        res.cookie("jwt", token, { httpOnly: true });
 
         return res.status(200).send({ token });
       }
