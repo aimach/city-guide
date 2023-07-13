@@ -29,15 +29,24 @@ const HomePage = () => {
       </section>
       <section className={`${style.searchSection}`}>
         <div className={`${style.searchSectionBottomLine}`}>
-          <h2>Trouvez votre point d'intérêt !</h2>
-          <h3>Laissez vous porter,</h3>
-          <h3>nous allons vous faire découvrir des merveilles</h3>
+          <h2 className="subtitleCategoryDark">
+            Trouvez votre point d'intérêt !
+          </h2>
+          <h3 className="textCardDark">Laissez vous porter,</h3>
+          <h3 className="textCardDark">
+            nous allons vous faire découvrir des merveilles
+          </h3>
         </div>
-        <div className={`${style.searchSectionBottomLine}`}>
+        <div className={`${style.searchSectionBottomLine} ${style.mockup}`}>
           <p>Composant avec barre de recherche et filtres</p>
         </div>
         <div className={`${style.searchSectionBottomLine}`}>
-          <h2>Choisis une ville et trouve ses points d'intérêt</h2>
+          <h2 className="subtitleCategoryDark">
+            Choisis une ville et trouve ses points d'intérêt
+          </h2>
+          <div className={`${style.mockup}`}>
+            <p>Composant avec les cards des villes</p>
+          </div>
         </div>
       </section>
     </>
