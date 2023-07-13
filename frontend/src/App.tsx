@@ -1,9 +1,11 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './App.scss';
-import InteractiveMap from './components/interactiveMap/InteractiveMap';
+import Footer from './component/common/footer/Footer';
+import InteractiveMap from './component/interactiveMap/InteractiveMap';
 import HomePage from './pages/HomePage/HomePage';
 import Layout from './components/layout/Layout';
 import ResultPoi from './pages/ResultPoi/ResultPoi';
+// import About from "./pages/About/About";
 
 function App() {
    return (
@@ -16,8 +18,9 @@ function App() {
                </Route>
             </Routes>
          </Layout>
+         <Footer />
+         {/* <About /> */}
       </BrowserRouter>
    );
 }
-
 export default App;
