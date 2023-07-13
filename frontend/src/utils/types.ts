@@ -42,3 +42,9 @@ export type City = {
 };
 
 export type DataType = City[] | Poi[] | Category[];
+
+export enum CardType {
+   POI = 'poi',
+   CATEGORY = 'category',
+   CITY = 'city',
+}

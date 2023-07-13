@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import InteractiveMap from '../../components/interactiveMap/InteractiveMap';
-import Card from '../../components/common/card/Card';
-import Image from '../../assets/lapalettedugout.jpg';
+
 import Caroussel from '../../components/common/Caroussel/Caroussel';
-import { City } from '../../utils/types';
+import { CardType, City } from '../../utils/types';
 import styles from './homePage.module.scss';
 
 const HomePage = () => {
@@ -30,7 +29,11 @@ const HomePage = () => {
             <h2 className={styles.title}>
                Choisis une ville et trouve ses points d'intérêt.
             </h2>
-            <Caroussel title="Villes" data={selectedCities} />
+            <Caroussel
+               title="Villes"
+               data={selectedCities}
+               cardType={CardType.CITY}
+            />
          </div>
       </div>
    );
