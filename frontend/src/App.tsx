@@ -24,6 +24,7 @@ function App() {
 			<Header size={windowSize > 768 ? "desktop" : "mobile"} />
 			<div>
 				<InteractiveMap />
+				<SearchPOI />
 			</div>
 			<Footer />
 			{/* <About /> */}

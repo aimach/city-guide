@@ -37,9 +37,9 @@ const Footer = () => {
 								<ul className={`textSearch`}>
 									<li>À propos</li>
 									<li>Presse</li>
-									<li>
-										Conditions générales <br />
-										d’utilisation
+									<li className={`${styles.specificSubCategory}`}>
+										Conditions générales
+										<span>d’utilisation</span>
 									</li>
 								</ul>
 							</div>

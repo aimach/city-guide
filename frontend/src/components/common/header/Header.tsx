@@ -22,7 +22,7 @@ const Header = ({ size }: headerProps) => {
 		>
 			{size === "desktop" ? (
 				<>
-					<h1>City Guide</h1>
+					<h1 className={`logoHeader`}>City Guide</h1>
 					<nav className={`textButton ${style.menu}`}>
 						<ul>
 							<li>Parcourir</li>

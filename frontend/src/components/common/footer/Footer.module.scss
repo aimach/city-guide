@@ -46,7 +46,8 @@ p {
 	padding-top: 26px;
 	@include m.flexLayout(space-between, unset);
 	width: 60%;
-	padding-bottom: 64px;
+	// padding-bottom: 64px;
+	padding-bottom: 47px;
 }
 .iconColor {
 	color: v.$cream_color;
@@ -65,6 +66,15 @@ ul {
 .subtitleFooter {
 	border-top: 1px solid v.$cream_color;
 	border-bottom: 1px solid v.$cream_color;
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+.specificSubCategory {
+	display: flex;
+	flex-direction: column;
+}
+.specificSubCategory > span {
+	padding-top: 10px;
 }
 
 @media (max-width: 1000px) {
@@ -76,6 +86,13 @@ ul {
 			}
 			.layoutCategory > div {
 				padding-bottom: 30px;
+			}
+			.specificSubCategory {
+				display: block;
+			}
+			.specificSubCategory > span {
+				padding-top: unset;
+				padding-left: 5px;
 			}
 		}
 	}
