@@ -62,8 +62,6 @@ export const ProfileController: IController = {
 
       if (profileToRead === null) {
         res.status(404).send({ error: "User not found" });
-
-        return;
       } else {
         res.status(200).send(profileToRead);
       }
@@ -90,7 +88,6 @@ export const ProfileController: IController = {
             error: `Field must contains only characters`,
           });
           await unlink(`./public/user/${req.file?.filename}`);
-          return;
         }
       };
 
