@@ -81,7 +81,7 @@ export const PoiController: IController = {
         coordinates,
       } = req.body;
 
-      // check if user is
+      // Check if user connected is admin city or admin
       const { userId } = req.params;
 
       const cityOfPoi = await dataSource.getRepository(City).findOne({
@@ -91,7 +91,14 @@ export const PoiController: IController = {
         },
       });
 
-      if (cityOfPoi?.userAdminCity.id !== userId) {
+      const currentUser = await dataSource
+        .getRepository(User)
+        .findOne({ where: { id: userId } });
+
+      if (
+        cityOfPoi?.userAdminCity.id !== userId ||
+        currentUser?.role !== UserRole.ADMIN
+      ) {
         res.status(403).send({
           error: "You are not authorized to create a point of interest",
         });
@@ -266,7 +273,6 @@ export const PoiController: IController = {
           validator.isEmpty(value, { ignore_whitespace: true }) ||
           typeof value !== "string"
         ) {
-          console.log(value);
           res
             .status(400)
             .send({ error: `Field must contains only characters` });
@@ -369,7 +375,14 @@ export const PoiController: IController = {
         },
       });
 
-      if (cityOfPoi?.userAdminCity.id !== userId) {
+      const currentUser = await dataSource
+        .getRepository(User)
+        .findOne({ where: { id: userId } });
+
+      if (
+        cityOfPoi?.userAdminCity.id !== userId ||
+        currentUser?.role !== UserRole.ADMIN
+      ) {
         res.status(403).send({
           error: "You are not authorized to create a point of interest",
         });
@@ -454,7 +467,14 @@ export const PoiController: IController = {
         .getRepository(City)
         .findOne({ where: { id: poiToDelete.city.id } });
 
-      if (cityOfPoi?.userAdminCity.id !== userId) {
+      const currentUser = await dataSource
+        .getRepository(User)
+        .findOne({ where: { id: userId } });
+
+      if (
+        cityOfPoi?.userAdminCity.id !== userId ||
+        currentUser?.role !== UserRole.ADMIN
+      ) {
         res.status(403).send({
           error: "You are not authorized to delete a point of interest",
         });

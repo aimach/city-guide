@@ -106,9 +106,6 @@ export const ProfileController: IController = {
         await unlink(`./public/user/${req.file?.filename}`);
         return;
       }
-      const currentUser = await dataSource
-        .getRepository(User)
-        .findOne({ where: { id: userId } });
 
       // check if profile exists in db
       const profileToUpdate = await dataSource
@@ -122,6 +119,9 @@ export const ProfileController: IController = {
       }
 
       // Only admin user can update a role
+      const currentUser = await dataSource
+        .getRepository(User)
+        .findOne({ where: { id: userId } });
 
       if (role && currentUser?.role !== UserRole.ADMIN) {
         res.status(403).send({
@@ -135,7 +135,7 @@ export const ProfileController: IController = {
       // Check if connected user has the same id than profile to update or if he is admin
 
       if (
-        currentUser?.id !== profileToUpdate.id &&
+        currentUser?.id !== profileToUpdate.id ||
         currentUser?.role !== UserRole.ADMIN
       ) {
         res.status(403).send({
@@ -232,7 +232,7 @@ export const ProfileController: IController = {
       }
 
       if (
-        currentUser?.id !== profileToDelete.id &&
+        currentUser?.id !== profileToDelete.id ||
         currentUser?.role !== UserRole.ADMIN
       ) {
         res.status(403).send({
@@ -274,7 +274,7 @@ export const ProfileController: IController = {
         .findOne({ where: { id: userId } });
 
       if (
-        currentUser?.id !== userToUpdate.id &&
+        currentUser?.id !== userToUpdate.id ||
         currentUser?.role !== UserRole.ADMIN
       ) {
         res.status(403).send({
@@ -327,7 +327,7 @@ export const ProfileController: IController = {
         .findOne({ where: { id: userId } });
 
       if (
-        currentUser?.id !== userToUpdate.id &&
+        currentUser?.id !== userToUpdate.id ||
         currentUser?.role !== UserRole.ADMIN
       ) {
         res.status(403).send({
@@ -388,7 +388,7 @@ export const ProfileController: IController = {
         .findOne({ where: { id: userId } });
 
       if (
-        currentUser?.id !== userToUpdate.id &&
+        currentUser?.id !== userToUpdate.id ||
         currentUser?.role !== UserRole.ADMIN
       ) {
         res.status(403).send({
@@ -444,7 +444,7 @@ export const ProfileController: IController = {
         .findOne({ where: { id: userId } });
 
       if (
-        currentUser?.id !== userToUpdate.id &&
+        currentUser?.id !== userToUpdate.id ||
         currentUser?.role !== UserRole.ADMIN
       ) {
         res.status(403).send({

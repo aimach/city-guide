@@ -48,10 +48,19 @@ export const CityController: IController = {
           userAdminCity: true,
           poi: true,
         },
+        select: {
+          userAdminCity: {
+            id: true,
+            username: true,
+            email: true,
+            city: true,
+            image: true,
+            createdPoi: true,
+          },
+        },
       });
       if (cityToRead === null) {
         res.status(404).send({ error: "City not found" });
-        await unlink(`./public/city/${req.file?.filename}`);
       } else {
         res.status(200).send(cityToRead);
       }
@@ -158,7 +167,7 @@ export const CityController: IController = {
       // format coordinates
       req.body.coordinates = {
         type: "Point",
-        coordinates: [coordinates[0], coordinates[1]] as number[],
+        coordinates: [coordinates[0], coordinates[1]],
       };
 
       await dataSource.getRepository(City).save(req.body);
