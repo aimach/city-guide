@@ -1,33 +1,66 @@
-import style from "./InteractiveMap.module.scss";
-import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
+import React, { useRef, useEffect, useState } from "react";
+import maplibregl from "maplibre-gl";
+import "maplibre-gl/dist/maplibre-gl.css";
+import styles from "./InteractiveMap.module.scss";
+import { GeocodingControl } from "@maptiler/geocoding-control/maplibregl";
 
-const InteractiveMap = () => {
-  return (
-    <>
-      <div className={`${style.titleStyle} titleResearch`}>
-        Trouvez votre point d'intérêt !
-      </div>
-      <div>
-        <div />
-        <MapContainer
-          className={`${style.map}`}
-          center={[51.505, -0.09]}
-          zoom={13}
-          scrollWheelZoom={false}
-        >
-          <TileLayer
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          />
-          <Marker position={[51.505, -0.09]}>
-            <Popup>
-              A pretty CSS3 popup. <br /> Easily customizable.
-            </Popup>
-          </Marker>
-        </MapContainer>
-      </div>
-    </>
+export default function InteractiveMap() {
+  const mapContainer = useRef<HTMLDivElement>(null);
+  const map = useRef<maplibregl.Map>();
+  const marker = useRef<maplibregl.Marker>();
+  const [lng] = useState(139.753);
+  const [lat] = useState(35.6844);
+  const [zoom] = useState(14);
+  const [API_KEY] = useState("bUNkGxzojTZOBuCGooQ2");
+
+  useEffect(() => {
+    if (map.current) return;
+
+    map.current = new maplibregl.Map({
+      container: mapContainer.current!,
+      style: `https://api.maptiler.com/maps/satellite/style.json?key=${API_KEY}`,
+      center: [lng, lat],
+      zoom: zoom,
+    });
+
+    map.current.addControl(new maplibregl.NavigationControl(), "top-right");
+    new maplibregl.Marker({ color: "#FF0000" })
+      .setLngLat([139.7525, 35.6846])
+      .addTo(map.current);
+
+    marker.current = new maplibregl.Marker({ color: "#FF0000" })
+      .setLngLat([139.7525, 35.6846])
+      .addTo(map.current);
+
+    const popup = new maplibregl.Popup({ offset: 25 }).setText(
+      "Hello, this is a popup!"
+    );
+    marker.current.setPopup(popup);
+
+    const geocodingControl = new GeocodingControl({
+      apiKey: API_KEY,
+      // @ts-ignore
+      maplibregl,
+    });
+    map.current.addControl(geocodingControl, "top-left");
+  }, [API_KEY, lng, lat, zoom]);
+
+  navigator.geolocation.getCurrentPosition(
+    (position) => {
+      const { latitude, longitude } = position.coords;
+
+      const marker = new maplibregl.Marker()
+        .setLngLat([longitude, latitude])
+        .addTo(map.current!);
+    },
+    (error) => {
+      console.log(error.message);
+    }
   );
-};
 
-export default InteractiveMap;
+  return (
+    <div className={`${styles.mapWrap}`}>
+      <div ref={mapContainer} className={`${styles.mapWrap}`} />
+    </div>
+  );
+}
