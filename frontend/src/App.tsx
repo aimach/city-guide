@@ -1,5 +1,4 @@
 import "./App.scss";
-// import Footer from "./components/common/footer/Footer";
 import InteractiveMap from "./components/interactiveMap/InteractiveMap";
 import Footer from "./components/common/footer/Footer";
 import SearchPOI from "./pages/SearchPOI/SearchPOI";
