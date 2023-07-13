@@ -6,6 +6,8 @@ import { IController } from "./user-controller";
 import fs from "fs";
 import { unlink } from "fs/promises";
 import { v4 as uuidv4 } from "uuid";
+import validator from "validator";
+import { User, UserRole } from "../entities/User";
 
 export const CategoryController: IController = {
   // GET ALL CATEGORIES
@@ -16,7 +18,7 @@ export const CategoryController: IController = {
       res.status(200).send(allCategories);
     } catch (err) {
       console.log(err);
-      res.status(400).send("Error while reading categories");
+      res.status(400).send({ error: "Error while reading categories" });
     }
   },
 
@@ -29,12 +31,12 @@ export const CategoryController: IController = {
         .getRepository(Category)
         .findOneBy({ id });
       if (categoryToRead === null) {
-        res.status(404).send("Category not found");
+        res.status(404).send({ error: "Category not found" });
       } else {
         res.status(200).send(categoryToRead);
       }
     } catch (err) {
-      res.status(400).send("Error while reading category");
+      res.status(400).send({ error: "Error while reading category" });
     }
   },
 
@@ -42,13 +44,76 @@ export const CategoryController: IController = {
 
   createCategory: async (req: Request, res: Response): Promise<void> => {
     try {
+      const { name, image } = req.body;
+
+      // check if user is admin
+      const { userId } = req.params;
+
+      const currentUser = await dataSource
+        .getRepository(User)
+        .findOne({ where: { id: userId } });
+
+      if (currentUser?.role !== UserRole.ADMIN) {
+        res.status(403).send({
+          error: "You are not authorized to create a category",
+        });
+        await unlink(`./public/category/${req.file?.filename}`);
+      }
+
+      // check if name is string or not empty
+      const checkIfEmptyAndNotAString = async (
+        value: string
+      ): Promise<void> => {
+        if (validator.isEmpty(value, { ignore_whitespace: true })) {
+          res.status(422).send({ error: `Please fill the empty field` });
+          await unlink(`./public/category/${req.file?.filename}`);
+          return;
+        }
+        if (typeof value !== "string") {
+          res
+            .status(400)
+            .send({ error: `Field must contains only characters` });
+          await unlink(`./public/category/${req.file?.filename}`);
+
+          return;
+        }
+      };
+
+      const inputs: string[] = Object.values(req.body);
+      inputs.forEach((value) => checkIfEmptyAndNotAString(value));
+
+      // Check format of category's name
+      if (
+        !validator.matches(
+          name,
+          /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð '-]{2,100}$/
+        )
+      ) {
+        res.status(400).send({
+          error: `Field must contains only characters (min: 2, max: 100)`,
+        });
+        await unlink(`./public/category/${req.file?.filename}`);
+        return;
+      }
+
+      // check if image is an object
+      if (image && typeof image !== "object") {
+        res.status(400).send({
+          error: `Field image must contains a file`,
+        });
+        await unlink(`./public/category/${req.file?.filename}`);
+        return;
+      }
+
       // check if category name already exists in db
-      const { name } = req.body;
       const nameAlreadyExist = await dataSource
         .getRepository(Category)
         .count({ where: { name } });
       if (nameAlreadyExist > 0) {
-        res.status(409).send("Category already exists");
+        res.status(409).send({
+          error: `Category already exists`,
+        });
+        await unlink(`./public/category/${req.file?.filename}`);
         return;
       }
 
@@ -65,12 +130,16 @@ export const CategoryController: IController = {
           }
         );
         req.body.image = `/public/category/${newName}`;
+      } else {
+        res.status(400).send({ error: "An image is required" });
+        return;
       }
 
       await dataSource.getRepository(Category).save(req.body);
       res.status(201).send("Created category");
     } catch (error) {
-      res.status(400).send("Something went wrong");
+      res.status(400).send({ error: "Something went wrong" });
+      await unlink(`./public/category/${req.file?.filename}`);
     }
   },
 
@@ -79,7 +148,69 @@ export const CategoryController: IController = {
   updateCategory: async (req: Request, res: Response): Promise<void> => {
     try {
       const { id } = req.params;
-      const { name } = req.body;
+      const { name, image } = req.body;
+
+      // check if user is admin
+      const { userId } = req.params;
+
+      const currentUser = await dataSource
+        .getRepository(User)
+        .findOne({ where: { id: userId } });
+
+      if (currentUser?.role !== UserRole.ADMIN) {
+        res.status(403).send({
+          error: "You are not authorized to create a category",
+        });
+        await unlink(`./public/category/${req.file?.filename}`);
+      }
+
+      // validate format
+
+      const checkIfEmptyAndNotAString = async (
+        value: string
+      ): Promise<void> => {
+        if (validator.isEmpty(value, { ignore_whitespace: true })) {
+          res.status(422).send({ error: `Please fill the empty field` });
+        }
+        if (typeof value !== "string") {
+          res
+            .status(400)
+            .send({ error: `Field must contains only characters` });
+          await unlink(`./public/category/${req.file?.filename}`);
+        }
+      };
+
+      // check if values are string and not empty
+
+      const inputs: string[] = Object.values(req.body);
+      inputs.forEach((value) => checkIfEmptyAndNotAString(value));
+
+      // check if name contains only characters
+
+      if (
+        name &&
+        !validator.matches(
+          name,
+          /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð '-]{2,100}$/
+        )
+      ) {
+        res.status(400).send({
+          error: `Field must contains only characters (min: 2, max: 100)`,
+        });
+        await unlink(`./public/category/${req.file?.filename}`);
+
+        return;
+      }
+
+      // check if image is an object
+      if (image && typeof image !== "object") {
+        res.status(400).send({
+          error: `Field image must contains a file`,
+        });
+        await unlink(`./public/category/${req.file?.filename}`);
+
+        return;
+      }
 
       // check if the category exists in db
       const categoryToUpdate = await dataSource
@@ -87,7 +218,9 @@ export const CategoryController: IController = {
         .findOneBy({ id });
 
       if (categoryToUpdate === null) {
-        res.status(404).send("Category not found");
+        res.status(404).send({ error: "Category not found" });
+        await unlink(`./public/category/${req.file?.filename}`);
+
         return;
       }
 
@@ -99,7 +232,9 @@ export const CategoryController: IController = {
           .count({ where: { name, id: Not(id) } });
 
         if (nameAlreadyExist > 0) {
-          res.status(409).send("Category name already exist");
+          res.status(409).send({ error: "Category name already exist" });
+          await unlink(`./public/category/${req.file?.filename}`);
+
           return;
         }
       }
@@ -119,7 +254,7 @@ export const CategoryController: IController = {
         );
         req.body.image = `/public/category/${newName}`;
         // delete
-        if (categoryToUpdate.image !== null) {
+        if (categoryToUpdate.image) {
           await unlink("." + categoryToUpdate.image);
         }
       }
@@ -127,8 +262,8 @@ export const CategoryController: IController = {
       await dataSource.getRepository(Category).update(id, req.body);
       res.status(200).send("Updated category");
     } catch (err) {
-      console.log(err);
-      res.status(400).send("Error while updating category");
+      res.status(400).send({ error: "Error while updating category" });
+      await unlink(`./public/category/${req.file?.filename}`);
     }
   },
 
@@ -138,12 +273,25 @@ export const CategoryController: IController = {
     try {
       const { id } = req.params;
 
+      // check if user is admin
+      const { userId } = req.params;
+
+      const currentUser = await dataSource
+        .getRepository(User)
+        .findOne({ where: { id: userId } });
+
+      if (currentUser?.role !== UserRole.ADMIN) {
+        res.status(403).send({
+          error: "You are not authorized to create a category",
+        });
+      }
+
       // check if category exists in db
       const categoryToDelete = await dataSource
         .getRepository(Category)
         .findOneBy({ id });
       if (categoryToDelete === null) {
-        res.status(404).send("Category not found");
+        res.status(404).send({ error: "Category not found" });
         return;
       }
 
@@ -156,7 +304,7 @@ export const CategoryController: IController = {
 
       res.status(200).send("Deleted category");
     } catch (err) {
-      res.status(400).send("Error while deleting category");
+      res.status(400).send({ error: "Error while deleting category" });
     }
   },
 };
