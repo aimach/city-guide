@@ -1,0 +1,22 @@
+@import "../../style/variable";
+@import "../../style/mixin";
+
+.container {
+    background-color: $cream-color;
+    padding: 60px 0px;
+
+    .categories {
+        border-bottom: 1px solid $primary-color;
+        border-top: 1px solid $primary-color;
+        padding: 0 auto;
+    }
+
+    h1 {
+        text-align: center;
+        color: $primary-color;
+        font-size: 48px;
+        font-weight: 500;
+        margin: 0;
+        margin-bottom: 60px;
+    }
+}

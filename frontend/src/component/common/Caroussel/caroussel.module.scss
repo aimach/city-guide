@@ -1,0 +1,21 @@
+@import "../../../style/variable";
+@import "../../../style/mixin";
+
+.container {
+    margin: 50px 110px;
+
+    h2 {
+        color: $primary-color;
+        margin-bottom: 50px;
+    }
+    .cardsContainer {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 50px;
+        @media screen and (max-width: 768px) {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+    }
+}

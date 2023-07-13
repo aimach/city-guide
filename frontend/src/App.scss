@@ -7,8 +7,12 @@
 html {
   background-color: v.$primary_color;
   font-family: "Poppins", sans-serif;
+  box-sizing: border-box;
 }
 
+body {
+  margin: 0;
+}
 h1 {
   font-family: "Poppins", sans-serif;
   font-size: 40px;

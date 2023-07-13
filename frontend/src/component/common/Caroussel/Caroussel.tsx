@@ -1,5 +1,5 @@
 import React from 'react';
-import { CardType, DataType } from '../../../utils/types';
+import { CardType, City, DataType } from '../../../utils/types';
 import styles from './caroussel.module.scss';
 import Card from '../card/Card';
 
@@ -7,9 +7,17 @@ interface Props {
    title: string;
    data: DataType;
    cardType: CardType;
+   onClickCategory?: (categoryName: string, cityName: string) => Promise<void>;
+   currentCity?: City | null;
 }
 
-const Caroussel = ({ title, data, cardType }: Props) => {
+const Caroussel = ({
+   title,
+   data,
+   cardType,
+   onClickCategory,
+   currentCity,
+}: Props) => {
    const url = 'http://localhost:5000';
 
    return (
@@ -24,6 +32,8 @@ const Caroussel = ({ title, data, cardType }: Props) => {
                      image={`${url}${image}`}
                      key={id}
                      cardType={cardType}
+                     onClickCategory={onClickCategory}
+                     currentCity={currentCity}
                   />
                );
             })}

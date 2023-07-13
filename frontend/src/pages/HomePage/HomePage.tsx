@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
-import InteractiveMap from '../../components/interactiveMap/InteractiveMap';
+import InteractiveMap from '../../component/interactiveMap/InteractiveMap';
 
-import Caroussel from '../../components/common/Caroussel/Caroussel';
+import Caroussel from '../../component/common/Caroussel/Caroussel';
 import { CardType, City } from '../../utils/types';
 import styles from './homePage.module.scss';
 
