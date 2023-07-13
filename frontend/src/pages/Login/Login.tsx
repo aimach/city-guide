@@ -1,9 +1,10 @@
-// import { useContext } from 'react';
-// import { UserContext } from '../../contexts/UserContext';
 import { useState } from "react";
-import "../../style/form.module.scss";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faAt, faKey } from "@fortawesome/free-solid-svg-icons";
+import styles from "../../style/form.module.scss";
 
 export interface FormProps {
   email: string;
@@ -56,30 +57,44 @@ const Login = () => {
   // avec la fonction `setIsAuthenticated` et on redirige vers la page d'accueil.
 
   return (
-    <section>
-      <h2>De retour ?!</h2>
-      <form onSubmit={handleSubmit(onSubmit)}>
+    <section className={styles.section_login}>
+      <h2 className={styles.h2_login}>De retour ?</h2>
+      <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
         <h3>Connexion</h3>
 
-        <input
-          type="text"
-          placeholder="Adresse mail"
-          {...register("email", {
-            required: "Vous devez renseigner ce champ",
-          })}
-        />
+        <div className="input-wrapper">
+          <FontAwesomeIcon icon={faAt} className="icon" />
+          <input
+            type="text"
+            placeholder="Adresse mail"
+            {...register("email", {
+              required: "Vous devez renseigner ce champ",
+            })}
+          />
+        </div>
+        {/* {errors.email && <p className="error">{errors.email.message}</p>} */}
 
-        <input
-          type="password"
-          placeholder="Mot de passe"
-          {...register("password", {
-            required: "Vous devez renseigner ce champ",
-          })}
-        />
-
-        {error && <p className="error">{error}</p>}
+        <div className="input-wrapper">
+          <FontAwesomeIcon icon={faKey} className="icon" />
+          <input
+            type="password"
+            placeholder="Mot de passe"
+            {...register("password", {
+              required: "Vous devez renseigner ce champ",
+            })}
+          />
+        </div>
+        {/* {errors.password && <p className="error">{errors.password.message}</p>} */}
 
         <input type="submit" value="Explorer" />
+        <Link to="/register">
+          Vous n’avez pas de compte ? Créez en un juste ici !
+        </Link>
+        <span>Téléchargez l’application ici !</span>
+        <div id="logoStore-wrapper">
+          <img src="/appleDownload.svg" alt="Apple Store" />
+          <img src="/google-play-badge.png" alt="Google Store" />
+        </div>
       </form>
     </section>
   );

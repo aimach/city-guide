@@ -1,22 +1,28 @@
 @use './mixin' as m;
 @use './variable' as v;
 @use './placeholder';
-
-section {
+.section {
     height: 100vh;
     @include m.flexLayout(center, center, column);
     background: url("../../public/bg-wave.svg"), url('../../public/Illu_man.svg');
-    // background-position: -40px -175px,left 15% bottom 20%;
     background-position: 100% 320%,left 17% bottom 20%;
     background-size: auto, 11%;
-    background-repeat: no-repeat, no-repeat;
+
+
 
     h2 {
-            color: var(--dark-purple, #090F43);
             font-family: v.$comicNeueFont;
             font-size: 48px;
             font-weight: 700;
             margin-top: -1.5em;
+    }
+
+    .h2_login {
+        color: var(--cream, #F5F6E2);
+    }
+
+    .h2_register {
+        color: var(--dark-purple, #090F43);
     }
         
        
@@ -27,11 +33,10 @@ form {
     border-radius: 20px;
     border: 3px solid #FFE600;
     background: #F3DF24;
-    @include m.flexLayout(center, center, column);
+    @include m.flexLayout(space-around, center, column);
     // width: 40%;
     width: 668px;
     height: 556px;
-    gap: 1em;
     padding: 2em;
 
     h3 {
@@ -54,7 +59,8 @@ form {
     }
     input[type=text],
     input[type=email],
-    input[type=password] {
+    input[type=password],
+    select {
         @extend %inputForm;
         @include m.buttonSize(80%, auto);
         padding: 1em;
@@ -68,7 +74,7 @@ form {
     }
   
 
-    input::placeholder {
+    input::placeholder, option {
         color: var(--dark-purple, #090F43);
         font-size: 15px;
         font-family: 'Comic Neue', cursive;
@@ -116,6 +122,29 @@ form {
         font-size: 16px;
         font-weight: 500;
     }
+    // Contribution form 
+
+    select {
+        @include m.buttonSize(85%, auto);
+        
+        option {
+           border: 20px solid #090F43;
+        }
+       
+    }
 }
+}
+.section_login {
+    @extend .section;
+    background: url("../../public/bg-wave_login.svg"), url('../../public/Illu_man_login.svg');
+    background-position: 100% -400%,left 17% top 20%;
+    background-repeat: no-repeat, no-repeat;
+}
+
+.section_register {
+    @extend .section;
+    background: url("../../public/bg-wave.svg"), url('../../public/Illu_man.svg');
+    background-position: 100% 320%, left 17% bottom 20%;
+    background-repeat: no-repeat, no-repeat;
 }
 

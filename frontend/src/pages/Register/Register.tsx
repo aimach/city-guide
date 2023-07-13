@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import "../../style/form.module.scss";
+import styles from "../../style/form.module.scss";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faAt, faKey } from "@fortawesome/free-solid-svg-icons";
@@ -65,9 +65,9 @@ const Register = () => {
   };
 
   return (
-    <section>
-      <h2>Nous rejoindre</h2>
-      <form onSubmit={handleSubmit(onSubmit)}>
+    <section className={styles.section_register}>
+      <h2 className={styles.h2_register}>Nous rejoindre</h2>
+      <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
         <h3>Inscription</h3>
 
         <div className="input-wrapper">
@@ -91,23 +91,6 @@ const Register = () => {
               required: "Vous devez renseigner ce champ",
             })}
           />
-          {/* 
-            
-               Opérateurs logiques, la logique booléenne en JavaScript
-
-               && = et logique
-
-               Si `errors.username` est égal à false, ou '', ou `undefined`, ou `null`, ou 0, ou NaN,
-               (errors.username) && (<p className="error">{errors.username.message}</p>) -> false -> rien ne s'affiche.
-
-               true && true && false -> false
-               true && true && true -> true
-               true && false && true -> false
-               true && false && false -> false
-               false && true && true && true && true -> false
-               '' && true && true && true && true -> ''
-            
-            */}
         </div>
         {errors.username && <p className="error">{errors.username.message}</p>}
 
