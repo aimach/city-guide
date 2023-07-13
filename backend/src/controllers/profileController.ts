@@ -1,12 +1,13 @@
 import { Request, Response } from "express";
 import dataSource from "../dataSource";
-import { User } from "../entities/User";
+import { User, UserRole } from "../entities/User";
 import { Poi } from "../entities/Poi";
 import { City } from "../entities/City";
 import { IController } from "./user-controller";
 import fs from "fs";
 import { unlink } from "fs/promises";
 import { v4 as uuidv4 } from "uuid";
+import validator from "validator";
 
 export const ProfileController: IController = {
   // GET ALL PROFILES
@@ -25,12 +26,14 @@ export const ProfileController: IController = {
           "user.email",
         ])
         .leftJoinAndSelect("user.createdPoi", "createdPoi")
+        .leftJoinAndSelect("user.favouriteCities", "favouritesCities")
+        .leftJoinAndSelect("user.favouritePoi", "favouritePoi")
         .getMany();
 
       res.status(200).send(allProfiles);
     } catch (err) {
       console.log(err);
-      res.status(400).send("Error while reading users");
+      res.status(400).send({ error: "Error while reading users" });
     }
   },
 
@@ -52,16 +55,20 @@ export const ProfileController: IController = {
           "user.email",
         ])
         .leftJoinAndSelect("user.createdPoi", "createdPoi")
+        .leftJoinAndSelect("user.favouriteCities", "favouriteCities")
+        .leftJoinAndSelect("user.favouritePoi", "favouritePoi")
         .where("user.id = :id", { id })
         .getOne();
 
       if (profileToRead === null) {
-        res.status(404).send("User not found");
+        res.status(404).send({ error: "User not found" });
+
+        return;
       } else {
         res.status(200).send(profileToRead);
       }
     } catch (err) {
-      res.status(400).send("Error while reading user");
+      res.status(400).send({ error: "Error while reading user" });
     }
   },
 
@@ -69,15 +76,73 @@ export const ProfileController: IController = {
 
   updateProfile: async (req: Request, res: Response): Promise<void> => {
     try {
-      const { id } = req.params;
-      const { username, email } = req.body;
+      const { id, userId } = req.params;
+      const { username, email, city, password, role } = req.body as User;
+
+      // check if input with string are alpha and not empty
+
+      const checkIfStringAndNotEmpty = async (value: string): Promise<void> => {
+        if (
+          validator.isEmpty(value, { ignore_whitespace: true }) ||
+          typeof value !== "string"
+        ) {
+          res.status(400).send({
+            error: `Field must contains only characters`,
+          });
+          await unlink(`./public/user/${req.file?.filename}`);
+          return;
+        }
+      };
+
+      const inputString: string[] = [username, email, city, password];
+      inputString.forEach((value) => {
+        if (value) checkIfStringAndNotEmpty(value);
+      });
+
+      // check enum in role
+      const roles: UserRole[] = Object.values(UserRole);
+      if (role && !roles.includes(role)) {
+        res.status(400).send({ error: "User role does not exist" });
+        await unlink(`./public/user/${req.file?.filename}`);
+        return;
+      }
 
       // check if profile exists in db
       const profileToUpdate = await dataSource
         .getRepository(User)
         .findOneBy({ id });
       if (profileToUpdate === null) {
-        res.status(404).send("User not found");
+        res.status(404).send({ error: "User not found" });
+        await unlink(`./public/user/${req.file?.filename}`);
+
+        return;
+      }
+
+      // Only admin user can update a role
+      const currentUser = await dataSource
+        .getRepository(User)
+        .findOne({ where: { id: userId } });
+
+      if (role && currentUser?.role !== UserRole.ADMIN) {
+        res.status(403).send({
+          error: "You are not authorized to update this property",
+        });
+        await unlink(`./public/user/${req.file?.filename}`);
+
+        return;
+      }
+
+      // Check if connected user has the same id than profile to update or if he is admin
+
+      if (
+        currentUser?.id !== profileToUpdate.id ||
+        currentUser?.role !== UserRole.ADMIN
+      ) {
+        res.status(403).send({
+          error: "You are not authorized to update this profile",
+        });
+        await unlink(`./public/user/${req.file?.filename}`);
+
         return;
       }
 
@@ -87,7 +152,19 @@ export const ProfileController: IController = {
           .getRepository(User)
           .count({ where: { username } });
         if (usernameAlreadyExist > 0) {
-          res.status(409).send("Username already exists");
+          res.status(409).send({ error: "Username already exists" });
+          await unlink(`./public/user/${req.file?.filename}`);
+        }
+        if (
+          !validator.matches(
+            username,
+            /^(?=.*[a-zA-Z]{1,})(?=.*[\d]{0,})[a-zA-Z0-9]{3,20}$/
+          )
+        ) {
+          res.status(401).send({
+            error: "Username must contain 3 to 20 characters and no symbol",
+          });
+          await unlink(`./public/user/${req.file?.filename}`);
         }
       }
 
@@ -97,7 +174,12 @@ export const ProfileController: IController = {
           .getRepository(User)
           .count({ where: { email } });
         if (emailAlreadyExist > 0) {
-          res.status(409).send("Email already exists");
+          res.status(409).send({ error: "Email already exists" });
+          await unlink(`./public/user/${req.file?.filename}`);
+        }
+        if (!validator.isEmail(email)) {
+          res.status(401).send({ error: "Incorrect email format" });
+          await unlink(`./public/user/${req.file?.filename}`);
         }
       }
 
@@ -125,7 +207,8 @@ export const ProfileController: IController = {
       await dataSource.getRepository(User).update(id, req.body);
       res.status(200).send("Updated user");
     } catch (err) {
-      res.status(400).send("Error while updating user");
+      res.status(400).send({ error: "Error while updating user" });
+      await unlink(`./public/user/${req.file?.filename}`);
     }
   },
 
@@ -133,17 +216,31 @@ export const ProfileController: IController = {
 
   deleteProfile: async (req: Request, res: Response): Promise<void> => {
     try {
-      const { id } = req.params;
+      const { id, userId } = req.params;
+
+      const currentUser = await dataSource
+        .getRepository(User)
+        .findOne({ where: { id: userId } });
 
       // check if profile exists in db
       const profileToDelete = await dataSource
         .getRepository(User)
         .findOneBy({ id });
       if (profileToDelete === null) {
-        res.status(404).send("User not found");
+        res.status(404).send({ error: "User not found" });
         return;
       }
 
+      if (
+        currentUser?.id !== profileToDelete.id ||
+        currentUser?.role !== UserRole.ADMIN
+      ) {
+        res.status(403).send({
+          error: "You are not authorized to delete this profile",
+        });
+
+        return;
+      }
       await dataSource.getRepository(User).delete(id);
 
       // delete image in public directory
@@ -153,21 +250,36 @@ export const ProfileController: IController = {
 
       res.status(200).send("Deleted user");
     } catch (err) {
-      res.status(400).send("Error while deleting user");
+      res.status(400).send({ error: "Error while deleting user" });
     }
   },
 
   // ADD POI TO FAVORITE ARRAY
 
   addFavoritePoiToUser: async (req: Request, res: Response): Promise<void> => {
-    const { idUser, idPoi } = req.params;
+    const { idUser, idPoi, userId } = req.params;
     try {
       // check if profile exists in db
       const userToUpdate = await dataSource
         .getRepository(User)
         .findOneBy({ id: idUser });
       if (userToUpdate === null) {
-        res.status(404).send("User not found");
+        res.status(404).send({ error: "User not found" });
+        return;
+      }
+
+      // Check if user connected is the user to update or is an admin
+      const currentUser = await dataSource
+        .getRepository(User)
+        .findOne({ where: { id: userId } });
+
+      if (
+        currentUser?.id !== userToUpdate.id ||
+        currentUser?.role !== UserRole.ADMIN
+      ) {
+        res.status(403).send({
+          error: "You are not authorized to update this profile",
+        });
         return;
       }
 
@@ -176,7 +288,7 @@ export const ProfileController: IController = {
         .getRepository(Poi)
         .findOneBy({ id: idPoi });
       if (poiToAdd === null) {
-        res.status(404).send("Point of interest not found");
+        res.status(404).send({ error: "Point of interest not found" });
         return;
       }
 
@@ -186,7 +298,9 @@ export const ProfileController: IController = {
       res.status(200).send("Favorite poi added to user");
     } catch (err) {
       console.log(err);
-      res.status(400).send("Error while adding point of interest to favorites");
+      res.status(400).send({
+        error: "Error while adding point of interest to favorites",
+      });
     }
   },
 
@@ -196,14 +310,29 @@ export const ProfileController: IController = {
     req: Request,
     res: Response
   ): Promise<void> => {
-    const { idUser, idPoi } = req.params;
+    const { idUser, idPoi, userId } = req.params;
     try {
       // check if profile exists in db
       const userToUpdate = await dataSource
         .getRepository(User)
         .findOneBy({ id: idUser });
       if (userToUpdate === null) {
-        res.status(404).send("User not found");
+        res.status(404).send({ error: "User not found" });
+        return;
+      }
+
+      // Check if user connected is the user to update or is an admin
+      const currentUser = await dataSource
+        .getRepository(User)
+        .findOne({ where: { id: userId } });
+
+      if (
+        currentUser?.id !== userToUpdate.id ||
+        currentUser?.role !== UserRole.ADMIN
+      ) {
+        res.status(403).send({
+          error: "You are not authorized to update this profile",
+        });
         return;
       }
 
@@ -212,7 +341,7 @@ export const ProfileController: IController = {
         .getRepository(Poi)
         .findOneBy({ id: idPoi });
       if (poiToRemove === null) {
-        res.status(404).send("Point of interest not found");
+        res.status(404).send({ error: "Point of interest not found" });
         return;
       }
 
@@ -224,23 +353,23 @@ export const ProfileController: IController = {
       res.status(200).send("Favorite poi remove to user");
     } catch (err) {
       console.log(err);
-      res
-        .status(400)
-        .send("Error while removing point of interest to favorites");
+      res.status(400).send({
+        error: "Error while removing point of interest to favorites",
+      });
     }
   },
 
   // ADD CITY TO FAVORITE ARRAY
 
   addFavoriteCityToUser: async (req: Request, res: Response): Promise<void> => {
-    const { idUser, idCity } = req.params;
+    const { idUser, idCity, userId } = req.params;
     try {
       // check if user exists in db
       const userToUpdate = await dataSource
         .getRepository(User)
         .findOneBy({ id: idUser });
       if (userToUpdate === null) {
-        res.status(404).send("User not found");
+        res.status(404).send({ error: "User not found" });
         return;
       }
 
@@ -249,7 +378,22 @@ export const ProfileController: IController = {
         .getRepository(City)
         .findOneBy({ id: idCity });
       if (cityToAdd === null) {
-        res.status(404).send("City not found");
+        res.status(404).send({ error: "City not found" });
+        return;
+      }
+
+      // Check if user connected is the user to update or is an admin
+      const currentUser = await dataSource
+        .getRepository(User)
+        .findOne({ where: { id: userId } });
+
+      if (
+        currentUser?.id !== userToUpdate.id ||
+        currentUser?.role !== UserRole.ADMIN
+      ) {
+        res.status(403).send({
+          error: "You are not authorized to update this profile",
+        });
         return;
       }
 
@@ -262,7 +406,9 @@ export const ProfileController: IController = {
       res.status(200).send("Favorite city added to user");
     } catch (err) {
       console.log(err);
-      res.status(400).send("Error while adding city to favorites");
+      res.status(400).send({
+        error: "Error while adding city to favorites",
+      });
     }
   },
 
@@ -272,14 +418,14 @@ export const ProfileController: IController = {
     req: Request,
     res: Response
   ): Promise<void> => {
-    const { idUser, idCity } = req.params;
+    const { idUser, idCity, userId } = req.params;
     try {
       // check if user exists in db
       const userToUpdate = await dataSource
         .getRepository(User)
         .findOneBy({ id: idUser });
       if (userToUpdate === null) {
-        res.status(404).send("User not found");
+        res.status(404).send({ error: "User not found" });
         return;
       }
 
@@ -288,7 +434,22 @@ export const ProfileController: IController = {
         .getRepository(City)
         .findOneBy({ id: idCity });
       if (cityToRemove === null) {
-        res.status(404).send("City not found");
+        res.status(404).send({ error: "City not found" });
+        return;
+      }
+
+      // Check if user connected is the user to update or is an admin
+      const currentUser = await dataSource
+        .getRepository(User)
+        .findOne({ where: { id: userId } });
+
+      if (
+        currentUser?.id !== userToUpdate.id ||
+        currentUser?.role !== UserRole.ADMIN
+      ) {
+        res.status(403).send({
+          error: "You are not authorized to update this profile",
+        });
         return;
       }
 
@@ -300,7 +461,9 @@ export const ProfileController: IController = {
       res.status(200).send("Favorite city remove to user");
     } catch (err) {
       console.log(err);
-      res.status(400).send("Error while removing city to favorites");
+      res.status(400).send({
+        error: "Error while removing city to favorites",
+      });
     }
   },
 };
