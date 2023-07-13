@@ -24,7 +24,7 @@ Content-Type: application/json
 {
   "coordinates": [34, 35],
   "image": "sdqfsqdfsqdfqsdf",
-  "user_admin_city": null
+  "userAdminCity": null
 }
 
 ###
