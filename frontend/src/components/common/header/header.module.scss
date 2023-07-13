@@ -7,16 +7,21 @@
   @include m.flexLayout(space-between, center);
   padding: 2rem;
   border-bottom: 1px solid v.$secondary_color;
+  position: sticky;
+  top: 0;
+  background-color: v.$primary_color;
 }
 
 .menu {
   @include m.flexLayout(space-between, center);
+
   ul {
     display: flex;
     li {
       list-style-type: none;
       margin-right: 2rem;
       padding: 0;
+      color: v.$cream_color;
       &:hover {
         transition: color 0.5s ease;
         color: v.$secondary_color;
