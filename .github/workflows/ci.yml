@@ -38,7 +38,7 @@ jobs:
         with:
           push: true
           context: "{{defaultContext}}:frontend"
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/frontend:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/2023-03-wns-lamarr-groupe3-frontend:latest
 
   docker-backend:
     needs: test-backend
@@ -59,4 +59,4 @@ jobs:
         with:
           push: true
           context: "{{defaultContext}}:backend"
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/backend:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/2023-03-wns-lamarr-groupe3-backend:latest
