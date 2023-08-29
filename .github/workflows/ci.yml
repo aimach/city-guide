@@ -38,7 +38,7 @@ jobs:
         with:
           push: true
           context: "{{defaultContext}}:frontend"
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/city-guide-frontend:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/frontend:latest
 
   docker-backend:
     needs: test-backend
@@ -59,4 +59,4 @@ jobs:
         with:
           push: true
           context: "{{defaultContext}}:backend"
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/city-guide-backend:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/backend:latest
