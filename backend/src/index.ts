@@ -1,7 +1,6 @@
 import express from "express";
-import cors from "cors";
 import dataSource from "./dataSource";
-const path = require("path");
+import path from "path";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 import {
