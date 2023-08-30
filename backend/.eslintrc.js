@@ -12,6 +12,7 @@ module.exports = {
   },
   rules: {
     "no-useless-return": "off",
+    // project: ["./backend/tsconfig.json"],
     "@typescript-eslint/no-misused-promises": [
       "error",
       {
