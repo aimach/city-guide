@@ -4,14 +4,43 @@
 .mainSearchPOI {
 	// background-image: url(./fond_vague_creme.png);
 	background-color: v.$cream_color;
+	border-bottom: 2px solid v.$primary_color;
 }
 // .waveSearchPOI {
 // 	background-image: url(./fond_vague_creme.png);
 // 	background-repeat: no-repeat;
 // }
+
+// .contentSearchPOI {
+// 	border-bottom: 1px solid v.$primary_color;
+// }
 .titleSearchPOI {
 	text-align: center;
-	padding-bottom: 50px;
-	padding-top: 50px;
+	margin: 0 auto;
 	border-bottom: 1px solid v.$primary_color;
+
+	.titlePOI {
+		padding-bottom: 50px;
+	}
+
+	.subtitlePOI :first-child {
+		padding-bottom: 30px;
+	}
+}
+
+.layoutDdl {
+	display: flex;
+	justify-content: space-between;
+	padding-top: 50px;
+}
+
+.filterSearchComponent {
+	padding-top: 50px;
+	width: 80%;
+	margin: 0 auto;
+	text-align: center;
+}
+.subtitleCity {
+	text-align: left;
+	padding-top: 40px;
 }

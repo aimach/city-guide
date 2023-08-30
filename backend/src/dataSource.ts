@@ -5,16 +5,17 @@ import { City } from "./entities/City";
 import { Poi } from "./entities/Poi";
 
 const dataSource = new DataSource({
-  type: "postgres",
-  host: "postgres",
-  port: 5432,
-  username: "postgres",
-  password: "example",
-  database: "postgres",
+	type: "postgres",
+	host: "postgres",
+	port: 5432,
+	username: "postgres",
+	password: "example",
+	database: "postgres",
 
-  synchronize: true,
+	synchronize: true,
+	// dropSchema: true, utile pour réinitialiser la BDD à chaque relancement.
 
-  entities: [User, Category, City, Poi],
+	entities: [User, Category, City, Poi],
 });
 
 export default dataSource;

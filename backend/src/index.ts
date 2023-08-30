@@ -4,12 +4,15 @@ import dataSource from "./dataSource";
 const path = require("path");
 import cookieParser from "cookie-parser";
 import {
-  authRoutes,
-  poiRoutes,
-  profileRoutes,
-  citiesRoutes,
-  categoriesRoutes,
+	authRoutes,
+	poiRoutes,
+	profileRoutes,
+	citiesRoutes,
+	categoriesRoutes,
 } from "./routes";
+import { City } from "./entities/City";
+import { User } from "./entities/User";
+import { seed } from "./seed";
 
 const app = express();
 app.use(express.json());
@@ -24,11 +27,20 @@ app.use("/api/cities", citiesRoutes);
 app.use("/api/categories", categoriesRoutes);
 
 const start = async (): Promise<void> => {
-  const port = 5000;
+	const port = 5000;
 
-  await dataSource.initialize();
-  app.listen({ port }, () => {
-    console.log(`Backend app ready at http://localhost:${port}`);
-  });
+	await dataSource.initialize();
+
+	if (process.env.NODE_ENV !== "production") {
+		try {
+			await seed();
+		} catch (error) {
+			console.log("Seed error: " + error);
+		}
+	}
+
+	app.listen({ port }, () => {
+		console.log(`Backend app ready at http://localhost:${port}`);
+	});
 };
 void start();

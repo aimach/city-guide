@@ -9,6 +9,9 @@
 .subtitleCategory {
 	@include m.textStyle(v.$cream_color, v.$poppinsFont, 36px, 700);
 }
+.subtitleCity {
+	@include m.textStyle(v.$primary_color, v.$poppinsFont, 36px, 700);
+}
 
 .profilName {
 	@include m.textStyle(v.$cream_color, v.$poppinsFont, 32px, 700);
@@ -66,7 +69,9 @@
 
 .titlePOI {
 	@include m.textStyle(v.$primary_color, v.$poppinsFont, 38px, 500);
+	@include m.spacesH1Style(50px, 50px);
 }
 .subtitlePOI {
 	@include m.textStyle(v.$primary_color, v.$poppinsFont, 22px, 500);
+	@include m.spacesH3Style(40px);
 }
