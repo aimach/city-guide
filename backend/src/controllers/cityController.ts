@@ -73,7 +73,7 @@ export const CityController: IController = {
 
   createCity: async (req: Request, res: Response): Promise<void> => {
     try {
-      const { name, image, coordinates, userAdminCityId } = req.body;
+      const { name, coordinates, userAdminCityId } = req.body;
       const { userId } = req.params;
 
       // Check if current user is admin
@@ -85,7 +85,8 @@ export const CityController: IController = {
         res.status(403).send({
           error: "You are not authorized to create a city",
         });
-        await unlink(`./public/city/${req.file?.filename}`);
+        if (req.file !== undefined)
+          await unlink(`./public/city/${req.file?.filename}`);
         return;
       }
 
@@ -101,7 +102,8 @@ export const CityController: IController = {
         res.status(400).send({
           error: `Field must contains only characters (min: 2, max: 100)`,
         });
-        await unlink(`./public/city/${req.file?.filename}`);
+        if (req.file !== undefined)
+          await unlink(`./public/city/${req.file?.filename}`);
         return;
       }
 
@@ -111,16 +113,18 @@ export const CityController: IController = {
         res.status(400).send({
           error: "Incorrect format of coordinates (must be [lat, long])",
         });
-        await unlink(`./public/city/${req.file?.filename}`);
+        if (req.file !== undefined)
+          await unlink(`./public/city/${req.file?.filename}`);
         return;
       }
 
       // check if userAdminCity is UUID type
-      if (userAdminCityId && !validator.isUUID(userAdminCityId)) {
+      if (userAdminCityId !== null && !validator.isUUID(userAdminCityId)) {
         res.status(400).send({
           error: "Incorrect format of admin city id (must be uuid)",
         });
-        await unlink(`./public/city/${req.file?.filename}`);
+        if (req.file !== undefined)
+          await unlink(`./public/city/${req.file?.filename}`);
         return;
       }
 
@@ -142,12 +146,13 @@ export const CityController: IController = {
       // if one or another exists, send 409
       if (nameAlreadyExist > 0 || coordsAlreadyExist > 0) {
         res.status(409).send({ error: "City already exists" });
-        await unlink(`./public/city/${req.file?.filename}`);
+        if (req.file !== undefined)
+          await unlink(`./public/city/${req.file?.filename}`);
         return;
       }
 
       // rename file image
-      if (req.file) {
+      if (req.file !== undefined) {
         const originalname = req.file.originalname;
         const filename = req.file.filename;
         const newName = `${uuidv4()}-${originalname}`;
@@ -155,7 +160,7 @@ export const CityController: IController = {
           `./public/city/${filename}`,
           `./public/city/${newName}`,
           (err) => {
-            if (err) throw err;
+            if (err !== null) throw err;
           }
         );
         req.body.image = `/public/city/${newName}`;
@@ -178,10 +183,12 @@ export const CityController: IController = {
         res.status(409).send({
           error: "User is already administrator in another city",
         });
-        await unlink(`./public/city/${req.file?.filename}`);
+        if (req.file !== undefined)
+          await unlink(`./public/city/${req.file?.filename}`);
       } else {
         res.status(400).send({ error: error.message });
-        await unlink(`./public/city/${req.file?.filename}`);
+        if (req.file !== undefined)
+          await unlink(`./public/city/${req.file?.filename}`);
       }
     }
   },
@@ -205,14 +212,15 @@ export const CityController: IController = {
         res.status(403).send({
           error: "You are not authorized to update a city",
         });
-        await unlink(`./public/city/${req.file?.filename}`);
+        if (req.file !== undefined)
+          await unlink(`./public/city/${req.file?.filename}`);
         return;
       }
 
       // check if name is alpha or not empty
 
       if (
-        name &&
+        name !== null &&
         (!validator.matches(
           name,
           /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð '-]{2,100}$/
@@ -222,41 +230,45 @@ export const CityController: IController = {
         res.status(400).send({
           error: `Field must contains only characters`,
         });
-        await unlink(`./public/city/${req.file?.filename}`);
+        if (req.file !== undefined)
+          await unlink(`./public/city/${req.file?.filename}`);
         return;
       }
 
       // check if image is alpha or not empty
 
-      if (image && validator.isEmpty(image)) {
+      if (image !== null && validator.isEmpty(image)) {
         res.status(400).send({
           error: `Field must contains only characters`,
         });
-        await unlink(`./public/city/${req.file?.filename}`);
+        if (req.file !== undefined)
+          await unlink(`./public/city/${req.file?.filename}`);
         return;
       }
 
       // check if coordinates are type [number, number]
 
       if (
-        coordinates &&
+        coordinates !== null &&
         (coordinates.length > 2 ||
-          coordinates.find((cd: number) => typeof cd !== "number"))
+          coordinates.every((cd: number) => typeof cd === "number"))
       ) {
         res.status(400).send({
           error: "Incorrect format of coordinates (must be [lat, long])",
         });
-        await unlink(`./public/city/${req.file?.filename}`);
+        if (req.file !== undefined)
+          await unlink(`./public/city/${req.file?.filename}`);
         return;
       }
 
       // check if userAdminCity is UUID type
 
-      if (userAdminCity && !validator.isUUID(userAdminCity)) {
+      if (userAdminCity !== null && !validator.isUUID(userAdminCity)) {
         res.status(400).send({
           error: "Incorrect format of admin city id (must be uuid)",
         });
-        await unlink(`./public/city/${req.file?.filename}`);
+        if (req.file !== undefined)
+          await unlink(`./public/city/${req.file?.filename}`);
         return;
       }
 
@@ -267,7 +279,8 @@ export const CityController: IController = {
 
       if (cityToUpdate === null) {
         res.status(404).send({ error: "City not found" });
-        await unlink(`./public/city/${req.file?.filename}`);
+        if (req.file !== undefined)
+          await unlink(`./public/city/${req.file?.filename}`);
         return;
       }
 
@@ -282,7 +295,8 @@ export const CityController: IController = {
           .count({ where: { name, id: Not(id) } });
         if (nameAlreadyExist > 0) {
           res.status(409).send({ error: "City already exists" });
-          await unlink(`./public/city/${req.file?.filename}`);
+          if (req.file !== undefined)
+            await unlink(`./public/city/${req.file?.filename}`);
           return;
         }
       }
@@ -300,7 +314,8 @@ export const CityController: IController = {
         });
         if (coordsAlreadyExist > 0) {
           res.status(409).send({ error: "City already exists" });
-          await unlink(`./public/city/${req.file?.filename}`);
+          if (req.file !== undefined)
+            await unlink(`./public/city/${req.file?.filename}`);
           return;
         }
         // format coordinates
@@ -311,7 +326,7 @@ export const CityController: IController = {
       }
 
       // if file, rename the new file and delete the old one
-      if (req.file) {
+      if (req.file !== undefined) {
         // rename the new file
         const originalname = req.file.originalname;
         const filename = req.file.filename;
@@ -320,7 +335,7 @@ export const CityController: IController = {
           `./public/city/${filename}`,
           `./public/city/${newName}`,
           (err) => {
-            if (err) throw err;
+            if (err !== null) throw err;
           }
         );
         req.body.image = `/public/city/${newName}`;
@@ -339,10 +354,12 @@ export const CityController: IController = {
         res.status(409).send({
           error: "User is already administrator in another city",
         });
-        await unlink(`./public/city/${req.file?.filename}`);
+        if (req.file !== undefined)
+          await unlink(`./public/city/${req.file?.filename}`);
       } else {
         res.status(400).send({ error: error.message });
-        await unlink(`./public/city/${req.file?.filename}`);
+        if (req.file !== undefined)
+          await unlink(`./public/city/${req.file?.filename}`);
       }
     }
   },

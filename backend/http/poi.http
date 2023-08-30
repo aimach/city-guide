@@ -12,7 +12,7 @@ Content-Type: application/json
 {
   "description":"un autre incroyable point d'intérêt au coeur de Toulouse !",
 "address":"76 allées Jean Jaurès 31000 Toulouse",
-"is_accepted":true,
+"isAccepted":true,
 "name":"un point d'intérêt",
 "coordinates":[45.34, 46]
 }

@@ -1,7 +1,6 @@
 import express from "express";
 import cors from "cors";
 import dataSource from "./dataSource";
-const path = require("path");
 import cookieParser from "cookie-parser";
 import {
   authRoutes,
@@ -10,6 +9,7 @@ import {
   citiesRoutes,
   categoriesRoutes,
 } from "./routes";
+import path from "path";
 
 const app = express();
 app.use(express.json());
