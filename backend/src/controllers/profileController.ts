@@ -8,6 +8,7 @@ import fs from "fs";
 import { unlink } from "fs/promises";
 import { v4 as uuidv4 } from "uuid";
 import validator from "validator";
+import jwt from "jsonwebtoken";
 
 export const ProfileController: IController = {
   // GET ALL PROFILES
@@ -69,6 +70,39 @@ export const ProfileController: IController = {
       }
     } catch (err) {
       res.status(400).send({ error: "Error while reading user" });
+    }
+  },
+
+  getAuthenticatedUserProfile: async (req: Request, res: Response) => {
+    try {
+      const token = req.cookies.jwt;
+      console.log({ token });
+      const decodedToken = jwt.verify(
+        token,
+        process.env.TOKEN as string
+      ) as jwt.JwtPayload;
+      const id = decodedToken.userId as string;
+      const myProfile = await dataSource
+        .getRepository(User)
+        .createQueryBuilder("user")
+        .select([
+          "user.id",
+          "user.username",
+          "user.image",
+          "user.role",
+          "user.city",
+          "user.email",
+        ])
+        .leftJoinAndSelect("user.createdPoi", "createdPoi")
+        .where("user.id = :id", { id })
+        .getOne();
+      if (myProfile === null) {
+        return res.status(404).send("User not found");
+      } else {
+        return res.status(200).send(myProfile);
+      }
+    } catch (err) {
+      return res.status(400).send({ error: "Error while reading user" });
     }
   },
 
