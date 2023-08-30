@@ -46,16 +46,15 @@ const Register = () => {
         // On gère l'erreur à ce niveau
         // Object.keys(data.errors) = ['email', 'username', 'password']
         // Pour chaque paramètre de data.errors, on va afficher le message d'erreur dans le champ correspondant
-        for (const errorKey of Object.keys(data.errors)) {
-          // typeof errorKey = string
-          // Au niveau de setError, on s'attend à "email" | "password" | "username" | `root.${string}` | "root"
-          // On doit donc caster errorKey en keyof FormProps
-          setError(errorKey as keyof FormProps, {
-            message: data.errors[errorKey],
-          });
-        }
 
+        Object.keys(data.errors).forEach((error) => {
+          setError(error as keyof FormProps, {
+            message: data.errors[error],
+          });
+        });
         return;
+      } else {
+        navigate("/");
       }
 
       // Handle other cases here

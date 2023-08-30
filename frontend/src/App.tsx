@@ -26,9 +26,9 @@ function App() {
     createRoutesFromElements(
       <Route path="/" element={<Root />}>
         <Route index element={<HomePage />} />
-        <Route path="/login" index element={<Login />} />
-        <Route path="/register" index element={<Register />} />
-        <Route path="/contribution" index element={<Contribution />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/contribution" element={<Contribution />} />
       </Route>
     )
   );

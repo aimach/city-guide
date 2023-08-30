@@ -5,14 +5,21 @@ import {
   faMagnifyingGlass,
   faUser,
 } from "@fortawesome/free-solid-svg-icons";
+import { Link } from "react-router-dom";
+import { useContext } from "react";
+import { User, UsersContext } from "../../../contexts/UserContext";
 
 type headerProps = {
   size: string;
 };
 
 const Header = ({ size }: headerProps) => {
-  // waiting for user context
-  const userRole: string = "free";
+  const { profile } = useContext(UsersContext);
+
+  let role = "visitor";
+  if (profile != null) {
+    role = profile.role;
+  }
 
   return (
     <header
@@ -25,13 +32,17 @@ const Header = ({ size }: headerProps) => {
           <h1>City Guide</h1>
           <nav className={`textButton ${style.menu}`}>
             <ul>
-              <li>Parcourir</li>
-              <li>Abonnement</li>
-              {userRole === "free" ? <li>Connexion</li> : null}
+              <li>
+                <a href="#parcourir">Parcourir</a>
+              </li>
+              <li>
+                <a href="#abonnement">Abonnement</a>
+              </li>
+              {role === "visitor" ? <Link to="/login">Connexion</Link> : null}
             </ul>
-            {userRole === "free" ? (
+            {role === "visitor" ? (
               <button className={`${style.buttonHeader} textButton`}>
-                Nous rejoindre
+                <Link to="/register">Nous rejoindre</Link>
               </button>
             ) : (
               <div className={`${style.avatarButton}`} />

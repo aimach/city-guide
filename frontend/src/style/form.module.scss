@@ -18,11 +18,11 @@
     }
 
     .h2_login {
-        color: var(--cream, #F5F6E2);
+        color: v.$cream_color;
     }
 
     .h2_register {
-        color: var(--dark-purple, #090F43);
+        color: v.$primary_color;
     }
         
        
@@ -31,8 +31,8 @@
 // FORM 
 form {
     border-radius: 20px;
-    border: 3px solid #FFE600;
-    background: #F3DF24;
+    border: 3px solid v.$secondary_color;
+    background: v.$secondary_color;
     @include m.flexLayout(space-around, center, column);
     // width: 40%;
     width: 668px;
@@ -75,7 +75,7 @@ form {
   
 
     input::placeholder, option {
-        color: var(--dark-purple, #090F43);
+        color: v.$primary_color;
         font-size: 15px;
         font-family: 'Comic Neue', cursive;
         font-weight: 700;
@@ -88,8 +88,8 @@ form {
 
     input[type=submit] {
         border-radius: 10px;
-        background: var(--cream, #F5F6E2);
-        color: var(--dark-purple, #090F43);
+        background: v.$cream_color;
+        color: v.$primary_color;
         font-size: 20px;
         font-weight: 600;
         cursor: pointer;
@@ -98,7 +98,7 @@ form {
     }
 
     span {
-        color: #090F43;
+        color: v.$primary_color;
         text-align: center;
         font-size: 16px;
         font-family: v.$poppinsFont;
@@ -118,7 +118,7 @@ form {
     }
 
     a {
-        color: #090F43;
+        color: v.$primary_color;
         font-size: 16px;
         font-weight: 500;
     }
@@ -127,9 +127,9 @@ form {
     select {
         @include m.buttonSize(85%, auto);
         
-        option {
-           border: 20px solid #090F43;
-        }
+        // option {
+        //    border: 20px solid v.$primary_color;
+        // }
        
     }
 }

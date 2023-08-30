@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAt, faKey } from "@fortawesome/free-solid-svg-icons";
 import styles from "../../style/form.module.scss";
+import { UsersContext } from "../../contexts/UserContext";
 
 export interface FormProps {
   email: string;
@@ -12,9 +13,12 @@ export interface FormProps {
 }
 
 const Login = () => {
-  // const {setIsAuthenticated} = useContext(UserContext);
-  const [error, setError] = useState<string>("");
-  const { handleSubmit, register } = useForm<FormProps>();
+  const {
+    handleSubmit,
+    register,
+    setError,
+    formState: { errors },
+  } = useForm<FormProps>();
   const navigate = useNavigate();
   const onSubmit = async (userData: FormProps) => {
     try {
@@ -28,29 +32,29 @@ const Login = () => {
         body: JSON.stringify(userData),
       });
 
-      if (response.status !== 200) {
-        setError("Identifiants incorrects");
-        return;
+      const data = await response.json();
+
+      if (data.error) {
+        setError("password", {
+          type: "custom",
+          message: data.error,
+        });
       }
 
+      if (response.status !== 200) {
+        Object.keys(data.errors).forEach((error) => {
+          setError(error as keyof FormProps, {
+            message: data.errors[error],
+          });
+        });
+        return;
+      }
       navigate("/");
-
-      /* if(data.token) {
-        localStorage.setItem("jwt_autorization", data.token)
-        navigate("/")
-        return
-      } */
     } catch (error) {
       console.log(error);
     }
   };
 
-  if (
-    localStorage.getItem("jwt_autorization") &&
-    localStorage.getItem("jwt_autorization") !== undefined
-  ) {
-    navigate("/");
-  }
   // Ici, on ajoute la logique de connexion.
   // On se base sur `data` pour faire la requête à l'API.
   // Si la requête est un succès, on met à jour le contexte
@@ -72,7 +76,6 @@ const Login = () => {
             })}
           />
         </div>
-        {/* {errors.email && <p className="error">{errors.email.message}</p>} */}
 
         <div className="input-wrapper">
           <FontAwesomeIcon icon={faKey} className="icon" />
@@ -84,7 +87,7 @@ const Login = () => {
             })}
           />
         </div>
-        {/* {errors.password && <p className="error">{errors.password.message}</p>} */}
+        {errors.password && <p className="error">{errors.password.message}</p>}
 
         <input type="submit" value="Explorer" />
         <Link to="/register">

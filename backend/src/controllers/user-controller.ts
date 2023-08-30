@@ -130,7 +130,7 @@ export const AuthController: IController = {
 
       // check if I don't have email
       if (getUserByEmail === null) {
-        return res.status(404).send({ error: "Invalid credentials" });
+        return res.status(404).send({ error: "Identifiants incorrects" });
       }
 
       const user = getUserByEmail;
@@ -138,7 +138,7 @@ export const AuthController: IController = {
 
       // check if I don't have the right password
       if (!validPassword) {
-        return res.status(400).send({ error: "Invalid credentials" });
+        return res.status(400).send({ error: "Identifiants incorrects" });
       } else {
         const token = sign(
           { userId: getUserByEmail.id, role: getUserByEmail.role },
@@ -158,7 +158,7 @@ export const AuthController: IController = {
 
   logout: async (req: Request, res: Response) => {
     try {
-      res.clearCookie("token");
+      res.clearCookie("jwt");
       return res.status(200).send("Sucess");
     } catch (error) {
       return res.status(500).send({ error: "Error" });
