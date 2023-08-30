@@ -251,7 +251,8 @@ export const CityController: IController = {
       if (
         coordinates !== null &&
         (coordinates.length > 2 ||
-          coordinates.every((cd: number) => typeof cd === "number"))
+          (typeof coordinates[0] === "number" &&
+            typeof coordinates[1] === "number"))
       ) {
         res.status(400).send({
           error: "Incorrect format of coordinates (must be [lat, long])",
