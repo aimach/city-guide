@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 import InteractiveMap from "../../components/interactiveMap/InteractiveMap";
 import { useContext, useEffect, useState } from "react";
 import Footer from "../../components/common/footer/Footer";
-import "./homePage.scss";
 import style from "./homePage.module.scss";
 
 const HomePage = () => {

@@ -76,7 +76,6 @@ export const ProfileController: IController = {
   getAuthenticatedUserProfile: async (req: Request, res: Response) => {
     try {
       const token = req.cookies.jwt;
-      console.log({ token });
       const decodedToken = jwt.verify(
         token,
         process.env.TOKEN as string

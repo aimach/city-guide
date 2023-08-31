@@ -47,9 +47,10 @@ export const UserProvider = ({ children }: ProviderProps) => {
           }
         );
         const data = await response.json();
-
         setLoaded(true);
-        setProfile(data);
+        if (response.status === 200) {
+          setProfile(data);
+        }
       } catch (err) {
         setLoaded(true);
       }
@@ -61,11 +62,11 @@ export const UserProvider = ({ children }: ProviderProps) => {
     return profile !== null;
   };
 
-  console.log(isAuthenticated());
   const logout = async () => {
     try {
       const response = await fetch("http://localhost:5000/api/auth/logout");
       const data = await response.json();
+      setProfile(null);
     } catch (error) {
       console.log(error);
     }
