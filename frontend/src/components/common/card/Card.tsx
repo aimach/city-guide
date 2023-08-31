@@ -4,7 +4,10 @@ import { IoIosHeartEmpty, IoIosHeart } from 'react-icons/io';
 import { CardType, City } from '../../../utils/types';
 import { useNavigate } from 'react-router-dom';
 import { UsersContext } from '../../../contexts/UserContext';
-import { addFavouriteCityToUser } from '../../../utils/api';
+import {
+   addFavouriteCityToUser,
+   removeFavouriteCityToUser,
+} from '../../../utils/api';
 
 interface Props {
    id: string | null;
@@ -37,24 +40,6 @@ const Card = ({
 
    console.log('favouriteCities', favouriteCities);
 
-   const removeFavouriteCityToUser = async (
-      cityId: string,
-      userId: string
-   ): Promise<void> => {
-      try {
-         const response = await fetch(
-            `http://localhost:5000/api/profile/fav/city/${userId}/${cityId}`,
-            {
-               method: 'DELETE',
-               credentials: 'include',
-            }
-         );
-         const data = await response.json();
-         console.log('delete date', data);
-      } catch (error) {
-         console.log('delete error', error);
-      }
-   };
    const isCityLiked = (): boolean => {
       return favouriteCities.includes(id!);
    };
