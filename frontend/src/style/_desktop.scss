@@ -72,6 +72,11 @@
 	@include m.spacesH1Style(50px, 50px);
 }
 .subtitlePOI {
+	@include m.textStyle(v.$primary_color, v.$poppinsFont, 32px, 500);
+	@include m.spacesH3Style(20px);
+}
+
+.subtitlePoiCity {
 	@include m.textStyle(v.$primary_color, v.$poppinsFont, 22px, 500);
-	@include m.spacesH3Style(40px);
+	@include m.spacesH3Style(20px);
 }

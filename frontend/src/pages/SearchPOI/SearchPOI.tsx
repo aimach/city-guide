@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import FilterSearch from "../../components/filterSearch/FilterSearch";
 import styles from "./SearchPOI.module.scss";
 import { useState, useEffect } from "react";
@@ -37,7 +38,7 @@ const SearchPOI = () => {
 		getCities();
 
 		// Le fait d'ajotuer un tableau de dépendances vide en 2ème paramètre du useEffect,
-		// permet d'exécuter une seule fois le code au dessus
+		// permet d'exécuter une seule fois le code au dessus pour ne pas avoir de boucle infinie
 	}, []);
 
 	// On utilise useEffect pour actionner un comportement, à chaque mise à jour de la valeur filterSearch.
@@ -62,21 +63,55 @@ const SearchPOI = () => {
 				<div className={styles.contentSearchPOI}>
 					<section className={styles.titleSearchPOI}>
 						<h2 className={`titlePOI`}>Trouvez votre point d’intéret !</h2>
-						<div className={`${styles.subtitlePOI} subtitlePOI`}>
-							<h3>Laissez vous portez ! </h3>
-							<h3>Nous allons vous faire découvrir des merveilles.</h3>
+						{/* <div className={`${styles.subtitlePOI} subtitlePOI`}> */}
+						<div className={styles.subtitlePOI}>
+							<h3 className={`subtitlePOI`}>Laissez vous portez ! </h3>
+							<h3 className={`subtitlePOI`}>
+								Nous allons vous faire découvrir des merveilles.
+							</h3>
 						</div>
 					</section>
+					{/* url pour partager de la donnee et non un context, dans notre cas
+                    l'utilisation d'un contexte est une solution trop grosse 
+                    car on veut juste recuperer le nom d'une ville. on a qu'une seul donnée a recuperer.) */}
+
+					{/* 
+					
+						/carte?search=par -> query param, qui a pour clé `search` 
+							et pour valeur `par`
+					
+
+						http://localhost:3000/villes/uyfbruyrgbfyr
+
+						/villes/:cityId -> cityId est un paramètre, récupérable par 
+							const { cityId } = useParams();
+							cityId = "uyfbruyrgbfyr"
+
+					*/}
+
+					{/* on utilise le composant link fournit par la dependance react-router-dom 
+                    permettant de faire du rooting (ca ameliore la navigation). 
+                    personnaliser le composant Link pour qu'il ressemble à unbouton*/}
+
 					<div className={styles.filterSearchComponent}>
 						<h3 className={`subtitlePOI`}>
-							Choisis une ville et trouve ses points d'intérêt.
+							Choisis une ville et trouve ses points d'intérêt sur la carte
 						</h3>
 						<FilterSearch
 							filterSearch={filterSearch}
 							setFilterSearch={setFilterSearch}
 						/>
+						<Link
+							className={`${styles.viewMapButton} textButton`}
+							to={`/carte?search=${filterSearch}`}
+						>
+							Voir la carte
+						</Link>
 						<section>
-							<h3 className={`${styles.subtitleCity} subtitleCity`}>Villes</h3>
+							<h3 className={`${styles.subtitleCity} subtitlePoiCity`}>
+								Villes
+							</h3>
+							{/* remplacer cette section par le composant card */}
 							<ul>
 								{citiesToBeShown.map((city) => (
 									<li key={city.id}>
