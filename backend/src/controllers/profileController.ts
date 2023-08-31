@@ -312,7 +312,7 @@ export const ProfileController: IController = {
             .findOne({ where: { id: userId } });
 
          if (
-            currentUser?.id !== userToUpdate.id ||
+            currentUser?.id !== userToUpdate.id &&
             currentUser?.role !== UserRole.ADMIN
          ) {
             res.status(403).send({
@@ -365,7 +365,7 @@ export const ProfileController: IController = {
             .findOne({ where: { id: userId } });
 
          if (
-            currentUser?.id !== userToUpdate.id ||
+            currentUser?.id !== userToUpdate.id &&
             currentUser?.role !== UserRole.ADMIN
          ) {
             res.status(403).send({
@@ -485,7 +485,7 @@ export const ProfileController: IController = {
             .findOne({ where: { id: userId } });
 
          if (
-            currentUser?.id !== userToUpdate.id ||
+            currentUser?.id !== userToUpdate.id &&
             currentUser?.role !== UserRole.ADMIN
          ) {
             res.status(403).send({
@@ -499,7 +499,7 @@ export const ProfileController: IController = {
             (poi) => poi.id !== idCity
          );
          await dataSource.getRepository(User).save(userToUpdate);
-         res.status(200).send('Favorite city remove to user');
+         res.status(200).json('Favorite city remove to user');
       } catch (err) {
          console.log(err);
          res.status(400).send({

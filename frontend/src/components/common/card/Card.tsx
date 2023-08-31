@@ -4,6 +4,7 @@ import { IoIosHeartEmpty, IoIosHeart } from 'react-icons/io';
 import { CardType, City } from '../../../utils/types';
 import { useNavigate } from 'react-router-dom';
 import { UsersContext } from '../../../contexts/UserContext';
+import { boolean } from 'yargs';
 
 interface Props {
    id: string | null;
@@ -22,11 +23,19 @@ const Card = ({
    onClickCategory,
    currentCity,
 }: Props) => {
-   const [isLiked, setIsLiked] = useState(false);
    const navigate = useNavigate();
 
    const { isAuthenticated, profile } = useContext(UsersContext);
    const userId = profile?.id ?? '';
+   let favouriteCitiesId: string[] = [];
+   if (profile != null) {
+      favouriteCitiesId = profile.favouriteCities?.map((city) => city.id!);
+   }
+
+   const [favouriteCities, setFavouriteCities] =
+      useState<string[]>(favouriteCitiesId);
+
+   console.log(favouriteCities);
 
    const addFavouriteCityToUser = async (
       cityId: string,
@@ -52,6 +61,50 @@ const Card = ({
       }
    };
 
+   const removeFavouriteCityToUser = async (
+      cityId: string,
+      userId: string
+   ): Promise<void> => {
+      try {
+         const response = await fetch(
+            `http://localhost:5000/api/profile/fav/city/${userId}/${cityId}`,
+            {
+               method: 'DELETE',
+               credentials: 'include',
+            }
+         );
+         const data = await response.json();
+         console.log(data);
+      } catch (error) {
+         console.log(error);
+      }
+   };
+   const isCityLiked = (): boolean => {
+      if (favouriteCities.find((city) => city === id)) {
+         return true;
+      } else {
+         return false;
+      }
+   };
+
+   const handleUserFavouriteCities = (
+      cityId: string,
+      userId: string,
+      favouriteCities: string[]
+   ) => {
+      if (favouriteCities != null) {
+         if (favouriteCities.find((city) => city === cityId)) {
+            removeFavouriteCityToUser(cityId, userId);
+            setFavouriteCities((state) =>
+               state!.filter((city) => city !== cityId)
+            );
+         } else {
+            addFavouriteCityToUser(cityId, userId);
+            setFavouriteCities((state) => [...state, cityId]);
+         }
+      }
+   };
+
    return (
       <div className={styles.container}>
          <div
@@ -74,11 +127,10 @@ const Card = ({
             <div
                className={styles.likeContainer}
                onClick={() => {
-                  setIsLiked((state) => !state);
-                  addFavouriteCityToUser(id!, userId!);
+                  handleUserFavouriteCities(id!, userId, favouriteCities);
                }}
             >
-               {isLiked ? (
+               {isCityLiked() ? (
                   <IoIosHeart
                      className={styles.filledHeart}
                      stroke="black"

@@ -34,9 +34,9 @@ export type User = {
    image: string | null;
    role: Role;
    city: string | null;
-   createdPoi: Poi[] | null;
-   favouritePoi: Poi[] | null;
-   favouriteCities: City[] | null;
+   createdPoi: Poi[];
+   favouritePoi: Poi[];
+   favouriteCities: City[];
 };
 
 export type City = {
