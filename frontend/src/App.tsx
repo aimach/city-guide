@@ -13,11 +13,14 @@ import { UserProvider } from './contexts/UserContext';
 import * as React from 'react';
 import Contribution from './pages/Contribution/Contribution';
 import PoiListView from './pages/PoiListView/PoiListView';
+import Layout from './components/layout/Layout';
 
 const Root = () => {
    return (
       <UserProvider>
-         <Outlet /> {/* Outlet is where the child routes will be rendered */}
+         <Layout>
+            <Outlet /> {/* Outlet is where the child routes will be rendered */}
+         </Layout>
       </UserProvider>
    );
 };
@@ -26,7 +29,7 @@ function App() {
    const router = createBrowserRouter(
       createRoutesFromElements(
          <Route path="/" element={<Root />}>
-            <Route index element={<HomePage />} />
+            <Route path="/" index element={<HomePage />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/contribution" element={<Contribution />} />

@@ -4,7 +4,7 @@ import { IoIosHeartEmpty, IoIosHeart } from 'react-icons/io';
 import { CardType, City } from '../../../utils/types';
 import { useNavigate } from 'react-router-dom';
 import { UsersContext } from '../../../contexts/UserContext';
-import { boolean } from 'yargs';
+import { addFavouriteCityToUser } from '../../../utils/api';
 
 interface Props {
    id: string | null;
@@ -35,31 +35,7 @@ const Card = ({
    const [favouriteCities, setFavouriteCities] =
       useState<string[]>(favouriteCitiesId);
 
-   console.log(favouriteCities);
-
-   const addFavouriteCityToUser = async (
-      cityId: string,
-      userId: string
-   ): Promise<void> => {
-      try {
-         const response = await fetch(
-            `http://localhost:5000/api/profile/fav/city/${userId}/${cityId}`,
-            {
-               method: 'POST',
-               credentials: 'include',
-               headers: {
-                  'Content-Type': 'application/json',
-                  Accept: 'application/json',
-               },
-               body: null,
-            }
-         );
-         const data = await response.json();
-         console.log(data);
-      } catch (error) {
-         console.log(error);
-      }
-   };
+   console.log('favouriteCities', favouriteCities);
 
    const removeFavouriteCityToUser = async (
       cityId: string,
@@ -74,17 +50,13 @@ const Card = ({
             }
          );
          const data = await response.json();
-         console.log(data);
+         console.log('delete date', data);
       } catch (error) {
-         console.log(error);
+         console.log('delete error', error);
       }
    };
    const isCityLiked = (): boolean => {
-      if (favouriteCities.find((city) => city === id)) {
-         return true;
-      } else {
-         return false;
-      }
+      return favouriteCities.includes(id!);
    };
 
    const handleUserFavouriteCities = (

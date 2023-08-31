@@ -6,7 +6,7 @@
 .headerDesktop {
   @include m.flexLayout(space-between, center);
   padding: 2rem;
-  position: sticky;
+  //position: sticky;
   top: 0;
   background-color: v.$primary_color;
 }

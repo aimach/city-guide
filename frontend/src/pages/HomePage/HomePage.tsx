@@ -11,7 +11,7 @@ import { CardType, City } from '../../utils/types';
 import styles from './homePage.module.scss';
 
 const HomePage = () => {
-   const [windowSize, setWindowSize] = useState<number>(window.innerWidth);
+   /* const [windowSize, setWindowSize] = useState<number>(window.innerWidth);
 
    function updateDimension() {
       setWindowSize(window.innerWidth);
@@ -19,7 +19,7 @@ const HomePage = () => {
 
    useEffect(() => {
       window.addEventListener('resize', updateDimension);
-   }, [windowSize]);
+   }, [windowSize]); */
 
    const navigate = useNavigate();
    const { isAuthenticated, logout, redirectToLogin } =
@@ -27,12 +27,12 @@ const HomePage = () => {
    // On vérifie si l'utilisateur est connecté.
 
    const [cities, setCities] = useState<City[] | null>(null);
-   const getAllCities = async () => {
+
+   const getAllCities = async (): Promise<void> => {
       const response = await fetch('http://localhost:5000/api/cities');
       const data = await response.json();
       setCities(data);
    };
-
    useEffect(() => {
       getAllCities();
    }, []);
@@ -43,23 +43,19 @@ const HomePage = () => {
       cities?.filter((city) => nameOfSelectedCities.includes(city.name)) ?? [];
 
    return (
-      <UserProvider>
-         <Header size={windowSize > 768 ? 'desktop' : 'mobile'} />
-         <div>
-            <InteractiveMap />
-            <div className={styles.carousselContainer}>
-               <h2 className={styles.title}>
-                  Choisis une ville et trouve ses points d'intérêt.
-               </h2>
-               <Caroussel
-                  title="Villes"
-                  data={selectedCities}
-                  cardType={CardType.CITY}
-               />
-            </div>
+      <div>
+         <InteractiveMap />
+         <div className={styles.carousselContainer}>
+            <h2 className={styles.title}>
+               Choisis une ville et trouve ses points d'intérêt.
+            </h2>
+            <Caroussel
+               title="Villes"
+               data={selectedCities}
+               cardType={CardType.CITY}
+            />
          </div>
-         <Footer />
-      </UserProvider>
+      </div>
    );
 };
 
