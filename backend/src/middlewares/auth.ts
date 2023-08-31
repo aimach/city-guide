@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 
 export const auth = (req: Request, res: Response, next: NextFunction): void => {
   try {
-    const token = req.cookies.token;
+    const token = req.cookies.jwt;
     const decodedToken = jwt.verify(
       token,
       process.env.TOKEN as string
