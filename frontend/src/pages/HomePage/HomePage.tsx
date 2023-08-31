@@ -41,8 +41,13 @@ const HomePage = () => {
             </button>
           </div>
         </section>
-        <section className={`${style.mapSection}`}>
-          <InteractiveMap />
+        <section>
+          <div className={`${style.mapSection}`}>
+            <InteractiveMap />
+          </div>
+          <div className={`${style.pictoPlane}`}>
+            <img src="/picto_avion.png" alt="picto avion" />
+          </div>
         </section>
         <section className={`${style.searchSection}`}>
           <div className={`${style.searchSectionBottomLine}`}>

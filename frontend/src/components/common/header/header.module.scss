@@ -39,6 +39,9 @@
     @include m.buttonColor(v.$cream_color, v.$primary_color);
     transition: background-color 0.4s ease;
   }
+  a {
+    color: v.$primary_color;
+  }
 }
 
 .avatarButton {
