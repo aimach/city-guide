@@ -10,6 +10,12 @@ export const profileRoutes = express.Router();
 
 profileRoutes.get("/", auth, ProfileController.getProfile);
 
+profileRoutes.get(
+  "/my-profile",
+  auth,
+  ProfileController.getAuthenticatedUserProfile
+);
+
 profileRoutes.get("/:id", auth, ProfileController.getOneProfile);
 
 // add POI to favorites
