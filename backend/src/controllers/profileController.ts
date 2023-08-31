@@ -160,7 +160,7 @@ export const ProfileController: IController = {
         .getRepository(User)
         .findOne({ where: { id: userId } });
 
-      if (currentUser?.role !== UserRole.ADMIN) {
+      if (role !== null && currentUser?.role !== UserRole.ADMIN) {
         res.status(403).send({
           error: "You are not authorized to update this property",
         });
