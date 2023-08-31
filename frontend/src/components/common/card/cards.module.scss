@@ -3,7 +3,8 @@
 @import "../../../style/variable";
 .container {
     @extend %card;
-    width: 330px;
+
+    width: 333px;
     height: 221px;
     border-radius: 20px;
     position: relative;
@@ -22,7 +23,7 @@
         position: absolute;
         top: 10px;
         right: 20px;
-        @include flexLayout(row, center, center);
+        @include flexLayout(center, center, row);
 
         svg {
             font-size: 18px;

@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import styles from './cards.module.scss';
 import { IoIosHeartEmpty, IoIosHeart } from 'react-icons/io';
 import { CardType, City } from '../../../utils/types';
-import { Link, Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { UsersContext } from '../../../contexts/UserContext';
 
 interface Props {
    id: string | null;
@@ -24,6 +25,33 @@ const Card = ({
    const [isLiked, setIsLiked] = useState(false);
    const navigate = useNavigate();
 
+   const { isAuthenticated, profile } = useContext(UsersContext);
+   const userId = profile?.id ?? '';
+
+   const addFavouriteCityToUser = async (
+      cityId: string,
+      userId: string
+   ): Promise<void> => {
+      try {
+         const response = await fetch(
+            `http://localhost:5000/api/profile/fav/city/${userId}/${cityId}`,
+            {
+               method: 'POST',
+               credentials: 'include',
+               headers: {
+                  'Content-Type': 'application/json',
+                  Accept: 'application/json',
+               },
+               body: null,
+            }
+         );
+         const data = await response.json();
+         console.log(data);
+      } catch (error) {
+         console.log(error);
+      }
+   };
+
    return (
       <div className={styles.container}>
          <div
@@ -42,10 +70,13 @@ const Card = ({
             <img src={image} alt={title} className={styles.image} />
             <h3 className={`${styles.title} titleCard`}>{title}</h3>
          </div>
-         {cardType !== CardType.CATEGORY ? (
+         {cardType !== CardType.CATEGORY && isAuthenticated() ? (
             <div
                className={styles.likeContainer}
-               onClick={() => setIsLiked(!isLiked)}
+               onClick={() => {
+                  setIsLiked((state) => !state);
+                  addFavouriteCityToUser(id!, userId!);
+               }}
             >
                {isLiked ? (
                   <IoIosHeart

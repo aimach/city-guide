@@ -1,5 +1,12 @@
 type Coordinates = [number, number];
 
+export enum Role {
+   FREE_USER = 'free_user',
+   PREMIUM_USER = 'premium_user',
+   ADMIN = 'admin',
+   ADMIN_CITY = 'admin_city',
+   VISITOR = 'visitor',
+}
 export type Category = {
    id: string | null;
    name: string;
@@ -25,6 +32,7 @@ export type User = {
    username: string;
    email: string;
    image: string | null;
+   role: Role;
    city: string | null;
    createdPoi: Poi[] | null;
    favouritePoi: Poi[] | null;

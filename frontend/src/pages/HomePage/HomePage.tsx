@@ -6,7 +6,7 @@ import InteractiveMap from '../../components/interactiveMap/InteractiveMap';
 import { useContext, useEffect, useState } from 'react';
 import Footer from '../../components/common/footer/Footer';
 import './homePage.scss';
-import Caroussel from '../../component/common/Caroussel/Caroussel';
+import Caroussel from '../../components/common/Caroussel/Caroussel';
 import { CardType, City } from '../../utils/types';
 import styles from './homePage.module.scss';
 

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { CardType, Category, City, Poi } from '../../utils/types';
-import Caroussel from '../../component/common/Caroussel/Caroussel';
+import Caroussel from '../../components/common/Caroussel/Caroussel';
 import styles from './poiListView.module.scss';
 
 const PoiListView = () => {
