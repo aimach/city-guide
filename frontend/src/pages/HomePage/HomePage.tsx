@@ -42,11 +42,6 @@ const HomePage = () => {
           </div>
         </section>
         <section className={`${style.mapSection}`}>
-          <button
-            className={`buttonHomePage textButton ${style.presentationButton} ${style.mapButton}`}
-          >
-            Voir la carte
-          </button>
           <InteractiveMap />
         </section>
         <section className={`${style.searchSection}`}>

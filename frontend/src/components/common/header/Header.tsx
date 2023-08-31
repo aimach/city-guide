@@ -40,7 +40,9 @@ const Header = ({ size }: headerProps) => {
               <li>
                 <a href="#abonnement">Abonnement</a>
               </li>
-              {role === "visitor" ? <Link to="/login">Connexion</Link> : null}
+              <li>
+                {role === "visitor" ? <Link to="/login">Connexion</Link> : null}
+              </li>
             </ul>
             {role === "visitor" ? (
               <button className={`${style.buttonHeader} textButton`}>
