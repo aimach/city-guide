@@ -1,27 +1,47 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './App.scss';
-import Footer from './component/common/footer/Footer';
-import InteractiveMap from './component/interactiveMap/InteractiveMap';
+import {
+   createBrowserRouter,
+   createRoutesFromElements,
+   Outlet,
+   Route,
+   RouterProvider,
+} from 'react-router-dom';
+import Register from './pages/Register/Register';
+import Login from './pages/Login/Login';
 import HomePage from './pages/HomePage/HomePage';
-import Layout from './component/layout/Layout';
-
-import Header from './component/common/header/Header';
+import { UserProvider } from './contexts/UserContext';
+import * as React from 'react';
+import Contribution from './pages/Contribution/Contribution';
 import PoiListView from './pages/PoiListView/PoiListView';
-// import About from "./pages/About/About";
+
+const Root = () => {
+   return (
+      <UserProvider>
+         <Outlet /> {/* Outlet is where the child routes will be rendered */}
+      </UserProvider>
+   );
+};
 
 function App() {
-   return (
-      <BrowserRouter>
-         <Header />
-         <Routes>
-            <Route path="/" element={<HomePage />} />
+   const router = createBrowserRouter(
+      createRoutesFromElements(
+         <Route path="/" element={<Root />}>
+            <Route index element={<HomePage />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/contribution" element={<Contribution />} />
             <Route path="poi">
                <Route path=":cityId" element={<PoiListView />} />
             </Route>
-         </Routes>
-         <Footer />
-         {/* <About /> */}
-      </BrowserRouter>
+         </Route>
+      )
+   );
+
+   return (
+      <React.StrictMode>
+         <RouterProvider router={router} />
+      </React.StrictMode>
    );
 }
+
 export default App;
