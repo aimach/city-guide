@@ -44,6 +44,27 @@
   }
 }
 
+.avatarButton {
+  @include m.buttonSize(50px, 50px);
+  border-radius: 50%;
+  border: 2px solid v.$secondary_color;
+  color: v.$white_color;
+  background-color: v.$primary_color;
+  @include m.flexLayout(center, center);
+}
+
+.floatingMenu {
+  position: absolute;
+  right: 30px;
+  bottom: -20px;
+  width: 200px;
+  border: 2px solid v.$secondary_color;
+  color: v.$white_color;
+  background-color: v.$primary_color;
+  @include m.flexLayout(center, flex-start, column);
+  padding: 0.5rem;
+}
+
 // MIDDLE SIZE STYLE
 // style management between desktop and mobile for a better responsive
 
