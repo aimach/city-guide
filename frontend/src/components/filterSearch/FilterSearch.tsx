@@ -20,6 +20,8 @@ const FilterSearch = ({ filterSearch, setFilterSearch }: FilterSearchProps) => {
 					type="text"
 					name="FilterSearch"
 					placeholder="Rechercher une ville..."
+					autoComplete="off"
+					role="presentation"
 				/>
 			</div>
 		</>
