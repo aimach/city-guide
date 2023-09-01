@@ -1,15 +1,6 @@
 import { ReactNode, useState, createContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-
-export type User = {
-   id: string;
-   username: string;
-   email: string;
-   image: string | null;
-   role: string;
-   city: string | null;
-   createdPoi: any[];
-};
+import { User } from '../utils/types';
 
 interface ProviderProps {
    children?: ReactNode;
@@ -31,7 +22,7 @@ export const UsersContext = createContext<ContextProps>({
 
 export const UserProvider = ({ children }: ProviderProps) => {
    // useState
-   const [profile, setProfile] = useState(null);
+   const [profile, setProfile] = useState<User | null>(null);
    const [loaded, setLoaded] = useState(false);
 
    const navigate = useNavigate();
