@@ -25,8 +25,6 @@ const HomePage = () => {
 
 	const [searchParams] = useSearchParams();
 
-	// je recupere la chaine de caractere presente dans l'url
-	// qui commence par ?serach=nomEcritDansL'input , la donnée de l'input (la ville)
 	/* a deplacer dans la page de la carte 
 	const { search } = Object.fromEntries([...searchParams]);
 	console.log("search", search);
