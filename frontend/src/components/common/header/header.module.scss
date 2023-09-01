@@ -44,20 +44,12 @@
   }
 }
 
-.avatarButton {
-  @include m.buttonSize(50px, 50px);
-  border-radius: 50%;
-  border: 2px solid v.$secondary_color;
-  background-color: v.$primary_color;
-}
-
 // MIDDLE SIZE STYLE
 // style management between desktop and mobile for a better responsive
 
 @media (max-width: 1000px) {
   .headerDesktop {
-    @include m.flexLayout(center, center);
-    flex-direction: column;
+    @include m.flexLayout(center, center, column);
   }
 }
 

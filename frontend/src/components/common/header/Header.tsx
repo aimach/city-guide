@@ -9,6 +9,7 @@ import { Link } from "react-router-dom";
 import { useContext } from "react";
 import { UsersContext } from "../../../contexts/UserContext";
 import { Role } from "../../../utils/types";
+import ProfileMenu from "../../profile/profileMenu/profileMenu";
 
 type headerProps = {
   size: string;
@@ -53,7 +54,7 @@ const Header = ({ size }: headerProps) => {
                 <Link to="/auth/register">Nous rejoindre</Link>
               </button>
             ) : (
-              <div className={`${style.avatarButton}`} />
+              <ProfileMenu />
             )}
           </nav>
         </>

@@ -1,0 +1,11 @@
+@use "../../../style/mixin" as m;
+@use "../../../style/variable" as v;
+
+// DESKTOP STYLE
+.avatarButton {
+  @include m.buttonSize(50px, 50px);
+  border-radius: 50%;
+  border: 2px solid v.$secondary_color;
+  background-color: v.$primary_color;
+  @include m.flexLayout(center, center);
+}
