@@ -5,7 +5,8 @@
   height: 103vh;
   background-image: url("../../../public/wave_with_map.svg");
   background-repeat: no-repeat;
-  background-size: cover;
+  background-size: contain;
+  background-position: 100% 30%;
 }
 
 // PRESENTATION SECTION
@@ -71,12 +72,13 @@
 
 @media (max-width: 768px) {
   .mobileSection {
-    height: 100vh;
+    height: 95vh;
     @include m.flexLayout(center, center, column);
     background-image: url("../../../public/bg-wave_login.svg");
     background-repeat: no-repeat;
     background-size: 250%;
     background-position: 10% bottom;
+    gap: 1rem;
     img {
       width: 100vw;
     }
