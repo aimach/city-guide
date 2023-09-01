@@ -56,7 +56,7 @@
 	}
 
 	.buttonHomePage {
-		@include m.buttonSize(200px, 56px);
+		@include m.buttonSize(200px, 56px, unset);
 	}
 	.titleFooter {
 		@include m.textStyle(v.$cream_color, v.$poppinsFont, 32px, 700);

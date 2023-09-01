@@ -19,7 +19,7 @@ const FilterSearch = ({ filterSearch, setFilterSearch }: FilterSearchProps) => {
 					onChange={(event) => setFilterSearch(event.target.value)}
 					type="text"
 					name="FilterSearch"
-					placeholder="Rechercher une ville, un point d’intêret, une catégorie..."
+					placeholder="Rechercher une ville..."
 				/>
 			</div>
 		</>

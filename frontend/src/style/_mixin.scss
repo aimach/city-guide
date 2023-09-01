@@ -5,10 +5,13 @@
 	align-items: $align;
 }
 
-@mixin buttonSize($width, $height) {
+@mixin buttonSize($width, $height, $padding) {
 	width: $width;
 	height: $height;
 	flex-shrink: 0;
+	border-radius: 20px;
+	padding: $padding;
+	text-decoration: none;
 }
 
 @mixin buttonColor($backgroundColor, $fontColor) {

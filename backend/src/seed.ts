@@ -2,7 +2,7 @@ import { City } from "./entities/City";
 import { User } from "./entities/User";
 
 /**
- * Cette fonctionne permet d'ajouter des données de test utiles en développement.
+ * Cette fonction permet d'ajouter des données de test utiles en développement.
  */
 export async function seed() {
 	const user = new User();

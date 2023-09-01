@@ -9,6 +9,7 @@
 	position: sticky;
 	top: 0;
 	background-color: v.$primary_color;
+	z-index: 1;
 }
 
 .menu {
@@ -41,7 +42,7 @@
 }
 
 .avatarButton {
-	@include m.buttonSize(50px, 50px);
+	@include m.buttonSize(50px, 50px, unset);
 	border-radius: 50%;
 	border: 2px solid v.$secondary_color;
 	background-color: v.$primary_color;
