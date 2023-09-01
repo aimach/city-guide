@@ -29,7 +29,7 @@ const Caroussel = ({
                   <Card
                      title={name}
                      id={id}
-                     image={`${url}${image}`}
+                     image={image}
                      key={id}
                      cardType={cardType}
                      onClickCategory={onClickCategory}

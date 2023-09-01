@@ -8,9 +8,8 @@ const PoiListView = () => {
    const { cityId } = useParams();
    const [currentCity, setCurrentCity] = useState<City | null>(null);
    const [searchedPoi, setSearchedPoi] = useState<Poi[] | null>(null);
-   const [categories, setCategories] = useState<Category[] | null>(null);
 
-   const getPoiByCity = async () => {
+   const getCity = async () => {
       try {
          const response = await fetch(
             `http://localhost:5000/api/cities/${cityId}`
@@ -23,35 +22,40 @@ const PoiListView = () => {
       }
    };
 
+   let categories: Category[] = [];
+   const poicategories = searchedPoi?.map((poi) => poi.category) ?? [];
+
+   const filterCategories = () => {
+      poicategories.forEach((cat) => {
+         if (!categories.find((category) => category.id === cat.id)) {
+            categories.push(cat);
+         }
+      });
+   };
+
+   filterCategories();
+
    const getPoiByCityAndCategory = async (
-      categoryName: string,
-      cityName: string
+      categoryName?: string,
+      cityName?: string
    ): Promise<void> => {
       try {
          const response = await fetch(
             `http://localhost:5000/api/poi?city=${cityName}&category=${categoryName}`
          );
          const data = await response.json();
-         setSearchedPoi(data);
-      } catch (error) {
-         console.log(error);
-      }
-   };
+         console.log({ data });
 
-   console.log(searchedPoi);
-   const getCategories = async () => {
-      try {
-         const response = await fetch(`http://localhost:5000/api/categories`);
-         const data = await response.json();
-         setCategories(data);
+         if (!data.error) {
+            setSearchedPoi(data);
+         }
       } catch (error) {
          console.log(error);
       }
    };
 
    useEffect(() => {
-      getPoiByCity();
-      getCategories();
+      getCity();
    }, []);
 
    return (

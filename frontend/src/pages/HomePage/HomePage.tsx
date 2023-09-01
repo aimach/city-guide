@@ -37,10 +37,9 @@ const HomePage = () => {
       getAllCities();
    }, []);
 
-   const nameOfSelectedCities = ['Paris', 'Lyon', 'Annecy', 'Strasbourg'];
+   //const nameOfSelectedCities = ['Paris', 'Lyon', 'Annecy', 'Strasbourg'];
 
-   const selectedCities =
-      cities?.filter((city) => nameOfSelectedCities.includes(city.name)) ?? [];
+   const selectedCities = cities?.slice(2, 6) ?? [];
 
    return (
       <div>
