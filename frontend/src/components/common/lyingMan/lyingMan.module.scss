@@ -1,0 +1,8 @@
+@use "../../../style/mixin" as m;
+@use "../../../style/variable" as v;
+
+.lyingManContainer {
+  margin-bottom: 2rem;
+  padding-left: 10rem;
+  border-bottom: 1px solid v.$secondary_color;
+}

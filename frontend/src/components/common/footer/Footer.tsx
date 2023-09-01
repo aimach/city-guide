@@ -5,11 +5,13 @@ import {
   faLinkedin,
   faSquareFacebook,
 } from "@fortawesome/free-brands-svg-icons";
+import LyingMan from "../lyingMan/LyingMan";
 
 const Footer = () => {
   return (
     <div className={`${styles.mainFooter}`}>
       <div className={`${styles.mobileImage}`}>
+        <LyingMan />
         <section className={`${styles.sectionFooter}`}>
           <div className={`${styles.titleLogoFooter}`}>
             <h3 className={`titleFooter`}>City Guide</h3>
