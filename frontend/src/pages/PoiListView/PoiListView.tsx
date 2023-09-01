@@ -15,6 +15,7 @@ const PoiListView = () => {
             `http://localhost:5000/api/cities/${cityId}`
          );
          const data = await response.json();
+
          setCurrentCity(data);
          setSearchedPoi(data.poi);
       } catch (error) {

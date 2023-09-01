@@ -6,7 +6,9 @@ import { useNavigate } from 'react-router-dom';
 import { UsersContext } from '../../../contexts/UserContext';
 import {
    addFavouriteCityToUser,
+   addFavouritePoiToUser,
    removeFavouriteCityToUser,
+   removeFavouritePoiToUser,
 } from '../../../utils/api';
 
 interface Props {
@@ -31,17 +33,25 @@ const Card = ({
    const { isAuthenticated, profile } = useContext(UsersContext);
    const userId = profile?.id ?? '';
    let favouriteCitiesId: string[] = [];
+   let favouritePoiId: string[] = [];
    if (profile != null) {
       favouriteCitiesId = profile.favouriteCities?.map((city) => city.id!);
+      favouritePoiId = profile.favouritePoi.map((poi) => poi.id!);
    }
 
    const [favouriteCities, setFavouriteCities] =
       useState<string[]>(favouriteCitiesId);
 
-   console.log('favouriteCities', favouriteCities);
+   const [favouritePoi, setFavouritePoi] = useState<string[]>(favouritePoiId);
 
-   const isCityLiked = (): boolean => {
-      return favouriteCities.includes(id!);
+   const isLiked = (): boolean => {
+      if (cardType === CardType.CITY) {
+         return favouriteCities.includes(id!);
+      }
+      if (cardType === CardType.POI) {
+         return favouritePoi.includes(id!);
+      }
+      return false;
    };
 
    const handleUserFavouriteCities = (
@@ -62,19 +72,39 @@ const Card = ({
       }
    };
 
+   const handleUserFavouritePoi = (
+      poiId: string,
+      userId: string,
+      favouritePoi: string[]
+   ) => {
+      if (favouritePoi != null) {
+         if (favouritePoi.find((poi) => poi === poiId)) {
+            removeFavouritePoiToUser(poiId, userId);
+            setFavouritePoi((state) => state.filter((poi) => poi !== poiId));
+         } else {
+            addFavouritePoiToUser(poiId, userId);
+            setFavouritePoi((state) => [...state, poiId]);
+         }
+      }
+   };
+
+   const selectActionOnCardClick = () => {
+      switch (cardType) {
+         case CardType.CITY:
+            navigate(`poi/${id}`);
+            break;
+         case CardType.CATEGORY:
+            if (currentCity != null) {
+               onClickCategory!(title, currentCity?.name);
+            }
+            break;
+      }
+   };
+
    return (
       <div className={styles.container}>
          <div
-            onClick={() => {
-               if (cardType === CardType.CITY) {
-                  navigate(`poi/${id}`);
-               }
-               if (cardType === CardType.CATEGORY) {
-                  if (currentCity) {
-                     onClickCategory!(title, currentCity?.name);
-                  }
-               }
-            }}
+            onClick={selectActionOnCardClick}
             className={styles.imageContainer}
          >
             <img src={image} alt={title} className={styles.image} />
@@ -84,10 +114,12 @@ const Card = ({
             <div
                className={styles.likeContainer}
                onClick={() => {
-                  handleUserFavouriteCities(id!, userId, favouriteCities);
+                  cardType === CardType.CITY
+                     ? handleUserFavouriteCities(id!, userId, favouriteCities)
+                     : handleUserFavouritePoi(id!, userId, favouritePoi);
                }}
             >
-               {isCityLiked() ? (
+               {isLiked() ? (
                   <IoIosHeart
                      className={styles.filledHeart}
                      stroke="black"

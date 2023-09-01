@@ -79,3 +79,47 @@ export const removeFavouriteCityToUser = async (
       console.log('delete error', error);
    }
 };
+
+// ADD A POI TO FAVOURITE
+
+export const addFavouritePoiToUser = async (poiId: string, userId: string) => {
+   try {
+      const response = await fetch(
+         `http://localhost:5000/api/profile/fav/poi/${userId}/${poiId}`,
+         {
+            method: 'POST',
+            credentials: 'include',
+            headers: {
+               'Content-Type': 'application/json',
+               Accept: 'application/json',
+            },
+            body: null,
+         }
+      );
+      const data = await response.json();
+      return data;
+   } catch (error) {
+      console.log(error);
+   }
+};
+
+// REMOVE A POI FROM FAVOURITE
+
+export const removeFavouritePoiToUser = async (
+   poiId: string,
+   userId: string
+): Promise<void> => {
+   try {
+      const response = await fetch(
+         `http://localhost:5000/api/profile/fav/poi/${userId}/${poiId}`,
+         {
+            method: 'DELETE',
+            credentials: 'include',
+         }
+      );
+      const data = await response.json();
+      return data;
+   } catch (error) {
+      console.log('delete error', error);
+   }
+};
