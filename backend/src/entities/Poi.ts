@@ -37,7 +37,7 @@ export class Poi {
   image: string;
 
   @Column("boolean")
-  is_accepted: boolean;
+  isAccepted: boolean;
 
   @CreateDateColumn()
   created_at: Date;

@@ -7,7 +7,8 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import { useContext } from "react";
-import { User, UsersContext } from "../../../contexts/UserContext";
+import { UsersContext } from "../../../contexts/UserContext";
+import { Role } from "../../../utils/types";
 
 type headerProps = {
   size: string;
@@ -16,7 +17,7 @@ type headerProps = {
 const Header = ({ size }: headerProps) => {
   const { profile } = useContext(UsersContext);
 
-  let role = "visitor";
+  let role = Role.VISITOR;
   if (profile != null) {
     role = profile.role;
   }
@@ -29,9 +30,7 @@ const Header = ({ size }: headerProps) => {
     >
       {size === "desktop" ? (
         <>
-          <Link to="/">
-            <h1>CITY GUIDE</h1>
-          </Link>
+          <h1>CITY GUIDE</h1>
           <nav className={`textButton ${style.menu}`}>
             <ul>
               <li>
@@ -40,13 +39,16 @@ const Header = ({ size }: headerProps) => {
               <li>
                 <a href="#abonnement">Abonnement</a>
               </li>
-              <li>
-                {role === "visitor" ? <Link to="/login">Connexion</Link> : null}
-              </li>
+
+              {role === Role.VISITOR ? (
+                <li>
+                  <Link to="/auth/login">Connexion</Link>
+                </li>
+              ) : null}
             </ul>
-            {role === "visitor" ? (
+            {role === Role.VISITOR ? (
               <button className={`${style.buttonHeader} textButton`}>
-                <Link to="/register">Nous rejoindre</Link>
+                <Link to="/auth/register">Nous rejoindre</Link>
               </button>
             ) : (
               <div className={`${style.avatarButton}`} />
