@@ -30,7 +30,9 @@ const Header = ({ size }: headerProps) => {
     >
       {size === "desktop" ? (
         <>
-          <h1>CITY GUIDE</h1>
+          <Link to="/">
+            <h1>CITY GUIDE</h1>
+          </Link>
           <nav className={`textButton ${style.menu}`}>
             <ul>
               <li>
