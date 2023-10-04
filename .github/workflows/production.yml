@@ -37,8 +37,8 @@ jobs:
       - uses: docker/build-push-action@v2
         name: Build and push
         with:
-          context: ./client
-          file: ./client/Dockerfile
+          context: ./frontend
+          file: ./frontend/Dockerfile
           push: true
           tags: ${{ secrets.DOCKER_HUB_USERNAME }}/city-guide-frontend:latest
 
@@ -67,8 +67,8 @@ jobs:
       - uses: docker/build-push-action@v2
         name: Build and push
         with:
-          context: ./server
-          file: ./server/Dockerfile
+          context: ./backend
+          file: ./backend/Dockerfile
           push: true
           tags: ${{ secrets.DOCKER_HUB_USERNAME }}/city-guide-backend:latest
 
