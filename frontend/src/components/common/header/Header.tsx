@@ -1,3 +1,4 @@
+import { useContext, useState } from "react";
 import style from "./header.module.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -5,19 +6,19 @@ import {
   faMagnifyingGlass,
   faUser,
 } from "@fortawesome/free-solid-svg-icons";
-import { Link } from "react-router-dom";
-import { useContext, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { UsersContext } from "../../../contexts/UserContext";
 import { Role } from "../../../utils/types";
-import ProfileMenu from "../../profile/profileMenu/profileMenu";
 
 type headerProps = {
   size: string;
 };
 
 const Header = ({ size }: headerProps) => {
+  const navigate = useNavigate();
+
   // get user's role
-  const { profile } = useContext(UsersContext);
+  const { profile, logout } = useContext(UsersContext);
 
   let role = Role.VISITOR;
   if (profile != null) {
@@ -41,10 +42,10 @@ const Header = ({ size }: headerProps) => {
             <Link to="/">
               <h1>CITY GUIDE</h1>
             </Link>
-            <nav className={`textButton ${style.menu}`}>
-              <ul>
+            <nav className={` ${style.menu}`}>
+              <ul className="textButton">
                 <li>
-                  <a href="#parcourir">Parcourir</a>
+                  <a href="#parcourir">Parcourirrr</a>
                 </li>
                 <li>
                   <a href="#abonnement">Abonnement</a>
@@ -63,7 +64,14 @@ const Header = ({ size }: headerProps) => {
               ) : (
                 <button
                   className={`${style.avatarButton} textButton`}
-                  onClick={() => setDisplayProfileMenu(!displayProfileMenu)}
+                  onClick={() => {
+                    setDisplayProfileMenu(!displayProfileMenu);
+                  }}
+                  onBlur={(e) => {
+                    if (e.currentTarget !== e.target) {
+                      setDisplayProfileMenu(!displayProfileMenu);
+                    }
+                  }}
                 >
                   {profile?.image !== null ? (
                     <img src={profile?.image} alt="avatar" />
@@ -73,9 +81,25 @@ const Header = ({ size }: headerProps) => {
                 </button>
               )}
               {displayProfileMenu ? (
-                <div className={`${style.floatingMenu} textSearch`}>
-                  <Link to="/">Mon profil</Link>
-                  <Link to="/">Se déconnecter</Link>
+                <div className={`${style.floatingMenu}`}>
+                  <Link to="/profile">
+                    <button
+                      onClick={() => setDisplayProfileMenu(false)}
+                      className="textFilter"
+                    >
+                      Mon profil
+                    </button>
+                  </Link>
+                  <button
+                    onClick={() => {
+                      logout();
+                      setDisplayProfileMenu(false);
+                      navigate("/");
+                    }}
+                    className="textFilter"
+                  >
+                    Se déconnecter
+                  </button>
                 </div>
               ) : null}
             </nav>
