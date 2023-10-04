@@ -8,9 +8,11 @@ module.exports = {
   parserOptions: {
     ecmaVersion: "latest",
     sourceType: "module",
-    project: ["./tsconfig.json"],
+    project: ["./backend/tsconfig.json"],
   },
   rules: {
+    "no-useless-return": "off",
+    // project: ["./backend/tsconfig.json"],
     "@typescript-eslint/no-misused-promises": [
       "error",
       {
