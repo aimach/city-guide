@@ -13,14 +13,13 @@ export default function InteractiveMap() {
   const [zoom] = useState(14);
 
   const [mapController, setMapController] = useState<any>();
-  // const [isActive, setIsActive] = useState(false);
 
   useEffect(() => {
     const bounds = [
       [-5.266007882805499, 41.303921508225445],
       [9.662499999999975, 51.12421275782688],
     ];
-    if (map.current) return; // stops map from intializing more than once
+    if (map.current) return;
 
     map.current = new maplibregl.Map({
       container: mapContainer.current,
@@ -42,12 +41,15 @@ export default function InteractiveMap() {
     setMapController(createMapLibreGlMapController(map.current, maplibregl));
   }, [lng, lat, zoom]);
 
+  const marker = new maplibregl.Marker().setLngLat([4.85, 45.75]);
+
   return (
     <div className={`${styles.mapWrap}`}>
       <div className={`${styles.geocoding} ${styles.activeGeocoding}`}>
         <GeocodingControl
           apiKey={process.env.REACT_APP_MAPTILER_API_KEY!}
           mapController={mapController}
+          placeholder="Rechercher une ville, un point d'intérêt, une catégorie... "
         />
       </div>
       <div ref={mapContainer} className={`${styles.mapWrap}`} />
