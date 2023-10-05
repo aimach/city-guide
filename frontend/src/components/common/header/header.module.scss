@@ -4,41 +4,45 @@
 // DESKTOP STYLE
 
 .headerDesktop {
-	@include m.flexLayout(space-between, center);
-	padding: 2rem;
-	position: sticky;
-	top: 0;
-	background-color: v.$primary_color;
-	z-index: 1;
+  @include m.flexLayout(space-between, center);
+  padding: 2rem;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background-color: v.$primary_color;
+
 }
 
 .menu {
 	@include m.flexLayout(space-between, center);
 
-	ul {
-		display: flex;
-		li {
-			list-style-type: none;
-			margin-right: 2rem;
-			padding: 0;
-			color: v.$cream_color;
-			&:hover {
-				transition: color 0.5s ease;
-				color: v.$secondary_color;
-			}
-		}
-	}
+  ul {
+    display: flex;
+    li {
+      list-style-type: none;
+      margin-right: 2rem;
+      padding: 0;
+      color: v.$cream_color;
+      a:hover {
+        transition: color 0.5s ease;
+        color: v.$secondary_color;
+      }
+    }
+  }
 }
 
 .buttonHeader {
-	@include m.unbuttonize;
-	@include m.buttonColor(v.$secondary_color, v.$primary_color);
-	padding: 0.2rem 0.5rem 0.2rem 0.5rem;
-	border-radius: 0.5rem;
-	&:hover {
-		@include m.buttonColor(v.$cream_color, v.$primary_color);
-		transition: background-color 0.4s ease;
-	}
+  @include m.unbuttonize;
+  @include m.buttonColor(v.$secondary_color, v.$primary_color);
+  padding: 0.2rem 0.5rem 0.2rem 0.5rem;
+  border-radius: 0.5rem;
+  &:hover {
+    @include m.buttonColor(v.$cream_color, v.$primary_color);
+    transition: background-color 0.4s ease;
+  }
+  a {
+    color: v.$primary_color;
+  }
 }
 
 .avatarButton {

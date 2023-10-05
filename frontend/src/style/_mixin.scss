@@ -45,3 +45,10 @@
 @mixin spacesH3Style($padding) {
 	padding-bottom: $padding;
 }
+
+@mixin textStyle($color, $fontFamily, $fontSize, $fontWeight) {
+  color: $color;
+  font-family: $fontFamily;
+  font-size: $fontSize;
+  font-weight: $fontWeight;
+}

@@ -1,5 +1,7 @@
 import style from "./InteractiveMap.module.scss";
-import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
+// import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faLocationDot } from "@fortawesome/free-solid-svg-icons";
 
 const InteractiveMap = () => {
   return (
@@ -7,9 +9,17 @@ const InteractiveMap = () => {
       <div className={`${style.titleStyle} titleResearch`}>
         Trouvez votre point d'intérêt !
       </div>
+      <button className={`buttonHomePage textButton ${style.mapButton}`}>
+        Voir la carte
+        <FontAwesomeIcon icon={faLocationDot} />
+      </button>
       <div>
-        <div />
-        <MapContainer
+        <img
+          src="/mockup-map.png"
+          alt="mockup map"
+          className={`${style.mockupImg}`}
+        />
+        {/* <MapContainer
           className={`${style.map}`}
           center={[51.505, -0.09]}
           zoom={13}
@@ -24,7 +34,7 @@ const InteractiveMap = () => {
               A pretty CSS3 popup. <br /> Easily customizable.
             </Popup>
           </Marker>
-        </MapContainer>
+        </MapContainer> */}
       </div>
     </>
   );

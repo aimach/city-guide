@@ -1,15 +1,6 @@
 import { ReactNode, useState, createContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-
-export type User = {
-  id: string;
-  username: string;
-  email: string;
-  image: string | null;
-  role: string;
-  city: string | null;
-  createdPoi: any[];
-};
+import { User } from "../utils/types";
 
 interface ProviderProps {
   children?: ReactNode;
@@ -31,7 +22,7 @@ export const UsersContext = createContext<ContextProps>({
 
 export const UserProvider = ({ children }: ProviderProps) => {
   // useState
-  const [profile, setProfile] = useState(null);
+  const [profile, setProfile] = useState<User | null>(null);
   const [loaded, setLoaded] = useState(false);
 
   const navigate = useNavigate();
@@ -49,7 +40,9 @@ export const UserProvider = ({ children }: ProviderProps) => {
         const data = await response.json();
 
         setLoaded(true);
-        setProfile(data);
+        if (!data.error) {
+          setProfile(data);
+        }
       } catch (err) {
         setLoaded(true);
       }
@@ -61,11 +54,11 @@ export const UserProvider = ({ children }: ProviderProps) => {
     return profile !== null;
   };
 
-  console.log(isAuthenticated());
   const logout = async () => {
     try {
       const response = await fetch("http://localhost:5000/api/auth/logout");
       const data = await response.json();
+      setProfile(null);
     } catch (error) {
       console.log(error);
     }
@@ -76,7 +69,6 @@ export const UserProvider = ({ children }: ProviderProps) => {
       navigate("/login");
     }
   };
-
   return (
     <UsersContext.Provider
       value={{ profile, isAuthenticated, logout, redirectToLogin }}

@@ -19,22 +19,32 @@ const app = express();
 app.use(express.json());
 app.use(cookieParser());
 app.use(
-	helmet({
-		crossOriginResourcePolicy: { policy: "cross-origin" },
-	})
+  helmet({
+    crossOriginResourcePolicy: { policy: "cross-origin" },
+  })
 );
 app.use((req, res, next) => {
-	res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
-	res.setHeader("Access-Control-Allow-Credentials", "true");
-	res.setHeader(
-		"Access-Control-Allow-Headers",
-		"Origin, X-Requested-With, Content, Accept, Content-Type, Authorization"
-	);
-	res.setHeader(
-		"Access-Control-Allow-Methods",
-		"GET, POST, PUT, DELETE, PATCH, OPTIONS"
-	);
-	next();
+  const corsWhitelist = [
+    "http://localhost:3000",
+    "https://lamarr4.wns.wilders.dev",
+  ];
+
+  if (
+    req.headers.origin !== undefined &&
+    corsWhitelist.includes(req.headers.origin)
+  ) {
+    res.header("Access-Control-Allow-Origin", req.headers.origin);
+  }
+  res.setHeader("Access-Control-Allow-Credentials", "true");
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content, Accept, Content-Type, Authorization"
+  );
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "GET, POST, PUT, DELETE, PATCH, OPTIONS"
+  );
+  next();
 });
 app.use("/public", express.static(path.join(__dirname + "/../public")));
 
