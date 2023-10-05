@@ -45,7 +45,7 @@ const Header = ({ size }: headerProps) => {
             <nav className={` ${style.menu}`}>
               <ul className="textButton">
                 <li>
-                  <a href="#parcourir">Parcourirrr</a>
+                  <a href="#parcourir">Parcourir</a>
                 </li>
                 <li>
                   <a href="#abonnement">Abonnement</a>
