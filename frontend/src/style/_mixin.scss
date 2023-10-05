@@ -16,13 +16,6 @@
   color: $fontColor;
 }
 
-@mixin textStyle($color, $fontFamily, $fontSize, $fontWeight) {
-  color: $color;
-  font-family: $fontFamily;
-  font-size: $fontSize;
-  font-weight: $fontWeight;
-}
-
 @mixin unbuttonize {
   // This removes styles added by default to button elements.
   background-color: transparent;
@@ -33,4 +26,11 @@
   font: inherit;
   border-radius: 0;
   appearance: none;
+}
+
+@mixin textStyle($color, $fontFamily, $fontSize, $fontWeight) {
+  color: $color;
+  font-family: $fontFamily;
+  font-size: $fontSize;
+  font-weight: $fontWeight;
 }

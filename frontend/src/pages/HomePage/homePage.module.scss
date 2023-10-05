@@ -1,0 +1,97 @@
+@use "../../style/variable" as v;
+@use "../../style/mixin" as m;
+
+.backgroundWave {
+  height: 103vh;
+  background-image: url("../../../public/wave_with_map.svg");
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: 100% 30%;
+}
+
+// PRESENTATION SECTION
+
+.presentationSection {
+  width: 50vw;
+  height: 50vh;
+  margin-left: 5rem;
+  @include m.flexLayout(space-around, flex-start);
+  flex-direction: column;
+}
+
+.presentationButton {
+  color: v.$primary_color;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  &:hover {
+    @include m.buttonColor(v.$cream_color, v.$primary_color);
+    transition: background-color 0.4s ease;
+  }
+}
+
+// MAP SECTION
+
+.mapSection {
+  @include m.flexLayout(space-around, center);
+  flex-direction: column;
+  margin: 5rem 0 10rem 0;
+  gap: 1rem;
+}
+
+.pictoPlane {
+  position: relative;
+  img {
+    position: absolute;
+    right: 0;
+    top: -300px;
+  }
+}
+
+// SEARCH SECTION
+
+.searchSection {
+  background-color: v.$cream_color;
+  &BottomLine {
+    @include m.flexLayout(normal, center);
+    flex-direction: column;
+    width: 100%;
+    border-bottom: 1px solid v.$primary_color;
+    padding-bottom: 5rem;
+  }
+}
+
+.mockup {
+  height: 50vh;
+  @include m.flexLayout(center, center);
+}
+
+// MOBILE STYLE
+
+@media (max-width: 768px) {
+  .mobileSection {
+    height: 95vh;
+    @include m.flexLayout(center, center, column);
+    background-image: url("../../../public/bg-wave_login.svg");
+    background-repeat: no-repeat;
+    background-size: 250%;
+    background-position: 10% bottom;
+    img {
+      width: 100vw;
+    }
+  }
+
+  .presentationButton {
+    border: none;
+  }
+}
+
+@media (max-width: 499px) {
+  .mobileSection {
+    background-repeat: no-repeat;
+    background-size: 250%;
+    background-position: 90% bottom;
+  }
+}
