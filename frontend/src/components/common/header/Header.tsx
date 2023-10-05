@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import style from "./header.module.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -66,11 +66,6 @@ const Header = ({ size }: headerProps) => {
                   className={`${style.avatarButton} textButton`}
                   onClick={() => {
                     setDisplayProfileMenu(!displayProfileMenu);
-                  }}
-                  onBlur={(e) => {
-                    if (e.currentTarget !== e.target) {
-                      setDisplayProfileMenu(!displayProfileMenu);
-                    }
                   }}
                 >
                   {profile?.image !== null ? (
