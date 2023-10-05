@@ -1,6 +1,10 @@
 @import "../../../style/placeholder";
 @import "../../../style/mixin";
 @import "../../../style/variable";
+
+.focused {
+    opacity: 0.5;
+}
 .container {
     @extend %card;
 
@@ -9,7 +13,6 @@
     border-radius: 20px;
     position: relative;
     cursor: pointer;
-
     @media screen and (max-width: 768px) {
         width: 252px;
         height: 165px;
@@ -53,4 +56,8 @@
         bottom: 7px;
         left: 10px;
     }
+}
+
+.unselected {
+    opacity: 0.5;
 }

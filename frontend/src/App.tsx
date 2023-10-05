@@ -34,7 +34,7 @@ function App() {
             <Route path="/register" element={<Register />} />
             <Route path="/contribution" element={<Contribution />} />
             <Route path="poi">
-               <Route path=":cityId" element={<PoiListView />} />
+               <Route path=":cityId" index element={<PoiListView />} />
             </Route>
          </Route>
       )

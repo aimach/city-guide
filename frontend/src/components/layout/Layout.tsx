@@ -15,11 +15,9 @@ const Layout = ({ children }: PropsWithChildren) => {
    }, [windowSize]);
    return (
       <>
-         <UserProvider>
-            <Header size={windowSize > 768 ? 'desktop' : 'mobile'} />
-            {children}
-            <Footer />
-         </UserProvider>
+         <Header size={windowSize > 768 ? 'desktop' : 'mobile'} />
+         {children}
+         <Footer />
       </>
    );
 };

@@ -1,13 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { CardType, Category, City, Poi } from '../../utils/types';
 import Caroussel from '../../components/common/Caroussel/Caroussel';
 import styles from './poiListView.module.scss';
+import { UsersContext } from '../../contexts/UserContext';
 
 const PoiListView = () => {
    const { cityId } = useParams();
    const [currentCity, setCurrentCity] = useState<City | null>(null);
    const [searchedPoi, setSearchedPoi] = useState<Poi[] | null>(null);
+
+   const { isAuthenticated, redirectToLogin } = useContext(UsersContext);
 
    const getCity = async () => {
       try {
@@ -24,10 +27,10 @@ const PoiListView = () => {
    };
 
    let categories: Category[] = [];
-   const poicategories = searchedPoi?.map((poi) => poi.category) ?? [];
+   const poiCategories = currentCity?.poi!.map((poi) => poi.category) ?? [];
 
    const filterCategories = () => {
-      poicategories.forEach((cat) => {
+      poiCategories.forEach((cat) => {
          if (!categories.find((category) => category.id === cat.id)) {
             categories.push(cat);
          }
@@ -56,8 +59,12 @@ const PoiListView = () => {
    };
 
    useEffect(() => {
-      getCity();
-   }, []);
+      if (!isAuthenticated()) {
+         redirectToLogin();
+      } else {
+         getCity();
+      }
+   }, [isAuthenticated]);
 
    return (
       <section className={styles.container}>

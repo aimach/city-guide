@@ -4,6 +4,7 @@ import { IoIosHeartEmpty, IoIosHeart } from 'react-icons/io';
 import { CardType, City } from '../../../utils/types';
 import { useNavigate } from 'react-router-dom';
 import { UsersContext } from '../../../contexts/UserContext';
+
 import {
    addFavouriteCityToUser,
    addFavouritePoiToUser,
@@ -16,7 +17,9 @@ interface Props {
    title: string;
    image: string;
    cardType: CardType;
-   onClickCategory?: (categoryName: string, cityName: string) => Promise<void>;
+   onClickCategory?: (categoryName: string, cityName: string) => void;
+   chooseCategory: React.Dispatch<React.SetStateAction<string | null>>;
+   categorySelected: string | null;
    currentCity?: City | null;
 }
 
@@ -27,6 +30,8 @@ const Card = ({
    id,
    onClickCategory,
    currentCity,
+   categorySelected,
+   chooseCategory,
 }: Props) => {
    const navigate = useNavigate();
 
@@ -97,12 +102,19 @@ const Card = ({
             if (currentCity != null) {
                onClickCategory!(title, currentCity?.name);
             }
+            chooseCategory(id);
             break;
       }
    };
 
    return (
-      <div className={styles.container}>
+      <div
+         className={`${styles.container} ${
+            categorySelected !== id &&
+            cardType === CardType.CATEGORY &&
+            styles.focused
+         } `}
+      >
          <div
             onClick={selectActionOnCardClick}
             className={styles.imageContainer}

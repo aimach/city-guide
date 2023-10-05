@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { CardType, City, DataType } from '../../../utils/types';
 import styles from './caroussel.module.scss';
 import Card from '../card/Card';
@@ -7,7 +7,7 @@ interface Props {
    title: string;
    data: DataType;
    cardType: CardType;
-   onClickCategory?: (categoryName: string, cityName: string) => Promise<void>;
+   onClickCategory?: (categoryName: string, cityName: string) => void;
    currentCity?: City | null;
 }
 
@@ -18,7 +18,9 @@ const Caroussel = ({
    onClickCategory,
    currentCity,
 }: Props) => {
-   const url = 'http://localhost:5000';
+   const [categorySelected, setCategorySelected] = useState<string | null>(
+      null
+   );
 
    return (
       <div className={styles.container}>
@@ -33,6 +35,8 @@ const Caroussel = ({
                      key={id}
                      cardType={cardType}
                      onClickCategory={onClickCategory}
+                     categorySelected={categorySelected}
+                     chooseCategory={setCategorySelected}
                      currentCity={currentCity}
                   />
                );
