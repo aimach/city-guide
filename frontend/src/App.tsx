@@ -13,7 +13,6 @@ import { UserProvider } from "./contexts/UserContext";
 import * as React from "react";
 import Contribution from "./pages/Contribution/Contribution";
 import Layout from "./components/layout/Layout";
-import Profile from "./pages/Profile/Profile";
 
 // import About from "./pages/About/About";
 
@@ -34,7 +33,6 @@ function App() {
         <Route path="/" element={<Root />}>
           <Route index element={<HomePage />} />
           <Route path="/contribution" element={<Contribution />} />
-          <Route path="/profile" element={<Profile />} />
         </Route>
         <Route path="/auth">
           <Route path="login" element={<Login />} />

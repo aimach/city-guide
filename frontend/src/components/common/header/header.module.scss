@@ -56,19 +56,13 @@
 .floatingMenu {
   position: absolute;
   right: 30px;
-  bottom: -40px;
+  bottom: -20px;
   width: 200px;
   border: 2px solid v.$secondary_color;
   color: v.$white_color;
   background-color: v.$primary_color;
   @include m.flexLayout(center, flex-start, column);
-  padding: 1rem;
-  border-radius: 0.5rem;
-  gap: 1rem;
-  button {
-    @include m.unbuttonize;
-    cursor: pointer;
-  }
+  padding: 0.5rem;
 }
 
 // MIDDLE SIZE STYLE
