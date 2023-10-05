@@ -56,9 +56,8 @@ export const UserProvider = ({ children }: ProviderProps) => {
 
   const logout = async () => {
     try {
-      const response = await fetch("http://localhost:5000/api/auth/logout", {
-        credentials: "include",
-      });
+      const response = await fetch("http://localhost:5000/api/auth/logout");
+      const data = await response.json();
       setProfile(null);
     } catch (error) {
       console.log(error);
@@ -70,7 +69,6 @@ export const UserProvider = ({ children }: ProviderProps) => {
       navigate("/login");
     }
   };
-
   return (
     <UsersContext.Provider
       value={{ profile, isAuthenticated, logout, redirectToLogin }}
