@@ -111,6 +111,7 @@ const Card = ({
       <div
          className={`${styles.container} ${
             categorySelected !== id &&
+            categorySelected != null &&
             cardType === CardType.CATEGORY &&
             styles.focused
          } `}
