@@ -30,3 +30,16 @@
   top: 10px;
   left: 10px;
 }
+
+.geocoding-control-input {
+  background-color: #f9f9f9;
+  border: 1px solid #ccc;
+  padding: 10px 15px;
+  // Autres styles que vous souhaitez écraser...
+}
+
+.activeGeocoding {
+  // background-color: red;
+  // border: 10px solid yellow;
+  padding: 50px 40px;
+}

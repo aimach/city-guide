@@ -8,15 +8,18 @@ import { GeocodingControl } from "@maptiler/geocoding-control/react";
 export default function InteractiveMap() {
   const mapContainer = useRef<any>(null);
   const map = useRef<any>(null);
-  const [lng] = useState(139.753);
-  const [lat] = useState(35.6844);
+  const [lng] = useState(2.3488);
+  const [lat] = useState(48.8534);
   const [zoom] = useState(14);
 
   const [mapController, setMapController] = useState<any>();
-  const [latitude, setLatitude] = useState<number>(0);
-  const [longitude, setLongitude] = useState<number>(0);
+  // const [isActive, setIsActive] = useState(false);
 
   useEffect(() => {
+    const bounds = [
+      [-5.266007882805499, 41.303921508225445],
+      [9.662499999999975, 51.12421275782688],
+    ];
     if (map.current) return; // stops map from intializing more than once
 
     map.current = new maplibregl.Map({
@@ -24,6 +27,7 @@ export default function InteractiveMap() {
       style: `https://api.maptiler.com/maps/streets-v2/style.json?key=${process.env.REACT_APP_MAPTILER_API_KEY}`,
       center: [lng, lat],
       zoom: zoom,
+      bounds: bounds as any,
     });
 
     const geolocateControl = new GeolocateControl({
@@ -36,32 +40,11 @@ export default function InteractiveMap() {
 
     map.current.addControl(new maplibregl.NavigationControl(), "top-right");
     setMapController(createMapLibreGlMapController(map.current, maplibregl));
-
-    if ("geolocation" in navigator) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const { latitude, longitude } = position.coords;
-
-          setLatitude(latitude);
-          setLongitude(longitude);
-        },
-        (error) => {
-          console.log("Erreur de géolocalisation :", error.message);
-        }
-      );
-    } else {
-      console.log(
-        "La géolocalisation n'est pas prise en charge par ce navigateur."
-      );
-
-      console.log("Latitude :", latitude);
-      console.log("Longitude :", longitude);
-    }
-  }, [lng, lat, zoom, latitude, longitude]);
+  }, [lng, lat, zoom]);
 
   return (
     <div className={`${styles.mapWrap}`}>
-      <div className={styles.geocoding}>
+      <div className={`${styles.geocoding} ${styles.activeGeocoding}`}>
         <GeocodingControl
           apiKey={process.env.REACT_APP_MAPTILER_API_KEY!}
           mapController={mapController}
