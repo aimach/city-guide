@@ -18,32 +18,69 @@ export const PoiController: IController = {
          let searchQueries = {};
 
          // if query in url, add finding options
-         if (req.query) {
+         if (Object.keys(req.query).length > 0) {
             const city = req.query.city as string;
             const category = req.query.category as string;
-            if (city && category) {
+            if (city !== undefined && category !== undefined) {
                searchQueries = {
                   category: { name: category },
                   city: { name: city },
                };
-            } else if (category) {
-               searchQueries = { category: { name: category } };
-            } else if (city) {
+            } else if (city !== undefined) {
                searchQueries = { city: { name: city } };
+            } else if (category !== undefined) {
+               searchQueries = { category: { name: category } };
             }
          }
 
-         // get all poi
-         let allPoi = await dataSource.getRepository(Poi).find({
-            relations: {
-               category: true,
-               city: true,
-               user: true,
-            },
-            where: searchQueries,
-         });
+         // get poi is accepted or no depending of user status (admin or not)
+         const { userId } = req.params;
 
-         res.status(200).send(allPoi);
+         const currentUser = await dataSource
+            .getRepository(User)
+            .findOne({ where: { id: userId } });
+
+         let allPoi;
+         if (currentUser?.role === UserRole.ADMIN) {
+            // get all poi (accepted or not)
+            allPoi = await dataSource.getRepository(Poi).find({
+               relations: {
+                  category: true,
+                  city: true,
+                  user: true,
+               },
+               where: searchQueries,
+            });
+         } else if (currentUser?.role === UserRole.ADMIN_CITY) {
+            // get the city name where user is admin to get only local POIs
+            const cityWhereUserIsAdmin = await dataSource
+               .getRepository(City)
+               .findOneBy({ userAdminCity: { id: userId } });
+            // update searchQueries with the city where user is admin
+            searchQueries = {
+               ...searchQueries,
+               city: cityWhereUserIsAdmin?.name,
+            };
+            allPoi = await dataSource.getRepository(Poi).find({
+               relations: {
+                  category: true,
+                  city: true,
+                  user: true,
+               },
+               where: searchQueries,
+            });
+         } else {
+            // get only accepted poi
+            allPoi = await dataSource.getRepository(Poi).find({
+               relations: {
+                  category: true,
+                  city: true,
+                  user: true,
+               },
+               where: { ...searchQueries, isAccepted: true },
+            });
+            res.status(200).send(allPoi);
+         }
       } catch (err) {
          res.status(400).send({
             error: 'Error while reading points of interest',
@@ -78,7 +115,7 @@ export const PoiController: IController = {
          const {
             description,
             address,
-            is_accepted,
+            isAccepted,
             name,
             image,
             category,
@@ -108,8 +145,8 @@ export const PoiController: IController = {
             res.status(403).send({
                error: 'You are not authorized to create a point of interest',
             });
-            await unlink(`./public/poi/${req.file?.filename}`);
-
+            if (req.file !== undefined)
+               await unlink(`./public/poi/${req.file.filename}`);
             return;
          }
 
@@ -125,14 +162,15 @@ export const PoiController: IController = {
                res.status(400).send({
                   error: `Field must contains only characters`,
                });
-               await unlink(`./public/poi/${req.file?.filename}`);
-
-               return;
+               if (req.file !== undefined)
+                  await unlink(`./public/poi/${req.file?.filename}`);
             }
          };
 
          const inputString: string[] = [description, name, address];
-         inputString.forEach((value) => checkIfStringAndNotEmpty(value));
+         inputString.forEach(
+            async (value) => await checkIfStringAndNotEmpty(value)
+         );
 
          // check name
 
@@ -145,8 +183,8 @@ export const PoiController: IController = {
             res.status(400).send({
                error: `Field must contains only characters (min: 2, max: 100)`,
             });
-            await unlink(`./public/poi/${req.file?.filename}`);
-
+            if (req.file !== undefined)
+               await unlink(`./public/poi/${req.file.filename}`);
             return;
          }
 
@@ -161,8 +199,8 @@ export const PoiController: IController = {
             res.status(400).send({
                error: `Incorrect format of address`,
             });
-            await unlink(`./public/poi/${req.file?.filename}`);
-
+            if (req.file !== undefined)
+               await unlink(`./public/poi/${req.file.filename}`);
             return;
          }
 
@@ -173,31 +211,32 @@ export const PoiController: IController = {
                res.status(400).send({
                   error: 'Incorrect format of foreign key (must be uuid)',
                });
-               await unlink(`./public/poi/${req.file?.filename}`);
-
-               return;
+               if (req.file !== undefined)
+                  await unlink(`./public/poi/${req.file?.filename}`);
             }
          };
          const foreignKeys: string[] = [category, city, user];
-         foreignKeys.forEach((value) => {
-            if (value) checkIfUUID(value);
+         foreignKeys.forEach(async (value) => {
+            if (value !== undefined) await checkIfUUID(value);
          });
 
-         // check if is_accepted is boolean
+         // check if isAccepted is boolean
 
-         if (!validator.isBoolean(is_accepted)) {
+         if (!validator.isBoolean(isAccepted)) {
             res.status(400).send({ error: 'is_accepted must be a boolean' });
-            await unlink(`./public/poi/${req.file?.filename}`);
+            if (req.file !== undefined)
+               await unlink(`./public/poi/${req.file.filename}`);
             return;
          }
 
          // check if image is an object
 
-         if (image && typeof image !== 'object') {
+         if (image !== undefined && typeof image !== 'object') {
             res.status(400).send({
                error: `Field image must contains a file`,
             });
-            await unlink(`./public/poi/${req.file?.filename}`);
+            if (req.file !== undefined)
+               await unlink(`./public/poi/${req.file.filename}`);
             return;
          }
 
@@ -206,7 +245,8 @@ export const PoiController: IController = {
             res.status(400).send({
                error: 'Incorrect format of coordinates (must be [lat, long])',
             });
-            await unlink(`./public/poi/${req.file?.filename}`);
+            if (req.file !== undefined)
+               await unlink(`./public/poi/${req.file.filename}`);
             return;
          }
 
@@ -221,7 +261,8 @@ export const PoiController: IController = {
          });
          if (coordsAlreadyExist > 0) {
             res.status(409).send({ error: 'Point of interest already exists' });
-            await unlink(`./public/poi/${req.file?.filename}`);
+            if (req.file !== undefined)
+               await unlink(`./public/poi/${req.file.filename}`);
             return;
          }
 
@@ -232,7 +273,7 @@ export const PoiController: IController = {
          };
 
          // rename file image
-         if (req.file) {
+         if (req.file !== undefined) {
             const originalname = req.file.originalname;
             const filename = req.file.filename;
             const newName = `${uuidv4()}-${originalname}`;
@@ -240,7 +281,7 @@ export const PoiController: IController = {
                `./public/poi/${filename}`,
                `./public/poi/${newName}`,
                (err) => {
-                  if (err) throw err;
+                  if (err !== null) throw err;
                }
             );
             req.body.image = `/public/poi/${newName}`;
@@ -253,7 +294,8 @@ export const PoiController: IController = {
          res.status(201).send('Created point of interest');
       } catch (err) {
          res.status(400).send({ error: 'Something went wrong' });
-         await unlink(`./public/poi/${req.file?.filename}`);
+         if (req.file !== undefined)
+            await unlink(`./public/poi/${req.file.filename}`);
       }
    },
 
@@ -264,7 +306,7 @@ export const PoiController: IController = {
          const {
             description,
             address,
-            is_accepted,
+            isAccepted,
             name,
             category,
             city,
@@ -286,15 +328,14 @@ export const PoiController: IController = {
                res.status(400).send({
                   error: `Field must contains only characters`,
                });
-               await unlink(`./public/poi/${req.file?.filename}`);
-
-               return;
+               if (req.file !== undefined)
+                  await unlink(`./public/poi/${req.file.filename}`);
             }
          };
 
          const inputString: string[] = [description, name, address];
-         inputString.forEach((value) => {
-            if (value) checkIfStringAndNotEmpty(value);
+         inputString.forEach(async (value) => {
+            if (value !== undefined) await checkIfStringAndNotEmpty(value);
          });
 
          // check coordinates format
@@ -302,14 +343,15 @@ export const PoiController: IController = {
             res.status(400).send({
                error: 'Incorrect format of coordinates (must be [lat, long])',
             });
-            await unlink(`./public/poi/${req.file?.filename}`);
+            if (req.file !== undefined)
+               await unlink(`./public/poi/${req.file.filename}`);
 
             return;
          }
 
          // check name
          if (
-            name &&
+            name !== null &&
             !validator.matches(
                name,
                /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð '-]{2,100}$/
@@ -318,15 +360,15 @@ export const PoiController: IController = {
             res.status(400).send({
                error: `Field must contains only characters (min: 2, max: 100)`,
             });
-            await unlink(`./public/poi/${req.file?.filename}`);
-
+            if (req.file !== undefined)
+               await unlink(`./public/poi/${req.file.filename}`);
             return;
          }
 
          // check address
 
          if (
-            address &&
+            address !== null &&
             !validator.matches(
                address,
                /^(([\u00c0-\u01ffa-zA-Z\d])+(?:['-\s][\u00c0-\u01ffa-zA-Z]+)*\s)+((\d{5})*\s)([\u00c0-\u01ffa-zA-Z])+(?:['-\s][\u00c0-\u01ffa-zA-Z]+)*\s*$/
@@ -335,7 +377,8 @@ export const PoiController: IController = {
             res.status(400).send({
                error: `Incorrect format of address`,
             });
-            await unlink(`./public/poi/${req.file?.filename}`);
+            if (req.file !== undefined)
+               await unlink(`./public/poi/${req.file.filename}`);
 
             return;
          }
@@ -347,22 +390,22 @@ export const PoiController: IController = {
                res.status(400).send({
                   error: 'Incorrect format of foreign key (must be uuid)',
                });
-               await unlink(`./public/poi/${req.file?.filename}`);
-
-               return;
+               if (req.file !== undefined)
+                  await unlink(`./public/poi/${req.file?.filename}`);
             }
          };
 
          const foreignKeys: string[] = [category, city, user];
-         foreignKeys.forEach((value) => {
-            if (value) checkIfUUID(value);
+         foreignKeys.forEach(async (value) => {
+            if (value !== undefined) await checkIfUUID(value);
          });
 
          // check if is_accepted is boolean
 
-         if (is_accepted && typeof is_accepted !== 'boolean') {
+         if (isAccepted !== null && typeof isAccepted !== 'boolean') {
             res.status(400).send({ error: 'is_accepted must be a boolean' });
-            await unlink(`./public/poi/${req.file?.filename}`);
+            if (req.file !== undefined)
+               await unlink(`./public/poi/${req.file.filename}`);
             return;
          }
 
@@ -372,8 +415,8 @@ export const PoiController: IController = {
             .findOneBy({ id });
          if (poiToUpdate === null) {
             res.status(404).send({ error: 'Point of interest not found' });
-            await unlink(`./public/poi/${req.file?.filename}`);
-
+            if (req.file !== undefined)
+               await unlink(`./public/poi/${req.file.filename}`);
             return;
          }
 
@@ -398,8 +441,8 @@ export const PoiController: IController = {
             res.status(403).send({
                error: 'You are not authorized to create a point of interest',
             });
-            await unlink(`./public/poi/${req.file?.filename}`);
-
+            if (req.file !== undefined)
+               await unlink(`./public/poi/${req.file.filename}`);
             return;
          }
 
@@ -420,8 +463,8 @@ export const PoiController: IController = {
                res.status(404).send({
                   error: 'Point of interest already exist',
                });
-               await unlink(`./public/poi/${req.file?.filename}`);
-
+               if (req.file !== undefined)
+                  await unlink(`./public/poi/${req.file.filename}`);
                return;
             }
 
@@ -433,7 +476,7 @@ export const PoiController: IController = {
          }
 
          // rename the new file and delete the older one
-         if (req.file) {
+         if (req.file !== undefined) {
             // rename
             const originalname = req.file.originalname;
             const filename = req.file.filename;
@@ -442,7 +485,7 @@ export const PoiController: IController = {
                `./public/poi/${filename}`,
                `./public/poi/${newName}`,
                (err) => {
-                  if (err) throw err;
+                  if (err !== null) throw err;
                }
             );
             req.body.image = `/public/poi/${newName}`;
@@ -461,7 +504,8 @@ export const PoiController: IController = {
          res.status(400).send({
             error: 'Error while updating point of interest',
          });
-         await unlink(`./public/poi/${req.file?.filename}`);
+         if (req.file !== undefined)
+            await unlink(`./public/poi/${req.file.filename}`);
       }
    },
 

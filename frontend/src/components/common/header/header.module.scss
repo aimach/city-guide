@@ -8,6 +8,7 @@
   padding: 2rem;
   //position: sticky;
   top: 0;
+  z-index: 10;
   background-color: v.$primary_color;
 }
 
@@ -21,7 +22,7 @@
       margin-right: 2rem;
       padding: 0;
       color: v.$cream_color;
-      &:hover {
+      a:hover {
         transition: color 0.5s ease;
         color: v.$secondary_color;
       }
@@ -37,6 +38,9 @@
   &:hover {
     @include m.buttonColor(v.$cream_color, v.$primary_color);
     transition: background-color 0.4s ease;
+  }
+  a {
+    color: v.$primary_color;
   }
 }
 

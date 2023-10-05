@@ -29,9 +29,11 @@ function App() {
    const router = createBrowserRouter(
       createRoutesFromElements(
          <Route path="/" element={<Root />}>
-            <Route path="/" index element={<HomePage />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
+            <Route index element={<HomePage />} />
+            <Route path="/auth">
+               <Route path="login" element={<Login />} />
+               <Route path="register" element={<Register />} />
+            </Route>
             <Route path="/contribution" element={<Contribution />} />
             <Route path="poi">
                <Route path=":cityId" index element={<PoiListView />} />

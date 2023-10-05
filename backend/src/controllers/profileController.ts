@@ -127,21 +127,23 @@ export const ProfileController: IController = {
                res.status(400).send({
                   error: `Field must contains only characters`,
                });
-               await unlink(`./public/user/${req.file?.filename}`);
+               if (req.file !== undefined)
+                  await unlink(`./public/user/${req.file?.filename}`);
                return;
             }
          };
 
          const inputString: string[] = [username, email, city, password];
-         inputString.forEach((value) => {
-            if (value) checkIfStringAndNotEmpty(value);
+         inputString.forEach(async (value) => {
+            if (value !== null) await checkIfStringAndNotEmpty(value);
          });
 
          // check enum in role
          const roles: UserRole[] = Object.values(UserRole);
-         if (role && !roles.includes(role)) {
+         if (role !== null && !roles.includes(role)) {
             res.status(400).send({ error: 'User role does not exist' });
-            await unlink(`./public/user/${req.file?.filename}`);
+            if (req.file !== undefined)
+               await unlink(`./public/user/${req.file?.filename}`);
             return;
          }
 
@@ -151,7 +153,8 @@ export const ProfileController: IController = {
             .findOneBy({ id });
          if (profileToUpdate === null) {
             res.status(404).send({ error: 'User not found' });
-            await unlink(`./public/user/${req.file?.filename}`);
+            if (req.file !== undefined)
+               await unlink(`./public/user/${req.file?.filename}`);
 
             return;
          }
@@ -161,37 +164,39 @@ export const ProfileController: IController = {
             .getRepository(User)
             .findOne({ where: { id: userId } });
 
-         if (role && currentUser?.role !== UserRole.ADMIN) {
+         if (role !== null && currentUser?.role !== UserRole.ADMIN) {
             res.status(403).send({
                error: 'You are not authorized to update this property',
             });
-            await unlink(`./public/user/${req.file?.filename}`);
+            if (req.file !== undefined)
+               await unlink(`./public/user/${req.file?.filename}`);
 
             return;
          }
 
          // Check if connected user has the same id than profile to update or if he is admin
-
          if (
-            currentUser?.id !== profileToUpdate.id ||
+            currentUser?.id !== profileToUpdate.id &&
             currentUser?.role !== UserRole.ADMIN
          ) {
             res.status(403).send({
                error: 'You are not authorized to update this profile',
             });
-            await unlink(`./public/user/${req.file?.filename}`);
+            if (req.file !== undefined)
+               await unlink(`./public/user/${req.file?.filename}`);
 
             return;
          }
 
          // check if username already exist in db
-         if (username) {
+         if (username !== null) {
             const usernameAlreadyExist = await dataSource
                .getRepository(User)
                .count({ where: { username } });
             if (usernameAlreadyExist > 0) {
                res.status(409).send({ error: 'Username already exists' });
-               await unlink(`./public/user/${req.file?.filename}`);
+               if (req.file !== undefined)
+                  await unlink(`./public/user/${req.file?.filename}`);
             }
             if (
                !validator.matches(
@@ -202,27 +207,30 @@ export const ProfileController: IController = {
                res.status(401).send({
                   error: 'Username must contain 3 to 20 characters and no symbol',
                });
-               await unlink(`./public/user/${req.file?.filename}`);
+               if (req.file !== undefined)
+                  await unlink(`./public/user/${req.file?.filename}`);
             }
          }
 
          // check if email already exist in db
-         if (email) {
+         if (email !== null) {
             const emailAlreadyExist = await dataSource
                .getRepository(User)
                .count({ where: { email } });
             if (emailAlreadyExist > 0) {
                res.status(409).send({ error: 'Email already exists' });
-               await unlink(`./public/user/${req.file?.filename}`);
+               if (req.file !== undefined)
+                  await unlink(`./public/user/${req.file?.filename}`);
             }
             if (!validator.isEmail(email)) {
                res.status(401).send({ error: 'Incorrect email format' });
-               await unlink(`./public/user/${req.file?.filename}`);
+               if (req.file !== undefined)
+                  await unlink(`./public/user/${req.file?.filename}`);
             }
          }
 
          // rename the new file and delete the older one
-         if (req.file) {
+         if (req.file !== undefined) {
             // rename
             const originalname = req.file.originalname;
             const filename = req.file.filename;
@@ -231,7 +239,7 @@ export const ProfileController: IController = {
                `./public/user/${filename}`,
                `./public/user/${newName}`,
                (err) => {
-                  if (err) throw err;
+                  if (err !== null) throw err;
                }
             );
             req.body.image = `/public/user/${newName}`;
@@ -246,7 +254,8 @@ export const ProfileController: IController = {
          res.status(200).send('Updated user');
       } catch (err) {
          res.status(400).send({ error: 'Error while updating user' });
-         await unlink(`./public/user/${req.file?.filename}`);
+         if (req.file !== undefined)
+            await unlink(`./public/user/${req.file?.filename}`);
       }
    },
 
@@ -270,7 +279,7 @@ export const ProfileController: IController = {
          }
 
          if (
-            currentUser?.id !== profileToDelete.id ||
+            currentUser?.id !== profileToDelete.id &&
             currentUser?.role !== UserRole.ADMIN
          ) {
             res.status(403).send({
