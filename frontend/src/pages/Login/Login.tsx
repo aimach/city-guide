@@ -90,7 +90,7 @@ const Login = () => {
         {errors.password && <p className="error">{errors.password.message}</p>}
 
         <input type="submit" value="Explorer" />
-        <Link to="/register">
+        <Link to="/auth/register">
           Vous n’avez pas de compte ? Créez en un juste ici !
         </Link>
         <span>Téléchargez l’application ici !</span>
