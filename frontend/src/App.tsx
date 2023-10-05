@@ -14,7 +14,7 @@ import * as React from "react";
 import Contribution from "./pages/Contribution/Contribution";
 import { default as BackOfficeHomePage } from "./backOffice/pages/HomePage/homePage";
 import Layout from "./components/layout/Layout";
-import BackOfficeLayout from "./backOffice/layout/BackOfficeLayout";
+import BackOfficeLayout from "./backOffice/components/layout/BackOfficeLayout";
 
 const Root = () => {
 	const MyLayout = window.location.pathname.startsWith("/dashboard")

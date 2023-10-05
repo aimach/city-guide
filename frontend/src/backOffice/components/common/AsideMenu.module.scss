@@ -1,0 +1,13 @@
+@use "../../../style/variable" as v;
+@use "../../../style/mixin" as m;
+
+.contentAsideMenu {
+	background-color: v.$cream_color;
+	padding: 68px 33px;
+}
+.iconSpaces {
+	padding-right: 20px;
+}
+.svg-inline--fa {
+	vertical-align: unset;
+}

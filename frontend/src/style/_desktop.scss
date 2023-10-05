@@ -29,7 +29,12 @@
 .textButton {
 	@include m.textStyle(v.$cream_color, v.$poppinsFont, 20px, 600);
 }
-
+.textButtonList {
+	@include m.textStyle(v.$primary_color, v.$poppinsFont, 20px, 600);
+}
+.textButtonSublist {
+	@include m.textStyle(v.$primary_color, v.$poppinsFont, 20px, 500);
+}
 .textSearch {
 	@include m.textStyle(v.$cream_color, v.$poppinsFont, 16px, 500);
 }

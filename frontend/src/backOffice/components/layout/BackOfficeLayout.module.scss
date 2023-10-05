@@ -1,0 +1,14 @@
+@use "../../../style/variable" as v;
+@use "../../../style/mixin" as m;
+
+.layoutBackOffice {
+	display: flex;
+}
+.backOfficeContent {
+	background-color: v.$white_color;
+	flex: 4;
+}
+
+.flexAsideMenu {
+	flex: 1;
+}
