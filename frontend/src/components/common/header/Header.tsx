@@ -20,10 +20,11 @@ const Header = ({ size }: headerProps) => {
   // get user's role
   const { profile, logout } = useContext(UsersContext);
 
-  let role = Role.VISITOR;
-  if (profile != null) {
-    role = profile.role;
-  }
+   let role = Role.VISITOR;
+   if (profile != null) {
+     role = profile.role;
+   }
+
 
   // display profile menu
   const [displayProfileMenu, setDisplayProfileMenu] = useState(false);

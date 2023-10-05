@@ -1,31 +1,49 @@
 @mixin flexLayout($justify, $align, $direction: row) {
-  display: flex;
-  flex-direction: $direction;
-  justify-content: $justify;
-  align-items: $align;
+	display: flex;
+	flex-direction: $direction;
+	justify-content: $justify;
+	align-items: $align;
 }
 
-@mixin buttonSize($width, $height) {
-  width: $width;
-  height: $height;
-  flex-shrink: 0;
+@mixin buttonSize($width, $height, $padding) {
+	width: $width;
+	height: $height;
+	flex-shrink: 0;
+	border-radius: 20px;
+	padding: $padding;
+	text-decoration: none;
 }
 
 @mixin buttonColor($backgroundColor, $fontColor) {
-  background-color: $backgroundColor;
-  color: $fontColor;
+	background-color: $backgroundColor;
+	color: $fontColor;
+}
+
+@mixin textStyle($color, $fontFamily, $fontSize, $fontWeight) {
+	color: $color;
+	font-family: $fontFamily;
+	font-size: $fontSize;
+	font-weight: $fontWeight;
 }
 
 @mixin unbuttonize {
-  // This removes styles added by default to button elements.
-  background-color: transparent;
-  border: none;
-  margin: 0;
-  padding: 0;
-  text-align: inherit;
-  font: inherit;
-  border-radius: 0;
-  appearance: none;
+	// This removes styles added by default to button elements.
+	background-color: transparent;
+	border: none;
+	margin: 0;
+	padding: 0;
+	text-align: inherit;
+	font: inherit;
+	border-radius: 0;
+	appearance: none;
+}
+
+@mixin spacesH1Style($padding-top, $padding-bottom) {
+	padding-top: $padding-top;
+	padding-bottom: $padding-bottom;
+}
+@mixin spacesH3Style($padding) {
+	padding-bottom: $padding;
 }
 
 @mixin textStyle($color, $fontFamily, $fontSize, $fontWeight) {

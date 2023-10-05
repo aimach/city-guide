@@ -1,11 +1,9 @@
-import { useState, useContext } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAt, faKey } from "@fortawesome/free-solid-svg-icons";
 import styles from "../../style/form.module.scss";
-import { UsersContext } from "../../contexts/UserContext";
 
 export interface FormProps {
   email: string;

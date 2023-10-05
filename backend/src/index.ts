@@ -4,12 +4,13 @@ import path from "path";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 import {
-  authRoutes,
-  poiRoutes,
-  profileRoutes,
-  citiesRoutes,
-  categoriesRoutes,
+	authRoutes,
+	poiRoutes,
+	profileRoutes,
+	citiesRoutes,
+	categoriesRoutes,
 } from "./routes";
+import { seed } from "./seed";
 import helmet from "helmet";
 
 dotenv.config();
@@ -23,7 +24,17 @@ app.use(
   })
 );
 app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
+  const corsWhitelist = [
+    "http://localhost:3000",
+    "https://lamarr4.wns.wilders.dev",
+  ];
+
+  if (
+    req.headers.origin !== undefined &&
+    corsWhitelist.includes(req.headers.origin)
+  ) {
+    res.header("Access-Control-Allow-Origin", req.headers.origin);
+  }
   res.setHeader("Access-Control-Allow-Credentials", "true");
   res.setHeader(
     "Access-Control-Allow-Headers",
@@ -44,11 +55,20 @@ app.use("/api/cities", citiesRoutes);
 app.use("/api/categories", categoriesRoutes);
 
 const start = async (): Promise<void> => {
-  const port = 5000;
+	const port = 5000;
 
-  await dataSource.initialize();
-  app.listen({ port }, () => {
-    console.log(`Backend app ready at http://localhost:${port}`);
-  });
+	await dataSource.initialize();
+
+	if (process.env.NODE_ENV !== "production") {
+		try {
+			await seed();
+		} catch (error) {
+			console.log("Seed error: " + error);
+		}
+	}
+
+	app.listen({ port }, () => {
+		console.log(`Backend app ready at http://localhost:${port}`);
+	});
 };
 void start();
