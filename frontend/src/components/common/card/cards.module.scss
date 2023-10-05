@@ -2,9 +2,6 @@
 @import "../../../style/mixin";
 @import "../../../style/variable";
 
-.focused {
-    opacity: 0.5;
-}
 .container {
     @extend %card;
 

@@ -17,7 +17,7 @@ export const PoiFactory = setSeederFactory(Poi, (faker: Faker) => {
    };
    poi.description = faker.lorem.sentence();
    poi.image = faker.image.urlPicsumPhotos();
-   poi.is_accepted = faker.datatype.boolean();
+   poi.isAccepted = faker.datatype.boolean();
    //   console.log(poi);
 
    //   poi.created_at = faker.date.

@@ -108,6 +108,11 @@ const HomePage = () => {
                <h2 className="subtitleCategoryDark">
                   Trouvez votre point d'intérêt !
                </h2>
+               <Caroussel
+                  title="Villes"
+                  data={selectedCities}
+                  cardType={CardType.CITY}
+               />
             </section>
          )}
       </>

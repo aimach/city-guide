@@ -113,7 +113,7 @@ const Card = ({
             categorySelected !== id &&
             categorySelected != null &&
             cardType === CardType.CATEGORY &&
-            styles.focused
+            styles.unselected
          } `}
       >
          <div

@@ -74,32 +74,34 @@ const PoiListView = () => {
 
    return (
       <section className={styles.container}>
-         <h1>{currentCity?.name}</h1>
+         <div>
+            <h1>{currentCity?.name}</h1>
 
-         {categories && (
-            <div className={styles.categories}>
-               <Caroussel
-                  title="Catégories"
-                  data={categories}
-                  cardType={CardType.CATEGORY}
-                  onClickCategory={getPoiByCityAndCategory}
-                  currentCity={currentCity}
-               />
-            </div>
-         )}
-         {searchedPoi && currentCity && (
-            <div className={styles.poiList}>
-               <Caroussel
-                  title={`${searchedPoi.length} ${
-                     searchedPoi.length > 1
-                        ? "points d'intérêt trouvés"
-                        : "point d'intérêt trouvé"
-                  } `}
-                  data={searchedPoi}
-                  cardType={CardType.POI}
-               />
-            </div>
-         )}
+            {categories && (
+               <div className={styles.categories}>
+                  <Caroussel
+                     title="Catégories"
+                     data={categories}
+                     cardType={CardType.CATEGORY}
+                     onClickCategory={getPoiByCityAndCategory}
+                     currentCity={currentCity}
+                  />
+               </div>
+            )}
+            {searchedPoi && currentCity && (
+               <div className={styles.poiList}>
+                  <Caroussel
+                     title={`${searchedPoi.length} ${
+                        searchedPoi.length > 1
+                           ? "points d'intérêt trouvés"
+                           : "point d'intérêt trouvé"
+                     } `}
+                     data={searchedPoi}
+                     cardType={CardType.POI}
+                  />
+               </div>
+            )}
+         </div>
       </section>
    );
 };
