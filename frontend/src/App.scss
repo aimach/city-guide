@@ -5,11 +5,11 @@
 @use "style/mobile";
 
 html {
-	background-color: v.$primary_color;
+  background-color: v.$primary_color;
 }
 
 body {
-	margin: 0;
+  margin: 0;
 }
 
 // h1 {
@@ -20,7 +20,7 @@ body {
 // }
 
 * {
-	margin: unset;
+  margin: unset;
 }
 body {
   margin: 0;

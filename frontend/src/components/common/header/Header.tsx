@@ -1,9 +1,9 @@
 import style from "./header.module.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-	faMap,
-	faMagnifyingGlass,
-	faUser,
+  faMap,
+  faMagnifyingGlass,
+  faUser,
 } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import { useContext } from "react";
@@ -11,11 +11,17 @@ import { UsersContext } from "../../../contexts/UserContext";
 import { Role } from "../../../utils/types";
 
 type headerProps = {
-	size: string;
+  size: string;
 };
 
 const Header = ({ size }: headerProps) => {
-	const { profile } = useContext(UsersContext);
+  const { profile } = useContext(UsersContext);
+
+   let role = Role.VISITOR;
+   if (profile != null) {
+     role = profile.role;
+   }
+
 
   return (
     <header
