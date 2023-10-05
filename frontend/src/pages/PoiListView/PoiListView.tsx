@@ -20,14 +20,20 @@ const PoiListView = () => {
          const data = await response.json();
 
          setCurrentCity(data);
-         setSearchedPoi(data.poi);
+         const filteredPoi = data.poi.filter(
+            (poi: Poi) => poi.isAccepted === true
+         );
+         setSearchedPoi(filteredPoi ?? []);
       } catch (error) {
          console.log(error);
       }
    };
 
    let categories: Category[] = [];
-   const poiCategories = currentCity?.poi!.map((poi) => poi.category) ?? [];
+   const poiCategories =
+      currentCity
+         ?.poi!.filter((poi) => poi.isAccepted === true)
+         .map((poi) => poi.category) ?? [];
 
    const filterCategories = () => {
       poiCategories.forEach((cat) => {

@@ -1,10 +1,14 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { CardType, City, DataType } from '../../../utils/types';
 import styles from './caroussel.module.scss';
 import Card from '../card/Card';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
+import {
+   IoIosArrowDroprightCircle,
+   IoIosArrowDropleftCircle,
+} from 'react-icons/io';
 
 interface Props {
    title: string;
@@ -25,12 +29,15 @@ const Caroussel = ({
       null
    );
 
+   const slider = useRef<any>(null);
+
    const settings = {
       dots: false,
       infinite: true,
       speed: 500,
       slidesToShow: 4,
       slidesToScroll: 1,
+      arrows: false,
    };
 
    const cards = data.map(({ name, image, id }) => {
@@ -52,7 +59,23 @@ const Caroussel = ({
       <div className={styles.container}>
          <h2>{title}</h2>
          {cardType === CardType.CATEGORY && data.length > 4 ? (
-            <Slider {...settings}>{cards as any}</Slider>
+            <div className={styles.slider}>
+               <button
+                  className={`${styles.arrow} ${styles.prevArrow}`}
+                  onClick={() => slider?.current?.slickPrev()}
+               >
+                  <IoIosArrowDropleftCircle />
+               </button>
+               <Slider ref={slider} {...settings}>
+                  {cards as any}
+               </Slider>
+               <button
+                  className={`${styles.arrow} ${styles.nextArrow}`}
+                  onClick={() => slider?.current?.slickNext()}
+               >
+                  <IoIosArrowDroprightCircle />
+               </button>
+            </div>
          ) : (
             <div className={styles.cardsContainer}>
                {data.map(({ name, image, id }) => {

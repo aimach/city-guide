@@ -5,6 +5,27 @@
     margin: 50px auto;
     width: 80%;
 
+    .slider {
+        position: relative;
+
+        .arrow {
+            position: absolute;
+            top: 45%;
+            z-index: 2;
+            @include unbuttonize;
+            cursor: pointer;
+            font-size: 32px;
+            color: $primary-color;
+        }
+        .prevArrow {
+            left: 0;
+        }
+
+        .nextArrow {
+            right: 0;
+        }
+    }
+
     h2 {
         color: $primary-color;
         margin-bottom: 50px;
