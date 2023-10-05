@@ -1,0 +1,62 @@
+@use "../../style/variable" as v;
+@use "../../style/mixin" as m;
+
+.filter {
+	margin-bottom: 80px;
+	@include m.flexLayout(unset, center, unset);
+	position: relative;
+	margin-top: 20px;
+	box-shadow: 0 1px 2px 0 v.$shadow_dark_color;
+
+	span {
+		@include m.flexLayout(unset, center, unset);
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		left: 0;
+		padding-left: 0.75rem;
+		pointer-events: none;
+	}
+
+	input {
+		display: block;
+		padding-left: 2.5rem;
+		padding-top: 20px;
+		padding-bottom: 20px;
+		width: 100%;
+		border-top: 2px solid v.$primary_color;
+		border-bottom: 2px solid v.$primary_color;
+		border-right: unset;
+		border-left: unset;
+		background-color: v.$cream_color;
+		font-size: 20px;
+		color: v.$primary_color;
+
+		@media (min-width: 640px) {
+			font-size: 20px;
+		}
+	}
+
+	input::placeholder {
+		background-color: v.$cream_color;
+		color: v.$primary_color;
+		opacity: 1;
+		font-size: 20px;
+	}
+	input:focus {
+		outline: unset;
+		background-color: v.$cream_color;
+		box-shadow: 0 5px 8px -7px v.$primary_color,
+			0 -5px 8px -7px v.$primary_color;
+	}
+
+	input:-webkit-autofill,
+	input:-webkit-autofill:hover,
+	input:-webkit-autofill:focus {
+		border-top: 2px solid v.$primary_color;
+		border-bottom: 2px solid v.$primary_color;
+		-webkit-text-fill-color: v.$primary_color;
+		-webkit-box-shadow: 0 0 0px 1000px v.$cream_color inset;
+		transition: background-color 5000s ease-in-out 0s;
+	}
+}

@@ -17,10 +17,11 @@ type headerProps = {
 const Header = ({ size }: headerProps) => {
   const { profile } = useContext(UsersContext);
 
-  let role = Role.VISITOR;
-  if (profile != null) {
-    role = profile.role;
-  }
+   let role = Role.VISITOR;
+   if (profile != null) {
+     role = profile.role;
+   }
+
 
   return (
     <header
