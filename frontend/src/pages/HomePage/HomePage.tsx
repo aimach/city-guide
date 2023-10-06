@@ -1,14 +1,20 @@
 /* eslint-disable no-lone-blocks */
 // import React, { useContext } from 'react'
+
+import Header from '../../components/common/header/Header';
 import { UsersContext, UserProvider } from '../../contexts/UserContext';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import InteractiveMap from '../../components/interactiveMap/InteractiveMap';
 import { useContext, useEffect, useState } from 'react';
 
+import Footer from '../../components/common/footer/Footer';
+import SearchPOI from '../SearchPOI/SearchPOI';
 import Caroussel from '../../components/common/Caroussel/Caroussel';
 import { CardType, City } from '../../utils/types';
 import styles from './homePage.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
+import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
 
 const HomePage = () => {
    const [windowSize, setWindowSize] = useState<number>(window.innerWidth);
@@ -26,6 +32,7 @@ const HomePage = () => {
       useContext(UsersContext);
    // On vérifie si l'utilisateur est connecté.
 
+   const [searchParams] = useSearchParams();
    const [cities, setCities] = useState<City[] | null>(null);
 
    const getAllCities = async (): Promise<void> => {
@@ -56,6 +63,7 @@ const HomePage = () => {
                      <button
                         className={`buttonHomePage textButton ${styles.presentationButton}`}
                      >
+                        <FontAwesomeIcon icon={faPaperPlane} />
                         Explorez
                      </button>
                   </div>
@@ -78,11 +86,7 @@ const HomePage = () => {
                         nous allons vous faire découvrir des merveilles
                      </h3>
                   </div>
-                  <div
-                     className={`${styles.searchSectionBottomLine} ${styles.mockup}`}
-                  >
-                     <p>Composant avec barre de recherche et filtres</p>
-                  </div>
+                  <SearchPOI />
                   <div className={`${styles.searchSectionBottomLine}`}>
                      <h2 className="subtitleCategoryDark">
                         Choisis une ville et trouve ses points d'intérêt

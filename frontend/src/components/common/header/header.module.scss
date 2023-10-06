@@ -10,10 +10,11 @@
   top: 0;
   z-index: 10;
   background-color: v.$primary_color;
+
 }
 
 .menu {
-  @include m.flexLayout(space-between, center);
+	@include m.flexLayout(space-between, center);
 
   ul {
     display: flex;
@@ -45,43 +46,46 @@
 }
 
 .avatarButton {
-  @include m.buttonSize(50px, 50px);
-  border-radius: 50%;
-  border: 2px solid v.$secondary_color;
-  background-color: v.$primary_color;
+	@include m.buttonSize(50px, 50px, unset);
+	border-radius: 50%;
+	border: 2px solid v.$secondary_color;
+	background-color: v.$primary_color;
 }
 
 // MIDDLE SIZE STYLE
 // style management between desktop and mobile for a better responsive
 
 @media (max-width: 1000px) {
-  .headerDesktop {
-    @include m.flexLayout(center, center);
-    flex-direction: column;
-  }
+	.headerDesktop {
+		@include m.flexLayout(center, center);
+		flex-direction: column;
+	}
+	.menu {
+		padding-top: 30px;
+	}
 }
 
 // MOBILE STYLE
 
 @media (max-width: 768px) {
-  .headerMobile {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    background-color: v.$white_color;
-    border-radius: 0.5rem 0.5rem 0 0;
-    nav {
-      @include m.flexLayout(space-between, center);
-      padding-top: 1rem;
-      padding-bottom: 1rem;
-      margin: 0 auto;
-      width: 85%;
-    }
-  }
+	.headerMobile {
+		position: fixed;
+		bottom: 0;
+		width: 100%;
+		background-color: v.$white_color;
+		border-radius: 0.5rem 0.5rem 0 0;
+		nav {
+			@include m.flexLayout(space-between, center);
+			padding-top: 1rem;
+			padding-bottom: 1rem;
+			margin: 0 auto;
+			width: 85%;
+		}
+	}
 
-  .iconStyle {
-    color: v.$gray_color;
-    width: 38px;
-    height: 38px;
-  }
+	.iconStyle {
+		color: v.$gray_color;
+		width: 38px;
+		height: 38px;
+	}
 }
