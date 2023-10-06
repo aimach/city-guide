@@ -45,7 +45,7 @@
 }
 
 .avatarButton {
-  @include m.buttonSize(50px, 50px);
+  @include m.buttonSize(50px, 50px, 0);
   border-radius: 50%;
   border: 2px solid v.$secondary_color;
   color: v.$white_color;
