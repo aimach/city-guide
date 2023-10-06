@@ -9,6 +9,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styles from "./AsideMenu.module.scss";
+import { Link } from "react-router-dom";
 
 const AsideMenu = () => {
 	return (
@@ -19,7 +20,7 @@ const AsideMenu = () => {
 						<li className={`textButtonList`}>
 							<span className={styles.itemFlex}>
 								<FontAwesomeIcon icon={faHouse} className={styles.iconSpaces} />
-								Retour sur le site
+								<Link to={`/`}>Retour sur le site</Link>
 							</span>
 						</li>
 						<li className={`textButtonList`}>
