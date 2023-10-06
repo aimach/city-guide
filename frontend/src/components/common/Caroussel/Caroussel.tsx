@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { CardType, City, DataType } from '../../../utils/types';
 import styles from './caroussel.module.scss';
 import Card from '../card/Card';
@@ -29,13 +29,23 @@ const Caroussel = ({
       null
    );
 
+   const [windowSize, setWindowSize] = useState<number>(window.innerWidth);
+
+   function updateDimension() {
+      setWindowSize(window.innerWidth);
+   }
+
+   useEffect(() => {
+      window.addEventListener('resize', updateDimension);
+   }, [windowSize]);
+
    const slider = useRef<any>(null);
 
    const settings = {
       dots: false,
       infinite: true,
       speed: 500,
-      slidesToShow: 4,
+      slidesToShow: windowSize > 768 ? 4 : 1,
       slidesToScroll: 1,
       arrows: false,
    };
@@ -58,7 +68,8 @@ const Caroussel = ({
    return (
       <div className={styles.container}>
          <h2>{title}</h2>
-         {cardType === CardType.CATEGORY && data.length > 4 ? (
+         {(cardType === CardType.CATEGORY && data.length > 4) ||
+         (cardType === CardType.CATEGORY && windowSize < 768) ? (
             <div className={styles.slider}>
                <button
                   className={`${styles.arrow} ${styles.prevArrow}`}

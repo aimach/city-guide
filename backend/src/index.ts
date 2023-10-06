@@ -10,29 +10,13 @@ import {
    citiesRoutes,
    categoriesRoutes,
 } from './routes';
-import { seed } from './seed';
+//import { seed } from './seed';
 import helmet from 'helmet';
 
 dotenv.config();
 
 const app = express();
 app.use(express.json());
-
-app.use((req, res, next) => {
-   res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
-   res.setHeader(
-      'Access-Control-Allow-Headers',
-      'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization'
-   );
-   res.setHeader('Access-Control-Allow-Credentials', 'true');
-   res.setHeader(
-      'Access-Control-Allow-Methods',
-      'GET, POST, PUT, DELETE, PATCH, OPTIONS'
-   );
-   next();
-});
-
-app.use('/public', express.static(path.join(__dirname + '/../public')));
 
 app.use(cookieParser());
 app.use(
@@ -76,13 +60,13 @@ const start = async (): Promise<void> => {
 
    await dataSource.initialize();
 
-   if (process.env.NODE_ENV !== 'production') {
+   /*  if (process.env.NODE_ENV !== 'production') {
       try {
          await seed();
       } catch (error) {
          console.log('Seed error: ' + error);
       }
-   }
+   } */
 
    app.listen({ port }, () => {
       console.log(`Backend app ready at http://localhost:${port}`);

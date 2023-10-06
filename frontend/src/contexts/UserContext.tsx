@@ -66,7 +66,7 @@ export const UserProvider = ({ children }: ProviderProps) => {
 
    const redirectToLogin = () => {
       if (loaded && profile == null) {
-         navigate('/login');
+         navigate('/auth/login');
       }
    };
    return (

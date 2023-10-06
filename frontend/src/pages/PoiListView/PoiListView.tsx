@@ -10,8 +10,6 @@ const PoiListView = () => {
    const [currentCity, setCurrentCity] = useState<City | null>(null);
    const [searchedPoi, setSearchedPoi] = useState<Poi[] | null>(null);
 
-   const { isAuthenticated, redirectToLogin } = useContext(UsersContext);
-
    const getCity = async () => {
       try {
          const response = await fetch(
@@ -65,12 +63,8 @@ const PoiListView = () => {
    };
 
    useEffect(() => {
-      if (!isAuthenticated()) {
-         redirectToLogin();
-      } else {
-         getCity();
-      }
-   }, [isAuthenticated]);
+      getCity();
+   }, []);
 
    return (
       <section className={styles.container}>

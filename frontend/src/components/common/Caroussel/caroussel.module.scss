@@ -33,14 +33,10 @@
     .cardsContainer {
         display: flex;
         flex-wrap: wrap;
-
         gap: 56px;
 
         @media screen and (max-width: 768px) {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
+            gap: 30px;
         }
     }
 }

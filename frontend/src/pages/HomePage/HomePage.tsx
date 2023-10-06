@@ -32,19 +32,6 @@ const HomePage = () => {
       useContext(UsersContext);
    // On vérifie si l'utilisateur est connecté.
 
-   const [searchParams] = useSearchParams();
-   const [cities, setCities] = useState<City[] | null>(null);
-
-   const getAllCities = async (): Promise<void> => {
-      const response = await fetch('http://localhost:5000/api/cities');
-      const data = await response.json();
-      setCities(data);
-   };
-   useEffect(() => {
-      getAllCities();
-   }, []);
-
-   const selectedCities = cities?.slice(2, 6) ?? [];
    return (
       <>
          {windowSize > 768 ? (
@@ -77,27 +64,7 @@ const HomePage = () => {
                   </div>
                </section>
                <section className={`${styles.searchSection}`}>
-                  <div className={`${styles.searchSectionBottomLine}`}>
-                     <h2 className="subtitleCategoryDark">
-                        Trouvez votre point d'intérêt !
-                     </h2>
-                     <h3 className="textCardDark">Laissez vous porter,</h3>
-                     <h3 className="textCardDark">
-                        nous allons vous faire découvrir des merveilles
-                     </h3>
-                  </div>
                   <SearchPOI />
-                  <div className={`${styles.searchSectionBottomLine}`}>
-                     <h2 className="subtitleCategoryDark">
-                        Choisis une ville et trouve ses points d'intérêt
-                     </h2>
-
-                     <Caroussel
-                        title="Villes"
-                        data={selectedCities}
-                        cardType={CardType.CITY}
-                     />
-                  </div>
                </section>
             </>
          ) : (
@@ -112,11 +79,7 @@ const HomePage = () => {
                <h2 className="subtitleCategoryDark">
                   Trouvez votre point d'intérêt !
                </h2>
-               <Caroussel
-                  title="Villes"
-                  data={selectedCities}
-                  cardType={CardType.CITY}
-               />
+               <SearchPOI />
             </section>
          )}
       </>
