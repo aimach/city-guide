@@ -33,13 +33,17 @@ const Root = () => {
 function App() {
 	const router = createBrowserRouter(
 		createRoutesFromElements(
-			<Route path="/" element={<Root />}>
-				<Route index element={<HomePage />} />
-				<Route path="/login" element={<Login />} />
-				<Route path="/register" element={<Register />} />
-				<Route path="/contribution" element={<Contribution />} />
-				<Route path="/dashboard" element={<BackOfficeHomePage />} />
-			</Route>
+			<>
+				<Route path="/" element={<Root />}>
+					<Route index element={<HomePage />} />
+					<Route path="/contribution" element={<Contribution />} />
+					<Route path="/dashboard" element={<BackOfficeHomePage />} />
+				</Route>
+				<Route path="/auth">
+					<Route path="login" element={<Login />} />
+					<Route path="register" element={<Register />} />
+				</Route>
+			</>
 		)
 	);
 
