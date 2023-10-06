@@ -16,51 +16,91 @@ const AsideMenu = () => {
 			<section className={styles.contentAsideMenu}>
 				<aside>
 					<ul>
-						{/* className={`textButton ${style.menu}`} */}
 						<li className={`textButtonList`}>
-							<FontAwesomeIcon icon={faHouse} className={styles.iconSpaces} />
-							Retour sur le site
+							<span className={styles.itemFlex}>
+								<FontAwesomeIcon icon={faHouse} className={styles.iconSpaces} />
+								Retour sur le site
+							</span>
 						</li>
 						<li className={`textButtonList`}>
-							<FontAwesomeIcon icon={faUser} />
-							Administrateur
-							<ul>
+							<span className={styles.itemFlex}>
+								<FontAwesomeIcon icon={faUser} className={styles.iconSpaces} />
+								Administrateur
+							</span>
+							<ol>
 								<li className={`textButtonSublist`}>
-									<FontAwesomeIcon icon={faUser} />
-									Profils
+									<span className={styles.itemFlex}>
+										<FontAwesomeIcon
+											icon={faUser}
+											className={styles.iconSpaces}
+										/>
+										Profils
+									</span>
 								</li>
 								<li className={`textButtonSublist`}>
-									<FontAwesomeIcon icon={faCity} />
-									Villes
+									<span className={styles.itemFlex}>
+										<FontAwesomeIcon
+											icon={faCity}
+											className={styles.iconSpaces}
+										/>
+										Villes
+									</span>
 								</li>
 								<li className={`textButtonSublist`}>
-									<FontAwesomeIcon icon={faFolder} />
-									Catégories
+									<span className={styles.itemFlex}>
+										<FontAwesomeIcon
+											icon={faFolder}
+											className={styles.iconSpaces}
+										/>
+										Catégories
+									</span>
 								</li>
 								<li className={`textButtonSublist`}>
-									<FontAwesomeIcon icon={faLocationDot} />
-									Point d'intérêts
+									<span className={styles.itemFlex}>
+										<FontAwesomeIcon
+											icon={faLocationDot}
+											className={styles.iconSpaces}
+										/>
+										Point d'intérêts
+									</span>
 								</li>
 								<li className={`textButtonSublist`}>
-									<FontAwesomeIcon icon={faUserPlus} />
-									Utilisateurs
+									<span className={styles.itemFlex}>
+										<FontAwesomeIcon
+											icon={faUserPlus}
+											className={styles.iconSpaces}
+										/>
+										Utilisateurs
+									</span>
 								</li>
-							</ul>
+							</ol>
 						</li>
 						<li className={`textButtonList`}>
-							<FontAwesomeIcon icon={faUsers} />
-							Administrateur de ville
-							<ul>
+							<span className={styles.itemFlex}>
+								<FontAwesomeIcon icon={faUsers} className={styles.iconSpaces} />
+								Administrateur de ville
+							</span>
+							<ol>
 								<li className={`textButtonSublist`}>
-									<FontAwesomeIcon icon={faLocationDot} />
-									Point d'intérêts
+									<span className={styles.itemFlex}>
+										<FontAwesomeIcon
+											icon={faLocationDot}
+											className={styles.iconSpaces}
+										/>
+										Point d'intérêts
+									</span>
 								</li>
 
 								<li className={`textButtonSublist`}>
-									<FontAwesomeIcon icon={faUser} />
-									Utilisateurs
+									<span className={styles.itemFlex}>
+										<FontAwesomeIcon
+											icon={faUser}
+											className={styles.iconSpaces}
+										/>
+										Utilisateurs
+									</span>
 								</li>
-							</ul>
+							</ol>
 						</li>
 					</ul>
 				</aside>
