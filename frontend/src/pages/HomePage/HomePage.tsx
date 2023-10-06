@@ -1,16 +1,11 @@
 /* eslint-disable no-lone-blocks */
 // import React, { useContext } from 'react'
 
-import Header from '../../components/common/header/Header';
-import { UsersContext, UserProvider } from '../../contexts/UserContext';
-import { useNavigate, useSearchParams } from 'react-router-dom';
 import InteractiveMap from '../../components/interactiveMap/InteractiveMap';
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
-import Footer from '../../components/common/footer/Footer';
 import SearchPOI from '../SearchPOI/SearchPOI';
-import Caroussel from '../../components/common/Caroussel/Caroussel';
-import { CardType, City } from '../../utils/types';
+
 import styles from './homePage.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
@@ -27,9 +22,6 @@ const HomePage = () => {
       window.addEventListener('resize', updateDimension);
    }, [windowSize]);
 
-   const navigate = useNavigate();
-   const { isAuthenticated, logout, redirectToLogin } =
-      useContext(UsersContext);
    // On vérifie si l'utilisateur est connecté.
 
    return (

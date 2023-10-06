@@ -58,6 +58,7 @@ export const UserProvider = ({ children }: ProviderProps) => {
       try {
          const response = await fetch('http://localhost:5000/api/auth/logout');
          const data = await response.json();
+         console.log(data);
          setProfile(null);
       } catch (error) {
          console.log(error);
