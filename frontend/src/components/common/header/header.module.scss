@@ -72,6 +72,13 @@
   .headerDesktop {
     @include m.flexLayout(center, center, column);
   }
+  .headerDesktop {
+    @include m.flexLayout(center, center);
+    flex-direction: column;
+  }
+  .menu {
+    padding-top: 30px;
+  }
 }
 
 // MOBILE STYLE
