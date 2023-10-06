@@ -3,31 +3,50 @@
 
 //Desktop
 .logoHeader {
-	@include m.textStyle(v.$cream_color, v.$poppinsFont, 40px, 700);
+  @include m.textStyle(v.$cream_color, v.$poppinsFont, 40px, 700);
 }
 
 .subtitleCategory {
-	@include m.textStyle(v.$cream_color, v.$poppinsFont, 36px, 700);
+  @include m.textStyle(v.$cream_color, v.$poppinsFont, 36px, 700);
+}
+
+.subtitleCategoryDark {
+  @include m.textStyle(v.$primary_color, v.$poppinsFont, 36px, 700);
+}
+.subtitleCity {
+  @include m.textStyle(v.$primary_color, v.$poppinsFont, 36px, 700);
 }
 
 .profilName {
-	@include m.textStyle(v.$cream_color, v.$poppinsFont, 32px, 700);
+  @include m.textStyle(v.$cream_color, v.$poppinsFont, 32px, 700);
+}
+
+.profilNameDark {
+  @include m.textStyle(v.$primary_color, v.$poppinsFont, 32px, 700);
 }
 
 .logoFooter {
-	@include m.textStyle(v.$cream_color, v.$poppinsFont, 32px, 600);
+  @include m.textStyle(v.$cream_color, v.$poppinsFont, 32px, 600);
+}
+
+.logoFooterDark {
+  @include m.textStyle(v.$primary_color, v.$poppinsFont, 32px, 600);
 }
 
 .textCard {
-	@include m.textStyle(v.$cream_color, v.$poppinsFont, 24px, 600);
+  @include m.textStyle(v.$cream_color, v.$poppinsFont, 24px, 600);
+}
+
+.textCardDark {
+  @include m.textStyle(v.$primary_color, v.$poppinsFont, 24px, 600);
 }
 
 .textFilter {
-	@include m.textStyle(v.$cream_color, v.$poppinsFont, 24px, 400);
+  @include m.textStyle(v.$cream_color, v.$poppinsFont, 24px, 400);
 }
 
 .textButton {
-	@include m.textStyle(v.$cream_color, v.$poppinsFont, 20px, 600);
+  @include m.textStyle(v.$cream_color, v.$poppinsFont, 20px, 600);
 }
 .textButtonList {
 	@include m.textStyle(v.$primary_color, v.$poppinsFont, 20px, 600);
@@ -36,35 +55,54 @@
 	@include m.textStyle(v.$primary_color, v.$poppinsFont, 20px, 500);
 }
 .textSearch {
-	@include m.textStyle(v.$cream_color, v.$poppinsFont, 16px, 500);
+  @include m.textStyle(v.$cream_color, v.$poppinsFont, 16px, 500);
 }
 
 .textItemsFilter {
-	@include m.textStyle(v.$cream_color, v.$poppinsFont, 16px, 500);
+  @include m.textStyle(v.$cream_color, v.$poppinsFont, 16px, 500);
 }
 
 .titleResearch {
-	@include m.textStyle(v.$cream_color, v.$comicNeueFont, 48px, 700);
+  @include m.textStyle(v.$cream_color, v.$comicNeueFont, 48px, 700);
 }
 
 .presentationText {
-	@include m.textStyle(v.$cream_color, v.$comicNeueFont, 32px, 700);
+  @include m.textStyle(v.$cream_color, v.$comicNeueFont, 32px, 700);
 }
 
 .titleCard {
-	@include m.textStyle(v.$cream_color, v.$comicNeueFont, 30px, 700);
+  @include m.textStyle(v.$cream_color, v.$comicNeueFont, 30px, 700);
 }
 
 .inputSearchText {
-	@include m.textStyle(v.$cream_color, v.$comicNeueFont, 24px, 700);
+  @include m.textStyle(v.$cream_color, v.$comicNeueFont, 24px, 700);
 }
 
 .buttonHomePage {
-	border-radius: 20px;
-	background: v.$secondary_color;
-	@include m.buttonSize(275px, 74px);
+  border-radius: 20px;
+  background: v.$secondary_color;
+  @include m.buttonSize(275px, 74px, 0);
+  cursor: pointer;
 }
 
 .titleFooter {
-	@include m.textStyle(v.$cream_color, v.$poppinsFont, 32px, 700);
+  @include m.textStyle(v.$cream_color, v.$poppinsFont, 32px, 700);
+}
+
+.titlePOI {
+  @include m.textStyle(v.$primary_color, v.$poppinsFont, 38px, 600);
+  @include m.spacesH1Style(50px, 50px);
+}
+.subtitlePOI {
+  @include m.textStyle(v.$primary_color, v.$poppinsFont, 30px, 500);
+  @include m.spacesH3Style(17px);
+}
+
+.subtitlePoiCity {
+  @include m.textStyle(v.$primary_color, v.$poppinsFont, 24px, 500);
+  @include m.spacesH3Style(35px);
+}
+
+.baseText {
+  @include m.textStyle(v.$primary_color, v.$poppinsFont, 20px, 400);
 }

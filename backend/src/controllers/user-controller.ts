@@ -28,8 +28,10 @@ export const AuthController: IController = {
 		};
 
 		try {
-			let userToCreate = new User();
-			userToCreate = { ...userToCreate, email, password, username };
+			const userToCreate = new User();
+			userToCreate.email = email;
+			userToCreate.password = password;
+			userToCreate.username = username;
 
 			// Check if one of fields is empty
 

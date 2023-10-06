@@ -1,9 +1,31 @@
-import React from 'react'
+import styles from "./FilterSearch.module.scss";
+import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-const filterSearch = () => {
-  return (
-    <div>filterSearch</div>
-  )
+interface FilterSearchProps {
+	filterSearch: string;
+	setFilterSearch: (filterSearch: string) => void;
 }
 
-export default filterSearch
+const FilterSearch = ({ filterSearch, setFilterSearch }: FilterSearchProps) => {
+	return (
+		<>
+			<div className={`${styles.filter}`}>
+				<span>
+					<FontAwesomeIcon icon={faMagnifyingGlass} />
+				</span>
+				<input
+					value={filterSearch}
+					onChange={(event) => setFilterSearch(event.target.value)}
+					type="text"
+					name="FilterSearch"
+					placeholder="Rechercher une ville..."
+					autoComplete="off"
+					role="presentation"
+				/>
+			</div>
+		</>
+	);
+};
+
+export default FilterSearch;

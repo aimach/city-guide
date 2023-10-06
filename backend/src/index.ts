@@ -11,6 +11,7 @@ import {
 	categoriesRoutes,
 	dashboardRoutes,
 } from "./routes";
+import { seed } from "./seed";
 import helmet from "helmet";
 
 dotenv.config();
@@ -24,7 +25,17 @@ app.use(
 	})
 );
 app.use((req, res, next) => {
-	res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
+	const corsWhitelist = [
+		"http://localhost:3000",
+		"https://lamarr4.wns.wilders.dev",
+	];
+
+	if (
+		req.headers.origin !== undefined &&
+		corsWhitelist.includes(req.headers.origin)
+	) {
+		res.header("Access-Control-Allow-Origin", req.headers.origin);
+	}
 	res.setHeader("Access-Control-Allow-Credentials", "true");
 	res.setHeader(
 		"Access-Control-Allow-Headers",
@@ -36,7 +47,7 @@ app.use((req, res, next) => {
 	);
 	next();
 });
-app.use("/public", express.static(path.join(__dirname + "/../public")));
+app.use("/public", express.static(path.join(__dirname, "/../public")));
 
 app.use("/api/auth", authRoutes);
 app.use("/api/profile", profileRoutes);
@@ -49,6 +60,15 @@ const start = async (): Promise<void> => {
 	const port = 5000;
 
 	await dataSource.initialize();
+
+	if (process.env.NODE_ENV !== "production") {
+		try {
+			await seed();
+		} catch (error) {
+			console.log("Seed error: ", error);
+		}
+	}
+
 	app.listen({ port }, () => {
 		console.log(`Backend app ready at http://localhost:${port}`);
 	});

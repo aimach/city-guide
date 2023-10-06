@@ -1,6 +1,10 @@
+@use "../../style/mixin" as m;
+@use "../../style/variable" as v;
+
 .map {
-  width: 100%;
-  height: 1272px;
+  width: 70vw;
+  height: 600px;
+  border-radius: 1rem;
 }
 
 .titleStyle {
@@ -8,6 +12,25 @@
   justify-content: center;
   align-items: center;
   margin-bottom: 10px;
+}
+
+.mockupImg {
+  width: 50vw;
+  padding: 1rem;
+}
+
+.mapButton {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  color: v.$primary_color;
+  border: none;
+  &:hover {
+    @include m.buttonColor(v.$cream_color, v.$primary_color);
+    transition: background-color 0.4s ease;
+  }
 }
 
 @media only screen and (max-width: 768px) {
