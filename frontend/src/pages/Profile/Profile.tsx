@@ -10,35 +10,49 @@ const Profile = () => {
 
   return (
     <div className={style.profilePage}>
-      <section>
-        <div>
-          {profile?.image !== null ? (
-            <img src={profile?.image} alt="avatar" />
-          ) : (
-            profile?.username.substring(0, 1).toUpperCase()
-          )}
-          <p>name</p>
-          <p>status</p>
+      <section className={style.formSection}>
+        <div className={style.profileAvatarAndName}>
+          <div className={style.avatarImg}>
+            {profile?.image !== null ? (
+              <img src={profile?.image} alt="avatar" />
+            ) : (
+              profile?.username.substring(0, 1).toUpperCase()
+            )}
+          </div>
+          <p>{profile?.username.toUpperCase()}</p>
+          <p>{profile?.role}</p>
         </div>
         <form>
-          <div>
-            <label htmlFor="city">Ville</label>
-            <input type="text" name="city" id="city" />
+          <div className={style.formColumns}>
+            {profile?.city ? (
+              <div>
+                <label htmlFor="city">VILLE</label>
+                <input type="text" name="city" id="city" value={profile.city} />
+              </div>
+            ) : null}
+
+            <div>
+              <label htmlFor="mail">ADRESSE EMAIL</label>
+              <input
+                type="email"
+                name="mail"
+                id="mail"
+                value={profile?.email}
+              />
+            </div>
+            <div>
+              <label htmlFor="password">MOT DE PASSE</label>
+              <input type="password" name="password" id="password" />
+            </div>
           </div>
-          <div>
-            <label htmlFor="mail">Adresse mail</label>
-            <input type="email" name="mail" id="mail" />
-          </div>
-          <div>
-            <label htmlFor="password">Mot de passe</label>
-            <input type="password" name="password" id="password" />
-          </div>
-          <div>
-            <label htmlFor="bio">Bio</label>
-            <input type="text" name="bio" id="bio" />
+          <div className={style.formColumns}>
+            <div>
+              <label htmlFor="bio">BIOGRAPHIE</label>
+              <input type="text" name="bio" id="bio" />
+            </div>
           </div>
         </form>
-        <div>
+        <div className={style.buttonSection}>
           <button type="button">Suggérer un point d'intérêt</button>
           <button type="button">Supprimer le compte</button>
         </div>

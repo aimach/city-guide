@@ -3,4 +3,69 @@
 
 .profilePage {
   color: v.$cream_color;
+  padding: 0 3rem;
+}
+
+.formSection {
+  font-family: "Poppins", sans-serif;
+  padding-bottom: 3rem;
+  border-bottom: 3px solid v.$secondary-color;
+  @include m.flexLayout(flex-start, center);
+  form {
+    @include m.flexLayout(flex-start, flex-start, row);
+    flex-grow: 3;
+    input {
+      color: v.$cream_color;
+      font-family: "Comic Neue", cursive;
+      font-size: 1.1rem;
+      background-color: v.$primary_color;
+      padding: 1rem;
+      border: 1px solid v.$cream_color;
+      border-radius: 3rem;
+      width: 80%;
+      &[name="bio"] {
+        height: 100%;
+      }
+    }
+  }
+}
+
+.profileAvatarAndName {
+  font-family: "Poppins", sans-serif;
+  @include m.flexLayout(center, center, column);
+  gap: 0.5rem;
+  flex-grow: 1;
+}
+
+.avatarImg {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  border: 2px solid v.$secondary_color;
+  @include m.flexLayout(center, center);
+}
+
+.buttonSection {
+  @include m.flexLayout(center, center, column);
+  flex-grow: 1;
+  gap: 1rem;
+  button {
+    @include m.unbuttonize;
+    @include m.buttonSize(230px, 70px, 1rem);
+    @include m.buttonColor(v.$cream_color, red);
+    border: 1px solid red;
+    text-align: center;
+  }
+}
+
+.formColumns {
+  flex-grow: 1;
+  &:last-child {
+    height: 100%;
+  }
+  div {
+    @include m.flexLayout(flex-start, flex-start, column);
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
 }
