@@ -4,12 +4,13 @@ import path from "path";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 import {
-  authRoutes,
-  poiRoutes,
-  profileRoutes,
-  citiesRoutes,
-  categoriesRoutes,
+	authRoutes,
+	poiRoutes,
+	profileRoutes,
+	citiesRoutes,
+	categoriesRoutes,
 } from "./routes";
+import { seed } from "./seed";
 import helmet from "helmet";
 
 dotenv.config();
@@ -54,11 +55,20 @@ app.use("/api/cities", citiesRoutes);
 app.use("/api/categories", categoriesRoutes);
 
 const start = async (): Promise<void> => {
-  const port = 5000;
+	const port = 5000;
 
-  await dataSource.initialize();
-  app.listen({ port }, () => {
-    console.log(`Backend app ready at http://localhost:${port}`);
-  });
+	await dataSource.initialize();
+
+	if (process.env.NODE_ENV !== "production") {
+		try {
+			await seed();
+		} catch (error) {
+			console.log("Seed error: " + error);
+		}
+	}
+
+	app.listen({ port }, () => {
+		console.log(`Backend app ready at http://localhost:${port}`);
+	});
 };
 void start();
