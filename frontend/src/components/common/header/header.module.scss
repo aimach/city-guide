@@ -56,7 +56,7 @@
 .floatingMenu {
   position: absolute;
   right: 30px;
-  bottom: -40px;
+  bottom: -70px;
   width: 200px;
   border: 2px solid v.$secondary_color;
   color: v.$white_color;
@@ -83,6 +83,12 @@
     right: 20%;
     bottom: -80px;
   }
+}
+
+.backgroundModal {
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
 }
 
 // MOBILE STYLE

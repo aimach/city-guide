@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useState } from "react";
 import style from "./header.module.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -15,16 +15,15 @@ type headerProps = {
 };
 
 const Header = ({ size }: headerProps) => {
-  const navigate = useNavigate();
-
   // get user's role
   const { profile, logout } = useContext(UsersContext);
 
-   let role = Role.VISITOR;
-   if (profile != null) {
-     role = profile.role;
-   }
+  const navigate = useNavigate();
 
+  let role = Role.VISITOR;
+  if (profile != null) {
+    role = profile.role;
+  }
 
   // display profile menu
   const [displayProfileMenu, setDisplayProfileMenu] = useState(false);
@@ -40,7 +39,7 @@ const Header = ({ size }: headerProps) => {
       >
         {size === "desktop" ? (
           <>
-            <Link to="/">
+            <Link to="/" onClick={() => setDisplayProfileMenu(false)}>
               <h1>CITY GUIDE</h1>
             </Link>
             <nav className={` ${style.menu}`}>
@@ -54,13 +53,23 @@ const Header = ({ size }: headerProps) => {
 
                 {role === Role.VISITOR ? (
                   <li>
-                    <Link to="/auth/login">Connexion</Link>
+                    <Link
+                      to="/auth/login"
+                      onClick={() => setDisplayProfileMenu(false)}
+                    >
+                      Connexion
+                    </Link>
                   </li>
                 ) : null}
               </ul>
               {role === Role.VISITOR ? (
                 <button className={`${style.buttonHeader} textButton`}>
-                  <Link to="/auth/register">Nous rejoindre</Link>
+                  <Link
+                    to="/auth/register"
+                    onClick={() => setDisplayProfileMenu(false)}
+                  >
+                    Nous rejoindre
+                  </Link>
                 </button>
               ) : (
                 <button
@@ -111,6 +120,10 @@ const Header = ({ size }: headerProps) => {
           </nav>
         )}
       </header>
+      <div
+        className={`${style.backgroundModal}`}
+        onClick={() => setDisplayProfileMenu(false)}
+      ></div>
     </>
   );
 };
