@@ -20,7 +20,7 @@ const AsideMenu = () => {
 						<li className={`textButtonList`}>
 							<span className={styles.itemFlex}>
 								<FontAwesomeIcon icon={faHouse} className={styles.iconSpaces} />
-								<Link to={`/`} className={styles.itemAsideMenu}>
+								<Link to={"/"} className={styles.itemAsideMenu}>
 									Retour sur le site
 								</Link>
 							</span>
@@ -28,7 +28,9 @@ const AsideMenu = () => {
 						<li className={`textButtonList`}>
 							<span className={styles.itemFlex}>
 								<FontAwesomeIcon icon={faUser} className={styles.iconSpaces} />
-								Administrateur
+								<Link to="/dashboard/admin" className={styles.itemAsideMenu}>
+									Administrateur
+								</Link>
 							</span>
 							<ol>
 								<li className={`textButtonSublist`}>
@@ -37,7 +39,12 @@ const AsideMenu = () => {
 											icon={faUser}
 											className={styles.iconSpaces}
 										/>
-										Profils
+										<Link
+											to="/dashboard/profil"
+											className={styles.itemAsideMenu}
+										>
+											Profils
+										</Link>
 									</span>
 								</li>
 								<li className={`textButtonSublist`}>
@@ -46,7 +53,13 @@ const AsideMenu = () => {
 											icon={faCity}
 											className={styles.iconSpaces}
 										/>
-										Villes
+
+										<Link
+											to="/dashboard/cities"
+											className={styles.itemAsideMenu}
+										>
+											Villes
+										</Link>
 									</span>
 								</li>
 								<li className={`textButtonSublist`}>
@@ -55,7 +68,12 @@ const AsideMenu = () => {
 											icon={faFolder}
 											className={styles.iconSpaces}
 										/>
-										Catégories
+										<Link
+											to="/dashboard/categories"
+											className={styles.itemAsideMenu}
+										>
+											Catégories
+										</Link>
 									</span>
 								</li>
 								<li className={`textButtonSublist`}>
@@ -64,7 +82,10 @@ const AsideMenu = () => {
 											icon={faLocationDot}
 											className={styles.iconSpaces}
 										/>
-										Point d'intérêts
+
+										<Link to="/dashboard/poi" className={styles.itemAsideMenu}>
+											Point d'intérêts
+										</Link>
 									</span>
 								</li>
 								<li className={`textButtonSublist`}>
@@ -73,7 +94,13 @@ const AsideMenu = () => {
 											icon={faUserPlus}
 											className={styles.iconSpaces}
 										/>
-										Utilisateurs
+
+										<Link
+											to="/dashboard/users"
+											className={styles.itemAsideMenu}
+										>
+											Utilisateurs
+										</Link>
 									</span>
 								</li>
 							</ol>
@@ -81,7 +108,12 @@ const AsideMenu = () => {
 						<li className={`textButtonList`}>
 							<span className={styles.itemFlex}>
 								<FontAwesomeIcon icon={faUsers} className={styles.iconSpaces} />
-								Administrateur de ville
+								<Link
+									to="/dashboard/adminCity"
+									className={styles.itemAsideMenu}
+								>
+									Administrateur de ville
+								</Link>
 							</span>
 							<ol>
 								<li className={`textButtonSublist`}>
@@ -90,7 +122,13 @@ const AsideMenu = () => {
 											icon={faLocationDot}
 											className={styles.iconSpaces}
 										/>
-										Point d'intérêts
+
+										<Link
+											to="/dashboard/adminCityPoi"
+											className={styles.itemAsideMenu}
+										>
+											Point d'intérêts
+										</Link>
 									</span>
 								</li>
 
@@ -100,7 +138,12 @@ const AsideMenu = () => {
 											icon={faUser}
 											className={styles.iconSpaces}
 										/>
-										Utilisateurs
+										<Link
+											to="/dashboard/adminCityUsers"
+											className={styles.itemAsideMenu}
+										>
+											Utilisateurs
+										</Link>
 									</span>
 								</li>
 							</ol>

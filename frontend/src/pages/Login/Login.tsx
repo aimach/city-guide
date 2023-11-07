@@ -47,7 +47,11 @@ const Login = () => {
 				});
 				return;
 			}
-			navigate("/");
+			if (data.role === "admin") {
+				navigate("/dashboard");
+			} else {
+				navigate("/");
+			}
 		} catch (error) {
 			console.log(error);
 		}
