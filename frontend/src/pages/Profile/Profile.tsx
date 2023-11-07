@@ -6,19 +6,23 @@ import { faPen, faCheck } from "@fortawesome/free-solid-svg-icons";
 import { User } from "../../utils/types";
 import InputFormProfile from "./InputFormProfile";
 
+export interface IDisableInputs {
+  city: boolean;
+  email: boolean;
+  password: boolean;
+  username: boolean;
+  bio: boolean;
+}
+
 const Profile = () => {
   // get profile
   const { profile } = useContext(UsersContext);
   const [userInfo, setUserInfo] = useState<User | null>(null);
-  const [disableInputs, setDisableInputs] = useState<{
-    city: boolean;
-    email: boolean;
-    password: boolean;
-    bio: boolean;
-  }>({
+  const [disableInputs, setDisableInputs] = useState<IDisableInputs>({
     city: true,
     email: true,
     password: true,
+    username: true,
     bio: true,
   });
 
@@ -88,11 +92,21 @@ const Profile = () => {
                 type="password"
                 name="password"
                 id="password"
+                value="fakepassword"
                 disabled={disableInputs.password}
               />
             </div>
           </div>
           <div className={style.formColumns}>
+            <InputFormProfile
+              disableInputs={disableInputs}
+              setDisableInputs={setDisableInputs}
+              userInfo={userInfo}
+              setUserInfo={setUserInfo}
+              type="text"
+              name="username"
+              title="pseudo"
+            />
             <div>
               <label htmlFor="bio">BIOGRAPHIE</label>
               {disableInputs.bio ? (

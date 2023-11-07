@@ -2,13 +2,7 @@ import style from "./profile.module.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen, faCheck } from "@fortawesome/free-solid-svg-icons";
 import { User } from "../../utils/types";
-
-interface IDisableInputs {
-  city: boolean;
-  email: boolean;
-  password: boolean;
-  bio: boolean;
-}
+import { IDisableInputs } from "./Profile";
 
 interface Props {
   disableInputs: IDisableInputs;

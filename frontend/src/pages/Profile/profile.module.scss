@@ -7,8 +7,6 @@
 
 .formSection {
   font-family: "Poppins", sans-serif;
-  padding-bottom: 3rem;
-  border-bottom: 3px solid v.$secondary-color;
   @include m.flexLayout(flex-start, center);
   flex-wrap: wrap;
   form {
