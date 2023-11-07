@@ -10,7 +10,7 @@ import {
 	citiesRoutes,
 	categoriesRoutes,
 } from "./routes";
-//import { seed } from './seed';
+// import { seed } from './seed';
 import helmet from "helmet";
 
 dotenv.config();
@@ -47,7 +47,7 @@ app.use((req, res, next) => {
 	);
 	next();
 });
-app.use("/public", express.static(path.join(__dirname + "/../public")));
+app.use("/public", express.static(path.join(__dirname, "/../public")));
 
 app.use("/api/auth", authRoutes);
 app.use("/api/profile", profileRoutes);
