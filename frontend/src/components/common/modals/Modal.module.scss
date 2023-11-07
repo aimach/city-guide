@@ -12,6 +12,7 @@
 }
 
 .modalContainer {
+  color: v.$primary_color;
   width: 30vw;
   height: 30vh;
   position: fixed;
@@ -30,11 +31,22 @@
     @include m.unbuttonize;
     @include m.buttonSize(100px, 50px, 0.5rem);
     @include m.buttonColor(v.$secondary-color, v.$primary_color);
+    margin: 1rem;
     text-align: center;
     cursor: pointer;
   }
   -webkit-animation: slide-top 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
   animation: slide-top 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+}
+
+input::file-selector-button {
+  @include m.unbuttonize;
+  @include m.buttonSize(150px, 30px, 0);
+  @include m.buttonColor(v.$white_color, v.$primary_color);
+  border: 2px solid v.$secondary-color;
+  margin-right: 1rem;
+  text-align: center;
+  cursor: pointer;
 }
 
 /* ----------------------------------------------

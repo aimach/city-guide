@@ -1,15 +1,16 @@
 import style from "./Modal.module.scss";
 interface Props {
-  setDisplayModal: (arg0: boolean) => void;
+  setDisplayValidationModal: (arg0: boolean) => void;
 }
 
-const ValidationModal = ({ setDisplayModal }: Props) => {
+const ValidationModal = ({ setDisplayValidationModal }: Props) => {
   return (
     <>
       <div className={style.backgroundScreen}></div>
       <div className={style.modalContainer}>
         <h3>Modifications enregistrées !</h3>
-        <button type="button" onClick={() => setDisplayModal(false)}>
+
+        <button type="button" onClick={() => setDisplayValidationModal(false)}>
           Fermer
         </button>
       </div>

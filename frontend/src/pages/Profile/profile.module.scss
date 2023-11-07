@@ -66,6 +66,7 @@
     @include m.buttonColor(v.$cream_color, red);
     border: 1px solid red;
     text-align: center;
+    cursor: pointer;
   }
 }
 

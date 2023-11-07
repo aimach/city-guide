@@ -12,7 +12,7 @@ interface Props {
   type: string;
   name: keyof User | keyof IDisableInputs;
   title: string;
-  setDisplayModal: (arg0: boolean) => void;
+  setDisplayValidationModal: (arg0: boolean) => void;
 }
 
 const InputFormProfile = ({
@@ -23,7 +23,7 @@ const InputFormProfile = ({
   type,
   name,
   title,
-  setDisplayModal,
+  setDisplayValidationModal,
 }: Props) => {
   // resolve conflict between keyof User types and value attribute types
   let value: string | number | undefined;
@@ -48,7 +48,7 @@ const InputFormProfile = ({
             className={style.icon}
             onClick={() => {
               setDisableInputs({ ...disableInputs, [name]: true });
-              setDisplayModal(true);
+              setDisplayValidationModal(true);
             }}
           />
         )}
