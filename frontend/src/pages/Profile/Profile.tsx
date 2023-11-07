@@ -17,6 +17,7 @@ export interface IDisableInputs {
 const Profile = () => {
   // get profile
   const { profile } = useContext(UsersContext);
+  const [displayEditImg, setDisplayEditImg] = useState<boolean>(false);
   const [userInfo, setUserInfo] = useState<User | null>(null);
   const [disableInputs, setDisableInputs] = useState<IDisableInputs>({
     city: true,
@@ -39,8 +40,20 @@ const Profile = () => {
           <div className={style.avatarImg}>
             {profile?.image !== null ? (
               <>
-                <img src={profile?.image} alt="avatar" />
-                <FontAwesomeIcon icon={faPen} className={style.icon} />
+                <img
+                  src={profile?.image}
+                  alt="avatar"
+                  className={displayEditImg ? style.imageOpacity : undefined}
+                  onMouseOver={() => setDisplayEditImg(true)}
+                  onMouseOut={() => setDisplayEditImg(false)}
+                />
+                {displayEditImg && (
+                  <FontAwesomeIcon
+                    icon={faPen}
+                    className={style.iconEditImg}
+                    onMouseOver={() => setDisplayEditImg(true)}
+                  />
+                )}
               </>
             ) : (
               profile?.username.substring(0, 1).toUpperCase()
