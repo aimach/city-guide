@@ -3,13 +3,21 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen, faCheck } from "@fortawesome/free-solid-svg-icons";
 import { User } from "../../utils/types";
 
+interface IDisableInputs {
+  city: boolean;
+  email: boolean;
+  password: boolean;
+  bio: boolean;
+}
+
 interface Props {
-  disableInputs: {
-    [key: string]: boolean;
-  };
-  setDisableInputs: (arg0: { [key: string]: boolean }) => void;
+  disableInputs: IDisableInputs;
+  setDisableInputs: (arg0: IDisableInputs) => void;
   userInfo: User | null;
   setUserInfo: (arg0: User) => void;
+  type: string;
+  name: keyof User | keyof IDisableInputs;
+  title: string;
 }
 
 const InputFormProfile = ({
@@ -17,35 +25,50 @@ const InputFormProfile = ({
   setDisableInputs,
   userInfo,
   setUserInfo,
+  type,
+  name,
+  title,
 }: Props) => {
+  // resolve conflict between keyof User types and value attribute types
+  let value: string | number | undefined;
+  if (typeof userInfo?.[name as keyof User] === "string") {
+    value = userInfo?.[name as keyof User]?.toString();
+  }
   return (
-    <div>
-      <label htmlFor="city">VILLE</label>
-      {disableInputs.city ? (
-        <FontAwesomeIcon
-          icon={faPen}
-          className={style.icon}
-          onClick={() => setDisableInputs({ ...disableInputs, city: false })}
+    userInfo && (
+      <div>
+        <label htmlFor={name}>{title.toUpperCase()}</label>
+        {disableInputs[name as keyof IDisableInputs] ? (
+          <FontAwesomeIcon
+            icon={faPen}
+            className={style.icon}
+            onClick={() =>
+              setDisableInputs({ ...disableInputs, [name]: false })
+            }
+          />
+        ) : (
+          <FontAwesomeIcon
+            icon={faCheck}
+            className={style.icon}
+            onClick={() => setDisableInputs({ ...disableInputs, [name]: true })}
+          />
+        )}
+        <input
+          type={type}
+          name={name}
+          id={name}
+          value={value || ""}
+          onChange={(event) => {
+            if (userInfo !== null)
+              setUserInfo({
+                ...userInfo,
+                [name]: event.target.value,
+              });
+          }}
+          disabled={disableInputs[name as keyof IDisableInputs]}
         />
-      ) : (
-        <FontAwesomeIcon
-          icon={faCheck}
-          className={style.icon}
-          onClick={() => setDisableInputs({ ...disableInputs, city: true })}
-        />
-      )}
-      <input
-        type="text"
-        name="city"
-        id="city"
-        value={userInfo?.city || ""}
-        onChange={(event) => {
-          if (userInfo !== null)
-            setUserInfo({ ...userInfo, city: event.target.value });
-        }}
-        disabled={disableInputs.city}
-      />
-    </div>
+      </div>
+    )
   );
 };
 

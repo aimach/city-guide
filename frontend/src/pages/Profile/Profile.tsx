@@ -52,40 +52,19 @@ const Profile = () => {
               setDisableInputs={setDisableInputs}
               userInfo={userInfo}
               setUserInfo={setUserInfo}
+              type="text"
+              name="city"
+              title="ville"
             />
-
-            <div>
-              <label htmlFor="mail">ADRESSE EMAIL</label>
-              {disableInputs.email ? (
-                <FontAwesomeIcon
-                  icon={faPen}
-                  className={style.icon}
-                  onClick={() =>
-                    setDisableInputs({ ...disableInputs, email: false })
-                  }
-                />
-              ) : (
-                <FontAwesomeIcon
-                  icon={faCheck}
-                  className={style.icon}
-                  onClick={() =>
-                    setDisableInputs({ ...disableInputs, email: true })
-                  }
-                />
-              )}
-
-              <input
-                type="email"
-                name="mail"
-                id="mail"
-                value={userInfo?.email}
-                onChange={(event) => {
-                  if (userInfo !== null)
-                    setUserInfo({ ...userInfo, email: event.target.value });
-                }}
-                disabled={disableInputs.email}
-              />
-            </div>
+            <InputFormProfile
+              disableInputs={disableInputs}
+              setDisableInputs={setDisableInputs}
+              userInfo={userInfo}
+              setUserInfo={setUserInfo}
+              type="text"
+              name="email"
+              title="adresse email"
+            />
             <div>
               <label htmlFor="password">MOT DE PASSE</label>
               {disableInputs.password ? (
