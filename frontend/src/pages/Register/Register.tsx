@@ -106,7 +106,9 @@ const Register = () => {
         {errors.password && <p className="error">{errors.password.message}</p>}
 
         <input type="submit" value="Explorer" />
-        <Link to="/login">Vous avez déjà un compte ? Connectez-vous ici !</Link>
+        <Link to="/auth/login">
+          Vous avez déjà un compte ? Connectez-vous ici !
+        </Link>
         <span>Téléchargez l’application ici !</span>
         <div id="logoStore-wrapper">
           <img src="/appleDownload.svg" alt="Apple Store" />

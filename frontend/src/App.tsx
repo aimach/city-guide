@@ -1,10 +1,10 @@
 import "./App.scss";
 import {
-	createBrowserRouter,
-	createRoutesFromElements,
-	Outlet,
-	Route,
-	RouterProvider,
+  createBrowserRouter,
+  createRoutesFromElements,
+  Outlet,
+  Route,
+  RouterProvider,
 } from "react-router-dom";
 import Register from "./pages/Register/Register";
 import Login from "./pages/Login/Login";
@@ -44,11 +44,11 @@ function App() {
     )
   );
 
-	return (
-		<React.StrictMode>
-			<RouterProvider router={router} />
-		</React.StrictMode>
-	);
+  return (
+    <React.StrictMode>
+      <RouterProvider router={router} />
+    </React.StrictMode>
+  );
 }
 
 export default App;

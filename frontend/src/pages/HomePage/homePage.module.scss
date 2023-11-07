@@ -95,3 +95,18 @@
     background-position: 90% bottom;
   }
 }
+@import "../../style/variable";
+
+.carousselContainer {
+  background-color: $cream_color;
+  color: $primary_color;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .title {
+    font-weight: 500;
+    color: $primary-color;
+    margin-top: 50px;
+  }
+}

@@ -2,8 +2,10 @@
 @use "../../style/mixin" as m;
 
 .filter {
-	margin-bottom: 80px;
+	margin: 80px auto;
+
 	@include m.flexLayout(unset, center, unset);
+	width: 80%;
 	position: relative;
 	margin-top: 20px;
 	box-shadow: 0 1px 2px 0 v.$shadow_dark_color;
@@ -46,7 +48,8 @@
 	input:focus {
 		outline: unset;
 		background-color: v.$cream_color;
-		box-shadow: 0 5px 8px -7px v.$primary_color,
+		box-shadow:
+			0 5px 8px -7px v.$primary_color,
 			0 -5px 8px -7px v.$primary_color;
 	}
 

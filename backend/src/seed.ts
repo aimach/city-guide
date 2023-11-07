@@ -1,49 +1,36 @@
-import { City } from "./entities/City";
-import { User } from "./entities/User";
+import 'reflect-metadata';
+import { DataSource, DataSourceOptions } from 'typeorm';
+import { runSeeders, SeederOptions } from 'typeorm-extension';
+import { User } from './entities/User';
+import { UsersFactory } from './factories/userFactory';
+import MainSeeder from './seeder/MainSeeder';
+import { Category } from './entities/Category';
+import { City } from './entities/City';
+import { Poi } from './entities/Poi';
+import { PoiFactory } from './factories/poiFactory';
+import { CityFactory } from './factories/cityFactory';
+import { CategoryFactory } from './factories/categoryFactory';
 
-/**
- * Cette fonction permet d'ajouter des données de test utiles en développement.
- */
-export async function seed() {
-	const user = new User();
-	user.email = "user@example.com";
-	user.username = "user";
-	user.password = "password";
-	user.city = "Lyon";
-	await user.save();
+const options: DataSourceOptions & SeederOptions = {
+   type: 'postgres',
+   host: 'localhost',
+   port: 5432,
+   username: 'postgres',
+   password: 'example',
+   database: 'postgres',
 
-	const paris = new City();
-	paris.name = "Paris";
-	paris.userAdminCity = user;
-	paris.image =
-		"https://www.thetrainline.com/cms/media/1360/france-eiffel-tower-paris.jpg?mode=crop&width=1080&height=1080&quality=70";
-	await paris.save();
+   synchronize: true,
 
-	const user2 = new User();
-	user2.email = "user2@example.com";
-	user2.username = "user2";
-	user2.password = "password";
-	user2.city = "Lyon";
-	await user2.save();
+   entities: [User, Category, City, Poi],
+   // additional config options brought by typeorm-extension
+   factories: [UsersFactory, PoiFactory, CityFactory, CategoryFactory],
+   seeds: [MainSeeder],
+};
 
-	const user3 = new User();
-	user3.email = "user3@example.com";
-	user3.username = "user3";
-	user3.password = "password";
-	user3.city = "Lyon";
-	await user3.save();
+const dataSource = new DataSource(options);
 
-	const lyon = new City();
-	lyon.name = "Lyon";
-	lyon.userAdminCity = user2;
-	lyon.image =
-		"https://www.larousse.fr/encyclopedie/data/images/1314872-Lyon.jpg";
-	await lyon.save();
-
-	const marseille = new City();
-	marseille.name = "Marseille";
-	marseille.userAdminCity = user3;
-	marseille.image =
-		"https://www.okvoyage.com/wp-content/uploads/2020/03/marseille-france.jpg";
-	await marseille.save();
-}
+dataSource.initialize().then(async () => {
+   await dataSource.synchronize(true);
+   await runSeeders(dataSource);
+   process.exit();
+});
