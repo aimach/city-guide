@@ -121,10 +121,6 @@ const Header = ({ size }: headerProps) => {
           </nav>
         )}
       </header>
-      <div
-        className={`${style.backgroundModal}`}
-        onClick={() => setDisplayProfileMenu(false)}
-      ></div>
     </>
   );
 };

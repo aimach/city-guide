@@ -14,7 +14,8 @@
 
 .menu {
   @include m.flexLayout(space-between, center);
-
+  position: absolute;
+  right: 2rem;
   ul {
     display: flex;
     li {
@@ -55,8 +56,8 @@
 
 .floatingMenu {
   position: absolute;
-  right: 30px;
-  bottom: -70px;
+  right: 0;
+  top: 60px;
   width: 200px;
   border: 2px solid v.$secondary_color;
   color: v.$white_color;
@@ -79,16 +80,10 @@
     @include m.flexLayout(center, center, column);
   }
 
-  .floatingMenu {
-    right: 20%;
-    bottom: -80px;
+  .menu {
+    position: relative;
+    right: 0;
   }
-}
-
-.backgroundModal {
-  width: 100vw;
-  height: 100vh;
-  position: absolute;
 }
 
 // MOBILE STYLE
