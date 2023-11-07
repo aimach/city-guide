@@ -2,7 +2,7 @@ import style from "./profile.module.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen, faCheck } from "@fortawesome/free-solid-svg-icons";
 import { User } from "../../utils/types";
-import { IDisableInputs } from "./Profile";
+import { IDisableInputs, IDisplayModals } from "./Profile";
 
 interface Props {
   disableInputs: IDisableInputs;
@@ -12,7 +12,8 @@ interface Props {
   type: string;
   name: keyof User | keyof IDisableInputs;
   title: string;
-  setDisplayValidationModal: (arg0: boolean) => void;
+  setDisplayModals: (arg0: IDisplayModals) => void;
+  displayModals: IDisplayModals;
 }
 
 const InputFormProfile = ({
@@ -23,7 +24,8 @@ const InputFormProfile = ({
   type,
   name,
   title,
-  setDisplayValidationModal,
+  setDisplayModals,
+  displayModals,
 }: Props) => {
   // resolve conflict between keyof User types and value attribute types
   let value: string | number | undefined;
@@ -48,7 +50,7 @@ const InputFormProfile = ({
             className={style.icon}
             onClick={() => {
               setDisableInputs({ ...disableInputs, [name]: true });
-              setDisplayValidationModal(true);
+              setDisplayModals({ ...displayModals, validation: true });
             }}
           />
         )}

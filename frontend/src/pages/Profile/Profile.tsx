@@ -5,8 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen, faCheck } from "@fortawesome/free-solid-svg-icons";
 import { User } from "../../utils/types";
 import InputFormProfile from "./InputFormProfile";
-import ValidationModal from "../../components/common/modals/ValidationModal";
-import ImageModal from "../../components/common/modals/ImageModal";
+import Modal from "../../components/common/modals/Modal";
 
 export interface IDisableInputs {
   city: boolean;
@@ -16,13 +15,21 @@ export interface IDisableInputs {
   bio: boolean;
 }
 
+export interface IDisplayModals {
+  validation: boolean;
+  image: boolean;
+  deleteUser: boolean;
+}
+
 const Profile = () => {
   // get profile
   const { profile } = useContext(UsersContext);
   const [displayEditImg, setDisplayEditImg] = useState<boolean>(false);
-  const [displayValidationModal, setDisplayValidationModal] =
-    useState<boolean>(false);
-  const [displayImageModal, setDisplayImageModal] = useState<boolean>(false);
+  const [displayModals, setDisplayModals] = useState<IDisplayModals>({
+    validation: false,
+    image: false,
+    deleteUser: false,
+  });
   const [userInfo, setUserInfo] = useState<User | null>(null);
   const [disableInputs, setDisableInputs] = useState<IDisableInputs>({
     city: true,
@@ -36,17 +43,28 @@ const Profile = () => {
     if (profile !== null) setUserInfo(profile);
   }, [profile]);
 
-  console.log(userInfo);
-
   return (
     <div className={style.profilePage}>
-      {displayValidationModal ? (
-        <ValidationModal
-          setDisplayValidationModal={setDisplayValidationModal}
+      {displayModals.validation ? (
+        <Modal
+          setDisplayModals={setDisplayModals}
+          displayModals={displayModals}
+          type="validation"
         />
       ) : null}
-      {displayImageModal ? (
-        <ImageModal setDisplayImageModal={setDisplayImageModal} />
+      {displayModals.image ? (
+        <Modal
+          setDisplayModals={setDisplayModals}
+          displayModals={displayModals}
+          type="image"
+        />
+      ) : null}
+      {displayModals.deleteUser ? (
+        <Modal
+          setDisplayModals={setDisplayModals}
+          displayModals={displayModals}
+          type="delete"
+        />
       ) : null}
       <section className={style.formSection}>
         <div className={style.profileAvatarAndName}>
@@ -65,7 +83,9 @@ const Profile = () => {
                     icon={faPen}
                     className={style.iconEditImg}
                     onMouseOver={() => setDisplayEditImg(true)}
-                    onClick={() => setDisplayImageModal(true)}
+                    onClick={() =>
+                      setDisplayModals({ ...displayModals, image: true })
+                    }
                   />
                 )}
               </>
@@ -86,7 +106,8 @@ const Profile = () => {
               type="text"
               name="city"
               title="ville"
-              setDisplayValidationModal={setDisplayValidationModal}
+              setDisplayModals={setDisplayModals}
+              displayModals={displayModals}
             />
             <InputFormProfile
               disableInputs={disableInputs}
@@ -96,7 +117,8 @@ const Profile = () => {
               type="text"
               name="email"
               title="adresse email"
-              setDisplayValidationModal={setDisplayValidationModal}
+              setDisplayModals={setDisplayModals}
+              displayModals={displayModals}
             />
             <div>
               <label htmlFor="password">MOT DE PASSE</label>
@@ -135,7 +157,8 @@ const Profile = () => {
               type="text"
               name="username"
               title="pseudo"
-              setDisplayValidationModal={setDisplayValidationModal}
+              setDisplayModals={setDisplayModals}
+              displayModals={displayModals}
             />
             <div>
               <label htmlFor="bio">BIOGRAPHIE</label>
@@ -168,7 +191,14 @@ const Profile = () => {
         </form>
         <div className={style.buttonSection}>
           <button type="button">Suggérer un point d'intérêt</button>
-          <button type="button">Supprimer le compte</button>
+          <button
+            type="button"
+            onClick={() =>
+              setDisplayModals({ ...displayModals, deleteUser: true })
+            }
+          >
+            Supprimer le compte
+          </button>
         </div>
       </section>
       <section className={style.favoritesSection}>
