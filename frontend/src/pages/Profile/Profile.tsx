@@ -1,11 +1,31 @@
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { UsersContext } from "../../contexts/UserContext";
 import style from "./profile.module.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPen } from "@fortawesome/free-solid-svg-icons";
+import { faPen, faCheck } from "@fortawesome/free-solid-svg-icons";
+import { User } from "../../utils/types";
+
 const Profile = () => {
   // get profile
   const { profile } = useContext(UsersContext);
+  const [userInfo, setUserInfo] = useState<User | null>(null);
+  const [disableInputs, setDisableInputs] = useState<{
+    city: boolean;
+    email: boolean;
+    password: boolean;
+    bio: boolean;
+  }>({
+    city: true,
+    email: true,
+    password: true,
+    bio: true,
+  });
+
+  useEffect(() => {
+    if (profile !== null) setUserInfo(profile);
+  }, [profile]);
+
+  console.log(userInfo);
 
   return (
     <div className={style.profilePage}>
@@ -26,35 +46,124 @@ const Profile = () => {
         </div>
         <form>
           <div className={style.formColumns}>
-            {profile?.city ? (
-              <div>
-                <label htmlFor="city">VILLE</label>
-                <FontAwesomeIcon icon={faPen} className={style.icon} />
-                <input type="text" name="city" id="city" value={profile.city} />
-              </div>
-            ) : null}
+            <div>
+              <label htmlFor="city">VILLE</label>
+              {disableInputs.city ? (
+                <FontAwesomeIcon
+                  icon={faPen}
+                  className={style.icon}
+                  onClick={() =>
+                    setDisableInputs({ ...disableInputs, city: false })
+                  }
+                />
+              ) : (
+                <FontAwesomeIcon
+                  icon={faCheck}
+                  className={style.icon}
+                  onClick={() =>
+                    setDisableInputs({ ...disableInputs, city: true })
+                  }
+                />
+              )}
+              <input
+                type="text"
+                name="city"
+                id="city"
+                value={userInfo?.city || ""}
+                onChange={(event) => {
+                  if (userInfo !== null)
+                    setUserInfo({ ...userInfo, city: event.target.value });
+                }}
+                disabled={disableInputs.city}
+              />
+            </div>
 
             <div>
               <label htmlFor="mail">ADRESSE EMAIL</label>
-              <FontAwesomeIcon icon={faPen} className={style.icon} />
+              {disableInputs.email ? (
+                <FontAwesomeIcon
+                  icon={faPen}
+                  className={style.icon}
+                  onClick={() =>
+                    setDisableInputs({ ...disableInputs, email: false })
+                  }
+                />
+              ) : (
+                <FontAwesomeIcon
+                  icon={faCheck}
+                  className={style.icon}
+                  onClick={() =>
+                    setDisableInputs({ ...disableInputs, email: true })
+                  }
+                />
+              )}
+
               <input
                 type="email"
                 name="mail"
                 id="mail"
-                value={profile?.email}
+                value={userInfo?.email}
+                onChange={(event) => {
+                  if (userInfo !== null)
+                    setUserInfo({ ...userInfo, email: event.target.value });
+                }}
+                disabled={disableInputs.email}
               />
             </div>
             <div>
               <label htmlFor="password">MOT DE PASSE</label>
-              <FontAwesomeIcon icon={faPen} className={style.icon} />
-              <input type="password" name="password" id="password" />
+              {disableInputs.password ? (
+                <FontAwesomeIcon
+                  icon={faPen}
+                  className={style.icon}
+                  onClick={() =>
+                    setDisableInputs({ ...disableInputs, password: false })
+                  }
+                />
+              ) : (
+                <FontAwesomeIcon
+                  icon={faCheck}
+                  className={style.icon}
+                  onClick={() =>
+                    setDisableInputs({ ...disableInputs, password: true })
+                  }
+                />
+              )}
+              <input
+                type="password"
+                name="password"
+                id="password"
+                disabled={disableInputs.password}
+              />
             </div>
           </div>
           <div className={style.formColumns}>
             <div>
               <label htmlFor="bio">BIOGRAPHIE</label>
-              <FontAwesomeIcon icon={faPen} className={style.icon} />
-              <input type="text" name="bio" id="bio" />
+              {disableInputs.bio ? (
+                <FontAwesomeIcon
+                  icon={faPen}
+                  className={style.icon}
+                  onClick={() =>
+                    setDisableInputs({ ...disableInputs, bio: false })
+                  }
+                />
+              ) : (
+                <FontAwesomeIcon
+                  icon={faCheck}
+                  className={style.icon}
+                  onClick={() =>
+                    setDisableInputs({ ...disableInputs, bio: true })
+                  }
+                />
+              )}
+
+              <input
+                type="text"
+                name="bio"
+                id="bio"
+                disabled={disableInputs.password}
+              />
             </div>
           </div>
         </form>
