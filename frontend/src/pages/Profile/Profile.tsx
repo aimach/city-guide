@@ -4,6 +4,7 @@ import style from "./profile.module.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen, faCheck } from "@fortawesome/free-solid-svg-icons";
 import { User } from "../../utils/types";
+import InputFormProfile from "./InputFormProfile";
 
 const Profile = () => {
   // get profile
@@ -46,37 +47,12 @@ const Profile = () => {
         </div>
         <form>
           <div className={style.formColumns}>
-            <div>
-              <label htmlFor="city">VILLE</label>
-              {disableInputs.city ? (
-                <FontAwesomeIcon
-                  icon={faPen}
-                  className={style.icon}
-                  onClick={() =>
-                    setDisableInputs({ ...disableInputs, city: false })
-                  }
-                />
-              ) : (
-                <FontAwesomeIcon
-                  icon={faCheck}
-                  className={style.icon}
-                  onClick={() =>
-                    setDisableInputs({ ...disableInputs, city: true })
-                  }
-                />
-              )}
-              <input
-                type="text"
-                name="city"
-                id="city"
-                value={userInfo?.city || ""}
-                onChange={(event) => {
-                  if (userInfo !== null)
-                    setUserInfo({ ...userInfo, city: event.target.value });
-                }}
-                disabled={disableInputs.city}
-              />
-            </div>
+            <InputFormProfile
+              disableInputs={disableInputs}
+              setDisableInputs={setDisableInputs}
+              userInfo={userInfo}
+              setUserInfo={setUserInfo}
+            />
 
             <div>
               <label htmlFor="mail">ADRESSE EMAIL</label>
