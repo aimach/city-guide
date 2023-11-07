@@ -19,11 +19,10 @@ const Header = ({ size }: headerProps) => {
   // get user's role
   const { profile } = useContext(UsersContext);
 
-   let role = Role.VISITOR;
-   if (profile != null) {
-     role = profile.role;
-   }
-
+  let role = Role.VISITOR;
+  if (profile != null) {
+    role = profile.role;
+  }
 
   // display profile menu
   const [displayProfileMenu, setDisplayProfileMenu] = useState(false);
@@ -66,11 +65,11 @@ const Header = ({ size }: headerProps) => {
                   className={`${style.avatarButton} textButton`}
                   onClick={() => setDisplayProfileMenu(!displayProfileMenu)}
                 >
-                  {profile?.image !== null ? (
+                  {/* {profile?.image !== null ? (
                     <img src={profile?.image} alt="avatar" />
                   ) : (
                     profile?.username.substring(0, 1).toUpperCase()
-                  )}
+                  )} */}
                 </button>
               )}
               {displayProfileMenu ? (
