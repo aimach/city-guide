@@ -12,7 +12,7 @@ import HomePage from "./pages/HomePage/HomePage";
 import { UserProvider } from "./contexts/UserContext";
 import * as React from "react";
 import Contribution from "./pages/Contribution/Contribution";
-import { default as BackOfficeHomePage } from "./backOffice/pages/HomePage/homePage";
+import { default as BackOfficeHomePage } from "./backOffice/pages/HomePage/BackOfficeHomePage";
 import Layout from "./components/layout/Layout";
 import BackOfficeLayout from "./backOffice/components/layout/BackOfficeLayout";
 

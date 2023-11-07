@@ -20,7 +20,9 @@ const AsideMenu = () => {
 						<li className={`textButtonList`}>
 							<span className={styles.itemFlex}>
 								<FontAwesomeIcon icon={faHouse} className={styles.iconSpaces} />
-								<Link to={`/`}>Retour sur le site</Link>
+								<Link to={`/`} className={styles.itemAsideMenu}>
+									Retour sur le site
+								</Link>
 							</span>
 						</li>
 						<li className={`textButtonList`}>

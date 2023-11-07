@@ -1,9 +1,12 @@
+// import Header from "../../../components/common/header/Header";
 import styles from "./homePage.module.scss";
+// import { PropsWithChildren, useEffect, useState } from "react";
 
 const HomePage = () => {
 	return (
 		<>
 			<div>
+				{/* <Header></Header> */}
 				<h1>Bienvennue sur le Dashboard Administrateur</h1>
 				<p>
 					Lorem ipsum dolor sit amet consectetur, adipisicing elit. Voluptatem
