@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen, faCheck } from "@fortawesome/free-solid-svg-icons";
 import { User } from "../../utils/types";
 import InputFormProfile from "./InputFormProfile";
+import ValidationModal from "../../components/common/modals/ValidationModal";
 
 export interface IDisableInputs {
   city: boolean;
@@ -18,6 +19,7 @@ const Profile = () => {
   // get profile
   const { profile } = useContext(UsersContext);
   const [displayEditImg, setDisplayEditImg] = useState<boolean>(false);
+  const [displayModal, setDisplayModal] = useState<boolean>(false);
   const [userInfo, setUserInfo] = useState<User | null>(null);
   const [disableInputs, setDisableInputs] = useState<IDisableInputs>({
     city: true,
@@ -35,6 +37,9 @@ const Profile = () => {
 
   return (
     <div className={style.profilePage}>
+      {displayModal ? (
+        <ValidationModal setDisplayModal={setDisplayModal} />
+      ) : null}
       <section className={style.formSection}>
         <div className={style.profileAvatarAndName}>
           <div className={style.avatarImg}>
@@ -72,6 +77,7 @@ const Profile = () => {
               type="text"
               name="city"
               title="ville"
+              setDisplayModal={setDisplayModal}
             />
             <InputFormProfile
               disableInputs={disableInputs}
@@ -81,6 +87,7 @@ const Profile = () => {
               type="text"
               name="email"
               title="adresse email"
+              setDisplayModal={setDisplayModal}
             />
             <div>
               <label htmlFor="password">MOT DE PASSE</label>
@@ -119,6 +126,7 @@ const Profile = () => {
               type="text"
               name="username"
               title="pseudo"
+              setDisplayModal={setDisplayModal}
             />
             <div>
               <label htmlFor="bio">BIOGRAPHIE</label>
@@ -163,7 +171,7 @@ const Profile = () => {
           <h3>Villes favorites</h3>
         </div>
       </section>
-      <img src="/fond_vague_creme.svg" alt="wave" />
+      {/* <img src="/fond_vague_creme.svg" alt="wave" /> */}
     </div>
   );
 };
