@@ -39,6 +39,7 @@ const Card = ({
    const userId = profile?.id ?? '';
    let favouriteCitiesId: string[] = [];
    let favouritePoiId: string[] = [];
+
    if (profile != null) {
       favouriteCitiesId = profile.favouriteCities?.map((city) => city.id!);
       favouritePoiId = profile.favouritePoi.map((poi) => poi.id!);
@@ -48,6 +49,8 @@ const Card = ({
       useState<string[]>(favouriteCitiesId);
 
    const [favouritePoi, setFavouritePoi] = useState<string[]>(favouritePoiId);
+
+   const [isPoiModaleOpen, setIsPoiModaleOpen] = useState(false);
 
    const isLiked = (): boolean => {
       if (cardType === CardType.CITY) {
@@ -103,6 +106,9 @@ const Card = ({
                onClickCategory!(title, currentCity?.name);
             }
             chooseCategory(id);
+            break;
+         case CardType.POI:
+            setIsPoiModaleOpen(true);
             break;
       }
    };

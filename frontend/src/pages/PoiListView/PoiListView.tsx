@@ -32,6 +32,7 @@ const PoiListView = () => {
          ?.poi!.filter((poi) => poi.isAccepted === true)
          .map((poi) => poi.category) ?? [];
 
+   // Filter categories to avoid duplicates
    const filterCategories = () => {
       poiCategories.forEach((cat) => {
          if (!categories.find((category) => category.id === cat.id)) {
