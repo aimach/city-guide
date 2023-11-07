@@ -13,6 +13,7 @@ import { UserProvider } from "./contexts/UserContext";
 import * as React from "react";
 import Contribution from "./pages/Contribution/Contribution";
 import Layout from "./components/layout/Layout";
+import InteractiveMap from "./components/interactiveMap/InteractiveMap";
 
 // import About from "./pages/About/About";
 

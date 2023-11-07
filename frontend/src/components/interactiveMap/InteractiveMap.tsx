@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState } from "react";
-import maplibregl, { GeolocateControl } from "maplibre-gl";
+import maplibregl, { GeolocateControl, Marker, Popup } from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import styles from "./InteractiveMap.module.scss";
 import { createMapLibreGlMapController } from "@maptiler/geocoding-control/maplibregl";
@@ -39,9 +39,17 @@ export default function InteractiveMap() {
 
     map.current.addControl(new maplibregl.NavigationControl(), "top-right");
     setMapController(createMapLibreGlMapController(map.current, maplibregl));
-  }, [lng, lat, zoom]);
 
-  const marker = new maplibregl.Marker().setLngLat([4.85, 45.75]);
+    const marker = new Marker();
+    marker.setLngLat([lng, lat]);
+
+    const popup = new Popup({ offset: 25 }).setHTML(
+      "<h3>Paris</h3><p>La ville lumière</p>"
+    );
+    marker.setPopup(popup);
+
+    marker.addTo(map.current);
+  }, [lng, lat, zoom]);
 
   return (
     <div className={`${styles.mapWrap}`}>
