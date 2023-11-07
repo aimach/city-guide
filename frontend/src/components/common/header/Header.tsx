@@ -1,4 +1,5 @@
 import style from "./header.module.scss";
+import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faMap,
@@ -9,7 +10,6 @@ import { Link } from "react-router-dom";
 import { useContext, useState } from "react";
 import { UsersContext } from "../../../contexts/UserContext";
 import { Role } from "../../../utils/types";
-import ProfileMenu from "../../profile/profileMenu/profileMenu";
 
 type headerProps = {
   size: string;
