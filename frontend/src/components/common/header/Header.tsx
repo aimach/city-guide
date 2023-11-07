@@ -9,7 +9,7 @@ import { Link } from "react-router-dom";
 import { useContext, useState } from "react";
 import { UsersContext } from "../../../contexts/UserContext";
 import { Role } from "../../../utils/types";
-import ProfileMenu from "../../profile/profileMenu/profileMenu";
+// import ProfileMenu from "../../profile/profileMenu/profileMenu";
 
 type headerProps = {
 	size: string;
@@ -17,7 +17,7 @@ type headerProps = {
 
 const Header = ({ size }: headerProps) => {
 	// get user's role
-	const { profile } = useContext(UsersContext);
+	const { profile, logout, redirectToLogin } = useContext(UsersContext);
 
 	let role = Role.VISITOR;
 	if (profile != null) {
@@ -26,6 +26,14 @@ const Header = ({ size }: headerProps) => {
 
 	// display profile menu
 	const [displayProfileMenu, setDisplayProfileMenu] = useState(false);
+
+	async function handleSignOut() {
+		// Appeler le backend pour se déconnecter
+		await logout();
+
+		// Nous rediriger vers la page de connexion
+		redirectToLogin();
+	}
 
 	return (
 		<>
@@ -57,7 +65,7 @@ const Header = ({ size }: headerProps) => {
 								) : null}
 								{role === Role.ADMIN ? (
 									<li>
-										<Link to="/auth/dashboard">Dashboard</Link>
+										<Link to="/dashboard">Dashboard</Link>
 									</li>
 								) : null}
 							</ul>
@@ -80,7 +88,7 @@ const Header = ({ size }: headerProps) => {
 							{displayProfileMenu ? (
 								<div className={`${style.floatingMenu} textSearch`}>
 									<Link to="/">Mon profil</Link>
-									<Link to="/">Se déconnecter</Link>
+									<button onClick={handleSignOut}>Se déconnecter</button>
 								</div>
 							) : null}
 						</nav>

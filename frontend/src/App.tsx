@@ -13,19 +13,11 @@ import { UserProvider } from "./contexts/UserContext";
 import * as React from "react";
 import Contribution from "./pages/Contribution/Contribution";
 import { default as BackOfficeHomePage } from "./backOffice/pages/HomePage/BackOfficeHomePage";
-import Layout from "./components/layout/Layout";
-import BackOfficeLayout from "./backOffice/components/layout/BackOfficeLayout";
 
 const Root = () => {
-	const MyLayout = window.location.pathname.startsWith("/dashboard")
-		? BackOfficeLayout
-		: Layout;
-
 	return (
 		<UserProvider>
-			<MyLayout>
-				<Outlet /> {/* Outlet is where the child routes will be rendered */}
-			</MyLayout>
+			<Outlet /> {/* Outlet is where the child routes will be rendered */}
 		</UserProvider>
 	);
 };
