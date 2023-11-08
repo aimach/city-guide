@@ -28,7 +28,7 @@ const InputFormProfile = ({
   displayModals,
 }: Props) => {
   // resolve conflict between keyof User types and value attribute types
-  let value: string | number | undefined;
+  let value: string | number | undefined | string[];
   if (typeof userInfo?.[name as keyof User] === "string") {
     value = userInfo?.[name as keyof User]?.toString();
   }
@@ -36,6 +36,20 @@ const InputFormProfile = ({
     userInfo && (
       <div>
         <label htmlFor={name}>{title.toUpperCase()}</label>
+        <input
+          type={type}
+          name={name}
+          id={name}
+          value={value || ""}
+          onChange={(event) => {
+            if (userInfo !== null)
+              setUserInfo({
+                ...userInfo,
+                [name]: event.target.value,
+              });
+          }}
+          disabled={disableInputs[name as keyof IDisableInputs]}
+        />
         {disableInputs[name as keyof IDisableInputs] ? (
           <FontAwesomeIcon
             icon={faPen}
@@ -54,20 +68,6 @@ const InputFormProfile = ({
             }}
           />
         )}
-        <input
-          type={type}
-          name={name}
-          id={name}
-          value={value || ""}
-          onChange={(event) => {
-            if (userInfo !== null)
-              setUserInfo({
-                ...userInfo,
-                [name]: event.target.value,
-              });
-          }}
-          disabled={disableInputs[name as keyof IDisableInputs]}
-        />
       </div>
     )
   );
