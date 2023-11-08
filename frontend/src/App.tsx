@@ -13,6 +13,15 @@ import { UserProvider } from "./contexts/UserContext";
 import * as React from "react";
 import Contribution from "./pages/Contribution/Contribution";
 import { default as BackOfficeHomePage } from "./backOffice/pages/HomePage/BackOfficeHomePage";
+import Cities from "./backOffice/pages/administrator/Cities/Cities";
+import Message from "./backOffice/pages/administrator/Message/Message";
+import Admin from "./backOffice/pages/administrator/Admin/Admin";
+import Profil from "./backOffice/pages/administrator/Profil/Profil";
+import Categories from "./backOffice/pages/administrator/Categories/Categories";
+import Poi from "./backOffice/pages/administrator/Poi/Poi";
+import Users from "./backOffice/pages/administrator/Users/Users";
+import PoiCitiesAdmin from "./backOffice/pages/cities administrator/Poi/PoiCitiesAdmin";
+import UsersCitiesAdmin from "./backOffice/pages/cities administrator/Users/UsersCitiesAdmin";
 
 const Root = () => {
 	return (
@@ -28,9 +37,23 @@ function App() {
 			<>
 				<Route path="/" element={<Root />}>
 					<Route index element={<HomePage />} />
+
 					<Route path="/contribution" element={<Contribution />} />
+
 					<Route path="/dashboard" element={<BackOfficeHomePage />} />
+					<Route path="/dashboard">
+						<Route path="cities" element={<Cities />} />
+						<Route path="message" element={<Message />} />
+						<Route path="admin" element={<Admin />} />
+						<Route path="profil" element={<Profil />} />
+						<Route path="categories" element={<Categories />} />
+						<Route path="poi" element={<Poi />} />
+						<Route path="users" element={<Users />} />
+						<Route path="adminCityPoi" element={<PoiCitiesAdmin />} />
+						<Route path="adminCityUsers" element={<UsersCitiesAdmin />} />
+					</Route>
 				</Route>
+
 				<Route path="/auth">
 					<Route path="login" element={<Login />} />
 					<Route path="register" element={<Register />} />

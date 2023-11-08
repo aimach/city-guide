@@ -19,6 +19,9 @@ ol {
 	display: flex;
 	align-items: baseline;
 }
+.alignIconAndText {
+	align-items: center;
+}
 .itemAsideMenu {
 	color: v.$primary_color;
 }

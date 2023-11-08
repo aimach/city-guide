@@ -1,0 +1,19 @@
+@use "../../../../style/mixin" as m;
+@use "../../../../style/variable" as v;
+
+table {
+	width: 100%;
+}
+thead {
+	border-top: 1.5px solid v.$primary_color;
+	border-bottom: 1.5px solid v.$primary_color;
+	display: flex;
+	justify-content: space-between;
+	padding: 20px 0 20px 0;
+}
+tbody {
+	border-bottom: 1.5px solid v.$primary_color;
+	display: flex;
+	justify-content: space-between;
+	padding: 20px 0 20px 0;
+}

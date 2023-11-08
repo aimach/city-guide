@@ -1,5 +1,6 @@
 import {
 	faCity,
+	faEnvelope,
 	faFolder,
 	faHouse,
 	faLocationDot,
@@ -33,6 +34,22 @@ const AsideMenu = () => {
 								</Link>
 							</span>
 							<ol>
+								<li className={`textButtonSublist`}>
+									<span
+										className={`${styles.itemFlex} ${styles.alignIconAndText}`}
+									>
+										<FontAwesomeIcon
+											icon={faEnvelope}
+											className={styles.iconSpaces}
+										/>
+										<Link
+											to="/dashboard/message"
+											className={styles.itemAsideMenu}
+										>
+											Messages
+										</Link>
+									</span>
+								</li>
 								<li className={`textButtonSublist`}>
 									<span className={styles.itemFlex}>
 										<FontAwesomeIcon
