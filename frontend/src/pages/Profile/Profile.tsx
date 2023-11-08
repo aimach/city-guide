@@ -24,6 +24,7 @@ export interface IDisplayModals {
 const Profile = () => {
   // get profile
   const { profile } = useContext(UsersContext);
+  console.log(profile);
   const [displayEditImg, setDisplayEditImg] = useState<boolean>(false);
   const [displayModals, setDisplayModals] = useState<IDisplayModals>({
     validation: false,
@@ -162,10 +163,10 @@ const Profile = () => {
             />
             <div>
               <label htmlFor="bio">BIOGRAPHIE</label>
-              <input
-                type="text"
+              <textarea
                 name="bio"
                 id="bio"
+                value={profile?.bio || ""}
                 disabled={disableInputs.bio}
               />
               {disableInputs.bio ? (
@@ -180,9 +181,10 @@ const Profile = () => {
                 <FontAwesomeIcon
                   icon={faCheck}
                   className={style.icon}
-                  onClick={() =>
-                    setDisableInputs({ ...disableInputs, bio: true })
-                  }
+                  onClick={() => {
+                    setDisableInputs({ ...disableInputs, bio: true });
+                    setDisplayModals({ ...displayModals, validation: true });
+                  }}
                 />
               )}
             </div>
