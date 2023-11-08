@@ -24,7 +24,6 @@ export interface IDisplayModals {
 const Profile = () => {
   // get profile
   const { profile } = useContext(UsersContext);
-  console.log(profile);
   const [displayEditImg, setDisplayEditImg] = useState<boolean>(false);
   const [displayModals, setDisplayModals] = useState<IDisplayModals>({
     validation: false,

@@ -4,6 +4,9 @@ import DeleteUserModalContent from "./DeleteUserModalContent";
 import ImageModalContent from "./ImageModalContent";
 import style from "./Modal.module.scss";
 import ValidationModalContent from "./ValidationModalContent";
+import { deleteUser } from "../../../utils/api";
+import { useContext } from "react";
+import { UsersContext } from "../../../contexts/UserContext";
 interface Props {
   setDisplayModals: (arg0: IDisplayModals) => void;
   displayModals: IDisplayModals;
@@ -16,6 +19,8 @@ const Modal = ({ setDisplayModals, displayModals, type }: Props) => {
   if (type === "validation") modalContent = <ValidationModalContent />;
   if (type === "deleteUser") modalContent = <DeleteUserModalContent />;
   const navigate = useNavigate();
+  const { profile } = useContext(UsersContext);
+
   return (
     <>
       <div className={style.backgroundScreen}></div>
@@ -27,7 +32,14 @@ const Modal = ({ setDisplayModals, displayModals, type }: Props) => {
               type="button"
               onClick={() => {
                 setDisplayModals({ ...displayModals, [type]: false });
-                if (type === "deleteUser") navigate("/");
+                if (
+                  type === "deleteUser" &&
+                  profile !== null &&
+                  profile.id !== null
+                ) {
+                  deleteUser(profile.id);
+                  navigate("/");
+                }
               }}
             >
               Valider
