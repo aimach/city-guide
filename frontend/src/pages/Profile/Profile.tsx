@@ -122,6 +122,13 @@ const Profile = () => {
             />
             <div>
               <label htmlFor="password">MOT DE PASSE</label>
+              <input
+                type="password"
+                name="password"
+                id="password"
+                value="fakepassword"
+                disabled={disableInputs.password}
+              />
               {disableInputs.password ? (
                 <FontAwesomeIcon
                   icon={faPen}
@@ -139,13 +146,6 @@ const Profile = () => {
                   }
                 />
               )}
-              <input
-                type="password"
-                name="password"
-                id="password"
-                value="fakepassword"
-                disabled={disableInputs.password}
-              />
             </div>
           </div>
           <div className={style.formColumns}>
@@ -162,6 +162,12 @@ const Profile = () => {
             />
             <div>
               <label htmlFor="bio">BIOGRAPHIE</label>
+              <input
+                type="text"
+                name="bio"
+                id="bio"
+                disabled={disableInputs.bio}
+              />
               {disableInputs.bio ? (
                 <FontAwesomeIcon
                   icon={faPen}
@@ -179,13 +185,6 @@ const Profile = () => {
                   }
                 />
               )}
-
-              <input
-                type="text"
-                name="bio"
-                id="bio"
-                disabled={disableInputs.password}
-              />
             </div>
           </div>
         </form>
