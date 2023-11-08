@@ -63,7 +63,7 @@ const Profile = () => {
         <Modal
           setDisplayModals={setDisplayModals}
           displayModals={displayModals}
-          type="delete"
+          type="deleteUser"
         />
       ) : null}
       <section className={style.formSection}>

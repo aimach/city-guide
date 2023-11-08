@@ -11,31 +11,35 @@ interface Props {
 
 const Modal = ({ setDisplayModals, displayModals, type }: Props) => {
   let modalContent;
-  if (type === "image")
-    modalContent = (
-      <ImageModalContent
-        setDisplayModals={setDisplayModals}
-        displayModals={displayModals}
-      />
-    );
-  if (type === "validation")
-    modalContent = (
-      <ValidationModalContent
-        setDisplayModals={setDisplayModals}
-        displayModals={displayModals}
-      />
-    );
-  if (type === "delete")
-    modalContent = (
-      <DeleteUserModalContent
-        setDisplayModals={setDisplayModals}
-        displayModals={displayModals}
-      />
-    );
+  if (type === "image") modalContent = <ImageModalContent />;
+  if (type === "validation") modalContent = <ValidationModalContent />;
+  if (type === "deleteUser") modalContent = <DeleteUserModalContent />;
   return (
     <>
       <div className={style.backgroundScreen}></div>
-      <div className={style.modalContainer}>{modalContent}</div>
+      <div className={style.modalContainer}>
+        {modalContent}
+        <div>
+          {type !== "validation" ? (
+            <button
+              type="button"
+              onClick={() =>
+                setDisplayModals({ ...displayModals, [type]: false })
+              }
+            >
+              Valider
+            </button>
+          ) : null}
+          <button
+            type="button"
+            onClick={() =>
+              setDisplayModals({ ...displayModals, [type]: false })
+            }
+          >
+            Fermer
+          </button>
+        </div>
+      </div>
     </>
   );
 };
