@@ -12,7 +12,8 @@
   form {
     @include m.flexLayout(flex-start, flex-start, row);
     flex-grow: 3;
-    input {
+    input,
+    textarea {
       color: v.$primary_color;
       font-family: "Comic Neue", cursive;
       font-size: 1.1rem;
@@ -21,11 +22,15 @@
       border: 2px solid v.$secondary-color;
       border-radius: 3rem;
       width: 80%;
+      resize: none;
       &[name="bio"] {
+        border-radius: 1.5rem;
         height: 100%;
+        padding-right: 1rem;
       }
     }
-    input:disabled {
+    input:disabled,
+    textarea:disabled {
       background-color: v.$primary_color;
       color: v.$cream_color;
       border: 1px solid v.$cream_color;
@@ -33,6 +38,9 @@
         color: v.$cream_color;
         cursor: pointer;
       }
+    }
+    input[name="bio"] {
+      height: 100%;
     }
   }
 }
@@ -95,6 +103,12 @@
       top: 61%;
       right: 16%;
       cursor: pointer;
+    }
+  }
+  &:last-child {
+    height: 300px;
+    & > div:last-child {
+      height: 70%;
     }
   }
 }

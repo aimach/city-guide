@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import { IDisplayModals } from "../../../pages/Profile/Profile";
 import DeleteUserModalContent from "./DeleteUserModalContent";
 import ImageModalContent from "./ImageModalContent";
@@ -14,6 +15,7 @@ const Modal = ({ setDisplayModals, displayModals, type }: Props) => {
   if (type === "image") modalContent = <ImageModalContent />;
   if (type === "validation") modalContent = <ValidationModalContent />;
   if (type === "deleteUser") modalContent = <DeleteUserModalContent />;
+  const navigate = useNavigate();
   return (
     <>
       <div className={style.backgroundScreen}></div>
@@ -23,9 +25,10 @@ const Modal = ({ setDisplayModals, displayModals, type }: Props) => {
           {type !== "validation" ? (
             <button
               type="button"
-              onClick={() =>
-                setDisplayModals({ ...displayModals, [type]: false })
-              }
+              onClick={() => {
+                setDisplayModals({ ...displayModals, [type]: false });
+                if (type === "deleteUser") navigate("/");
+              }}
             >
               Valider
             </button>
