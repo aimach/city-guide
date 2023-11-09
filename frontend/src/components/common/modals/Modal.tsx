@@ -47,9 +47,10 @@ const Modal = ({ setDisplayModals, displayModals, type }: Props) => {
           ) : null}
           <button
             type="button"
-            onClick={() =>
-              setDisplayModals({ ...displayModals, [type]: false })
-            }
+            onClick={() => {
+              setDisplayModals({ ...displayModals, [type]: false });
+              navigate(0);
+            }}
           >
             Fermer
           </button>

@@ -4,6 +4,7 @@ import { faPen, faCheck } from "@fortawesome/free-solid-svg-icons";
 import { User } from "../../utils/types";
 import { IDisableInputs, IDisplayModals } from "./Profile";
 import { updateUserExceptPassword } from "../../utils/api";
+import { useNavigate } from "react-router-dom";
 
 interface Props {
   disableInputs: IDisableInputs;
