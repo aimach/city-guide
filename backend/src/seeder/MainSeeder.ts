@@ -2,10 +2,8 @@ import { DataSource } from "typeorm";
 import { faker } from "@faker-js/faker";
 import { Seeder, SeederFactoryManager } from "typeorm-extension";
 import { User } from "../entities/User";
-import { PoiFactory } from "../factories/poiFactory";
 import { Poi } from "../entities/Poi";
 import { City } from "../entities/City";
-import { Category } from "../entities/Category";
 
 export default class MainSeeder implements Seeder {
   public async run(

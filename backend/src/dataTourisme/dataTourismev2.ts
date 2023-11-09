@@ -142,7 +142,7 @@ async function seedDatabaseWithPoi(formattedPoi: FormattedPoi[]) {
     };
 
     poiInDatabase.image = poi.image;
-    poiInDatabase.is_accepted = poi.is_accepted;
+    poiInDatabase.isAccepted = poi.is_accepted;
 
     await dataSource.manager.save(poiInDatabase);
   }

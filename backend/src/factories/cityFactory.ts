@@ -1,9 +1,8 @@
 import { Faker } from "@faker-js/faker";
 import { setSeederFactory } from "typeorm-extension";
 import { City } from "../entities/City";
-import { User } from "../entities/User";
+import { User, UserRole } from "../entities/User";
 import { seedDataSource } from "../seedDataSource";
-import { UserRole } from "../entities/User";
 
 export const CityFactory = setSeederFactory(City, async (faker: Faker) => {
   const userRepository = seedDataSource.getRepository(User);

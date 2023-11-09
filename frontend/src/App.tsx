@@ -13,11 +13,15 @@ import { UserProvider } from "./contexts/UserContext";
 import * as React from "react";
 import Contribution from "./pages/Contribution/Contribution";
 import InteractiveMap from "./components/interactiveMap/InteractiveMap";
+import PoiListView from "./pages/PoiListView/PoiListView";
+import Layout from "./components/layout/Layout";
 
 const Root = () => {
   return (
     <UserProvider>
-      <Outlet /> {/* Outlet is where the child routes will be rendered */}
+      <Layout>
+        <Outlet /> {/* Outlet is where the child routes will be rendered */}
+      </Layout>
     </UserProvider>
   );
 };
@@ -27,9 +31,14 @@ function App() {
     createRoutesFromElements(
       <Route path="/" element={<Root />}>
         <Route index element={<HomePage />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
+        <Route path="/auth">
+          <Route path="login" element={<Login />} />
+          <Route path="register" element={<Register />} />
+        </Route>
         <Route path="/contribution" element={<Contribution />} />
+        <Route path="poi">
+          <Route path=":cityId" index element={<PoiListView />} />
+        </Route>
         <Route path="/map" element={<InteractiveMap />} />
       </Route>
     )

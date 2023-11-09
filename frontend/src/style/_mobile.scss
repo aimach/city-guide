@@ -48,7 +48,7 @@
 	}
 
 	.titleCard {
-		@include m.textStyle(v.$white_color, v.$comicNeueFont, 30px, 700);
+		@include m.textStyle(v.$white_color, v.$comicNeueFont, 24px, 700);
 	}
 
 	.inputSearchText {
@@ -56,7 +56,7 @@
 	}
 
 	.buttonHomePage {
-		@include m.buttonSize(200px, 56px);
+		@include m.buttonSize(200px, 56px, unset);
 	}
 	.titleFooter {
 		@include m.textStyle(v.$cream_color, v.$poppinsFont, 32px, 700);

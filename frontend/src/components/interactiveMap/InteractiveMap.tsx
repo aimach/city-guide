@@ -1,10 +1,11 @@
 import axios from "axios";
 import style from "./InteractiveMap.module.scss";
-import { MapContainer, Popup, TileLayer, useMap } from "react-leaflet";
+import { MapContainer, TileLayer } from "react-leaflet";
 import { useEffect, useState } from "react";
-import { Icon, IconOptions, LatLngTuple, Point } from "leaflet";
+import { LatLngTuple, Point } from "leaflet";
 import CustomMarker from "../interactiveMap/marker/CustomMarker";
-import { type } from "os";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faLocationDot } from "@fortawesome/free-solid-svg-icons";
 
 type coordinates = {
   type: Point;
@@ -37,46 +38,43 @@ const InteractiveMap = () => {
 
   return (
     <>
-      <div>
-        <div />
-        <MapContainer
-          className={`${style.map}`}
-          center={[46.232193, 2.209667]}
-          zoom={6}
-          scrollWheelZoom={false}
-        >
-          <TileLayer
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            url="https://tile.jawg.io/78a4b677-e817-42a6-8184-16a7c7017384/{z}/{x}/{y}{r}.png?access-token=VsqNhlNeeh2fYcI97JN1VuaKPpHNNeQSYYllqIf29xrB8in1XrrCycJkjpz6aJZX"
-          />
-          <>
-            {data.map((poi, index) => {
-              // GET LAT/LONG
-              console.log(poi);
+      <MapContainer
+        className={`${style.map}`}
+        center={[46.232193, 2.209667]}
+        zoom={6}
+        scrollWheelZoom={false}
+      >
+        <TileLayer
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+          url="https://tile.jawg.io/78a4b677-e817-42a6-8184-16a7c7017384/{z}/{x}/{y}{r}.png?access-token=VsqNhlNeeh2fYcI97JN1VuaKPpHNNeQSYYllqIf29xrB8in1XrrCycJkjpz6aJZX"
+        />
+        <>
+          {data.map((poi, index) => {
+            // GET LAT/LONG
+            console.log(poi);
 
-              const latitude = poi.coordinates.coordinates[0];
-              const longitude = poi.coordinates.coordinates[1];
+            const latitude = poi.coordinates.coordinates[0];
+            const longitude = poi.coordinates.coordinates[1];
 
-              // poi.coordinates.map((e) => {
-              //   console.log(e);
-              // });
-              // const latitude = poi.coordinates[0];
-              // const longitude = poi.coordinates[1];
-              return (
-                <CustomMarker
-                  key={index}
-                  position={[latitude, longitude]}
-                  name={poi.name}
-                  image={poi.image}
-                  address={poi.address}
-                  phoneNumber={poi.phoneNumber}
-                  description={poi.description}
-                />
-              );
-            })}
-          </>
-        </MapContainer>
-      </div>
+            // poi.coordinates.map((e) => {
+            //   console.log(e);
+            // });
+            // const latitude = poi.coordinates[0];
+            // const longitude = poi.coordinates[1];
+            return (
+              <CustomMarker
+                key={index}
+                position={[latitude, longitude]}
+                name={poi.name}
+                image={poi.image}
+                address={poi.address}
+                phoneNumber={poi.phoneNumber}
+                description={poi.description}
+              />
+            );
+          })}
+        </>
+      </MapContainer>
     </>
   );
 };
