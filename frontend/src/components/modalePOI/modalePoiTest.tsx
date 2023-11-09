@@ -87,8 +87,8 @@ const ModalePoiTest = ({
                   </div>
                   <div>
                      <h4>Coordonnées GPS</h4>
-                     <p>Latitude : {coordinates[0]}</p>
-                     <p>Longitude : {coordinates[1]}</p>
+                     <p>Latitude : {coordinates.coordinates[0]}</p>
+                     <p>Longitude : {coordinates.coordinates[1]}</p>
                   </div>
                   <div>
                      <h4>Description</h4>

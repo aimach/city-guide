@@ -17,9 +17,12 @@ interface Props {
 }
 
 const ModalePOI = ({ poi, onClose, handleFavourite, isLiked }: Props) => {
-   const { id, name, image, address, description, coordinates } = poi;
+   const { id, name, image, address, phoneNumber, description, coordinates } =
+      poi;
 
    const { isAuthenticated } = useContext(UsersContext);
+
+   console.log(coordinates.coordinates);
 
    return (
       <div className={styles.container}>
@@ -64,12 +67,12 @@ const ModalePOI = ({ poi, onClose, handleFavourite, isLiked }: Props) => {
                   </div>
                   <div>
                      <h4>Numéro de téléphone</h4>
-                     <p></p>
+                     <p>{phoneNumber}</p>
                   </div>
                   <div>
                      <h4>Coordonnées GPS</h4>
-                     <p>Latitude : {coordinates[0]}</p>
-                     <p>Longitude : {coordinates[1]}</p>
+                     <p>Latitude : {coordinates.coordinates[0]}</p>
+                     <p>Longitude : {coordinates.coordinates[1]}</p>
                   </div>
                   <div>
                      <h4>Description</h4>
