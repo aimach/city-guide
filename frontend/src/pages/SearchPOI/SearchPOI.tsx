@@ -2,7 +2,6 @@ import { Link } from 'react-router-dom';
 import FilterSearch from '../../components/filterSearch/FilterSearch';
 import styles from './SearchPOI.module.scss';
 import { useState, useEffect } from 'react';
-import Card from '../../components/common/card/Card';
 import Caroussel from '../../components/common/Caroussel/Caroussel';
 import { CardType, City } from '../../utils/types';
 
@@ -25,17 +24,21 @@ const SearchPOI = () => {
       getCities();
    }, []);
 
+   const allCitiesWithPoi = totalCities.filter(
+      (city) => city.poi != null && city.poi.length > 0
+   );
+
    useEffect(() => {
       if (filterSearch) {
          setCitiesToBeShown(
-            totalCities.filter((city) =>
+            allCitiesWithPoi.filter((city) =>
                city.name.toLowerCase().startsWith(filterSearch.toLowerCase())
             )
          );
       } else {
-         setCitiesToBeShown(totalCities.slice(0, 4) ?? []);
+         setCitiesToBeShown(allCitiesWithPoi.slice(0, 4) ?? []);
       }
-   }, [filterSearch, totalCities]);
+   }, [filterSearch]);
 
    return (
       <>
