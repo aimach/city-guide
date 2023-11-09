@@ -129,16 +129,21 @@ export const removeFavouritePoiToUser = async (
 
 export const updateUserExceptPassword = async (
   id: string,
-  body: any
+  body: any,
+  type: string
 ): Promise<void> => {
+  const headers = new Headers();
+  if (type === "json") {
+    headers.append("Content-Type", "application/json");
+  } else {
+    headers.append("Accept", "application/json");
+  }
   try {
     const response = await fetch(`http://localhost:5000/api/profile/${id}`, {
       method: "PUT",
       credentials: "include",
-      headers: {
-        Accept: "application/json",
-      },
-      body: body,
+      headers,
+      body: type === "json" ? JSON.stringify(body) : body,
     });
     const data = await response.json();
     return data;

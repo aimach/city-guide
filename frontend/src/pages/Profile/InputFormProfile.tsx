@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen, faCheck } from "@fortawesome/free-solid-svg-icons";
 import { User } from "../../utils/types";
 import { IDisableInputs, IDisplayModals } from "./Profile";
+import { updateUserExceptPassword } from "../../utils/api";
 
 interface Props {
   disableInputs: IDisableInputs;
@@ -63,6 +64,8 @@ const InputFormProfile = ({
             icon={faCheck}
             className={style.icon}
             onClick={() => {
+              if (userInfo !== null && userInfo.id !== null)
+                updateUserExceptPassword(userInfo.id, userInfo, "json");
               setDisableInputs({ ...disableInputs, [name]: true });
               setDisplayModals({ ...displayModals, validation: true });
             }}

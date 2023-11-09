@@ -253,7 +253,14 @@ export const ProfileController: IController = {
         }
       }
 
-      await dataSource.getRepository(User).update(id, req.body);
+      const newUser: User = new User();
+      newUser.username = username;
+      newUser.email = email;
+      newUser.bio = bio;
+      newUser.city = city;
+      newUser.role = role;
+
+      await dataSource.getRepository(User).update(id, newUser);
       res.status(200).send("Updated user");
     } catch (err) {
       if (req.file !== undefined)

@@ -36,7 +36,7 @@ const ImageModal = ({ setDisplayModals, displayModals, userInfo }: Props) => {
     }
     setDisplayModals({ ...displayModals, image: false });
     if (userInfo !== null && userInfo.id !== null)
-      updateUserExceptPassword(userInfo.id, formData);
+      updateUserExceptPassword(userInfo.id, formData, "formData");
   };
   return (
     <>
