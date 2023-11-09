@@ -7,6 +7,7 @@ import { User } from "../../utils/types";
 import InputFormProfile from "./InputFormProfile";
 import Modal from "../../components/common/modals/Modal";
 import ImageModal from "../../components/common/modals/ImageModal";
+import PasswordModal from "../../components/common/modals/PasswordModal";
 
 export interface IDisableInputs {
   city: boolean;
@@ -20,6 +21,7 @@ export interface IDisplayModals {
   validation: boolean;
   image: boolean;
   deleteUser: boolean;
+  password: boolean;
 }
 
 const Profile = () => {
@@ -30,6 +32,7 @@ const Profile = () => {
     validation: false,
     image: false,
     deleteUser: false,
+    password: false,
   });
   const [userInfo, setUserInfo] = useState<User | null>(null);
   const [disableInputs, setDisableInputs] = useState<IDisableInputs>({
@@ -39,8 +42,6 @@ const Profile = () => {
     username: true,
     bio: true,
   });
-
-  console.log(profile?.image);
 
   const imageURL: string | undefined = profile?.image
     ? profile?.image?.slice(1)
@@ -64,6 +65,12 @@ const Profile = () => {
           setDisplayModals={setDisplayModals}
           displayModals={displayModals}
           userInfo={userInfo}
+        />
+      ) : null}
+      {displayModals.password ? (
+        <PasswordModal
+          setDisplayModals={setDisplayModals}
+          displayModals={displayModals}
         />
       ) : null}
       {displayModals.deleteUser ? (
@@ -149,26 +156,16 @@ const Profile = () => {
                 type="password"
                 name="password"
                 id="password"
-                value="fakepassword"
+                value="⚈⚈⚈⚈⚈⚈⚈⚈⚈⚈⚈⚈⚈⚈⚈"
                 disabled={disableInputs.password}
               />
-              {disableInputs.password ? (
-                <FontAwesomeIcon
-                  icon={faPen}
-                  className={style.icon}
-                  onClick={() =>
-                    setDisableInputs({ ...disableInputs, password: false })
-                  }
-                />
-              ) : (
-                <FontAwesomeIcon
-                  icon={faCheck}
-                  className={style.icon}
-                  onClick={() =>
-                    setDisableInputs({ ...disableInputs, password: true })
-                  }
-                />
-              )}
+              <FontAwesomeIcon
+                icon={faPen}
+                className={style.icon}
+                onClick={() =>
+                  setDisplayModals({ ...displayModals, password: true })
+                }
+              />
             </div>
           </div>
           <div className={style.formColumns}>

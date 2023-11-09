@@ -3,7 +3,6 @@ import { IDisplayModals } from "../../../pages/Profile/Profile";
 import style from "./Modal.module.scss";
 import { User } from "../../../utils/types";
 import { updateUserExceptPassword } from "../../../utils/api";
-import { Navigate, useNavigate } from "react-router-dom";
 
 interface Props {
   setDisplayModals: (arg0: IDisplayModals) => void;

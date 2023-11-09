@@ -13,8 +13,8 @@
 
 .modalContainer {
   color: v.$primary_color;
-  width: 30vw;
-  height: 30vh;
+  width: 35vw;
+  height: 35vh;
   position: fixed;
   top: 35%;
   left: 35%;
@@ -48,6 +48,20 @@ input::file-selector-button {
   margin-right: 1rem;
   text-align: center;
   cursor: pointer;
+}
+
+.formPassword {
+  input {
+    padding: 0.5rem;
+    border-radius: 1rem;
+  }
+  .inputContainer {
+    @include m.flexLayout(flex-start, flex-start, column);
+    div {
+      @include m.flexLayout(flex-start, space-between, column);
+      width: 100%;
+    }
+  }
 }
 
 /* ----------------------------------------------
