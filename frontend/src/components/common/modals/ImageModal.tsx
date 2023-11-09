@@ -3,6 +3,7 @@ import { IDisplayModals } from "../../../pages/Profile/Profile";
 import style from "./Modal.module.scss";
 import { User } from "../../../utils/types";
 import { updateUserExceptPassword } from "../../../utils/api";
+import { Navigate, useNavigate } from "react-router-dom";
 
 interface Props {
   setDisplayModals: (arg0: IDisplayModals) => void;
@@ -13,6 +14,7 @@ interface Props {
 const ImageModal = ({ setDisplayModals, displayModals, userInfo }: Props) => {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const formData = new FormData();
+  // const navigate = useNavigate();
 
   const hSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -51,14 +53,7 @@ const ImageModal = ({ setDisplayModals, displayModals, userInfo }: Props) => {
             ref={inputRef}
           />
           <div>
-            <button
-              type="submit"
-              onClick={() => {
-                // setDisplayModals({ ...displayModals, image: false });
-              }}
-            >
-              Valider
-            </button>
+            <button type="submit">Valider</button>
             <button
               type="button"
               onClick={() =>

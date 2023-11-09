@@ -225,6 +225,7 @@ export const ProfileController: IController = {
         }
       }
 
+      console.log(req.file);
       // rename the new file and delete the older one
       if (req.file !== undefined) {
         // rename
@@ -241,7 +242,10 @@ export const ProfileController: IController = {
         req.body.image = `./public/user/${newName}`;
 
         // delete
-        if (profileToUpdate.image !== "") {
+        if (
+          profileToUpdate.image !== "null" &&
+          profileToUpdate.image !== "undefined"
+        ) {
           await unlink(profileToUpdate.image);
         }
       }

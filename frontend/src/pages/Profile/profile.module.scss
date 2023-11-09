@@ -54,7 +54,8 @@
 
 .avatarImg {
   position: relative;
-  img {
+  img,
+  div {
     width: 150px;
     height: 150px;
     border-radius: 50%;
@@ -62,6 +63,10 @@
   }
   .imageOpacity {
     opacity: 0.5;
+  }
+  div {
+    @include m.flexLayout(center, center);
+    font-size: xx-large;
   }
 }
 

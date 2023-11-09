@@ -40,7 +40,7 @@ const Profile = () => {
     bio: true,
   });
 
-  // console.log(userInfo);
+  const imageURL = profile?.image?.slice(1);
 
   useEffect(() => {
     if (profile !== null) setUserInfo(profile);
@@ -72,10 +72,10 @@ const Profile = () => {
       <section className={style.formSection}>
         <div className={style.profileAvatarAndName}>
           <div className={style.avatarImg}>
-            {profile?.image !== null ? (
+            {profile?.image !== "null" && profile?.image !== "undefined" ? (
               <>
                 <img
-                  src={`http://localhost:5000${profile?.image.substr(1)}`}
+                  src={`http://localhost:5000${imageURL}`}
                   alt="avatar"
                   className={displayEditImg ? style.imageOpacity : undefined}
                   onMouseOver={() => setDisplayEditImg(true)}
@@ -93,7 +93,24 @@ const Profile = () => {
                 )}
               </>
             ) : (
-              profile?.username.substring(0, 1).toUpperCase()
+              <>
+                <div
+                  onMouseOver={() => setDisplayEditImg(true)}
+                  onMouseOut={() => setDisplayEditImg(false)}
+                >
+                  {profile?.username.substring(0, 1).toUpperCase()}
+                </div>
+                {displayEditImg && (
+                  <FontAwesomeIcon
+                    icon={faPen}
+                    className={style.iconEditImg}
+                    onMouseOver={() => setDisplayEditImg(true)}
+                    onClick={() =>
+                      setDisplayModals({ ...displayModals, image: true })
+                    }
+                  />
+                )}
+              </>
             )}
           </div>
           <p>{profile?.username.toUpperCase()}</p>
