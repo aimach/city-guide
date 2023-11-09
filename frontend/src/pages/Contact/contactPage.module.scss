@@ -1,24 +1,11 @@
 @use "../../style/mixin" as m;
 @use "../../style/variable" as v;
 
-// 4. Button, bg-color + icône
-
 .contactPage {
   color: white;
 }
 
 .contactHeader {
-  // 1. Limiter la largeur à Xpx
-  // 2. Appliquer des marges horizontales automatiques
-  //    Les marges automatiques,
-  //    elles calculent la marge en fonction de la largeur de l'écran
-  //    et la largeur de l'élément.
-  //
-  //    100vw -> 100% de la largeur de l'écran
-  //    (100vw - Xpx) / 2 à gauche
-  //    (100vw - Xpx) / 2 à droite
-  //
-  //    margin: 0 auto; (0 -> vertical ; auto -> horizontal)
   max-width: 750px;
   margin: 0 auto;
   text-align: center;
