@@ -1,157 +1,67 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import styles from './cards.module.scss';
 import { IoIosHeartEmpty, IoIosHeart } from 'react-icons/io';
-import { CardType, City } from '../../../utils/types';
-import { useNavigate } from 'react-router-dom';
+import { CardType, Category, City, Poi } from '../../../utils/types';
 import { UsersContext } from '../../../contexts/UserContext';
 
-import {
-   addFavouriteCityToUser,
-   addFavouritePoiToUser,
-   removeFavouriteCityToUser,
-   removeFavouritePoiToUser,
-} from '../../../utils/api';
-
 interface Props {
-   id: string | null;
-   title: string;
-   image: string;
+   data: Poi | Category | City;
    cardType: CardType;
-   onClickCategory?: (categoryName: string, cityName: string) => void;
-   chooseCategory: React.Dispatch<React.SetStateAction<string | null>>;
-   categorySelected: string | null;
+   onClick: () => void;
+   categorySelected?: string | null;
    currentCity?: City | null;
+   handleFavourite: (id: string | null) => void;
+   isLiked: (id: string | null) => boolean;
 }
 
 const Card = ({
-   title,
-   image,
+   data,
    cardType,
-   id,
-   onClickCategory,
-   currentCity,
+   onClick,
    categorySelected,
-   chooseCategory,
+   handleFavourite,
+   isLiked,
 }: Props) => {
-   const navigate = useNavigate();
+   const { isAuthenticated } = useContext(UsersContext);
 
-   const { isAuthenticated, profile } = useContext(UsersContext);
-   const userId = profile?.id ?? '';
-   let favouriteCitiesId: string[] = [];
-   let favouritePoiId: string[] = [];
-
-   if (profile != null) {
-      favouriteCitiesId = profile.favouriteCities?.map((city) => city.id!);
-      favouritePoiId = profile.favouritePoi.map((poi) => poi.id!);
-   }
-
-   const [favouriteCities, setFavouriteCities] =
-      useState<string[]>(favouriteCitiesId);
-
-   const [favouritePoi, setFavouritePoi] = useState<string[]>(favouritePoiId);
-
-   const [isPoiModaleOpen, setIsPoiModaleOpen] = useState(false);
-
-   const isLiked = (): boolean => {
-      if (cardType === CardType.CITY) {
-         return favouriteCities.includes(id!);
-      }
-      if (cardType === CardType.POI) {
-         return favouritePoi.includes(id!);
-      }
-      return false;
-   };
-
-   const handleUserFavouriteCities = (
-      cityId: string,
-      userId: string,
-      favouriteCities: string[]
-   ) => {
-      if (favouriteCities != null) {
-         if (favouriteCities.find((city) => city === cityId)) {
-            removeFavouriteCityToUser(cityId, userId);
-            setFavouriteCities((state) =>
-               state!.filter((city) => city !== cityId)
-            );
-         } else {
-            addFavouriteCityToUser(cityId, userId);
-            setFavouriteCities((state) => [...state, cityId]);
-         }
-      }
-   };
-
-   const handleUserFavouritePoi = (
-      poiId: string,
-      userId: string,
-      favouritePoi: string[]
-   ) => {
-      if (favouritePoi != null) {
-         if (favouritePoi.find((poi) => poi === poiId)) {
-            removeFavouritePoiToUser(poiId, userId);
-            setFavouritePoi((state) => state.filter((poi) => poi !== poiId));
-         } else {
-            addFavouritePoiToUser(poiId, userId);
-            setFavouritePoi((state) => [...state, poiId]);
-         }
-      }
-   };
-
-   const selectActionOnCardClick = () => {
-      switch (cardType) {
-         case CardType.CITY:
-            navigate(`poi/${id}`);
-            break;
-         case CardType.CATEGORY:
-            if (currentCity != null) {
-               onClickCategory!(title, currentCity?.name);
-            }
-            chooseCategory(id);
-            break;
-         case CardType.POI:
-            setIsPoiModaleOpen(true);
-            break;
-      }
-   };
+   const { id, name, image } = data;
 
    return (
-      <div
-         className={`${styles.container} ${
-            categorySelected !== id &&
-            categorySelected != null &&
-            cardType === CardType.CATEGORY &&
-            styles.unselected
-         } `}
-      >
+      <>
          <div
-            onClick={selectActionOnCardClick}
-            className={styles.imageContainer}
+            className={`${styles.container} ${
+               categorySelected !== id &&
+               categorySelected != null &&
+               cardType === CardType.CATEGORY &&
+               styles.unselected
+            } `}
          >
-            <img src={image} alt={title} className={styles.image} />
-            <h3 className={`${styles.title} titleCard`}>{title}</h3>
-         </div>
-         {cardType !== CardType.CATEGORY && isAuthenticated() ? (
-            <div
-               className={styles.likeContainer}
-               onClick={() => {
-                  cardType === CardType.CITY
-                     ? handleUserFavouriteCities(id!, userId, favouriteCities)
-                     : handleUserFavouritePoi(id!, userId, favouritePoi);
-               }}
-            >
-               {isLiked() ? (
-                  <IoIosHeart
-                     className={styles.filledHeart}
-                     stroke="black"
-                     strokeWidth={22}
-                  />
-               ) : (
-                  <IoIosHeartEmpty className={styles.emptyHeart} />
-               )}
+            <div onClick={onClick} className={styles.imageContainer}>
+               <img src={image} alt={name} className={styles.image} />
+               <h3 className={`${styles.title} titleCard`}>{name}</h3>
             </div>
-         ) : (
-            ''
-         )}
-      </div>
+            {cardType !== CardType.CATEGORY && isAuthenticated() ? (
+               <div
+                  className={styles.likeContainer}
+                  onClick={() => {
+                     handleFavourite(id);
+                  }}
+               >
+                  {isLiked(id) ? (
+                     <IoIosHeart
+                        className={styles.filledHeart}
+                        stroke="black"
+                        strokeWidth={22}
+                     />
+                  ) : (
+                     <IoIosHeartEmpty className={styles.emptyHeart} />
+                  )}
+               </div>
+            ) : (
+               ''
+            )}
+         </div>
+      </>
    );
 };
 

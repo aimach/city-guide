@@ -3,16 +3,21 @@
 
 .container {
     background-color: #fff;
-    display: flex;
-    gap: 20px;
     border-radius: 20px;
+    width: 717px;
+    height: 386px;
     z-index: 100;
     position: absolute;
-    bottom: 0px;
+    bottom: -200px;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
     padding: 36px 18px;
     display: flex;
-    flex-direction: column;
-    gap: 10px;
+    gap: 30px;
+    visibility: hidden;
+    opacity: 0.6;
+    transition: all 0.4s ease-in;
 
     .close {
         color: $primary_color;
@@ -33,7 +38,7 @@
         position: relative;
     }
     .imageContainer {
-        max-width: 348px;
+        width: 348px;
         height: 230px;
 
         img {
@@ -98,6 +103,7 @@
         position: relative;
         border-radius: 20px;
         padding: 20px;
+        width: 50%;
         color: $primary_color;
         display: flex;
         flex-direction: column;
@@ -175,4 +181,16 @@
         margin: 0 auto;
         cursor: pointer;
     }
+}
+
+.alignRight {
+    position: absolute;
+    bottom: 230px;
+    right: 0;
+}
+
+.open {
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(-200px);
 }
