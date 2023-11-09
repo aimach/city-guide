@@ -1,3 +1,28 @@
+@import "../../style/mixin";
+@import "../../style/variable";
+
 a {
     color: white;
+}
+
+.container-link-map {
+    width: 1100px;
+    height: 585px;
+    margin: 0 auto;
+    background: url('../../assets/link_map.svg');
+    background-size: cover;
+    position: relative;
+    button {
+        @include textStyle($primary_color,$poppinsFont,24px,600);
+        @include buttonSize(223px, 50px);
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: $secondary_color;
+        font-family: $poppinsFont;
+        border-radius: 20px;
+        @include flexLayout(center, center);
+        gap: 0.5em;
+    }
 }

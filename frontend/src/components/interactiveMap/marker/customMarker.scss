@@ -1,0 +1,46 @@
+@import '../../../style/variable';
+
+.popup--container {
+    .popup-image {
+            width: 100%;
+            height: auto;
+        }
+    h3 {
+        font-size: 32px;
+    }
+    
+    .secondary_info {
+        border-radius: 10px;
+        background: var(--cream, #F5F6E2);
+        padding: 1em;
+        overflow-y: auto;
+        height: 100px;
+
+        &::-webkit-scrollbar {
+            width: 14px;
+            background: #D9D9D9;
+            border-radius: 10px;
+            
+        }
+        &::-webkit-scrollbar-thumb {
+            background-color: var(--cream, #F5F6E2);
+            border-radius: 10px;
+        }
+        h4 {
+            font-size: 16px;
+            font-family: $comicNeueFont;
+            color: $primary_color;
+        }
+
+        h4:not(:first-of-type) {
+            margin: 1em 0;
+        }
+
+
+
+        p {
+            margin: 0;
+        }
+    }
+ 
+}

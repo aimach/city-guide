@@ -12,6 +12,7 @@ import HomePage from "./pages/HomePage/HomePage";
 import { UserProvider } from "./contexts/UserContext";
 import * as React from "react";
 import Contribution from "./pages/Contribution/Contribution";
+import InteractiveMap from "./components/interactiveMap/InteractiveMap";
 
 const Root = () => {
   return (
@@ -29,6 +30,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/contribution" element={<Contribution />} />
+        <Route path="/map" element={<InteractiveMap />} />
       </Route>
     )
   );
