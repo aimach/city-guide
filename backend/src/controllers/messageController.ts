@@ -6,6 +6,7 @@ import validator from "validator";
 
 export const MessageController: IController = {
   createMessage: async (req: Request, res: Response): Promise<void> => {
+    console.log("Requête reçue avec le corps : ", req.body);
     const { email, title, message } = req.body;
 
     const checkIfEmpty = (key: string, value: string): boolean => {
@@ -31,8 +32,10 @@ export const MessageController: IController = {
 
       const newMessage = { ...messageToCreate };
       await dataSource.getRepository(Message).save(newMessage);
+      res.status(201).send(newMessage);
     } catch (error) {
-      console.log(error);
+      res.status(500).send("Erreur serveur");
+      console.error(error);
     }
   },
 };

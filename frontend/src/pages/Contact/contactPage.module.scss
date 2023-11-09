@@ -24,14 +24,14 @@
   text-align: center;
 
   h1 {
-    margin-bottom: 0.5rem;
-    font-size: 3rem; //
-    // ...
+    font-family: v.$poppinsFont;
+    font-size: 48px;
+    font-weight: 200;
+    margin-top: 50px;
   }
 
   p {
     margin-bottom: 2rem;
-    // ...
   }
 }
 
@@ -45,6 +45,7 @@
   .formGroup {
     width: 100%;
     margin-bottom: 1rem;
+    margin-top: 30px;
 
     input,
     textarea {
@@ -54,35 +55,40 @@
       width: calc(100% - 1rem);
       padding: 16px 8px;
       color: white;
+      font-family: v.$poppinsFont;
     }
 
     textarea {
-      resize: none; // -> empêche de redimensionner le textarea
+      resize: none;
     }
 
     label {
       text-align: left;
       margin-left: 0.5rem;
-      // ...
+      font-family: v.$poppinsFont;
     }
   }
 
   .submitButton {
     @include m.unbuttonize;
     @include m.buttonColor(v.$secondary_color, v.$primary_color);
-    padding: 0.7rem 3rem 0.7rem 3rem;
+    padding: 10px;
     border-radius: 1rem;
+    margin-top: 30px;
+    font-family: v.$poppinsFont;
+    font-weight: 600;
     &:hover {
       @include m.buttonColor(v.$cream_color, v.$primary_color);
       transition: background-color 0.4s ease;
     }
     .iconPlane {
       position: relative;
-      padding-left: 50px;
+      padding-left: 20px;
     }
   }
 }
 
 .submitMessage {
+  font-family: v.$poppinsFont;
   padding: 20px;
 }

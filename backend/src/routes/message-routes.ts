@@ -3,4 +3,4 @@ import { MessageController } from "../controllers/messageController";
 
 export const messageRoutes = express.Router();
 
-messageRoutes.post("/contact", MessageController.createMessage);
+messageRoutes.post("/", MessageController.createMessage);
