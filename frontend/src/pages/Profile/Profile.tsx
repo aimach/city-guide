@@ -40,7 +40,11 @@ const Profile = () => {
     bio: true,
   });
 
-  const imageURL = profile?.image?.slice(1);
+  console.log(profile?.image);
+
+  const imageURL: string | undefined = profile?.image
+    ? profile?.image?.slice(1)
+    : undefined;
 
   useEffect(() => {
     if (profile !== null) setUserInfo(profile);
@@ -72,7 +76,7 @@ const Profile = () => {
       <section className={style.formSection}>
         <div className={style.profileAvatarAndName}>
           <div className={style.avatarImg}>
-            {profile?.image !== "null" && profile?.image !== "undefined" ? (
+            {imageURL !== undefined ? (
               <>
                 <img
                   src={`http://localhost:5000${imageURL}`}
@@ -114,7 +118,6 @@ const Profile = () => {
             )}
           </div>
           <p>{profile?.username.toUpperCase()}</p>
-          <p>{profile?.role}</p>
         </div>
         <form>
           <div className={style.formColumns}>

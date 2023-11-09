@@ -132,10 +132,14 @@ export const ProfileController: IController = {
         }
       };
 
-      const inputString: string[] = [username, email, bio, city];
+      const inputString: string[] = [username, email];
       inputString.forEach(async (value) => {
         if (value !== null) await checkIfStringAndNotEmpty(value);
       });
+
+      // check if input is "null"
+      if (bio === "null") req.body.bio = null;
+      if (city === "null") req.body.city = null;
 
       // check enum in role
       const roles: UserRole[] = Object.values(UserRole);
@@ -225,7 +229,6 @@ export const ProfileController: IController = {
         }
       }
 
-      console.log(req.file);
       // rename the new file and delete the older one
       if (req.file !== undefined) {
         // rename
@@ -243,8 +246,8 @@ export const ProfileController: IController = {
 
         // delete
         if (
-          profileToUpdate.image !== "null" &&
-          profileToUpdate.image !== "undefined"
+          profileToUpdate.image !== null &&
+          profileToUpdate.image !== undefined
         ) {
           await unlink(profileToUpdate.image);
         }
