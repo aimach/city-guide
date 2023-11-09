@@ -1,6 +1,13 @@
 import { useState } from "react";
 import styles from "./contactPage.module.scss";
 import { IoMdPaperPlane } from "react-icons/io";
+import { useForm } from "react-hook-form";
+
+export interface FormProps {
+  email: string;
+  title: string;
+  message: string;
+}
 
 const ContactPage = () => {
   const [title, setTitle] = useState("");
@@ -8,11 +15,47 @@ const ContactPage = () => {
   const [message, setMessage] = useState("");
   const [submitSuccess, setSubmitSuccess] = useState(false);
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log({ title, email, message });
-    setSubmitSuccess(true);
+    const messageData: FormProps = {
+      email: email,
+      title: title,
+      message: message,
+    };
+
+    try {
+      const response = await fetch("http://localhost:5000/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify(messageData),
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        console.log("Données renregistrées avec succès:", result);
+        setSubmitSuccess(true);
+
+        setTitle("");
+        setEmail("");
+        setMessage("");
+      } else {
+        throw new Error("Erreur lors de l'envoi du message");
+      }
+    } catch (error) {
+      console.error("Erreur lors de l'envoi du message:", error);
+    }
   };
+
+  const handleChange =
+    (setter: (arg0: any) => void) => (event: { target: { value: any } }) => {
+      setter(event.target.value);
+      if (submitSuccess) {
+        setSubmitSuccess(false);
+      }
+    };
 
   return (
     <div className={styles.contactPage}>
@@ -32,7 +75,7 @@ const ContactPage = () => {
             type="email"
             id="email"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={handleChange(setEmail)}
           />
         </div>
         <div className={styles.formGroup}>
@@ -41,7 +84,7 @@ const ContactPage = () => {
             type="text"
             id="title"
             value={title}
-            onChange={(e) => setTitle(e.target.value)}
+            onChange={handleChange(setTitle)}
           />
         </div>
         <div className={styles.formGroup}>
@@ -49,7 +92,7 @@ const ContactPage = () => {
           <textarea
             id="message"
             value={message}
-            onChange={(e) => setMessage(e.target.value)}
+            onChange={handleChange(setMessage)}
             rows={10}
           ></textarea>
         </div>
