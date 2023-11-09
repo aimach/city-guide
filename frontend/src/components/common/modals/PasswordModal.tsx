@@ -1,5 +1,8 @@
 import { IDisplayModals } from "../../../pages/Profile/Profile";
 import style from "./Modal.module.scss";
+import { updateUserPassword } from "../../../utils/api";
+import { useContext } from "react";
+import { UsersContext } from "../../../contexts/UserContext";
 
 interface Props {
   setDisplayModals: (arg0: IDisplayModals) => void;
@@ -7,8 +10,16 @@ interface Props {
 }
 
 const PasswordModal = ({ setDisplayModals, displayModals }: Props) => {
+  const { profile } = useContext(UsersContext);
   const hSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    const form = event.currentTarget;
+    const formData = new FormData(form);
+
+    // Or you can work with it as a plain object:
+    const formJson = Object.fromEntries(formData.entries());
+    if (profile !== null && profile !== undefined && profile.id !== null)
+      updateUserPassword(profile.id, formJson);
   };
   return (
     <>

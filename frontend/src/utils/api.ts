@@ -147,6 +147,29 @@ export const updateUserExceptPassword = async (
   }
 };
 
+export const updateUserPassword = async (
+  id: string,
+  body: any
+): Promise<void> => {
+  try {
+    const response = await fetch(
+      `http://localhost:5000/api/auth/newpassword/${id}`,
+      {
+        method: "PUT",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
+      }
+    );
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.log("Error while updating password", error);
+  }
+};
+
 // DELETE USER
 
 export const deleteUser = async (id: string): Promise<void> => {
