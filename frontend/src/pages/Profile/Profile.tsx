@@ -9,7 +9,6 @@ import Modal from "../../components/common/modals/Modal";
 import ImageModal from "../../components/common/modals/ImageModal";
 import PasswordModal from "../../components/common/modals/PasswordModal";
 import Caroussel from "../../components/common/Caroussel/Caroussel";
-
 export interface IDisableInputs {
   city: boolean;
   email: boolean;
@@ -23,6 +22,7 @@ export interface IDisplayModals {
   image: boolean;
   deleteUser: boolean;
   password: boolean;
+  error: boolean;
 }
 export interface IError {
   message: string;
@@ -32,13 +32,13 @@ export interface IError {
 const Profile = () => {
   // get profile
   const { profile } = useContext(UsersContext);
-  console.log(profile);
   const [displayEditImg, setDisplayEditImg] = useState<boolean>(false);
   const [displayModals, setDisplayModals] = useState<IDisplayModals>({
     validation: false,
     image: false,
     deleteUser: false,
     password: false,
+    error: false,
   });
   const [userInfo, setUserInfo] = useState<User | null>(null);
   const [disableInputs, setDisableInputs] = useState<IDisableInputs>({
@@ -55,8 +55,6 @@ const Profile = () => {
     bio: { message: "", status: false },
   });
 
-  console.log(errors);
-
   const imageURL: string | undefined = profile?.image
     ? profile?.image?.slice(1)
     : undefined;
@@ -72,6 +70,13 @@ const Profile = () => {
           setDisplayModals={setDisplayModals}
           displayModals={displayModals}
           type="validation"
+        />
+      ) : null}
+      {displayModals.error ? (
+        <Modal
+          setDisplayModals={setDisplayModals}
+          displayModals={displayModals}
+          type="error"
         />
       ) : null}
       {displayModals.image ? (

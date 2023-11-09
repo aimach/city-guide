@@ -6,6 +6,7 @@ import ValidationModalContent from "./ValidationModalContent";
 import { deleteUser } from "../../../utils/api";
 import { useContext } from "react";
 import { UsersContext } from "../../../contexts/UserContext";
+import ErrorModalContent from "./ErrorModalContent";
 interface Props {
   setDisplayModals: (arg0: IDisplayModals) => void;
   displayModals: IDisplayModals;
@@ -17,6 +18,7 @@ const Modal = ({ setDisplayModals, displayModals, type }: Props) => {
 
   if (type === "validation") modalContent = <ValidationModalContent />;
   if (type === "deleteUser") modalContent = <DeleteUserModalContent />;
+  if (type === "error") modalContent = <ErrorModalContent />;
 
   const navigate = useNavigate();
   const { profile } = useContext(UsersContext);
@@ -27,7 +29,7 @@ const Modal = ({ setDisplayModals, displayModals, type }: Props) => {
       <div className={style.modalContainer}>
         {modalContent}
         <div>
-          {type !== "validation" ? (
+          {type !== "validation" && type !== "error" ? (
             <button
               type="button"
               onClick={() => {
@@ -49,7 +51,6 @@ const Modal = ({ setDisplayModals, displayModals, type }: Props) => {
             type="button"
             onClick={() => {
               setDisplayModals({ ...displayModals, [type]: false });
-              // navigate(0);
             }}
           >
             Fermer
