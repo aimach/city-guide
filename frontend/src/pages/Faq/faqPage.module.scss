@@ -1,0 +1,29 @@
+@use "../../style/variable" as v;
+@use "../../style/mixin" as m;
+
+.faqPage {
+  background-color: v.$cream_color;
+  h1 {
+    font-family: v.$poppinsFont;
+    color: v.$primary_color;
+  }
+}
+
+section {
+  margin-bottom: 20px;
+  padding: 10px;
+}
+.faqHeader {
+  font-size: 1.5em;
+  margin-bottom: 10px;
+}
+details {
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  padding: 5px;
+  border-radius: 5px;
+}
+summary {
+  font-weight: bold;
+  cursor: pointer;
+}
