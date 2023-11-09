@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { CardType, Category, City, Poi } from '../../utils/types';
 import Caroussel from '../../components/common/Caroussel/Caroussel';
 import styles from './poiListView.module.scss';
+import { FaArrowLeftLong } from 'react-icons/fa6';
 
 const PoiListView = () => {
    const { cityId } = useParams();
@@ -69,7 +70,15 @@ const PoiListView = () => {
    return (
       <section className={styles.container}>
          <div>
-            <h1>{currentCity?.name}</h1>
+            <div className={styles.header}>
+               <Link to="/#cities">
+                  <button className={styles.previousButton}>
+                     <FaArrowLeftLong className={styles.arrow} /> Retour
+                  </button>
+               </Link>
+
+               <h1>{currentCity?.name}</h1>
+            </div>
 
             {categories && (
                <div className={styles.categories}>

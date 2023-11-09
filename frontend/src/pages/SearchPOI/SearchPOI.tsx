@@ -65,7 +65,7 @@ const SearchPOI = () => {
                </Link>
             </div>
             <div className={styles.separatingBorder}></div>
-            <section className={styles.filterSearchComponent}>
+            <section className={styles.filterSearchComponent} id="cities">
                <Caroussel
                   title="Villes"
                   data={citiesToBeShown}

@@ -2,7 +2,6 @@ import { CardType, Poi } from '../../utils/types';
 import ModalePOI from '../modalePOI/modalePOI';
 import Card from '../common/card/Card';
 import styles from './poiView.module.scss';
-import ModalePoiTest from '../modalePOI/modalePoiTest';
 
 interface Props {
    poi: Poi;

@@ -3,8 +3,6 @@
 
 .container {
     background-color: #fff;
-    display: flex;
-    gap: 20px;
     border-radius: 20px;
     z-index: 100;
     position: absolute;
@@ -12,7 +10,7 @@
     padding: 36px 18px;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 15px;
 
     .close {
         color: $primary_color;
@@ -25,13 +23,6 @@
         }
     }
 
-    .leftContainer {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        width: 50%;
-        position: relative;
-    }
     .imageContainer {
         max-width: 348px;
         height: 230px;
@@ -93,36 +84,6 @@
         }
     }
 
-    .rightContainer {
-        background-color: $cream_color;
-        position: relative;
-        border-radius: 20px;
-        padding: 20px;
-        color: $primary_color;
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-        overflow-y: auto;
-        scrollbar-color: $cream_color #d9d9d9;
-        scrollbar-width: thin;
-        &::-webkit-scrollbar-track {
-            border-radius: 0 20px 20px 0;
-            background-color: #d9d9d9;
-        }
-        &::-webkit-scrollbar-thumb {
-            border-radius: 20px;
-            height: 70px;
-            background-color: $cream_color;
-        }
-        &::-webkit-scrollbar {
-            width: 14px;
-        }
-        &::-webkit-scrollbar-button {
-            width: 0;
-            height: 0;
-        }
-    }
-
     .details {
         background-color: $cream_color;
         position: relative;
@@ -156,7 +117,7 @@
 
     .center {
         @include flexLayout(center, center, column);
-        gap: 58px;
+        gap: 20px;
         font-size: 20px;
         p {
             text-align: center;
