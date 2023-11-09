@@ -29,23 +29,19 @@ const ContactPage = () => {
       });
 
       if (response.ok) {
-        const result = await response.json();
-        console.log("Données enregistrées avec succès:", result);
+        await response.json();
+
         setSubmitSuccess(true);
 
         setTitle("");
         setEmail("");
         setMessage("");
       } else {
-        const errorResult = await response.text();
-        console.error("Erreur lors de l'envoi du message:", errorResult);
+        await response.text();
       }
     } catch (error) {
       if (response) {
-        const errorResult = await response.text();
-        console.error("Erreur lors de l'envoi du message:", errorResult);
-      } else {
-        console.error("Erreur lors de l'envoi du message:", error);
+        await response.text();
       }
     }
   };
