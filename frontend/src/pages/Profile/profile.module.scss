@@ -9,6 +9,7 @@
   font-family: "Poppins", sans-serif;
   @include m.flexLayout(flex-start, center);
   flex-wrap: wrap;
+  padding-bottom: 3rem;
   form {
     @include m.flexLayout(flex-start, flex-start, row);
     flex-grow: 3;
@@ -120,4 +121,16 @@
 
 .favoritesSection {
   background-color: v.$cream_color;
+  padding: 3rem 0;
+  h3 {
+    text-align: center;
+    border-bottom: 1px solid v.$primary_color;
+  }
+  & > div {
+    padding-left: 3rem;
+    > p {
+      color: v.$primary_color;
+      padding: 1rem 0;
+    }
+  }
 }

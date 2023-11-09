@@ -3,11 +3,12 @@ import { UsersContext } from "../../contexts/UserContext";
 import style from "./profile.module.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen, faCheck } from "@fortawesome/free-solid-svg-icons";
-import { User } from "../../utils/types";
+import { User, CardType } from "../../utils/types";
 import InputFormProfile from "./InputFormProfile";
 import Modal from "../../components/common/modals/Modal";
 import ImageModal from "../../components/common/modals/ImageModal";
 import PasswordModal from "../../components/common/modals/PasswordModal";
+import Caroussel from "../../components/common/Caroussel/Caroussel";
 
 export interface IDisableInputs {
   city: boolean;
@@ -31,6 +32,7 @@ export interface IError {
 const Profile = () => {
   // get profile
   const { profile } = useContext(UsersContext);
+  console.log(profile);
   const [displayEditImg, setDisplayEditImg] = useState<boolean>(false);
   const [displayModals, setDisplayModals] = useState<IDisplayModals>({
     validation: false,
@@ -244,15 +246,33 @@ const Profile = () => {
         </div>
       </section>
       <section className={style.favoritesSection}>
-        <h2>Mes favoris</h2>
+        <h3 className="titleResearchDark">Mes favoris</h3>
         <div>
-          <h3>Points d'intérêts favoris</h3>
+          <h4 className="profilNameDark">Points d'intérêts favoris</h4>
+          {profile?.favouritePoi.length ? (
+            <Caroussel
+              title=""
+              data={profile?.favouritePoi}
+              cardType={CardType.POI}
+            />
+          ) : (
+            <p>Pas de favori pour l'instant !</p>
+          )}
         </div>
         <div>
-          <h3>Villes favorites</h3>
+          <h4 className="profilNameDark">Villes favorites</h4>
+          {profile?.favouriteCities.length ? (
+            <Caroussel
+              title=""
+              data={profile?.favouriteCities}
+              cardType={CardType.POI}
+            />
+          ) : (
+            <p>Pas de favori pour l'instant !</p>
+          )}
         </div>
       </section>
-      {/* <img src="/fond_vague_creme.svg" alt="wave" /> */}
+      <img src="/fond_vague_creme.svg" alt="wave" width="100%" />
     </div>
   );
 };

@@ -61,6 +61,10 @@
   @include m.textStyle(v.$cream_color, v.$comicNeueFont, 48px, 700);
 }
 
+// .titleResearchDark {
+//   @include m.textStyle(v.$primary_color, v.$comicNeueFont, 48px, 700);
+// }
+
 .presentationText {
   @include m.textStyle(v.$cream_color, v.$comicNeueFont, 32px, 700);
 }
