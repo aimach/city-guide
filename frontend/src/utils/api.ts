@@ -125,6 +125,28 @@ export const removeFavouritePoiToUser = async (
   }
 };
 
+// UPDATE USER
+
+export const updateUserExceptPassword = async (
+  id: string,
+  body: any
+): Promise<void> => {
+  try {
+    const response = await fetch(`http://localhost:5000/api/profile/${id}`, {
+      method: "PUT",
+      credentials: "include",
+      headers: {
+        Accept: "application/json",
+      },
+      body: body,
+    });
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.log("delete error", error);
+  }
+};
+
 // DELETE USER
 
 export const deleteUser = async (id: string): Promise<void> => {

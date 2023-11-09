@@ -78,7 +78,6 @@ export const ProfileController: IController = {
   getAuthenticatedUserProfile: async (req: Request, res: Response) => {
     try {
       const token = req.cookies.jwt;
-      console.log({ token });
       const decodedToken = jwt.verify(
         token,
         process.env.TOKEN as string
@@ -116,10 +115,9 @@ export const ProfileController: IController = {
   updateProfile: async (req: Request, res: Response): Promise<void> => {
     try {
       const { id, userId } = req.params;
-      const { username, email, bio, city, password, role } = req.body as User;
+      const { username, email, bio, city, role } = req.body as User;
 
       // check if input with string are alpha and not empty
-
       const checkIfStringAndNotEmpty = async (value: string): Promise<void> => {
         if (
           validator.isEmpty(value, { ignore_whitespace: true }) ||
@@ -134,7 +132,7 @@ export const ProfileController: IController = {
         }
       };
 
-      const inputString: string[] = [username, email, bio, city, password];
+      const inputString: string[] = [username, email, bio, city];
       inputString.forEach(async (value) => {
         if (value !== null) await checkIfStringAndNotEmpty(value);
       });
@@ -156,7 +154,6 @@ export const ProfileController: IController = {
         res.status(404).send({ error: "User not found" });
         if (req.file !== undefined)
           await unlink(`./public/user/${req.file?.filename}`);
-
         return;
       }
 
@@ -166,13 +163,7 @@ export const ProfileController: IController = {
         .findOne({ where: { id: userId } });
 
       if (role !== null && currentUser?.role !== UserRole.ADMIN) {
-        res.status(403).send({
-          error: "You are not authorized to update this property",
-        });
-        if (req.file !== undefined)
-          await unlink(`./public/user/${req.file?.filename}`);
-
-        return;
+        req.body.role = currentUser?.role;
       }
 
       // Check if connected user has the same id than profile to update or if he is admin
@@ -185,7 +176,6 @@ export const ProfileController: IController = {
         });
         if (req.file !== undefined)
           await unlink(`./public/user/${req.file?.filename}`);
-
         return;
       }
 
@@ -193,12 +183,15 @@ export const ProfileController: IController = {
       if (username !== null) {
         const usernameAlreadyExist = await dataSource
           .getRepository(User)
-          .count({ where: { username } });
-        if (usernameAlreadyExist > 0) {
-          res.status(409).send({ error: "Username already exists" });
-          if (req.file !== undefined)
-            await unlink(`./public/user/${req.file?.filename}`);
+          .findOne({ where: { username } });
+        if (usernameAlreadyExist !== null) {
+          if (usernameAlreadyExist.username !== currentUser.username) {
+            res.status(409).send({ error: "Username already exists" });
+            if (req.file !== undefined)
+              await unlink(`./public/user/${req.file?.filename}`);
+          }
         }
+
         if (
           !validator.matches(
             username,
@@ -217,11 +210,13 @@ export const ProfileController: IController = {
       if (email !== null) {
         const emailAlreadyExist = await dataSource
           .getRepository(User)
-          .count({ where: { email } });
-        if (emailAlreadyExist > 0) {
-          res.status(409).send({ error: "Email already exists" });
-          if (req.file !== undefined)
-            await unlink(`./public/user/${req.file?.filename}`);
+          .findOne({ where: { email } });
+        if (emailAlreadyExist !== null) {
+          if (emailAlreadyExist.email !== currentUser.email) {
+            res.status(409).send({ error: "Email already exists" });
+            if (req.file !== undefined)
+              await unlink(`./public/user/${req.file?.filename}`);
+          }
         }
         if (!validator.isEmail(email)) {
           res.status(401).send({ error: "Incorrect email format" });
@@ -243,20 +238,26 @@ export const ProfileController: IController = {
             if (err !== null) throw err;
           }
         );
-        req.body.image = `/public/user/${newName}`;
+        req.body.image = `./public/user/${newName}`;
 
         // delete
-        if (profileToUpdate.image !== null) {
-          await unlink("." + profileToUpdate.image);
+        if (profileToUpdate.image !== "") {
+          await unlink(profileToUpdate.image);
         }
       }
 
       await dataSource.getRepository(User).update(id, req.body);
       res.status(200).send("Updated user");
     } catch (err) {
-      res.status(400).send({ error: "Error while updating user" });
       if (req.file !== undefined)
-        await unlink(`./public/user/${req.file?.filename}`);
+        try {
+          await unlink(req.body.image);
+        } catch (error) {
+          res.status(400).send({ error: "Cannot delete avatar" });
+          return;
+        }
+      console.log(err);
+      res.status(400).send({ error: "Error while updating user" });
     }
   },
 

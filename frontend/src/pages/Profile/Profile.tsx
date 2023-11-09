@@ -6,6 +6,7 @@ import { faPen, faCheck } from "@fortawesome/free-solid-svg-icons";
 import { User } from "../../utils/types";
 import InputFormProfile from "./InputFormProfile";
 import Modal from "../../components/common/modals/Modal";
+import ImageModal from "../../components/common/modals/ImageModal";
 
 export interface IDisableInputs {
   city: boolean;
@@ -39,6 +40,8 @@ const Profile = () => {
     bio: true,
   });
 
+  // console.log(userInfo);
+
   useEffect(() => {
     if (profile !== null) setUserInfo(profile);
   }, [profile]);
@@ -53,10 +56,10 @@ const Profile = () => {
         />
       ) : null}
       {displayModals.image ? (
-        <Modal
+        <ImageModal
           setDisplayModals={setDisplayModals}
           displayModals={displayModals}
-          type="image"
+          userInfo={userInfo}
         />
       ) : null}
       {displayModals.deleteUser ? (
@@ -72,7 +75,7 @@ const Profile = () => {
             {profile?.image !== null ? (
               <>
                 <img
-                  src={profile?.image}
+                  src={`http://localhost:5000${profile?.image.substr(1)}`}
                   alt="avatar"
                   className={displayEditImg ? style.imageOpacity : undefined}
                   onMouseOver={() => setDisplayEditImg(true)}
@@ -165,7 +168,11 @@ const Profile = () => {
               <textarea
                 name="bio"
                 id="bio"
-                value={profile?.bio || ""}
+                value={userInfo?.bio || ""}
+                onChange={(event) => {
+                  if (userInfo !== undefined && userInfo !== null)
+                    setUserInfo({ ...userInfo, bio: event.target.value });
+                }}
                 disabled={disableInputs.bio}
               />
               {disableInputs.bio ? (

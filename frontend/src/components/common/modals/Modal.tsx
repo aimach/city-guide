@@ -1,7 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { IDisplayModals } from "../../../pages/Profile/Profile";
 import DeleteUserModalContent from "./DeleteUserModalContent";
-import ImageModalContent from "./ImageModalContent";
 import style from "./Modal.module.scss";
 import ValidationModalContent from "./ValidationModalContent";
 import { deleteUser } from "../../../utils/api";
@@ -15,9 +14,10 @@ interface Props {
 
 const Modal = ({ setDisplayModals, displayModals, type }: Props) => {
   let modalContent;
-  if (type === "image") modalContent = <ImageModalContent />;
+
   if (type === "validation") modalContent = <ValidationModalContent />;
   if (type === "deleteUser") modalContent = <DeleteUserModalContent />;
+
   const navigate = useNavigate();
   const { profile } = useContext(UsersContext);
 
