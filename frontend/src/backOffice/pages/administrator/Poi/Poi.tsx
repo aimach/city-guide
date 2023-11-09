@@ -1,5 +1,5 @@
 import { faLocationDot } from "@fortawesome/free-solid-svg-icons";
-import Title from "../../../components/common/Title";
+import Title from "../../../components/common/Title/Title";
 import BackOfficeLayout from "../../../components/layout/BackOfficeLayout";
 import styles from "./Poi.module.scss";
 

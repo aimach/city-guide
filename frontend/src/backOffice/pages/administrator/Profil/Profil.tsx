@@ -1,7 +1,7 @@
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import BackOfficeLayout from "../../../components/layout/BackOfficeLayout";
 import styles from "./Profil.module.scss";
-import Title from "../../../components/common/Title";
+import Title from "../../../components/common/Title/Title";
 
 const Profil = () => {
 	return (

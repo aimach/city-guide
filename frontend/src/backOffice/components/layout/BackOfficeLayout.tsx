@@ -1,5 +1,5 @@
 import { useEffect, type PropsWithChildren, useState, useContext } from "react";
-import AsideMenu from "../common/AsideMenu";
+import AsideMenu from "../common/AsideMenu/AsideMenu";
 import Header from "../../../components/common/header/Header";
 import styles from "./BackOfficeLayout.module.scss";
 import { UsersContext } from "../../../contexts/UserContext";

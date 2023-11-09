@@ -1,7 +1,7 @@
 import styles from "./BackOfficeHomePage.module.scss";
 import { faHouse } from "@fortawesome/free-solid-svg-icons";
 import BackOfficeLayout from "../../components/layout/BackOfficeLayout";
-import Title from "../../components/common/Title";
+import Title from "../../components/common/Title/Title";
 
 const HomePage = () => {
 	return (

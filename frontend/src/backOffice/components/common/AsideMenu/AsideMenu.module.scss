@@ -1,5 +1,6 @@
-@use "../../../style/variable" as v;
-@use "../../../style/mixin" as m;
+@use "../../../../style/variable" as v;
+@use "../../../../style/mixin" as m;
+
 ol {
 	list-style-type: unset;
 }
