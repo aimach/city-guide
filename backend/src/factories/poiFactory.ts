@@ -18,11 +18,6 @@ export const PoiFactory = setSeederFactory(Poi, (faker: Faker) => {
    poi.description = faker.lorem.sentence();
    poi.image = faker.image.urlPicsumPhotos();
    poi.isAccepted = faker.datatype.boolean();
-   //   console.log(poi);
-
-   //   poi.created_at = faker.date.
-   //   poi.category
-   //   poi.city = faker.location.city();
 
    return poi;
 });

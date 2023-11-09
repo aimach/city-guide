@@ -22,8 +22,6 @@ const ModalePOI = ({ poi, onClose, handleFavourite, isLiked }: Props) => {
 
    const { isAuthenticated } = useContext(UsersContext);
 
-   console.log(coordinates.coordinates);
-
    return (
       <div className={styles.container}>
          <div className={styles.close} onClick={onClose}>
