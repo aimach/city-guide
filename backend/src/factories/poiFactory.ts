@@ -9,20 +9,24 @@ export const PoiFactory = setSeederFactory(Poi, (faker: Faker) => {
     max: 6,
   });
   poi.address = faker.location.streetAddress();
-  //
+  const latitude = faker.number.float({
+    min: 41.333,
+    max: 51.124,
+    precision: 0.000001,
+  });
+  const longitude = faker.number.float({
+    min: -5.142,
+    max: 9.561,
+    precision: 0.000001,
+  });
 
   poi.coordinates = {
     type: "Point",
-    coordinates: [faker.location.latitude(), faker.location.longitude()],
+    coordinates: [latitude, longitude],
   };
   poi.description = faker.lorem.sentence();
   poi.image = faker.image.urlPicsumPhotos();
   poi.is_accepted = faker.datatype.boolean();
-  //   console.log(poi);
-
-  //   poi.created_at = faker.date.
-  //   poi.category
-  //   poi.city = faker.location.city();
 
   return poi;
 });

@@ -1,6 +1,6 @@
 import { Faker } from "@faker-js/faker";
 import { setSeederFactory } from "typeorm-extension";
-import { User } from "../entities/User";
+import { User, UserRole } from "../entities/User";
 
 export const UsersFactory = setSeederFactory(User, (faker: Faker) => {
   const user = new User();
@@ -9,6 +9,7 @@ export const UsersFactory = setSeederFactory(User, (faker: Faker) => {
   user.password = faker.internet.password();
   user.image = faker.internet.avatar();
   user.city = faker.location.city();
+  user.role = faker.helpers.arrayElement(Object.values(UserRole));
 
   return user;
 });

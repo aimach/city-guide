@@ -10,27 +10,10 @@ import { Poi } from "./entities/Poi";
 import { PoiFactory } from "./factories/poiFactory";
 import { CityFactory } from "./factories/cityFactory";
 import { CategoryFactory } from "./factories/categoryFactory";
+import { seedDataSource } from "./seedDataSource";
 
-const options: DataSourceOptions & SeederOptions = {
-  type: "postgres",
-  host: "localhost",
-  port: 5432,
-  username: "postgres",
-  password: "example",
-  database: "postgres",
-
-  synchronize: true,
-
-  entities: [User, Category, City, Poi],
-  // additional config options brought by typeorm-extension
-  factories: [UsersFactory, PoiFactory, CityFactory, CategoryFactory],
-  seeds: [MainSeeder],
-};
-
-const dataSource = new DataSource(options);
-
-dataSource.initialize().then(async () => {
-  await dataSource.synchronize(true);
-  await runSeeders(dataSource);
+seedDataSource.initialize().then(async () => {
+  await seedDataSource.synchronize(true);
+  await runSeeders(seedDataSource);
   process.exit();
 });

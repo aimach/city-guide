@@ -1,61 +1,61 @@
 import {
-   Entity,
-   Column,
-   OneToMany,
-   ManyToMany,
-   JoinTable,
-   PrimaryGeneratedColumn,
-} from 'typeorm';
-import { Poi } from './Poi';
-import { City } from './City';
+  Entity,
+  Column,
+  OneToMany,
+  ManyToMany,
+  JoinTable,
+  PrimaryGeneratedColumn,
+} from "typeorm";
+import { Poi } from "./Poi";
+import { City } from "./City";
 
 export enum UserRole {
-   ADMIN = 'admin',
-   ADMIN_CITY = 'admin_city',
-   FREE_USER = 'free_user',
-   PREMIUM_USER = 'premium_user',
+  ADMIN = "admin",
+  ADMIN_CITY = "admin_city",
+  FREE_USER = "free_user",
+  PREMIUM_USER = "premium_user",
 }
 
 @Entity()
 export class User {
-   @PrimaryGeneratedColumn('uuid')
-   id: string;
+  @PrimaryGeneratedColumn("uuid")
+  id: string;
 
-   @Column({ type: 'varchar', length: 100, unique: true })
-   username: string;
+  @Column({ type: "varchar", length: 100, unique: true })
+  username: string;
 
-   @Column({ type: 'varchar', length: 100, unique: true })
-   email: string;
+  @Column({ type: "varchar", length: 100, unique: true })
+  email: string;
 
-   @Column({ type: 'varchar', length: 100 })
-   password: string;
+  @Column({ type: "varchar", length: 100 })
+  password: string;
 
-   @Column({ nullable: true })
-   image: string;
+  @Column({ nullable: true })
+  image: string;
 
-   @Column({ type: 'enum', enum: UserRole, default: UserRole.FREE_USER })
-   role: UserRole;
+  @Column({ type: "enum", enum: UserRole })
+  role: UserRole;
 
-   @Column({ nullable: true, type: 'varchar', length: 100 })
-   city: string;
+  @Column({ nullable: true, type: "varchar", length: 100 })
+  city: string;
 
-   // ajout de la référence du user dans un poi
-   @OneToMany(() => Poi, (poi) => poi.user)
-   createdPoi: Poi[];
+  // ajout de la référence du user dans un poi
+  @OneToMany(() => Poi, (poi) => poi.user)
+  createdPoi: Poi[];
 
-   @ManyToMany(() => Poi, (poi) => poi.users_favorite, {
-      cascade: true,
-      eager: true,
-      onDelete: 'CASCADE',
-   })
-   @JoinTable()
-   favouritePoi: Poi[];
+  @ManyToMany(() => Poi, (poi) => poi.users_favorite, {
+    cascade: true,
+    eager: true,
+    onDelete: "CASCADE",
+  })
+  @JoinTable()
+  favouritePoi: Poi[];
 
-   @ManyToMany(() => City, (city) => city.users, {
-      cascade: true,
-      eager: true,
-      onDelete: 'CASCADE',
-   })
-   @JoinTable()
-   favouriteCities: City[];
+  @ManyToMany(() => City, (city) => city.users, {
+    cascade: true,
+    eager: true,
+    onDelete: "CASCADE",
+  })
+  @JoinTable()
+  favouriteCities: City[];
 }
