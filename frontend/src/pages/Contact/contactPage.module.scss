@@ -79,3 +79,43 @@
   font-family: v.$poppinsFont;
   padding: 20px;
 }
+
+@media (max-width: 768px) {
+  .contactHeader {
+    h1 {
+      font-size: 24px;
+      margin-top: 25px;
+    }
+
+    p {
+      margin-bottom: 1rem;
+    }
+  }
+
+  .contactForm {
+    .formGroup {
+      margin-bottom: 0.5rem;
+      margin-top: 15px;
+
+      input,
+      textarea {
+        width: calc(100% - 2rem);
+        padding: 12px 8px;
+      }
+    }
+
+    .submitButton {
+      padding: 8px;
+      border-radius: 0.5rem;
+      margin-top: 15px;
+
+      .iconPlane {
+        padding-left: 15px;
+      }
+    }
+  }
+
+  .submitMessage {
+    padding: 10px;
+  }
+}
