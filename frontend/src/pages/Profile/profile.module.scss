@@ -98,7 +98,7 @@
   &:last-child {
     height: 100%;
   }
-  div {
+  & > div {
     @include m.flexLayout(flex-start, flex-start, column);
     gap: 1rem;
     margin-bottom: 1rem;
@@ -106,7 +106,7 @@
     .icon {
       position: absolute;
       color: v.$primary_color;
-      top: 61%;
+      top: 60px;
       right: 16%;
       cursor: pointer;
     }
@@ -117,6 +117,12 @@
       height: 70%;
     }
   }
+}
+
+.error {
+  color: red;
+  font-size: 0.8rem;
+  margin: 0;
 }
 
 .favoritesSection {

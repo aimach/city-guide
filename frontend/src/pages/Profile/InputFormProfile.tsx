@@ -5,6 +5,8 @@ import { User } from "../../utils/types";
 import { IDisableInputs, IDisplayModals, IError } from "./Profile";
 import { updateUserExceptPassword } from "../../utils/api";
 import { useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { UsersContext } from "../../contexts/UserContext";
 
 interface Props {
   disableInputs: IDisableInputs;
@@ -38,6 +40,7 @@ const InputFormProfile = ({
   if (typeof userInfo?.[name as keyof User] === "string") {
     value = userInfo?.[name as keyof User]?.toString();
   }
+  const { profile } = useContext(UsersContext);
 
   return (
     userInfo && (
@@ -76,20 +79,33 @@ const InputFormProfile = ({
                   userInfo,
                   "json"
                 );
-                if (update !== undefined && update.error)
+                if (update !== undefined && update.error) {
                   setErrors({
                     ...errors,
-                    [name]: {
+                    [update.key]: {
                       status: true,
                       message: update.error,
                     },
                   });
+                  if (profile) setUserInfo(profile);
+                  setDisableInputs({ ...disableInputs, [name]: true });
+                  setDisplayModals({ ...displayModals, error: true });
+                } else {
+                  if (errors[name].status)
+                    setErrors({
+                      ...errors,
+                      [name]: { message: "", status: false },
+                    });
+                  setDisableInputs({ ...disableInputs, [name]: true });
+                  setDisplayModals({ ...displayModals, validation: true });
+                }
               }
-              setDisableInputs({ ...disableInputs, [name]: true });
-              setDisplayModals({ ...displayModals, validation: true });
             }}
           />
         )}
+        <div className={style.error}>
+          {errors[name].status ? <p>{errors[name].message}</p> : null}
+        </div>
       </div>
     )
   );

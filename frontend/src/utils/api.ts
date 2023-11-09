@@ -1,5 +1,6 @@
 import { idText } from "typescript";
 import { City } from "./types";
+import Joi from "joi";
 
 const callRestApi = async (
   method: string,
@@ -131,24 +132,62 @@ export const updateUserExceptPassword = async (
   id: string,
   body: any,
   type: string
-): Promise<{ error?: string } | undefined> => {
+): Promise<any> => {
+  // SET HEADERS
   const headers = new Headers();
   if (type === "json") {
     headers.append("Content-Type", "application/json");
   } else {
     headers.append("Accept", "application/json");
   }
-  try {
-    const response = await fetch(`http://localhost:5000/api/profile/${id}`, {
-      method: "PUT",
-      credentials: "include",
-      headers,
-      body: type === "json" ? JSON.stringify(body) : body,
-    });
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.log("Error while updating user", error);
+  // VALIDATE DATA WITH JOI
+  const schema = Joi.object({
+    city: Joi.string().min(2),
+    email: Joi.string().email({ tlds: { allow: false } }),
+    password: Joi.string().min(8),
+    username: Joi.string()
+      .pattern(/^(?=.*[a-zA-Z]{1,})(?=.*[\d]{0,})[a-zA-Z0-9]{3,20}$/)
+      .min(3)
+      .max(20),
+    bio: Joi.string().min(5),
+    id: Joi.string(),
+    image: Joi.string(),
+    role: Joi.string(),
+    createdPoi: Joi.array(),
+    favouriteCities: Joi.array(),
+    favouritePoi: Joi.array(),
+  });
+  const checkFormDatas = schema.validate(body);
+  if (checkFormDatas.error) {
+    let errorMsg: string = "";
+    if (checkFormDatas.error.details[0].type === "string.empty") {
+      errorMsg = "Le champs ne peut être vide";
+    }
+    if (checkFormDatas.error.details[0].type === "string.email") {
+      errorMsg = "L'email doit être valide";
+    }
+    if (checkFormDatas.error.details[0].type === "string.pattern.base") {
+      if (checkFormDatas.error.details[0].path[0] === "username")
+        errorMsg =
+          "Le pseudo doit faire entre 3 et 20 caractères, sans caractère spéciaux.";
+    }
+    return {
+      key: checkFormDatas.error.details[0].context?.key,
+      error: errorMsg,
+    };
+  } else {
+    try {
+      const response = await fetch(`http://localhost:5000/api/profile/${id}`, {
+        method: "PUT",
+        credentials: "include",
+        headers,
+        body: type === "json" ? JSON.stringify(body) : body,
+      });
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.log("Error while updating user", error);
+    }
   }
 };
 
