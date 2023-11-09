@@ -2,7 +2,7 @@ import style from "./profile.module.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen, faCheck } from "@fortawesome/free-solid-svg-icons";
 import { User } from "../../utils/types";
-import { IDisableInputs, IDisplayModals } from "./Profile";
+import { IDisableInputs, IDisplayModals, IError } from "./Profile";
 import { updateUserExceptPassword } from "../../utils/api";
 import { useNavigate } from "react-router-dom";
 
@@ -16,6 +16,8 @@ interface Props {
   title: string;
   setDisplayModals: (arg0: IDisplayModals) => void;
   displayModals: IDisplayModals;
+  errors: { [key: string]: IError };
+  setErrors: (arg0: { [key: string]: IError }) => void;
 }
 
 const InputFormProfile = ({
@@ -28,12 +30,15 @@ const InputFormProfile = ({
   title,
   setDisplayModals,
   displayModals,
+  errors,
+  setErrors,
 }: Props) => {
   // resolve conflict between keyof User types and value attribute types
   let value: string | number | undefined | string[];
   if (typeof userInfo?.[name as keyof User] === "string") {
     value = userInfo?.[name as keyof User]?.toString();
   }
+
   return (
     userInfo && (
       <div>
@@ -64,9 +69,22 @@ const InputFormProfile = ({
           <FontAwesomeIcon
             icon={faCheck}
             className={style.icon}
-            onClick={() => {
-              if (userInfo !== null && userInfo.id !== null)
-                updateUserExceptPassword(userInfo.id, userInfo, "json");
+            onClick={async () => {
+              if (userInfo !== null && userInfo.id !== null) {
+                const update = await updateUserExceptPassword(
+                  userInfo.id,
+                  userInfo,
+                  "json"
+                );
+                if (update !== undefined && update.error)
+                  setErrors({
+                    ...errors,
+                    [name]: {
+                      status: true,
+                      message: update.error,
+                    },
+                  });
+              }
               setDisableInputs({ ...disableInputs, [name]: true });
               setDisplayModals({ ...displayModals, validation: true });
             }}

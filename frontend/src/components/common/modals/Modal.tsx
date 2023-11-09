@@ -49,7 +49,7 @@ const Modal = ({ setDisplayModals, displayModals, type }: Props) => {
             type="button"
             onClick={() => {
               setDisplayModals({ ...displayModals, [type]: false });
-              navigate(0);
+              // navigate(0);
             }}
           >
             Fermer

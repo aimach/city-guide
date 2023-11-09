@@ -131,7 +131,7 @@ export const updateUserExceptPassword = async (
   id: string,
   body: any,
   type: string
-): Promise<void> => {
+): Promise<{ error?: string } | undefined> => {
   const headers = new Headers();
   if (type === "json") {
     headers.append("Content-Type", "application/json");
@@ -148,7 +148,7 @@ export const updateUserExceptPassword = async (
     const data = await response.json();
     return data;
   } catch (error) {
-    console.log("delete error", error);
+    console.log("Error while updating user", error);
   }
 };
 

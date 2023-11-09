@@ -23,6 +23,10 @@ export interface IDisplayModals {
   deleteUser: boolean;
   password: boolean;
 }
+export interface IError {
+  message: string;
+  status: boolean;
+}
 
 const Profile = () => {
   // get profile
@@ -42,6 +46,14 @@ const Profile = () => {
     username: true,
     bio: true,
   });
+  const [errors, setErrors] = useState<{ [key: string]: IError }>({
+    city: { message: "", status: false },
+    email: { message: "", status: false },
+    username: { message: "", status: false },
+    bio: { message: "", status: false },
+  });
+
+  console.log(errors);
 
   const imageURL: string | undefined = profile?.image
     ? profile?.image?.slice(1)
@@ -138,6 +150,8 @@ const Profile = () => {
               title="ville"
               setDisplayModals={setDisplayModals}
               displayModals={displayModals}
+              errors={errors}
+              setErrors={setErrors}
             />
             <InputFormProfile
               disableInputs={disableInputs}
@@ -149,6 +163,8 @@ const Profile = () => {
               title="adresse email"
               setDisplayModals={setDisplayModals}
               displayModals={displayModals}
+              errors={errors}
+              setErrors={setErrors}
             />
             <div>
               <label htmlFor="password">MOT DE PASSE</label>
@@ -179,6 +195,8 @@ const Profile = () => {
               title="pseudo"
               setDisplayModals={setDisplayModals}
               displayModals={displayModals}
+              errors={errors}
+              setErrors={setErrors}
             />
             <div>
               <label htmlFor="bio">BIOGRAPHIE</label>
