@@ -40,15 +40,6 @@ const PoiView = ({
                isLiked={isLiked}
             />
          )}
-         {/* {
-            <ModalePoiTest
-               poi={poi}
-               onClose={onClose}
-               isLiked={isLiked}
-               handleFavourite={handleFavourite}
-               modaleOpen={modaleOpen === poi.id}
-            />
-         } */}
       </div>
    );
 };
