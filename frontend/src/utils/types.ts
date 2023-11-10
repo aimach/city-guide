@@ -1,4 +1,4 @@
-type Coordinates = [number, number];
+type Coordinates = { type: string; coordinates: [number, number] };
 
 export enum Role {
   FREE_USER = "free_user",
@@ -20,6 +20,7 @@ export type Poi = {
   description: string;
   address: string;
   image: string;
+  phoneNumber?: string | null;
   isAccepted?: boolean;
   category: Category;
   city: City;
