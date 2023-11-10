@@ -14,6 +14,7 @@ import * as React from "react";
 import Contribution from "./pages/Contribution/Contribution";
 import Layout from "./components/layout/Layout";
 import Profile from "./pages/Profile/Profile";
+import PoiListView from "./pages/PoiListView/PoiListView";
 
 // import About from "./pages/About/About";
 
@@ -30,17 +31,18 @@ const Root = () => {
 function App() {
   const router = createBrowserRouter(
     createRoutesFromElements(
-      <>
-        <Route path="/" element={<Root />}>
-          <Route index element={<HomePage />} />
-          <Route path="/contribution" element={<Contribution />} />
-          <Route path="/profile" element={<Profile />} />
-        </Route>
+      <Route path="/" element={<Root />}>
+        <Route index element={<HomePage />} />
         <Route path="/auth">
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
         </Route>
-      </>
+        <Route path="/contribution" element={<Contribution />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="poi">
+          <Route path=":cityId" index element={<PoiListView />} />
+        </Route>
+      </Route>
     )
   );
 

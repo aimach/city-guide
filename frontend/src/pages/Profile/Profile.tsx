@@ -283,7 +283,7 @@ const Profile = () => {
             <Caroussel
               title=""
               data={profile?.favouriteCities}
-              cardType={CardType.POI}
+              cardType={CardType.CITY}
             />
           ) : (
             <p>Pas de favori pour l'instant !</p>

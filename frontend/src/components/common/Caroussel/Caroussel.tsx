@@ -128,7 +128,7 @@ const Caroussel = ({
   const selectActionOnCardClick = (id: string, name: string) => {
     switch (cardType) {
       case CardType.CITY:
-        navigate(`poi/${id}`);
+        navigate(`/poi/${id}`);
         break;
       case CardType.CATEGORY:
         if (currentCity != null) {
