@@ -10,17 +10,8 @@ import { Link } from "react-router-dom";
 import { useContext, useState } from "react";
 import { UsersContext } from "../../../contexts/UserContext";
 import { Role } from "../../../utils/types";
-  faMap,
-  faMagnifyingGlass,
-  faUser,
-} from "@fortawesome/free-solid-svg-icons";
-import { Link } from "react-router-dom";
-import { useContext, useState } from "react";
-import { UsersContext } from "../../../contexts/UserContext";
-import { Role } from "../../../utils/types";
 
 type headerProps = {
-  size: string;
   size: string;
 };
 
@@ -34,13 +25,7 @@ const Header = ({ size }: headerProps) => {
   if (profile != null) {
     role = profile.role;
   }
-  let role = Role.VISITOR;
-  if (profile != null) {
-    role = profile.role;
-  }
 
-  // display profile menu
-  const [displayProfileMenu, setDisplayProfileMenu] = useState(false);
   // display profile menu
   const [displayProfileMenu, setDisplayProfileMenu] = useState(false);
 
