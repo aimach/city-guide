@@ -150,11 +150,14 @@ export const updateUserExceptPassword = async (
         "string.email": `L'email doit être valide`,
         "string.empty": `Ce champ ne peut pas être vide`,
       }),
-    password: Joi.string().min(8).messages({
-      // "string.base": `"a" should be a type of 'text'`,
-      "string.empty": `Ce champ ne peut être vide`,
-      "string.min": `Le mot de passe doit contenir au moins 8 caractères`,
-    }),
+    password: Joi.string()
+      .min(8)
+      .pattern(/^(?=.*[A-Z])(?=.*\d)(?=.*\W).{8,}$/)
+      .messages({
+        "string.empty": `Ce champ ne peut être vide`,
+        "string.min": `Le mot de passe doit contenir au moins 8 caractères`,
+        "string.pattern.base": `Le mot de passe doit contenir au moins 8 caractères, 1 chiffre, une majuscule et 1 symbole`,
+      }),
     username: Joi.string()
       .pattern(/^(?=.*[a-zA-Z]{1,})(?=.*[\d]{0,})[a-zA-Z0-9]{3,20}$/)
       .min(3)
@@ -204,20 +207,30 @@ export const updateUserPassword = async (
 ): Promise<any> => {
   // VALIDATE DATA WITH JOI
   const schema = Joi.object({
-    originalPassword: Joi.string().min(8),
-    newPassword: Joi.string().min(8),
+    originalPassword: Joi.string()
+      .min(8)
+      .pattern(/^(?=.*[A-Z])(?=.*\d)(?=.*\W).{8,}$/)
+      .messages({
+        "string.empty": `Ce champ ne peut être vide`,
+        "string.min": `Le mot de passe doit contenir au moins 8 caractères`,
+        "string.pattern.base": `Le mot de passe doit contenir au moins 8 caractères, 1 chiffre, une majuscule et 1 symbole`,
+      }),
+    newPassword: Joi.string()
+      .min(8)
+      .pattern(/^(?=.*[A-Z])(?=.*\d)(?=.*\W).{8,}$/)
+      .messages({
+        "string.empty": `Ce champ ne peut être vide`,
+        "string.min": `Le mot de passe doit contenir au moins 8 caractères`,
+        "string.pattern.base": `Le mot de passe doit contenir au moins 8 caractères, 1 chiffre, une majuscule et 1 symbole`,
+      }),
   });
   const checkFormDatas = schema.validate(body);
+  console.log(checkFormDatas);
   if (checkFormDatas.error) {
-    let errorMsg: string = "";
-    if (checkFormDatas.error.details[0].type === "string.empty") {
-      errorMsg = "Le champs ne peut être vide";
-    }
-    if (checkFormDatas.error.details[0].type === "string.pattern.base") {
-      errorMsg =
-        "Le mot de passe doit contenir au moins 8 caractères, 1 chiffre, une majuscule et 1 symbole";
-    }
-    return { error: errorMsg };
+    return {
+      key: checkFormDatas.error.details[0].context?.key,
+      error: checkFormDatas.error.details[0].message,
+    };
   } else {
     try {
       const response = await fetch(

@@ -11,7 +11,12 @@ interface Props {
 
 const PasswordModal = ({ setDisplayModals, displayModals }: Props) => {
   const { profile } = useContext(UsersContext);
-  const [errorMsg, setErrorMsg] = useState("");
+  const [errorMsg, setErrorMsg] = useState<{
+    [key: string]: { message: string; status: boolean };
+  }>({
+    originalPassword: { message: "", status: false },
+    newPassword: { message: "", status: false },
+  });
   const hSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const form = event.currentTarget;
@@ -23,19 +28,27 @@ const PasswordModal = ({ setDisplayModals, displayModals }: Props) => {
     if (profile !== null && profile !== undefined && profile.id !== null) {
       const update = await updateUserPassword(profile.id, formJson);
       if (update !== undefined && update.error) {
-        setErrorMsg(update.error);
-      }
-      if (!update.error)
+        update.key === "originalPassword"
+          ? setErrorMsg({
+              originalPassword: { message: update.error, status: true },
+              newPassword: { message: "", status: false },
+            })
+          : setErrorMsg({
+              originalPassword: { message: "", status: false },
+              newPassword: { message: update.error, status: true },
+            });
+      } else {
         setDisplayModals({ ...displayModals, password: false });
+      }
     }
   };
+
   return (
     <>
       <div className={style.backgroundScreen}></div>
       <div className={style.modalContainer}>
         <h3>Changer de mot de passe</h3>
         <form onSubmit={hSubmit} className={style.formPassword}>
-          {errorMsg !== "" ? <p className={style.error}>{errorMsg}</p> : null}
           <div className={style.inputContainer}>
             <div>
               <label htmlFor="originalPassword">Mot de passe actuel</label>
@@ -44,10 +57,18 @@ const PasswordModal = ({ setDisplayModals, displayModals }: Props) => {
                 name="originalPassword"
                 id="originalPassword"
               />
+              {errorMsg.originalPassword ? (
+                <p className={style.error}>
+                  {errorMsg.originalPassword.message}
+                </p>
+              ) : null}
             </div>
             <div>
               <label htmlFor="newPassword">Nouveau mot de passe</label>
               <input type="password" name="newPassword" id="newPassword" />
+              {errorMsg.newPassword ? (
+                <p className={style.error}>{errorMsg.newPassword.message}</p>
+              ) : null}
             </div>
           </div>
           <div>
