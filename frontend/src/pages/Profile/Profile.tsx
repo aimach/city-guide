@@ -9,6 +9,7 @@ import Modal from "../../components/common/modals/Modal";
 import ImageModal from "../../components/common/modals/ImageModal";
 import PasswordModal from "../../components/common/modals/PasswordModal";
 import Caroussel from "../../components/common/Caroussel/Caroussel";
+import { handleFormErrors } from "../../utils/handleFormError";
 export interface IDisableInputs {
   city: boolean;
   email: boolean;
@@ -229,12 +230,24 @@ const Profile = () => {
                 <FontAwesomeIcon
                   icon={faCheck}
                   className={style.icon}
-                  onClick={() => {
-                    setDisableInputs({ ...disableInputs, bio: true });
-                    setDisplayModals({ ...displayModals, validation: true });
-                  }}
+                  onClick={() =>
+                    handleFormErrors({
+                      userInfo,
+                      setUserInfo,
+                      disableInputs,
+                      setDisableInputs,
+                      displayModals,
+                      setDisplayModals,
+                      profile,
+                      errors,
+                      setErrors,
+                    })
+                  }
                 />
               )}
+              <div className={style.error}>
+                {errors.bio.status ? <p>{errors.bio.message}</p> : null}
+              </div>
             </div>
           </div>
         </form>

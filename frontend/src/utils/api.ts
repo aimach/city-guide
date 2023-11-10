@@ -1,5 +1,3 @@
-import { idText } from "typescript";
-import { City } from "./types";
 import Joi from "joi";
 
 const callRestApi = async (
@@ -142,38 +140,47 @@ export const updateUserExceptPassword = async (
   }
   // VALIDATE DATA WITH JOI
   const schema = Joi.object({
-    city: Joi.string().min(2),
-    email: Joi.string().email({ tlds: { allow: false } }),
-    password: Joi.string().min(8),
+    city: Joi.string().min(2).messages({
+      "string.empty": `Ce champ ne peut pas être vide`,
+      "string.min": `La ville doit être d'au moins 2 caractères`,
+    }),
+    email: Joi.string()
+      .email({ tlds: { allow: false } })
+      .messages({
+        "string.email": `L'email doit être valide`,
+        "string.empty": `Ce champ ne peut pas être vide`,
+      }),
+    password: Joi.string().min(8).messages({
+      // "string.base": `"a" should be a type of 'text'`,
+      "string.empty": `Ce champ ne peut être vide`,
+      "string.min": `Le mot de passe doit contenir au moins 8 caractères`,
+    }),
     username: Joi.string()
       .pattern(/^(?=.*[a-zA-Z]{1,})(?=.*[\d]{0,})[a-zA-Z0-9]{3,20}$/)
       .min(3)
-      .max(20),
-    bio: Joi.string().min(5),
+      .max(20)
+      .messages({
+        "string.empty": `Ce champ ne peut être vide`,
+        "string.pattern.base": `Le pseudo doit faire entre 3 et 20 caractères et ne peut contenir que des lettres et des chiffres`,
+        "string.min": `Le pseudo doit faire au moins 3 caractères`,
+        "string.max": `Le pseudo doit faire au max 20 caractères`,
+      }),
+    bio: Joi.string().min(5).messages({
+      "string.min": `La biographie doit faire au moins 5 caractères`,
+    }),
     id: Joi.string(),
     image: Joi.string(),
-    role: Joi.string(),
-    createdPoi: Joi.array(),
-    favouriteCities: Joi.array(),
-    favouritePoi: Joi.array(),
+    role: Joi.string().required(),
+    createdPoi: Joi.array().required(),
+    favouriteCities: Joi.array().required(),
+    favouritePoi: Joi.array().required(),
   });
   const checkFormDatas = schema.validate(body);
+  console.log(checkFormDatas);
   if (checkFormDatas.error) {
-    let errorMsg: string = "";
-    if (checkFormDatas.error.details[0].type === "string.empty") {
-      errorMsg = "Le champs ne peut être vide";
-    }
-    if (checkFormDatas.error.details[0].type === "string.email") {
-      errorMsg = "L'email doit être valide";
-    }
-    if (checkFormDatas.error.details[0].type === "string.pattern.base") {
-      if (checkFormDatas.error.details[0].path[0] === "username")
-        errorMsg =
-          "Le pseudo doit faire entre 3 et 20 caractères, sans caractère spéciaux.";
-    }
     return {
       key: checkFormDatas.error.details[0].context?.key,
-      error: errorMsg,
+      error: checkFormDatas.error.details[0].message,
     };
   } else {
     try {
@@ -194,23 +201,41 @@ export const updateUserExceptPassword = async (
 export const updateUserPassword = async (
   id: string,
   body: any
-): Promise<void> => {
-  try {
-    const response = await fetch(
-      `http://localhost:5000/api/auth/newpassword/${id}`,
-      {
-        method: "PUT",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(body),
-      }
-    );
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.log("Error while updating password", error);
+): Promise<any> => {
+  // VALIDATE DATA WITH JOI
+  const schema = Joi.object({
+    originalPassword: Joi.string().min(8),
+    newPassword: Joi.string().min(8),
+  });
+  const checkFormDatas = schema.validate(body);
+  if (checkFormDatas.error) {
+    let errorMsg: string = "";
+    if (checkFormDatas.error.details[0].type === "string.empty") {
+      errorMsg = "Le champs ne peut être vide";
+    }
+    if (checkFormDatas.error.details[0].type === "string.pattern.base") {
+      errorMsg =
+        "Le mot de passe doit contenir au moins 8 caractères, 1 chiffre, une majuscule et 1 symbole";
+    }
+    return { error: errorMsg };
+  } else {
+    try {
+      const response = await fetch(
+        `http://localhost:5000/api/auth/newpassword/${id}`,
+        {
+          method: "PUT",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(body),
+        }
+      );
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.log("Error while updating password", error);
+    }
   }
 };
 

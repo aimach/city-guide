@@ -3,10 +3,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen, faCheck } from "@fortawesome/free-solid-svg-icons";
 import { User } from "../../utils/types";
 import { IDisableInputs, IDisplayModals, IError } from "./Profile";
-import { updateUserExceptPassword } from "../../utils/api";
-import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { UsersContext } from "../../contexts/UserContext";
+import { handleFormErrors } from "../../utils/handleFormError";
 
 interface Props {
   disableInputs: IDisableInputs;
@@ -72,35 +71,19 @@ const InputFormProfile = ({
           <FontAwesomeIcon
             icon={faCheck}
             className={style.icon}
-            onClick={async () => {
-              if (userInfo !== null && userInfo.id !== null) {
-                const update = await updateUserExceptPassword(
-                  userInfo.id,
-                  userInfo,
-                  "json"
-                );
-                if (update !== undefined && update.error) {
-                  setErrors({
-                    ...errors,
-                    [update.key]: {
-                      status: true,
-                      message: update.error,
-                    },
-                  });
-                  if (profile) setUserInfo(profile);
-                  setDisableInputs({ ...disableInputs, [name]: true });
-                  setDisplayModals({ ...displayModals, error: true });
-                } else {
-                  if (errors[name].status)
-                    setErrors({
-                      ...errors,
-                      [name]: { message: "", status: false },
-                    });
-                  setDisableInputs({ ...disableInputs, [name]: true });
-                  setDisplayModals({ ...displayModals, validation: true });
-                }
-              }
-            }}
+            onClick={() =>
+              handleFormErrors({
+                userInfo,
+                setUserInfo,
+                disableInputs,
+                setDisableInputs,
+                displayModals,
+                setDisplayModals,
+                profile,
+                errors,
+                setErrors,
+              })
+            }
           />
         )}
         <div className={style.error}>
