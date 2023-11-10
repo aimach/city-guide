@@ -26,6 +26,10 @@ const Header = ({ size }: headerProps) => {
     role = profile.role;
   }
 
+  const imageURL: string | undefined = profile?.image
+    ? profile?.image?.slice(1)
+    : undefined;
+
   // display profile menu
   const [displayProfileMenu, setDisplayProfileMenu] = useState(false);
 
@@ -90,7 +94,10 @@ const Header = ({ size }: headerProps) => {
                   }}
                 >
                   {profile?.image !== null ? (
-                    <img src={profile?.image} alt="avatar" />
+                    <img
+                      src={`http://localhost:5000${imageURL}`}
+                      alt="avatar"
+                    />
                   ) : (
                     profile?.username.substring(0, 1).toUpperCase()
                   )}
