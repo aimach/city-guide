@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { CardType, Category, City, Poi } from '../../utils/types';
 import Caroussel from '../../components/common/Caroussel/Caroussel';
 import styles from './poiListView.module.scss';
 import { FaArrowLeftLong } from 'react-icons/fa6';
+import { HashLink } from 'react-router-hash-link';
 
 const PoiListView = () => {
    const { cityId } = useParams();
@@ -71,11 +72,11 @@ const PoiListView = () => {
       <section className={styles.container}>
          <div>
             <div className={styles.header}>
-               <Link to="/#cities">
+               <HashLink smooth to="/#cities">
                   <button className={styles.previousButton}>
                      <FaArrowLeftLong className={styles.arrow} /> Retour
                   </button>
-               </Link>
+               </HashLink>
 
                <h1>{currentCity?.name}</h1>
             </div>
