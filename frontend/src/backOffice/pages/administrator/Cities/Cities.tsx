@@ -56,6 +56,37 @@ const Cities = () => {
 		getCities();
 	}, []);
 
+	const [checkedCities, setCheckedCities] = useState<City[]>([]);
+
+	// checkbox selectionne tout
+	const handleSelectOrUnselectAll = () => {
+		setCheckedCities(
+			checkedCities.length === cities.length
+				? // On déselectionne tout
+				  []
+				: // On sélectionne tout
+				  cities
+		);
+	};
+
+	// checxbox par ligne
+	const handleSelectOrUnselectOne = (city: City) => {
+		// On cherche si la ville est déjà dans le tableau des villes sélectionnées
+		const cityFoundInSelectedCities = checkedCities.find(
+			(c) => c.id === city.id
+		);
+
+		// Si elle est déjà dans le tableau, on la retire
+		if (cityFoundInSelectedCities) {
+			setCheckedCities(
+				checkedCities.filter((city) => city.id !== cityFoundInSelectedCities.id)
+			);
+			// Si elle n'est pas dans le tableau, on l'ajoute
+		} else {
+			setCheckedCities([...checkedCities, city]);
+		}
+	};
+
 	return (
 		<BackOfficeLayout>
 			<Title icon={faCity} name={"Villes"}></Title>
@@ -66,7 +97,10 @@ const Cities = () => {
 				<thead>
 					<tr>
 						<th className={styles.startColumn}>
-							<Checkbox></Checkbox>
+							<Checkbox
+								value={checkedCities.length === cities.length}
+								onChange={handleSelectOrUnselectAll}
+							/>
 						</th>
 
 						{columns.map((column) => (
@@ -84,7 +118,12 @@ const Cities = () => {
 				<tbody>
 					{cities.map((city) => (
 						<tr key={city.id}>
-							<td className={styles.startColumn}>...</td>
+							<td className={styles.startColumn}>
+								<Checkbox
+									value={!!checkedCities.find((c) => c.id === city.id)}
+									onChange={() => handleSelectOrUnselectOne(city)}
+								/>
+							</td>
 							<td className={`fieldTableBody`}>{city.name}</td>
 							<td className={`fieldTableBody`}>
 								{city.coordinates[0]}
