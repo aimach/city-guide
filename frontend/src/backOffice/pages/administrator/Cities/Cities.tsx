@@ -1,10 +1,11 @@
 import BackOfficeLayout from "../../../components/layout/BackOfficeLayout";
 import styles from "./Cities.module.scss";
-import { faCity } from "@fortawesome/free-solid-svg-icons";
+import { faCity, faPen, faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import Title from "../../../components/common/Title/Title";
 import { useEffect, useState } from "react";
 import { City } from "../../../../utils/types";
 import Checkbox from "../../../components/common/Checkbox/Checkbox";
+import Button from "../../../components/common/Button/Button";
 
 // 1. Récupérer la liste des villes depuis l'API.
 // 2. Implémenter le Thead
@@ -57,6 +58,7 @@ const Cities = () => {
 	}, []);
 
 	const [checkedCities, setCheckedCities] = useState<City[]>([]);
+	// const [deletedCities, setDeletedCities] = useState<City[]>([]);
 
 	// checkbox selectionne tout
 	const handleSelectOrUnselectAll = () => {
@@ -87,6 +89,11 @@ const Cities = () => {
 		}
 	};
 
+	const handleDeleteOneCity = (cityToDelete: City) => {
+		const updatedCities = cities.filter((city) => city.id !== cityToDelete.id);
+		setCities(updatedCities);
+	};
+
 	return (
 		<BackOfficeLayout>
 			<Title icon={faCity} name={"Villes"}></Title>
@@ -111,8 +118,8 @@ const Cities = () => {
 								{column}
 							</th>
 						))}
-						<th className={styles.titleTable}>...</th>
-						<th className={styles.endColumn}>...</th>
+						<th className={`${styles.titleTable} fieldTableHead`}>Modifier</th>
+						<th className={`${styles.titleTable} fieldTableHead`}>Supprimer</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -133,8 +140,15 @@ const Cities = () => {
 							<td className={`fieldTableBody`}>
 								{city.userAdminCity?.username}
 							</td>
-							<td className={styles.titleTable}>...</td>
-							<td className={styles.endColumn}>...</td>
+							<td className={styles.titleTable}>
+								<Button icon={faPen} />
+							</td>
+							<td className={styles.endColumn}>
+								<Button
+									icon={faTrashCan}
+									// onClick={() => handleDeleteOneCity(city)}
+								/>
+							</td>
 						</tr>
 					))}
 				</tbody>

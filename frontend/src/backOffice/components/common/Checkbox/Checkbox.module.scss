@@ -17,7 +17,6 @@ input[type="checkbox"] {
 	position: relative;
 	cursor: pointer;
 }
-
 input[type="checkbox"]::before {
 	border-radius: 4px;
 	transform: scale(0);
@@ -35,7 +34,6 @@ input[type="checkbox"]::before {
 	width: 11px;
 	height: 11px;
 }
-
 input[type="checkbox"]:checked::before {
 	transform: scale(1);
 }
