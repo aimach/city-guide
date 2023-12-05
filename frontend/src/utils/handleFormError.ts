@@ -44,15 +44,16 @@ export const handleFormErrors = async ({
         },
       });
       if (profile) setUserInfo(profile);
-      setDisableInputs({ ...disableInputs, bio: true });
+      setDisableInputs({ ...disableInputs, [update.key]: true });
       setDisplayModals({ ...displayModals, error: true });
     } else {
-      if (errors.bio.status)
-        setErrors({
-          ...errors,
-          bio: { message: "", status: false },
-        });
-      setDisableInputs({ ...disableInputs, bio: true });
+      setDisableInputs({
+        city: true,
+        email: true,
+        password: true,
+        username: true,
+        bio: true,
+      });
       setDisplayModals({
         ...displayModals,
         validation: true,

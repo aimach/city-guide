@@ -140,10 +140,7 @@ export const updateUserExceptPassword = async (
   }
   // VALIDATE DATA WITH JOI
   const schema = Joi.object({
-    city: Joi.string().min(2).messages({
-      "string.empty": `Ce champ ne peut pas être vide`,
-      "string.min": `La ville doit être d'au moins 2 caractères`,
-    }),
+    city: Joi.string().allow(null, ""),
     email: Joi.string()
       .email({ tlds: { allow: false } })
       .messages({
@@ -168,11 +165,9 @@ export const updateUserExceptPassword = async (
         "string.min": `Le pseudo doit faire au moins 3 caractères`,
         "string.max": `Le pseudo doit faire au max 20 caractères`,
       }),
-    bio: Joi.string().min(5).messages({
-      "string.min": `La biographie doit faire au moins 5 caractères`,
-    }),
+    bio: Joi.string().allow(null, ""),
     id: Joi.string(),
-    image: Joi.string(),
+    image: Joi.string().allow(null, ""),
     role: Joi.string().required(),
     createdPoi: Joi.array().required(),
     favouriteCities: Joi.array().required(),
