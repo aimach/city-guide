@@ -12,6 +12,7 @@
   padding-bottom: 3rem;
   form {
     @include m.flexLayout(flex-start, flex-start, row);
+    flex-wrap: wrap;
     flex-grow: 3;
     input,
     textarea {
@@ -137,6 +138,20 @@
     > p {
       color: v.$primary_color;
       padding: 1rem 0;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .profilePage {
+    margin: 2rem 0;
+  }
+  .formSection {
+    margin: 0 3rem;
+    form {
+      textarea[name="bio"] {
+        height: auto;
+      }
     }
   }
 }

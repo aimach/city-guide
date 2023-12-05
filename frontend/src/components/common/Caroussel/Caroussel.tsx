@@ -220,6 +220,7 @@ const Caroussel = ({
             {data.map((item) => {
               return (
                 <PoiView
+                  key={item.id}
                   poi={item as Poi}
                   modaleOpen={poiModaleOpen}
                   openOnClick={openModalePoi}
