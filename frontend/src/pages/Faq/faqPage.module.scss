@@ -3,6 +3,8 @@
 
 .faqPage {
   background-color: v.$cream_color;
+  padding-bottom: 0;
+  margin-bottom: 0;
 
   h1 {
     font-family: v.$poppinsFont;
@@ -11,14 +13,15 @@
     margin: 0 auto;
     text-align: center;
     width: 100%;
-    padding-bottom: 50px;
     padding-top: 20px;
+    padding-bottom: 0;
   }
 }
 
 section {
   max-width: 1300px;
   margin: 0 auto;
+  margin-bottom: 0;
 }
 .sectionTitle {
   font-family: v.$poppinsFont;
@@ -61,6 +64,19 @@ details {
       transform: translateY(-50%);
     }
   }
+  &:last-of-type {
+    margin-bottom: 0;
+  }
+}
+
+.WaveImage {
+  background-image: url(../../assets/fond_vague_creme.png);
+  background-repeat: no-repeat;
+  background-position: bottom center;
+  background-size: 100% auto;
+  height: 20vh;
+  margin-top: 0;
+  margin-bottom: 0;
 }
 
 @media (max-width: 768px) {
