@@ -35,9 +35,19 @@
 
 .linkContainer {
   @include m.flexLayout(center, center, row);
+  flex-wrap: wrap;
   gap: 2rem;
   color: v.$white_color;
   a {
     text-decoration: underline;
+  }
+  button {
+    @include m.unbuttonize;
+    @include m.buttonSize(250px, 70px, 0.5rem);
+    @include m.buttonColor(v.$cream_color, red);
+    font-size: 1rem;
+    border: 1px solid red;
+    text-align: center;
+    cursor: pointer;
   }
 }
