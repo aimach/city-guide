@@ -168,10 +168,10 @@ export const updateUserExceptPassword = async (
     bio: Joi.string().allow(null, ""),
     id: Joi.string(),
     image: Joi.string().allow(null, ""),
-    role: Joi.string().required(),
-    createdPoi: Joi.array().required(),
-    favouriteCities: Joi.array().required(),
-    favouritePoi: Joi.array().required(),
+    role: Joi.string(),
+    createdPoi: Joi.array(),
+    favouriteCities: Joi.array(),
+    favouritePoi: Joi.array(),
   });
   const checkFormDatas = schema.validate(body);
   console.log(checkFormDatas);

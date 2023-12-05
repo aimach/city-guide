@@ -13,7 +13,6 @@ interface Props {
 const ImageModal = ({ setDisplayModals, displayModals, userInfo }: Props) => {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const formData = new FormData();
-  // const navigate = useNavigate();
 
   const hSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -35,6 +34,7 @@ const ImageModal = ({ setDisplayModals, displayModals, userInfo }: Props) => {
       });
     }
     setDisplayModals({ ...displayModals, image: false });
+    console.log(formData.entries());
     if (userInfo !== null && userInfo.id !== null)
       updateUserExceptPassword(userInfo.id, formData, "formData");
   };

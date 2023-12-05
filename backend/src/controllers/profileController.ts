@@ -276,9 +276,9 @@ export const ProfileController: IController = {
       newUser.bio = bio;
       newUser.city = city;
       newUser.role = role;
+      newUser.image = req.body.image;
 
       await dataSource.getRepository(User).update(id, newUser);
-      console.log("error 8");
 
       res.status(200).json("Updated user");
       return;
