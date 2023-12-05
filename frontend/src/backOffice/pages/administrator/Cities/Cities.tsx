@@ -42,6 +42,7 @@ const Cities = () => {
 			const data = await response.json();
 			setCities(
 				data.map((item: any) => {
+					console.log(item.coordinates.coordinates[0]);
 					return {
 						...item,
 						coordinates: item.coordinates.coordinates,
@@ -133,8 +134,8 @@ const Cities = () => {
 							</td>
 							<td className={`fieldTableBody`}>{city.name}</td>
 							<td className={`fieldTableBody`}>
-								{city.coordinates.coordinates[0]}
-								{city.coordinates.coordinates[1]}
+								{/* {city.coordinates.coordinates[0]} */}
+								{/* {city.coordinates.coordinates[1]} */}
 							</td>
 							<td className={`fieldTableBody`}>{city.image}</td>
 							<td className={`fieldTableBody`}>
