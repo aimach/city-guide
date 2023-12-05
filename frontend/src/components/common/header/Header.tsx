@@ -1,4 +1,5 @@
 import style from "./header.module.scss";
+import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
 	faMap,
@@ -9,7 +10,6 @@ import { Link } from "react-router-dom";
 import { useContext, useState } from "react";
 import { UsersContext } from "../../../contexts/UserContext";
 import { Role } from "../../../utils/types";
-// import ProfileMenu from "../../profile/profileMenu/profileMenu";
 
 type headerProps = {
 	size: string;
@@ -17,7 +17,9 @@ type headerProps = {
 
 const Header = ({ size }: headerProps) => {
 	// get user's role
-	const { profile, logout, redirectToLogin } = useContext(UsersContext);
+	const { profile, logout } = useContext(UsersContext);
+
+	const navigate = useNavigate();
 
 	let role = Role.VISITOR;
 	if (profile != null) {
@@ -26,14 +28,6 @@ const Header = ({ size }: headerProps) => {
 
 	// display profile menu
 	const [displayProfileMenu, setDisplayProfileMenu] = useState(false);
-
-	async function handleSignOut() {
-		// Appeler le backend pour se déconnecter
-		await logout();
-
-		// Nous rediriger vers la page de connexion
-		redirectToLogin();
-	}
 
 	return (
 		<>
@@ -46,18 +40,27 @@ const Header = ({ size }: headerProps) => {
 			>
 				{size === "desktop" ? (
 					<>
-						<Link to="/">
+						<Link to="/" onClick={() => setDisplayProfileMenu(false)}>
 							<h1>CITY GUIDE</h1>
 						</Link>
-						<nav className={`textButton ${style.menu}`}>
-							<ul>
+						<nav className={` ${style.menu}`}>
+							<ul className="textButton">
 								<li>
-									<a href="#parcourir">Parcourir</a>
+									<a
+										href="#parcourir"
+										onClick={() => setDisplayProfileMenu(false)}
+									>
+										Parcourir
+									</a>
 								</li>
 								<li>
-									<a href="#abonnement">Abonnement</a>
+									<a
+										href="#abonnement"
+										onClick={() => setDisplayProfileMenu(false)}
+									>
+										Abonnement
+									</a>
 								</li>
-
 								{role === Role.VISITOR ? (
 									<li>
 										<Link to="/auth/login">Connexion</Link>
@@ -71,12 +74,19 @@ const Header = ({ size }: headerProps) => {
 							</ul>
 							{role === Role.VISITOR ? (
 								<button className={`${style.buttonHeader} textButton`}>
-									<Link to="/auth/register">Nous rejoindre</Link>
+									<Link
+										to="/auth/register"
+										onClick={() => setDisplayProfileMenu(false)}
+									>
+										Nous rejoindre
+									</Link>
 								</button>
 							) : (
 								<button
 									className={`${style.avatarButton} textButton`}
-									onClick={() => setDisplayProfileMenu(!displayProfileMenu)}
+									onClick={() => {
+										setDisplayProfileMenu(!displayProfileMenu);
+									}}
 								>
 									{profile?.image !== null ? (
 										<img src={profile?.image} alt="avatar" />
@@ -86,9 +96,25 @@ const Header = ({ size }: headerProps) => {
 								</button>
 							)}
 							{displayProfileMenu ? (
-								<div className={`${style.floatingMenu} textSearch`}>
-									<Link to="/">Mon profil</Link>
-									<button onClick={handleSignOut}>Se déconnecter</button>
+								<div className={`${style.floatingMenu}`}>
+									<Link to="/profile">
+										<button
+											onClick={() => setDisplayProfileMenu(false)}
+											className="textFilter"
+										>
+											Mon profil
+										</button>
+									</Link>
+									<button
+										onClick={() => {
+											logout();
+											setDisplayProfileMenu(false);
+											navigate("/");
+										}}
+										className="textFilter"
+									>
+										Se déconnecter
+									</button>
 								</div>
 							) : null}
 						</nav>

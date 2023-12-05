@@ -7,19 +7,19 @@ interface ProviderProps {
 }
 
 interface ContextProps {
-	loaded: boolean;
 	isAuthenticated: () => boolean;
 	profile: User | null;
-	logout: () => void | Promise<void>;
+	logout: () => void;
 	redirectToLogin: () => void;
+	loaded: boolean;
 }
 
 export const UsersContext = createContext<ContextProps>({
-	loaded: false,
 	profile: null,
 	isAuthenticated: () => false,
 	logout: () => {},
 	redirectToLogin: () => {},
+	loaded: false,
 });
 
 export const UserProvider = ({ children }: ProviderProps) => {
@@ -58,9 +58,9 @@ export const UserProvider = ({ children }: ProviderProps) => {
 
 	const logout = async () => {
 		try {
-			await fetch("http://localhost:5000/api/auth/logout", {
-				credentials: "include",
-			});
+			const response = await fetch("http://localhost:5000/api/auth/logout");
+			const data = await response.json();
+			console.log(data);
 			setProfile(null);
 		} catch (error) {
 			console.log(error);
@@ -68,9 +68,10 @@ export const UserProvider = ({ children }: ProviderProps) => {
 	};
 
 	const redirectToLogin = () => {
-		navigate("/auth/login");
+		if (loaded && profile == null) {
+			navigate("/auth/login");
+		}
 	};
-
 	return (
 		<UsersContext.Provider
 			value={{ profile, isAuthenticated, logout, redirectToLogin, loaded }}

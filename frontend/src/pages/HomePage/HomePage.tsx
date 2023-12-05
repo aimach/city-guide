@@ -1,16 +1,9 @@
-/* eslint-disable no-lone-blocks */
-// import React, { useContext } from 'react'
-
 import InteractiveMap from "../../components/interactiveMap/InteractiveMap";
 import { useEffect, useState } from "react";
-
 import SearchPOI from "../SearchPOI/SearchPOI";
-
 import styles from "./homePage.module.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
-import Layout from "../../components/layout/Layout";
 
 const HomePage = () => {
 	const [windowSize, setWindowSize] = useState<number>(window.innerWidth);
@@ -26,7 +19,7 @@ const HomePage = () => {
 	// On vérifie si l'utilisateur est connecté.
 
 	return (
-		<Layout>
+		<>
 			{windowSize > 768 ? (
 				<>
 					<section className={`${styles.backgroundWave}`}>
@@ -72,7 +65,7 @@ const HomePage = () => {
 					<SearchPOI />
 				</section>
 			)}
-		</Layout>
+		</>
 	);
 };
 
