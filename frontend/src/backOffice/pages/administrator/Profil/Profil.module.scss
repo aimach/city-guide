@@ -1,2 +1,22 @@
 @use "../../../../style/mixin" as m;
 @use "../../../../style/variable" as v;
+
+.titleForm {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.profilForm {
+  border: 1px solid v.$primary_color;
+  border-radius: 20px;
+  padding: 20px;
+  max-width: 600px;
+  margin: auto;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 10px;
+}
