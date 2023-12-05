@@ -172,5 +172,21 @@
         }
       }
     }
+    .buttonContainer {
+      @include m.flexLayout(center, center, column);
+      gap: 1rem;
+      padding: 1rem;
+      button {
+        @include m.unbuttonize;
+        @include m.buttonSize(180px, 50px, 0.5rem);
+        @include m.buttonColor(v.$primary_color, v.$white_color);
+        text-align: center;
+        cursor: pointer;
+      }
+      .buttonSelected {
+        @include m.buttonColor(v.$white_color, v.$primary-color);
+        border: 2px solid v.$primary-color;
+      }
+    }
   }
 }
