@@ -5,6 +5,7 @@ import {
 	Outlet,
 	Route,
 	RouterProvider,
+	// useNavigate,
 } from "react-router-dom";
 import Register from "./pages/Register/Register";
 import Login from "./pages/Login/Login";
@@ -23,6 +24,7 @@ import Users from "./backOffice/pages/administrator/Users/Users";
 import PoiCitiesAdmin from "./backOffice/pages/cities administrator/Poi/PoiCitiesAdmin";
 import UsersCitiesAdmin from "./backOffice/pages/cities administrator/Users/UsersCitiesAdmin";
 import Layout from "./components/layout/Layout";
+import PoiListView from "./pages/PoiListView/PoiListView";
 
 const Root = () => {
 	return (
@@ -42,7 +44,9 @@ function App() {
 					<Route index element={<HomePage />} />
 
 					<Route path="/contribution" element={<Contribution />} />
-
+					<Route path="poi">
+						<Route path=":cityId" index element={<PoiListView />} />
+					</Route>
 					<Route path="/dashboard" element={<BackOfficeHomePage />} />
 					<Route path="/dashboard">
 						<Route path="cities" element={<Cities />} />

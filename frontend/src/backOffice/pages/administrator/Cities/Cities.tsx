@@ -14,7 +14,7 @@ import Button from "../../../components/common/Button/Button";
 // 		- Déterminer quel comportement à adopter sur le bouton "Modifier".
 // 		- Implémenter le formulaire et l'évènement de submit.
 // 5. Gérer l'évènement de clic sur supprimer
-// 		- Déterminer quel comportement à adopter sur le bouton "Modifier"
+// 		- Déterminer quel comportement à adopter sur le bouton "Suprimer"
 // 			-> Ça supprime directement ? (dans un 1er temps)
 // 			-> Modale (si on a le temps)
 // 		- Implémenter le comportement sur le bouton modifier
@@ -42,10 +42,10 @@ const Cities = () => {
 			const data = await response.json();
 			setCities(
 				data.map((item: any) => {
-					console.log(item.coordinates.coordinates[0]);
 					return {
 						...item,
-						coordinates: item.coordinates.coordinates,
+						//coordinates: item.coordinates.coordinates,
+						// ca modifiait le type coordinates plus besoin - le pb a ete resolu dans types.ts
 					};
 				})
 			);
@@ -90,16 +90,34 @@ const Cities = () => {
 		}
 	};
 
-	// const handleDeleteOneCity = (cityToDelete: City) => {
-	// 	const updatedCities = cities.filter((city) => city.id !== cityToDelete.id);
-	// 	setCities(updatedCities);
-	// };
+	const handleDeleteOneCity = async (cityToDelete: City) => {
+		console.log("cityToDelete", cityToDelete.id);
+
+		// const updatedCities = cities.filter((city) => city.id !== cityToDelete.id);
+		// setCities(updatedCities); // maj state pas besoin de recharger la page
+
+		// appel route delete city pour supprimer la ville de la BDD
+		try {
+			await fetch(`http://localhost:5000/api/cities/${cityToDelete.id}`, {
+				method: "DELETE",
+				credentials: "include",
+			});
+			console.log(" response cityToDelete", cityToDelete.id);
+
+			const updatedCities = cities.filter(
+				(city) => city.id !== cityToDelete.id
+			);
+			setCities(updatedCities); // maj du state => pas besoin de recharger la page
+		} catch (error) {
+			console.log("delete error", error);
+		}
+	};
 
 	return (
 		<BackOfficeLayout>
 			<Title icon={faCity} name={"Villes"}></Title>
 			<h4 className={`${styles.subtitleTable} subtitleDashboard`}>
-				Liste des administrateurs de villes
+				Liste des villes
 			</h4>
 			<table>
 				<thead>
@@ -124,34 +142,36 @@ const Cities = () => {
 					</tr>
 				</thead>
 				<tbody>
-					{cities.map((city) => (
-						<tr key={city.id}>
-							<td className={styles.startColumn}>
-								<Checkbox
-									value={!!checkedCities.find((c) => c.id === city.id)}
-									onChange={() => handleSelectOrUnselectOne(city)}
-								/>
-							</td>
-							<td className={`fieldTableBody`}>{city.name}</td>
-							<td className={`fieldTableBody`}>
-								{/* {city.coordinates.coordinates[0]} */}
-								{/* {city.coordinates.coordinates[1]} */}
-							</td>
-							<td className={`fieldTableBody`}>{city.image}</td>
-							<td className={`fieldTableBody`}>
-								{city.userAdminCity?.username}
-							</td>
-							<td className={styles.titleTable}>
-								<Button icon={faPen} />
-							</td>
-							<td className={styles.endColumn}>
-								<Button
-									icon={faTrashCan}
-									// onClick={() => handleDeleteOneCity(city)}
-								/>
-							</td>
-						</tr>
-					))}
+					{cities.map((city) => {
+						return (
+							<tr key={city.id}>
+								<td className={styles.startColumn}>
+									<Checkbox
+										value={!!checkedCities.find((c) => c.id === city.id)}
+										onChange={() => handleSelectOrUnselectOne(city)}
+									/>
+								</td>
+								<td className={`fieldTableBody`}>{city.name}</td>
+								<td className={`fieldTableBody`}>
+									{city.coordinates.coordinates[0]}
+									{city.coordinates.coordinates[1]}
+								</td>
+								<td className={`fieldTableBody`}>{city.image}</td>
+								<td className={`fieldTableBody`}>
+									{city.userAdminCity?.username}
+								</td>
+								<td className={styles.titleTable}>
+									<Button icon={faPen} />
+								</td>
+								<td className={styles.endColumn}>
+									<Button
+										icon={faTrashCan}
+										onClick={() => handleDeleteOneCity(city)}
+									/>
+								</td>
+							</tr>
+						);
+					})}
 				</tbody>
 			</table>
 		</BackOfficeLayout>

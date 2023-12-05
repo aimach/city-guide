@@ -38,7 +38,7 @@ const SearchPOI = () => {
 		} else {
 			setCitiesToBeShown(allCitiesWithPoi.slice(0, 4) ?? []);
 		}
-	}, [allCitiesWithPoi, filterSearch, totalCities]);
+	}, [filterSearch, totalCities]);
 
 	return (
 		<>

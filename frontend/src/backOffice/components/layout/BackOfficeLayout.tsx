@@ -1,12 +1,20 @@
 import { useEffect, type PropsWithChildren, useState, useContext } from "react";
 import AsideMenu from "../common/AsideMenu/AsideMenu";
-import Header from "../../../components/common/header/Header";
 import styles from "./BackOfficeLayout.module.scss";
 import { UsersContext } from "../../../contexts/UserContext";
+import { useNavigate } from "react-router-dom";
+import { Role } from "../../../utils/types";
 
 export default function BackOfficeLayout({ children }: PropsWithChildren) {
 	const [windowSize, setWindowSize] = useState<number>(window.innerWidth);
-	const { isAuthenticated, loaded, redirectToLogin } = useContext(UsersContext);
+
+	const { isAuthenticated, loaded, redirectToLogin, profile } =
+		useContext(UsersContext);
+	const navigate = useNavigate();
+
+	useEffect(() => {
+		if (profile && profile.role !== Role.ADMIN) navigate("/");
+	}, [profile]);
 
 	function updateDimension() {
 		setWindowSize(window.innerWidth);
@@ -26,7 +34,6 @@ export default function BackOfficeLayout({ children }: PropsWithChildren) {
 
 	return (
 		<>
-			<Header size={windowSize > 768 ? "desktop" : "mobile"} />
 			<div className={styles.layoutBackOffice}>
 				<section className={styles.flexAsideMenu}>
 					<AsideMenu />
