@@ -89,10 +89,10 @@ const Cities = () => {
 		}
 	};
 
-	const handleDeleteOneCity = (cityToDelete: City) => {
-		const updatedCities = cities.filter((city) => city.id !== cityToDelete.id);
-		setCities(updatedCities);
-	};
+	// const handleDeleteOneCity = (cityToDelete: City) => {
+	// 	const updatedCities = cities.filter((city) => city.id !== cityToDelete.id);
+	// 	setCities(updatedCities);
+	// };
 
 	return (
 		<BackOfficeLayout>
@@ -133,8 +133,8 @@ const Cities = () => {
 							</td>
 							<td className={`fieldTableBody`}>{city.name}</td>
 							<td className={`fieldTableBody`}>
-								{city.coordinates[0]}
-								{city.coordinates[1]}
+								{city.coordinates.coordinates[0]}
+								{city.coordinates.coordinates[1]}
 							</td>
 							<td className={`fieldTableBody`}>{city.image}</td>
 							<td className={`fieldTableBody`}>

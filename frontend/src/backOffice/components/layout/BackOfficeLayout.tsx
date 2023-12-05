@@ -22,7 +22,7 @@ export default function BackOfficeLayout({ children }: PropsWithChildren) {
 		if (!isAuthenticated() && loaded) {
 			redirectToLogin();
 		}
-	}, [loaded]);
+	}, [isAuthenticated, loaded, redirectToLogin]);
 
 	return (
 		<>

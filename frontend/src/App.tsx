@@ -22,11 +22,14 @@ import Poi from "./backOffice/pages/administrator/Poi/Poi";
 import Users from "./backOffice/pages/administrator/Users/Users";
 import PoiCitiesAdmin from "./backOffice/pages/cities administrator/Poi/PoiCitiesAdmin";
 import UsersCitiesAdmin from "./backOffice/pages/cities administrator/Users/UsersCitiesAdmin";
+import Layout from "./components/layout/Layout";
 
 const Root = () => {
 	return (
 		<UserProvider>
-			<Outlet /> {/* Outlet is where the child routes will be rendered */}
+			<Layout>
+				<Outlet /> {/* Outlet is where the child routes will be rendered */}
+			</Layout>
 		</UserProvider>
 	);
 };
