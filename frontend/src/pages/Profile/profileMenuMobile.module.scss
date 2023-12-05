@@ -1,2 +1,43 @@
 @use "../../style/variable" as v;
 @use "../../style/mixin" as m;
+
+.menuContainer {
+  @include m.flexLayout(center, center, column);
+  height: 100vh;
+  gap: 5rem;
+}
+
+.buttonContainer {
+  @include m.flexLayout(center, center, column);
+  gap: 3rem;
+  a:first-child button {
+    background-image: url("../../../public/man_with_map.svg");
+    background-repeat: no-repeat;
+    padding-left: 5rem;
+  }
+  button {
+    @include m.unbuttonize;
+    @include m.buttonSize(70vw, 130px, 0.5rem);
+    @include m.buttonColor(v.$white_color, v.$primary_color);
+    @include m.flexLayout(center, center);
+    gap: 1rem;
+    border: 3px solid v.$secondary_color;
+
+    .filledHeart {
+      background-color: v.$secondary_color;
+      border-radius: 50%;
+      padding: 0.5rem;
+      width: 30px;
+      height: 30px;
+    }
+  }
+}
+
+.linkContainer {
+  @include m.flexLayout(center, center, row);
+  gap: 2rem;
+  color: v.$white_color;
+  a {
+    text-decoration: underline;
+  }
+}

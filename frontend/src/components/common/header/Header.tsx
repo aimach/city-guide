@@ -105,7 +105,7 @@ const Header = ({ size }: headerProps) => {
               )}
               {displayProfileMenu ? (
                 <div className={`${style.floatingMenu}`}>
-                  <Link to="/profile">
+                  <Link to="/profile/page">
                     <button
                       onClick={() => setDisplayProfileMenu(false)}
                       className="textFilter"
@@ -129,12 +129,18 @@ const Header = ({ size }: headerProps) => {
           </>
         ) : (
           <nav>
-            <FontAwesomeIcon icon={faMap} className={`${style.iconStyle}`} />
-            <FontAwesomeIcon
-              icon={faMagnifyingGlass}
-              className={`${style.iconStyle}`}
-            />
-            <FontAwesomeIcon icon={faUser} className={`${style.iconStyle}`} />
+            <Link to="/">
+              <FontAwesomeIcon icon={faMap} className={`${style.iconStyle}`} />
+            </Link>
+            <Link to="/">
+              <FontAwesomeIcon
+                icon={faMagnifyingGlass}
+                className={`${style.iconStyle}`}
+              />
+            </Link>
+            <Link to="/profile/menu">
+              <FontAwesomeIcon icon={faUser} className={`${style.iconStyle}`} />
+            </Link>
           </nav>
         )}
       </header>
