@@ -5,7 +5,6 @@ import {
 	Outlet,
 	Route,
 	RouterProvider,
-	// useNavigate,
 } from "react-router-dom";
 import Register from "./pages/Register/Register";
 import Login from "./pages/Login/Login";
