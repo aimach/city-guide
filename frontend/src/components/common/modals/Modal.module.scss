@@ -102,3 +102,10 @@ input::file-selector-button {
     transform: translateY(-100px);
   }
 }
+
+@media (max-width: 768px) {
+  .modalContainer {
+    width: 80vw;
+    left: 10%;
+  }
+}

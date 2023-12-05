@@ -1,13 +1,22 @@
 import style from "./profile.module.scss";
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { UsersContext } from "../../contexts/UserContext";
 import Caroussel from "../../components/common/Caroussel/Caroussel";
 import { CardType } from "../../utils/types";
 import { IoIosHeart } from "react-icons/io";
+import { useNavigate } from "react-router";
+import useWindowDimensions from "../../utils/hooks/useWindowDimensions";
 
 export default function ProfileFavorite() {
   const { profile } = useContext(UsersContext);
   const [favType, setFavType] = useState("poi");
+  const windowSize = useWindowDimensions();
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (windowSize > 768) navigate("/profile/page");
+  }, [windowSize]);
 
   return (
     <>
