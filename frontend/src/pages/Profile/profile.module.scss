@@ -154,4 +154,23 @@
       }
     }
   }
+  .favoritesSection {
+    div {
+      padding-left: 0;
+      @include m.flexLayout(center, center, column);
+      h4 {
+        padding-left: 1rem;
+      }
+      &:first-child {
+        @include m.flexLayout(center, center);
+        .filledHeart {
+          background-color: v.$secondary_color;
+          border-radius: 50%;
+          padding: 0.5rem;
+          width: 30px;
+          height: 30px;
+        }
+      }
+    }
+  }
 }

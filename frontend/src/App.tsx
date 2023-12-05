@@ -16,6 +16,7 @@ import Layout from "./components/layout/Layout";
 import Profile from "./pages/Profile/Profile";
 import PoiListView from "./pages/PoiListView/PoiListView";
 import ProfileMenuMobile from "./pages/Profile/ProfileMenuMobile";
+import ProfileFavorite from "./pages/Profile/ProfileFavorites";
 
 // import About from "./pages/About/About";
 
@@ -41,7 +42,7 @@ function App() {
         <Route path="/profile">
           <Route path="page" element={<Profile />} />
           <Route path="menu" element={<ProfileMenuMobile />} />
-          <Route path="favorite" element={<ProfileMenuMobile />} />
+          <Route path="favorites" element={<ProfileFavorite />} />
         </Route>
         <Route path="/contribution" element={<Contribution />} />
         <Route path="poi">

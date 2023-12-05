@@ -237,18 +237,16 @@ const Caroussel = ({
           <div className={styles.cardsContainer}>
             {data.map((item) => {
               return (
-                <>
-                  <Card
-                    data={item}
-                    key={item.id}
-                    cardType={cardType}
-                    onClick={() => selectActionOnCardClick(item.id!, item.name)}
-                    categorySelected={categorySelected}
-                    currentCity={currentCity}
-                    handleFavourite={handleFavourite}
-                    isLiked={isLiked}
-                  />
-                </>
+                <Card
+                  data={item}
+                  key={item.id}
+                  cardType={cardType}
+                  onClick={() => selectActionOnCardClick(item.id!, item.name)}
+                  categorySelected={categorySelected}
+                  currentCity={currentCity}
+                  handleFavourite={handleFavourite}
+                  isLiked={isLiked}
+                />
               );
             })}
           </div>
