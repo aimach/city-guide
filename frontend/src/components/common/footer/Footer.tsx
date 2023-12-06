@@ -6,6 +6,7 @@ import {
   faSquareFacebook,
 } from "@fortawesome/free-brands-svg-icons";
 import LyingMan from "../lyingMan/LyingMan";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
@@ -28,7 +29,10 @@ const Footer = () => {
               <div>
                 <h4 className={`${styles.subtitleFooter} textCard`}>Contact</h4>
                 <ul className={`textSearch`}>
-                  <li>Nous contacter</li>
+                  <Link to="/contact">
+                    <li>Nous contacter</li>
+                  </Link>
+
                   <li>FAQ</li>
                 </ul>
               </div>

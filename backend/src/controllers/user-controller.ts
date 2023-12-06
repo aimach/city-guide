@@ -28,7 +28,7 @@ export const AuthController: IController = {
     };
 
     try {
-      let userToCreate = new User();
+      const userToCreate = new User();
       userToCreate.email = email;
       userToCreate.password = password;
       userToCreate.username = username;
