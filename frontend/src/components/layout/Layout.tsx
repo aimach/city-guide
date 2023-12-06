@@ -1,9 +1,14 @@
 import React, { PropsWithChildren, useEffect, useState } from "react";
+import { useLocation } from "react-router";
 import Header from "../common/header/Header";
 import Footer from "../common/footer/Footer";
 
 const Layout = ({ children }: PropsWithChildren) => {
   const [windowSize, setWindowSize] = useState<number>(window.innerWidth);
+  let location = useLocation();
+  const isAuthPage =
+    location.pathname.includes("register") ||
+    location.pathname.includes("login");
 
   function updateDimension() {
     setWindowSize(window.innerWidth);
@@ -14,9 +19,11 @@ const Layout = ({ children }: PropsWithChildren) => {
   }, [windowSize]);
   return (
     <>
-      <Header size={windowSize > 768 ? "desktop" : "mobile"} />
+      {isAuthPage ? null : (
+        <Header size={windowSize > 768 ? "desktop" : "mobile"} />
+      )}
       {children}
-      {windowSize > 768 ? <Footer /> : null}
+      {isAuthPage ? null : windowSize > 768 ? <Footer /> : null}
     </>
   );
 };
