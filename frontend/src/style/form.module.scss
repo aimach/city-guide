@@ -13,7 +13,6 @@
     font-family: v.$comicNeueFont;
     font-size: 48px;
     font-weight: 700;
-    margin-top: -1.5em;
   }
 
   .h2_login {
@@ -30,8 +29,8 @@
     border: 3px solid v.$secondary_color;
     background: v.$secondary_color;
     @include m.flexLayout(space-around, center, column);
-    width: 50vw;
-    height: 70vh;
+    width: 40vw;
+    height: 60vh;
     padding: 2em;
 
     h3 {
@@ -129,14 +128,16 @@
   @extend .section;
   background: url("../../public/bg-wave_login.svg"),
     url("../../public/Illu_man_login.svg");
-  background-position: 100% -400%, left 5% top 0%;
+  background-size: cover, 15%;
+  background-position: 0 180px, left 10% top 25%;
   background-repeat: no-repeat, no-repeat;
 }
 
 .section_register {
   @extend .section;
   background: url("../../public/bg-wave.svg"), url("../../public/Illu_man.svg");
-  background-position: 100% 320%, left 17% bottom 20%;
+  background-size: cover, 11%;
+  background-position: -10px -160px, left 10% bottom 25%;
   background-repeat: no-repeat, no-repeat;
 }
 
