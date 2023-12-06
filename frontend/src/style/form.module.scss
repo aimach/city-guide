@@ -128,7 +128,7 @@
   @extend .section;
   background: url("../../public/bg-wave_login.svg"),
     url("../../public/Illu_man_login.svg");
-  background-size: cover, 15%;
+  background-size: cover, 11%;
   background-position: 0 180px, left 10% top 25%;
   background-repeat: no-repeat, no-repeat;
 }
@@ -143,8 +143,27 @@
 
 @media (max-width: 768px) {
   .section_login {
-    background-size: 30%;
-    background-position: 100% -400%, left 50% top 5%;
+    background-size: cover, 30%;
+    background-position: 0 180px, left 50% top 5%;
+    background-repeat: no-repeat, no-repeat;
+    justify-content: flex-end;
+    form {
+      width: 70vw;
+      height: 50vh;
+      padding: 0.5em;
+      margin-bottom: 7rem;
+      svg {
+        left: 30px;
+      }
+    }
+  }
+
+  .section_register {
+    background: url("../../public/bg-wave_login.svg"),
+      url("../../public/illu_man_lying.svg");
+    background-size: cover, 55%;
+    background-position: 0 180px, left 50% top 15%;
+    background-repeat: no-repeat, no-repeat;
     justify-content: flex-end;
     form {
       width: 70vw;
