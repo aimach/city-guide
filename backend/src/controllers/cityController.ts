@@ -396,13 +396,18 @@ export const CityController: IController = {
 			}
 
 			await dataSource.getRepository(City).delete(id);
-			// delete image in public directory
-			if (cityToDelete.image !== null) {
-				await unlink("." + cityToDelete.image);
+			console.log(cityToDelete.image.includes("loremflickr"));
 
-				res.status(200).send("Deleted city");
+			if (
+				cityToDelete.image !== null &&
+				!cityToDelete.image.includes("loremflickr")
+			) {
+				await unlink("." + cityToDelete.image);
 			}
+			res.status(200).send("Deleted city");
 		} catch (err) {
+			console.log("err", err);
+
 			res.status(400).send({ error: "Error while deleting city" });
 		}
 	},

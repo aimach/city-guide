@@ -1,0 +1,10 @@
+@use "../../../style/mixin" as m;
+@use "../../../style/variable" as v;
+
+.modalContainer {
+	background-color: pink;
+	padding: 5px;
+}
+.toto {
+	width: 100%;
+}

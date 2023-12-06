@@ -6,7 +6,14 @@ import { useEffect, useState } from "react";
 import { City } from "../../../../utils/types";
 import Checkbox from "../../../components/common/Checkbox/Checkbox";
 import Button from "../../../components/common/Button/Button";
+import Modal from "../../../components/modals/Modal";
 
+// interface Props {
+// 	city: City;
+// 	openOnClick: (id: string) => void;
+// 	modaleOpen: string | null;
+// 	onClose: () => void;
+// }
 // 1. Récupérer la liste des villes depuis l'API.
 // 2. Implémenter le Thead
 // 3. Pour ville, implémenter la ligne (.map), en affichant les données et les boutons.
@@ -19,6 +26,7 @@ import Button from "../../../components/common/Button/Button";
 // 			-> Modale (si on a le temps)
 // 		- Implémenter le comportement sur le bouton modifier
 
+// const Cities = ({ city, onClose }: Props) => {
 const Cities = () => {
 	const columns = [
 		"Nom",
@@ -89,28 +97,49 @@ const Cities = () => {
 			setCheckedCities([...checkedCities, city]);
 		}
 	};
-
+	// DELETE One City
 	const handleDeleteOneCity = async (cityToDelete: City) => {
-		console.log("cityToDelete", cityToDelete.id);
-
-		// const updatedCities = cities.filter((city) => city.id !== cityToDelete.id);
-		// setCities(updatedCities); // maj state pas besoin de recharger la page
-
-		// appel route delete city pour supprimer la ville de la BDD
+		// console.log(cityToDelete.id);
 		try {
 			await fetch(`http://localhost:5000/api/cities/${cityToDelete.id}`, {
 				method: "DELETE",
 				credentials: "include",
+				body: null,
 			});
-			console.log(" response cityToDelete", cityToDelete.id);
-
 			const updatedCities = cities.filter(
 				(city) => city.id !== cityToDelete.id
 			);
-			setCities(updatedCities); // maj du state => pas besoin de recharger la page
+			setCities(updatedCities);
 		} catch (error) {
 			console.log("delete error", error);
 		}
+	};
+
+	//  UPDATE, Modify One City
+	const [isModalOpen, setIsModalOpen] = useState(false); // par defaut la modal est masqué false
+
+	const handleUpdateOneCity = (city: City) => {
+		// const selectOnecity = city.id;
+		// const updateOneCity = selectCities.find(
+		// 	(c) => c.id === city.id
+		// );
+		// // Si elle est déjà dans le tableau, on la retire
+		// if (updateOneCity) {
+		// 	setCheckedCities(
+		// 		isModalOpen.filter((city) => city.id !== updateOneCity.id)
+		// 	);
+		// 	// Si elle n'est pas dans le tableau, on l'ajoute
+		// } else {
+		// 	setCheckedCities([...isModalOpen, city]);
+		// }
+
+		// oepn modal
+		setIsModalOpen(true);
+		setIsModalOpen(!isModalOpen);
+	};
+	const handleCloseModal = () => {
+		// close modal
+		setIsModalOpen(false);
 	};
 
 	return (
@@ -161,7 +190,18 @@ const Cities = () => {
 									{city.userAdminCity?.username}
 								</td>
 								<td className={styles.titleTable}>
-									<Button icon={faPen} />
+									{isModalOpen.toString()}
+									<Button
+										icon={faPen}
+										onClick={() => {
+											handleUpdateOneCity(city);
+										}}
+									/>
+									<Modal
+										onClose={handleCloseModal}
+										isOpen={isModalOpen}
+										city={city}
+									></Modal>
 								</td>
 								<td className={styles.endColumn}>
 									<Button
