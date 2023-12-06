@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAt, faKey } from "@fortawesome/free-solid-svg-icons";
 import styles from "../../style/form.module.scss";
+import useWindowDimensions from "../../utils/hooks/useWindowDimensions";
 
 export interface FormProps {
   email: string;
@@ -18,6 +19,7 @@ const Login = () => {
     formState: { errors },
   } = useForm<FormProps>();
   const navigate = useNavigate();
+  const windowSize = useWindowDimensions();
   const onSubmit = async (userData: FormProps) => {
     try {
       const response = await fetch("http://localhost:5000/api/auth/login", {
@@ -60,7 +62,9 @@ const Login = () => {
 
   return (
     <section className={styles.section_login}>
-      <h2 className={styles.h2_login}>De retour ?</h2>
+      {windowSize > 768 ? (
+        <h2 className={styles.h2_login}>De retour ?</h2>
+      ) : null}
       <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
         <h3>Connexion</h3>
 
@@ -91,11 +95,15 @@ const Login = () => {
         <Link to="/auth/register">
           Vous n’avez pas de compte ? Créez en un juste ici !
         </Link>
-        <span>Téléchargez l’application ici !</span>
-        <div id="logoStore-wrapper">
-          <img src="/appleDownload.svg" alt="Apple Store" />
-          <img src="/google-play-badge.png" alt="Google Store" />
-        </div>
+        {windowSize > 768 ? (
+          <>
+            <span>Téléchargez l’application ici !</span>
+            <div id="logoStore-wrapper">
+              <img src="/appleDownload.svg" alt="Apple Store" />
+              <img src="/google-play-badge.png" alt="Google Store" />
+            </div>
+          </>
+        ) : null}
       </form>
     </section>
   );
