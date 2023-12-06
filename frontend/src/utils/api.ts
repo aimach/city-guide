@@ -174,7 +174,6 @@ export const updateUserExceptPassword = async (
     favouritePoi: Joi.array(),
   });
   const checkFormDatas = schema.validate(body);
-  console.log(checkFormDatas);
   if (checkFormDatas.error) {
     return {
       key: checkFormDatas.error.details[0].context?.key,
@@ -220,7 +219,6 @@ export const updateUserPassword = async (
       }),
   });
   const checkFormDatas = schema.validate(body);
-  console.log(checkFormDatas);
   if (checkFormDatas.error) {
     return {
       key: checkFormDatas.error.details[0].context?.key,
