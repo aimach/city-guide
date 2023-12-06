@@ -10,7 +10,7 @@ interface Props {
    onClick: () => void;
    categorySelected?: string | null;
    currentCity?: City | null;
-   handleFavourite: (id: string | null) => void;
+   handleFavourite: (id: string | null, cardType: CardType) => void;
    isLiked: (id: string | null) => boolean;
 }
 
@@ -32,19 +32,24 @@ const Card = ({
             className={`${styles.container} ${
                categorySelected !== id &&
                categorySelected != null &&
-               cardType === CardType.CATEGORY &&
-               styles.unselected
+               cardType === CardType.CATEGORY
+                  ? styles.unselected
+                  : ''
             } `}
          >
-            <div onClick={onClick} className={styles.imageContainer}>
+            <div
+               onClick={onClick}
+               className={styles.imageContainer}
+               data-testid="image-container"
+            >
                <img src={image} alt={name} className={styles.image} />
                <h3 className={`${styles.title} titleCard`}>{name}</h3>
             </div>
             {cardType !== CardType.CATEGORY && isAuthenticated() ? (
-               <div
-                  className={styles.likeContainer}
+               <button
+                  className={styles.likeButton}
                   onClick={() => {
-                     handleFavourite(id);
+                     handleFavourite(id, cardType);
                   }}
                >
                   {isLiked(id) ? (
@@ -52,11 +57,15 @@ const Card = ({
                         className={styles.filledHeart}
                         stroke="black"
                         strokeWidth={22}
+                        data-testid="filled-heart"
                      />
                   ) : (
-                     <IoIosHeartEmpty className={styles.emptyHeart} />
+                     <IoIosHeartEmpty
+                        className={styles.emptyHeart}
+                        data-testid="empty-heart"
+                     />
                   )}
-               </div>
+               </button>
             ) : (
                ''
             )}
