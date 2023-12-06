@@ -1,6 +1,10 @@
 @use "../../../../style/mixin" as m;
 @use "../../../../style/variable" as v;
 
+.profilContainer {
+  max-width: 100%;
+}
+
 .titleForm {
   text-align: center;
   margin-bottom: 20px;
@@ -10,13 +14,105 @@
   border: 1px solid v.$primary_color;
   border-radius: 20px;
   padding: 20px;
-  max-width: 600px;
+  width: auto;
+  max-width: 960px;
   margin: auto;
 }
 
-.formGroup {
+.twoColumns {
   display: flex;
-  flex-direction: row;
-  align-items: center;
-  padding: 10px;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  width: calc(50% - 10px);
+  margin-bottom: 20px;
+}
+
+label {
+  margin-bottom: 5px;
+}
+
+input,
+select,
+textarea {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid v.$primary_color;
+  border-radius: 5px;
+}
+
+input,
+select {
+  height: 30px;
+}
+
+.fullWidth {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+
+  .fileInputContainer {
+    border: 1px solid v.$primary_color;
+    border-radius: 5px;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    width: calc(100% - 20px);
+
+    button {
+      cursor: pointer;
+      background-color: v.$primary_color;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      padding: 5px 10px;
+      margin: 0;
+      &:hover {
+        background-color: darken(v.$primary_color, 10%);
+      }
+    }
+    input[type="file"] {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      opacity: 0;
+      overflow: hidden;
+      z-index: -1;
+    }
+  }
+
+  // input[type="file"] {
+  //   border: 1px solid v.$primary_color;
+  //   border-radius: 5px;
+  //   padding: 10px;
+  //   width: 100%;
+  // }
+
+  textarea {
+    width: 100%;
+    border: 1px solid v.$primary_color;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 20px;
+  }
+}
+
+button {
+  padding: 10px 20px;
+  background-color: v.$primary_color;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+  align-self: center;
+  &:hover {
+    background-color: darken(v.$primary_color, 10%);
+  }
 }
