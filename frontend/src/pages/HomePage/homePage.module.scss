@@ -73,13 +73,19 @@
 @media (max-width: 768px) {
   .mobileSection {
     height: 95vh;
-    @include m.flexLayout(center, center, column);
+    // @include m.flexLayout(center, center, column);
     background-image: url("../../../public/bg-wave_login.svg");
     background-repeat: no-repeat;
     background-size: 250%;
     background-position: 10% bottom;
+    h1 {
+      text-align: center;
+    }
     img {
       width: 100vw;
+    }
+    button {
+      margin: auto;
     }
   }
 

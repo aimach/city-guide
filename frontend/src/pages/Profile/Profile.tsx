@@ -10,6 +10,7 @@ import ImageModal from "../../components/common/modals/ImageModal";
 import PasswordModal from "../../components/common/modals/PasswordModal";
 import Caroussel from "../../components/common/Caroussel/Caroussel";
 import { handleFormErrors } from "../../utils/handleFormError";
+import useWindowDimensions from "../../utils/hooks/useWindowDimensions";
 export interface IDisableInputs {
   city: boolean;
   email: boolean;
@@ -31,6 +32,8 @@ export interface IError {
 }
 
 const Profile = () => {
+  const windowSize = useWindowDimensions();
+
   // get profile
   const { profile } = useContext(UsersContext);
   const [displayEditImg, setDisplayEditImg] = useState<boolean>(false);
@@ -263,34 +266,38 @@ const Profile = () => {
           </button>
         </div>
       </section>
-      <section className={style.favoritesSection}>
-        <h3 className="titleResearchDark">Mes favoris</h3>
-        <div>
-          <h4 className="profilNameDark">Points d'intérêts favoris</h4>
-          {profile?.favouritePoi.length ? (
-            <Caroussel
-              title=""
-              data={profile?.favouritePoi}
-              cardType={CardType.POI}
-            />
-          ) : (
-            <p>Pas de favori pour l'instant !</p>
-          )}
-        </div>
-        <div>
-          <h4 className="profilNameDark">Villes favorites</h4>
-          {profile?.favouriteCities.length ? (
-            <Caroussel
-              title=""
-              data={profile?.favouriteCities}
-              cardType={CardType.CITY}
-            />
-          ) : (
-            <p>Pas de favori pour l'instant !</p>
-          )}
-        </div>
-      </section>
-      <img src="/fond_vague_creme.svg" alt="wave" width="100%" />
+      {windowSize > 768 ? (
+        <>
+          <section className={style.favoritesSection}>
+            <h3 className="titleResearchDark">Mes favoris</h3>
+            <div>
+              <h4 className="profilNameDark">Points d'intérêts favoris</h4>
+              {profile?.favouritePoi.length ? (
+                <Caroussel
+                  title=""
+                  data={profile?.favouritePoi}
+                  cardType={CardType.POI}
+                />
+              ) : (
+                <p>Pas de favori pour l'instant !</p>
+              )}
+            </div>
+            <div>
+              <h4 className="profilNameDark">Villes favorites</h4>
+              {profile?.favouriteCities.length ? (
+                <Caroussel
+                  title=""
+                  data={profile?.favouriteCities}
+                  cardType={CardType.CITY}
+                />
+              ) : (
+                <p>Pas de favori pour l'instant !</p>
+              )}
+            </div>
+          </section>
+          <img src="/fond_vague_creme.svg" alt="wave" width="100%" />
+        </>
+      ) : null}
     </div>
   );
 };
