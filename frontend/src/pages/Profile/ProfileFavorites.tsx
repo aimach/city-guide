@@ -16,7 +16,7 @@ export default function ProfileFavorite() {
 
   useEffect(() => {
     if (windowSize > 768) navigate("/profile/page");
-  }, [windowSize]);
+  }, [windowSize, navigate]);
 
   return (
     <>

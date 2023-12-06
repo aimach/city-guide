@@ -1,9 +1,5 @@
-import Header from "../../components/common/header/Header";
-import { UsersContext, UserProvider } from "../../contexts/UserContext";
-import { useNavigate, useSearchParams } from "react-router-dom";
 import InteractiveMap from "../../components/interactiveMap/InteractiveMap";
-import { useContext, useEffect, useState } from "react";
-import Footer from "../../components/common/footer/Footer";
+import { useEffect, useState } from "react";
 import SearchPOI from "../SearchPOI/SearchPOI";
 import styles from "./homePage.module.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

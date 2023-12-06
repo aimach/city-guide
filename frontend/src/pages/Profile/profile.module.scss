@@ -179,13 +179,13 @@
       button {
         @include m.unbuttonize;
         @include m.buttonSize(180px, 50px, 0.5rem);
-        @include m.buttonColor(v.$primary_color, v.$white_color);
+        @include m.buttonColor(v.$white_color, v.$gray_color_dark);
+        border: 2px solid v.$gray_color_dark;
         text-align: center;
         cursor: pointer;
       }
       .buttonSelected {
-        @include m.buttonColor(v.$white_color, v.$primary-color);
-        border: 2px solid v.$primary-color;
+        @include m.buttonColor(v.$primary_color, v.$white_color);
       }
     }
   }
