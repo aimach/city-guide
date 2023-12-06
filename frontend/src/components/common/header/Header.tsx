@@ -1,11 +1,7 @@
 import style from "./header.module.scss";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faMap,
-  faMagnifyingGlass,
-  faUser,
-} from "@fortawesome/free-solid-svg-icons";
+import { faMap, faHouse, faUser } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import { useContext, useState } from "react";
 import { UsersContext } from "../../../contexts/UserContext";
@@ -134,7 +130,7 @@ const Header = ({ size }: headerProps) => {
             </Link>
             <Link to="/">
               <FontAwesomeIcon
-                icon={faMagnifyingGlass}
+                icon={faHouse}
                 className={`${style.iconStyle}`}
               />
             </Link>
