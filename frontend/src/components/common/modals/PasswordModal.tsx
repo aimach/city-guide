@@ -25,7 +25,7 @@ const PasswordModal = ({ setDisplayModals, displayModals }: Props) => {
     // Or you can work with it as a plain object:
     const formJson = Object.fromEntries(formData.entries());
 
-    if (profile !== null && profile !== undefined && profile.id !== null) {
+    if (profile != null && profile.id != null) {
       const update = await updateUserPassword(profile.id, formJson);
       if (update !== undefined && update.error) {
         update.key === "originalPassword"

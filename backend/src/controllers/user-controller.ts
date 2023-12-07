@@ -215,7 +215,6 @@ export const AuthController: IController = {
       const getUserById = await dataSource
         .getRepository(User)
         .findOneBy({ id });
-      console.log(getUserById);
 
       if (getUserById === null) {
         return res.status(404).send({ error: "Identifiants incorrects" });
