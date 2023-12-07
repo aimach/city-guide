@@ -123,7 +123,6 @@ export const ProfileController: IController = {
           validator.isEmpty(value, { ignore_whitespace: true }) ||
           typeof value !== "string"
         ) {
-          console.log("error 1");
           res.status(400).send({
             error: `Field must contains only characters`,
           });
@@ -145,8 +144,6 @@ export const ProfileController: IController = {
       // check enum in role
       const roles: UserRole[] = Object.values(UserRole);
       if (role !== null && !roles.includes(role)) {
-        console.log("error 2");
-
         res.status(400).send({ error: "User role does not exist" });
         if (req.file !== undefined)
           await unlink(`./public/user/${req.file?.filename}`);
@@ -158,8 +155,6 @@ export const ProfileController: IController = {
         .getRepository(User)
         .findOneBy({ id });
       if (profileToUpdate === null) {
-        console.log("error 3");
-
         res.status(404).send({ error: "User not found" });
         if (req.file !== undefined)
           await unlink(`./public/user/${req.file?.filename}`);
@@ -180,8 +175,6 @@ export const ProfileController: IController = {
         currentUser?.id !== profileToUpdate.id &&
         currentUser?.role !== UserRole.ADMIN
       ) {
-        console.log("error 4");
-
         res.status(403).send({
           error: "You are not authorized to update this profile",
         });
@@ -210,8 +203,6 @@ export const ProfileController: IController = {
             /^(?=.*[a-zA-Z]{1,})(?=.*[\d]{0,})[a-zA-Z0-9]{3,20}$/
           )
         ) {
-          console.log("error 5");
-
           res.status(401).send({
             error: "Username must contain 3 to 20 characters and no symbol",
           });
@@ -228,8 +219,6 @@ export const ProfileController: IController = {
           .findOne({ where: { email } });
         if (emailAlreadyExist !== null) {
           if (emailAlreadyExist.email !== currentUser.email) {
-            console.log("error 6");
-
             res.status(409).send({ error: "Email already exists" });
             if (req.file !== undefined)
               await unlink(`./public/user/${req.file?.filename}`);
@@ -237,8 +226,6 @@ export const ProfileController: IController = {
           }
         }
         if (!validator.isEmail(email)) {
-          console.log("error 7");
-
           res.status(401).send({ error: "Incorrect email format" });
           if (req.file !== undefined)
             await unlink(`./public/user/${req.file?.filename}`);
@@ -287,12 +274,9 @@ export const ProfileController: IController = {
         try {
           await unlink(req.body.image);
         } catch (error) {
-          console.log("error 9");
-
           res.status(400).send({ error: "Cannot delete avatar" });
           return;
         }
-      console.log("error 10");
 
       res.status(400).send({ error: "Error while updating user" });
       return;

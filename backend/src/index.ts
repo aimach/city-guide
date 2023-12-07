@@ -9,6 +9,7 @@ import {
   profileRoutes,
   citiesRoutes,
   categoriesRoutes,
+  messageRoutes,
 } from "./routes";
 import helmet from "helmet";
 
@@ -46,13 +47,14 @@ app.use((req, res, next) => {
   );
   next();
 });
-app.use("/public", express.static(path.join(__dirname + "/../public")));
+app.use("/public", express.static(path.resolve(__dirname, "..", "public")));
 
 app.use("/api/auth", authRoutes);
 app.use("/api/profile", profileRoutes);
 app.use("/api/poi", poiRoutes);
 app.use("/api/cities", citiesRoutes);
 app.use("/api/categories", categoriesRoutes);
+app.use("/api/contact", messageRoutes);
 
 const start = async (): Promise<void> => {
   const port = 5000;

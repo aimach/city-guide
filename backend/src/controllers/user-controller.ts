@@ -56,13 +56,7 @@ export const AuthController: IController = {
           .status(409)
           .send({ errors: { email: "Cet email est déjà utilisé" } });
       }
-      if (existingEmail !== null) {
-        return res
-          .status(409)
-          .send({ errors: { email: "Cet email est déjà utilisé" } });
-      }
 
-      // Check if username is already taken
       // Check if username is already taken
 
       const existingUsername = await dataSource
@@ -167,7 +161,7 @@ export const AuthController: IController = {
   // LOGOUT
   logout: async (req: Request, res: Response) => {
     try {
-      res.clearCookie("jwt");
+      res.clearCookie("jwt", { httpOnly: true });
       return res.status(200).send("Sucess");
     } catch (error) {
       return res.status(500).send({ error: "Error" });
@@ -221,7 +215,6 @@ export const AuthController: IController = {
       const getUserById = await dataSource
         .getRepository(User)
         .findOneBy({ id });
-      console.log(getUserById);
 
       if (getUserById === null) {
         return res.status(404).send({ error: "Identifiants incorrects" });

@@ -17,9 +17,7 @@ import Profile from "./pages/Profile/Profile";
 import PoiListView from "./pages/PoiListView/PoiListView";
 import ProfileMenuMobile from "./pages/Profile/ProfileMenuMobile";
 import ProfileFavorite from "./pages/Profile/ProfileFavorites";
-
-// import About from "./pages/About/About";
-
+import ContactPage from "./pages/Contact/ContactPage";
 const Root = () => {
   return (
     <UserProvider>
@@ -47,6 +45,9 @@ function App() {
         <Route path="/contribution" element={<Contribution />} />
         <Route path="poi">
           <Route path=":cityId" index element={<PoiListView />} />
+        </Route>
+        <Route>
+          <Route path="/contact" element={<ContactPage />} />
         </Route>
       </Route>
     )

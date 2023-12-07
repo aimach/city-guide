@@ -1,12 +1,10 @@
 import { useNavigate } from "react-router-dom";
 import { IDisplayModals } from "../../../pages/Profile/Profile";
-import DeleteUserModalContent from "./DeleteUserModalContent";
 import style from "./Modal.module.scss";
-import ValidationModalContent from "./ValidationModalContent";
 import { deleteUser } from "../../../utils/api";
 import { useContext } from "react";
 import { UsersContext } from "../../../contexts/UserContext";
-import ErrorModalContent from "./ErrorModalContent";
+import ModalContent from "./ModalContent";
 interface Props {
   setDisplayModals: (arg0: IDisplayModals) => void;
   displayModals: IDisplayModals;
@@ -16,9 +14,24 @@ interface Props {
 const Modal = ({ setDisplayModals, displayModals, type }: Props) => {
   let modalContent;
 
-  if (type === "validation") modalContent = <ValidationModalContent />;
-  if (type === "deleteUser") modalContent = <DeleteUserModalContent />;
-  if (type === "error") modalContent = <ErrorModalContent />;
+  if (type === "validation")
+    modalContent = (
+      <ModalContent title={"Modifications enregistrées !"} paragraph={null} />
+    );
+  if (type === "deleteUser")
+    modalContent = (
+      <ModalContent
+        title={"Êtes-vous sûr de vouloir supprimer ce compte ?"}
+        paragraph={"Cette action est irréversible !"}
+      />
+    );
+  if (type === "error")
+    modalContent = (
+      <ModalContent
+        title={"Erreur lors du remplissage du formulaire"}
+        paragraph={null}
+      />
+    );
 
   const navigate = useNavigate();
   const { profile } = useContext(UsersContext);

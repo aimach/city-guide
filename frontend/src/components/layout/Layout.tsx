@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, useEffect, useState } from "react";
+import { PropsWithChildren } from "react";
 import { useLocation } from "react-router";
 import Header from "../common/header/Header";
 import Footer from "../common/footer/Footer";
