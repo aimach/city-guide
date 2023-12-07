@@ -111,15 +111,15 @@ const Register = () => {
 						<p className="error">{errors.password.message}</p>
 					)}
 
-					<input type="submit" value="Explorer" />
-					<Link to="/login">
-						Vous avez déjà un compte ? Connectez-vous ici !
-					</Link>
-					<span>Téléchargez l’application ici !</span>
-					<div id="logoStore-wrapper">
-						<img src="/appleDownload.svg" alt="Apple Store" />
-						<img src="/google-play-badge.png" alt="Google Store" />
-					</div>
+        <input type="submit" value="Explorer" />
+        <Link to="/auth/login">
+          Vous avez déjà un compte ? Connectez-vous ici !
+        </Link>
+        <span>Téléchargez l’application ici !</span>
+        <div id="logoStore-wrapper">
+          <img src="/appleDownload.svg" alt="Apple Store" />
+          <img src="/google-play-badge.png" alt="Google Store" />
+        </div>
 
 					{errors.root?.serverError && (
 						<p className="error">{errors.root.serverError.message}</p>

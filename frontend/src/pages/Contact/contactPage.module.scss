@@ -1,0 +1,121 @@
+@use "../../style/mixin" as m;
+@use "../../style/variable" as v;
+
+.contactPage {
+  color: white;
+}
+
+.contactHeader {
+  max-width: 750px;
+  margin: 0 auto;
+  text-align: center;
+
+  h1 {
+    font-family: v.$poppinsFont;
+    font-size: 48px;
+    font-weight: 200;
+    margin-top: 50px;
+  }
+
+  p {
+    margin-bottom: 2rem;
+  }
+}
+
+.contactForm {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 1250px;
+  margin: 0 auto;
+
+  .formGroup {
+    width: 100%;
+    margin-bottom: 1rem;
+    margin-top: 30px;
+
+    input,
+    textarea {
+      background-color: transparent;
+      border: 2px solid white;
+      border-radius: 4px;
+      width: calc(100% - 1rem);
+      padding: 16px 8px;
+      color: white;
+      font-family: v.$poppinsFont;
+    }
+
+    textarea {
+      resize: none;
+    }
+
+    label {
+      text-align: left;
+      margin-left: 0.5rem;
+      font-family: v.$poppinsFont;
+    }
+  }
+
+  .submitButton {
+    @include m.unbuttonize;
+    @include m.buttonColor(v.$secondary_color, v.$primary_color);
+    padding: 10px;
+    border-radius: 1rem;
+    margin-top: 30px;
+    font-family: v.$poppinsFont;
+    font-weight: 600;
+    &:hover {
+      @include m.buttonColor(v.$cream_color, v.$primary_color);
+      transition: background-color 0.4s ease;
+    }
+    .iconPlane {
+      position: relative;
+      padding-left: 20px;
+    }
+  }
+}
+
+.submitMessage {
+  font-family: v.$poppinsFont;
+  padding: 20px;
+}
+
+@media (max-width: 768px) {
+  .contactHeader {
+    h1 {
+      font-size: 24px;
+      margin-top: 25px;
+    }
+
+    p {
+      margin-bottom: 1rem;
+    }
+  }
+
+  .contactForm {
+    .formGroup {
+      margin-bottom: 0.5rem;
+      margin-top: 15px;
+
+      input,
+      textarea {
+        width: calc(100% - 2rem);
+        padding: 12px 8px;
+      }
+    }
+
+    .submitButton {
+      padding: 8px;
+      border-radius: 0.5rem;
+      margin-top: 15px;
+
+      .iconPlane {
+        padding-left: 15px;
+      }
+    }
+  }
+
+  .submitMessage {
+    padding: 10px;
+  }
+}
