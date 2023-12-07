@@ -1,11 +1,7 @@
 import style from "./header.module.scss";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faMap,
-  faMagnifyingGlass,
-  faUser,
-} from "@fortawesome/free-solid-svg-icons";
+import { faMap, faHouse, faUser } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import { useContext, useState } from "react";
 import { UsersContext } from "../../../contexts/UserContext";
@@ -25,6 +21,10 @@ const Header = ({ size }: headerProps) => {
   if (profile != null) {
     role = profile.role;
   }
+
+  const imageURL: string | undefined = profile?.image
+    ? profile?.image?.slice(1)
+    : undefined;
 
   // display profile menu
   const [displayProfileMenu, setDisplayProfileMenu] = useState(false);
@@ -90,7 +90,10 @@ const Header = ({ size }: headerProps) => {
                   }}
                 >
                   {profile?.image !== null ? (
-                    <img src={profile?.image} alt="avatar" />
+                    <img
+                      src={`http://localhost:5000${imageURL}`}
+                      alt="avatar"
+                    />
                   ) : (
                     profile?.username.substring(0, 1).toUpperCase()
                   )}
@@ -98,7 +101,7 @@ const Header = ({ size }: headerProps) => {
               )}
               {displayProfileMenu ? (
                 <div className={`${style.floatingMenu}`}>
-                  <Link to="/profile">
+                  <Link to="/profile/page">
                     <button
                       onClick={() => setDisplayProfileMenu(false)}
                       className="textFilter"
@@ -122,12 +125,18 @@ const Header = ({ size }: headerProps) => {
           </>
         ) : (
           <nav>
-            <FontAwesomeIcon icon={faMap} className={`${style.iconStyle}`} />
-            <FontAwesomeIcon
-              icon={faMagnifyingGlass}
-              className={`${style.iconStyle}`}
-            />
-            <FontAwesomeIcon icon={faUser} className={`${style.iconStyle}`} />
+            <Link to="/">
+              <FontAwesomeIcon icon={faMap} className={`${style.iconStyle}`} />
+            </Link>
+            <Link to="/">
+              <FontAwesomeIcon
+                icon={faHouse}
+                className={`${style.iconStyle}`}
+              />
+            </Link>
+            <Link to="/profile/menu">
+              <FontAwesomeIcon icon={faUser} className={`${style.iconStyle}`} />
+            </Link>
           </nav>
         )}
       </header>
