@@ -1,8 +1,8 @@
-import express from "express";
-import dataSource from "./dataSource";
-import path from "path";
-import cookieParser from "cookie-parser";
-import dotenv from "dotenv";
+import express from 'express';
+import dataSource from './dataSource';
+import path from 'path';
+import cookieParser from 'cookie-parser';
+import dotenv from 'dotenv';
 import {
   authRoutes,
   poiRoutes,
@@ -10,51 +10,51 @@ import {
   citiesRoutes,
   categoriesRoutes,
   messageRoutes,
-} from "./routes";
-import helmet from "helmet";
+} from './routes';
+import helmet from 'helmet';
 
 dotenv.config();
 
-const app = express();
+export const app = express();
 app.use(express.json());
 
 app.use(cookieParser());
 app.use(
   helmet({
-    crossOriginResourcePolicy: { policy: "cross-origin" },
+    crossOriginResourcePolicy: { policy: 'cross-origin' },
   })
 );
 app.use((req, res, next) => {
   const corsWhitelist = [
-    "http://localhost:3000",
-    "https://lamarr4.wns.wilders.dev",
+    'http://localhost:3000',
+    'https://lamarr4.wns.wilders.dev',
   ];
 
   if (
     req.headers.origin !== undefined &&
     corsWhitelist.includes(req.headers.origin)
   ) {
-    res.header("Access-Control-Allow-Origin", req.headers.origin);
+    res.header('Access-Control-Allow-Origin', req.headers.origin);
   }
-  res.setHeader("Access-Control-Allow-Credentials", "true");
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
   res.setHeader(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content, Accept, Content-Type, Authorization"
+    'Access-Control-Allow-Headers',
+    'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization'
   );
   res.setHeader(
-    "Access-Control-Allow-Methods",
-    "GET, POST, PUT, DELETE, PATCH, OPTIONS"
+    'Access-Control-Allow-Methods',
+    'GET, POST, PUT, DELETE, PATCH, OPTIONS'
   );
   next();
 });
-app.use("/public", express.static(path.resolve(__dirname, "..", "public")));
+app.use('/public', express.static(path.resolve(__dirname, '..', 'public')));
 
-app.use("/api/auth", authRoutes);
-app.use("/api/profile", profileRoutes);
-app.use("/api/poi", poiRoutes);
-app.use("/api/cities", citiesRoutes);
-app.use("/api/categories", categoriesRoutes);
-app.use("/api/contact", messageRoutes);
+app.use('/api/auth', authRoutes);
+app.use('/api/profile', profileRoutes);
+app.use('/api/poi', poiRoutes);
+app.use('/api/cities', citiesRoutes);
+app.use('/api/categories', categoriesRoutes);
+app.use('/api/contact', messageRoutes);
 
 const start = async (): Promise<void> => {
   const port = 5000;
