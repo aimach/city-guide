@@ -7,6 +7,7 @@ const Profil = () => {
   const handleFileButtonClick = () => {
     document.getElementById("imageAvatar")?.click();
   };
+
   return (
     <BackOfficeLayout>
       <Title name={"Profil"} icon={faUser} />
