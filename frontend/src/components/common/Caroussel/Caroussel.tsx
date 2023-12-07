@@ -98,7 +98,7 @@ const Caroussel = ({
       }
    };
 
-   const handleFavourite = (id: string | null) => {
+   const handleFavourite = (id: string | null, cardType: CardType) => {
       if (cardType === CardType.CITY && id != null) {
          handleUserFavouriteCities(id, userId, favouriteCities);
       }
