@@ -1,0 +1,192 @@
+@use "../../style/variable" as v;
+@use "../../style/mixin" as m;
+
+.profilePage {
+  color: v.$cream_color;
+}
+
+.formSection {
+  font-family: "Poppins", sans-serif;
+  @include m.flexLayout(flex-start, center);
+  flex-wrap: wrap;
+  padding-bottom: 3rem;
+  form {
+    @include m.flexLayout(flex-start, flex-start, row);
+    flex-wrap: wrap;
+    flex-grow: 3;
+    input,
+    textarea {
+      color: v.$primary_color;
+      font-family: "Comic Neue", cursive;
+      font-size: 1.1rem;
+      background-color: v.$white_color;
+      padding: 1rem;
+      border: 2px solid v.$secondary-color;
+      border-radius: 3rem;
+      width: 80%;
+      resize: none;
+      &[name="bio"] {
+        border-radius: 1.5rem;
+        height: 100%;
+        padding-right: 1rem;
+      }
+    }
+    input:disabled,
+    textarea:disabled {
+      background-color: v.$primary_color;
+      color: v.$cream_color;
+      border: 1px solid v.$cream_color;
+      & + .icon {
+        color: v.$cream_color;
+        cursor: pointer;
+      }
+    }
+    input[name="bio"] {
+      height: 100%;
+    }
+  }
+}
+
+.profileAvatarAndName {
+  font-family: "Poppins", sans-serif;
+  @include m.flexLayout(center, center, column);
+  gap: 0.5rem;
+  flex-grow: 1;
+}
+
+.avatarImg {
+  position: relative;
+  img,
+  div {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    border: 2px solid v.$secondary-color;
+  }
+  .imageOpacity {
+    opacity: 0.5;
+  }
+  div {
+    @include m.flexLayout(center, center);
+    font-size: xx-large;
+  }
+}
+
+.iconEditImg {
+  position: absolute;
+  top: 35%;
+  left: 35%;
+  height: 40px;
+  cursor: pointer;
+}
+
+.buttonSection {
+  @include m.flexLayout(center, center, column);
+  flex-grow: 1;
+  gap: 1rem;
+  button {
+    @include m.unbuttonize;
+    @include m.buttonSize(250px, 70px, 0.5rem);
+    @include m.buttonColor(v.$cream_color, red);
+    border: 1px solid red;
+    text-align: center;
+    cursor: pointer;
+  }
+}
+
+.formColumns {
+  flex-grow: 1;
+  &:last-child {
+    height: 100%;
+  }
+  & > div {
+    @include m.flexLayout(flex-start, flex-start, column);
+    gap: 1rem;
+    margin-bottom: 1rem;
+    position: relative;
+    .icon {
+      position: absolute;
+      color: v.$primary_color;
+      top: 60px;
+      right: 16%;
+      cursor: pointer;
+    }
+  }
+  &:last-child {
+    height: 300px;
+    & > div:last-child {
+      height: 70%;
+    }
+  }
+}
+
+.error {
+  color: red;
+  font-size: 0.8rem;
+  margin: 0;
+}
+
+.favoritesSection {
+  background-color: v.$cream_color;
+  padding: 3rem 0;
+  h3 {
+    text-align: center;
+    border-bottom: 1px solid v.$primary_color;
+  }
+  & > div {
+    padding-left: 3rem;
+    > p {
+      color: v.$primary_color;
+      padding: 1rem 0;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .profilePage {
+    margin: 2rem 0;
+  }
+  .formSection {
+    margin: 0 3rem;
+    form {
+      textarea[name="bio"] {
+        height: auto;
+      }
+    }
+  }
+  .favoritesSection {
+    div {
+      padding-left: 0;
+      @include m.flexLayout(center, center, column);
+      h4 {
+        padding-left: 1rem;
+      }
+      &:first-child {
+        @include m.flexLayout(center, center);
+        .filledHeart {
+          background-color: v.$secondary_color;
+          border-radius: 50%;
+          padding: 0.5rem;
+          width: 30px;
+          height: 30px;
+        }
+      }
+    }
+    .buttonContainer {
+      @include m.flexLayout(center, center, column);
+      gap: 1rem;
+      padding: 1rem;
+      button {
+        @include m.unbuttonize;
+        @include m.buttonSize(180px, 50px, 0.5rem);
+        @include m.buttonColor(v.$white_color, v.$gray_color_dark);
+        border: 2px solid v.$gray_color_dark;
+        text-align: center;
+        cursor: pointer;
+      }
+      .buttonSelected {
+        @include m.buttonColor(v.$primary_color, v.$white_color);
+      }
+    }
+  }
+}

@@ -3,62 +3,62 @@
 
 // Mobile
 @media only screen and (max-width: 768px) {
-	.logoHeader {
-		@include m.textStyle(v.$white_color, v.$poppinsFont, 24px, 700);
-	}
+  .logoHeader {
+    @include m.textStyle(v.$white_color, v.$poppinsFont, 24px, 700);
+  }
 
-	.subtitleCategory {
-		@include m.textStyle(v.$white_color, v.$poppinsFont, 20px, 700);
-	}
+  .subtitleCategory {
+    @include m.textStyle(v.$white_color, v.$poppinsFont, 20px, 700);
+  }
 
-	.profilName {
-		@include m.textStyle(v.$white_color, v.$poppinsFont, 18px, 700);
-	}
+  .profilName {
+    @include m.textStyle(v.$white_color, v.$poppinsFont, 18px, 700);
+  }
 
-	.logoFooter {
-		@include m.textStyle(v.$white_color, v.$poppinsFont, 18px, 600);
-	}
+  .logoFooter {
+    @include m.textStyle(v.$white_color, v.$poppinsFont, 18px, 600);
+  }
 
-	.textCard {
-		@include m.textStyle(v.$white_color, v.$poppinsFont, 24px, 600);
-	}
+  .textCard {
+    @include m.textStyle(v.$white_color, v.$poppinsFont, 24px, 600);
+  }
 
-	.textFilter {
-		@include m.textStyle(v.$white_color, v.$poppinsFont, 16px, 400);
-	}
+  .textFilter {
+    @include m.textStyle(v.$white_color, v.$poppinsFont, 16px, 400);
+  }
 
-	.textButton {
-		@include m.textStyle(v.$white_color, v.$poppinsFont, 14px, 600);
-	}
+  .textButton {
+    @include m.textStyle(v.$white_color, v.$poppinsFont, 14px, 600);
+  }
 
-	.textSearch {
-		@include m.textStyle(v.$white_color, v.$poppinsFont, 16px, 500);
-	}
+  .textSearch {
+    @include m.textStyle(v.$white_color, v.$poppinsFont, 16px, 500);
+  }
 
-	.textItemsFilter {
-		@include m.textStyle(v.$white_color, v.$poppinsFont, 12px, 500);
-	}
+  .textItemsFilter {
+    @include m.textStyle(v.$white_color, v.$poppinsFont, 12px, 500);
+  }
 
-	.titleResearch {
-		@include m.textStyle(v.$white_color, v.$comicNeueFont, 36px, 700);
-	}
+  .titleResearch {
+    @include m.textStyle(v.$white_color, v.$comicNeueFont, 36px, 700);
+  }
 
-	.presentationText {
-		@include m.textStyle(v.$white_color, v.$comicNeueFont, 24px, 700);
-	}
+  .presentationText {
+    @include m.textStyle(v.$white_color, v.$comicNeueFont, 24px, 700);
+  }
 
-	.titleCard {
-		@include m.textStyle(v.$white_color, v.$comicNeueFont, 24px, 700);
-	}
+  .titleCard {
+    @include m.textStyle(v.$white_color, v.$comicNeueFont, 24px, 700);
+  }
 
-	.inputSearchText {
-		@include m.textStyle(v.$white_color, v.$comicNeueFont, 24px, 700);
-	}
+  .inputSearchText {
+    @include m.textStyle(v.$white_color, v.$comicNeueFont, 24px, 700);
+  }
 
-	.buttonHomePage {
-		@include m.buttonSize(200px, 56px, unset);
-	}
-	.titleFooter {
-		@include m.textStyle(v.$cream_color, v.$poppinsFont, 32px, 700);
-	}
+  .buttonHomePage {
+    @include m.buttonSize(200px, 56px, unset);
+  }
+  .titleFooter {
+    @include m.textStyle(v.$cream_color, v.$poppinsFont, 32px, 700);
+  }
 }

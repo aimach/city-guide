@@ -16,6 +16,7 @@ export interface IController {
 }
 
 export const AuthController: IController = {
+  // REGISTER
   register: async (req: Request, res: Response) => {
     const { username, email, password } = req.body;
 
@@ -150,7 +151,6 @@ export const AuthController: IController = {
           }
         );
         res.cookie("jwt", token, { httpOnly: true });
-
         return res.status(200).send({ token });
       }
     } catch (error) {
@@ -158,12 +158,94 @@ export const AuthController: IController = {
     }
   },
 
+  // LOGOUT
   logout: async (req: Request, res: Response) => {
     try {
       res.clearCookie("jwt", { httpOnly: true });
       return res.status(200).send("Sucess");
     } catch (error) {
       return res.status(500).send({ error: "Error" });
+    }
+  },
+
+  // NEW PASSWORD
+  updatePassword: async (req: Request, res: Response) => {
+    const { id } = req.params;
+    const { originalPassword, newPassword } = req.body;
+
+    const checkIfNotEmpty = async (value: string): Promise<void> => {
+      if (validator.isEmpty(value, { ignore_whitespace: true })) {
+        res.status(400).send({
+          error: `Field must not be empty`,
+        });
+      }
+    };
+
+    try {
+      // On liste les clés de l'objet req.body.
+      const inputs: string[] = [originalPassword, newPassword];
+
+      inputs.forEach(async (value) => {
+        if (value !== null) await checkIfNotEmpty(value);
+      });
+
+      if (
+        !validator.isStrongPassword(originalPassword, {
+          minLength: 8,
+          minNumbers: 1,
+          minUppercase: 1,
+          minSymbols: 1,
+        }) ||
+        !validator.isStrongPassword(newPassword, {
+          minLength: 8,
+          minNumbers: 1,
+          minUppercase: 1,
+          minSymbols: 1,
+        })
+      ) {
+        return res.status(401).send({
+          errors: {
+            password:
+              "Le mot de passe doit contenir au moins 8 caractères, 1 chiffre, une majuscule et 1 symbole",
+          },
+        });
+      }
+
+      // retrieve user by id
+      const getUserById = await dataSource
+        .getRepository(User)
+        .findOneBy({ id });
+
+      if (getUserById === null) {
+        return res.status(404).send({ error: "Identifiants incorrects" });
+      }
+
+      const validPassword = await bcrypt.compare(
+        originalPassword,
+        getUserById.password
+      );
+
+      if (!validPassword) {
+        return res
+          .status(400)
+          .send({ error: "Le mot de passe actuel est incorrect" });
+      } else {
+        const hashedPassword = await hash(newPassword, 10);
+        const newUser = { ...getUserById, password: hashedPassword };
+        await dataSource.getRepository(User).save(newUser);
+        const token = sign(
+          { userId: newUser.id, role: newUser.role },
+          TOKEN as string,
+          {
+            expiresIn: "1h",
+          }
+        );
+        res.cookie("jwt", token, { httpOnly: true });
+
+        return res.status(201).send({ token });
+      }
+    } catch (error) {
+      console.log(error);
     }
   },
 };
