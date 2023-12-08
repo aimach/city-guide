@@ -4,8 +4,7 @@
 
 .container {
     @extend %card;
-
-    width: 333px;
+    max-width: 333px;
     height: 221px;
     border-radius: 20px;
     position: relative;

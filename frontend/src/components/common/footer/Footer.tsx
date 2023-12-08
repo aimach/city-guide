@@ -29,7 +29,9 @@ const Footer = () => {
               <div>
                 <h4 className={`${styles.subtitleFooter} textCard`}>Contact</h4>
                 <ul className={`textSearch`}>
-                  <li>Nous contacter</li>
+                  <Link to="/contact">
+                    <li>Nous contacter</li>
+                  </Link>
                   <Link to="/faq">
                     <li>FAQ</li>
                   </Link>
