@@ -13,6 +13,7 @@ import { UserProvider } from "./contexts/UserContext";
 import * as React from "react";
 import Contribution from "./pages/Contribution/Contribution";
 import Layout from "./components/layout/Layout";
+import FaqPage from "./pages/Faq/FaqPage";
 import Profile from "./pages/Profile/Profile";
 import PoiListView from "./pages/PoiListView/PoiListView";
 import ProfileMenuMobile from "./pages/Profile/ProfileMenuMobile";
@@ -47,6 +48,7 @@ function App() {
           <Route path=":cityId" index element={<PoiListView />} />
         </Route>
         <Route>
+          <Route path="/faq" element={<FaqPage />} />
           <Route path="/contact" element={<ContactPage />} />
         </Route>
       </Route>

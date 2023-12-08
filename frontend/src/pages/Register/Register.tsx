@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faAt, faKey } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
-import Layout from "../../components/layout/Layout";
+import useWindowDimensions from "../../utils/hooks/useWindowDimensions";
 
 export interface FormProps {
 	email: string;
@@ -26,7 +26,8 @@ const Register = () => {
 		},
 	});
 
-	const navigate = useNavigate();
+  const navigate = useNavigate();
+  const windowSize = useWindowDimensions();
 
 	const onSubmit = async (userData: FormProps) => {
 		try {
@@ -64,12 +65,13 @@ const Register = () => {
 		}
 	};
 
-	return (
-		<Layout>
-			<section className={styles.section_register}>
-				<h2 className={styles.h2_register}>Nous rejoindre</h2>
-				<form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
-					<h3>Inscription</h3>
+  return (
+    <section className={styles.section_register}>
+      {windowSize > 768 ? (
+        <h2 className={styles.h2_register}>Nous rejoindre</h2>
+      ) : null}
+      <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
+        <h3>Inscription</h3>
 
 					<div className="input-wrapper">
 						<FontAwesomeIcon icon={faAt} className="icon" />
@@ -115,11 +117,15 @@ const Register = () => {
         <Link to="/auth/login">
           Vous avez déjà un compte ? Connectez-vous ici !
         </Link>
-        <span>Téléchargez l’application ici !</span>
-        <div id="logoStore-wrapper">
-          <img src="/appleDownload.svg" alt="Apple Store" />
-          <img src="/google-play-badge.png" alt="Google Store" />
-        </div>
+        {windowSize > 768 ? (
+          <>
+            <span>Téléchargez l’application ici !</span>
+            <div id="logoStore-wrapper">
+              <img src="/appleDownload.svg" alt="Apple Store" />
+              <img src="/google-play-badge.png" alt="Google Store" />
+            </div>
+          </>
+        ) : null}
 
 					{errors.root?.serverError && (
 						<p className="error">{errors.root.serverError.message}</p>
