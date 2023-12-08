@@ -50,9 +50,9 @@ const HomePage = () => {
             </div>
           </section>
           <section>
-            {/* <div className={`${styles.mapSection}`}>
+            <div className={`${styles.mapSection}`}>
               <InteractiveMap />
-            </div> */}
+            </div>
             <div className={`${styles.pictoPlane}`}>
               <img src="/picto_avion.png" alt="picto avion" />
             </div>

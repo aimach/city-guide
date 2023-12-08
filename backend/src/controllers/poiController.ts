@@ -113,6 +113,7 @@ export const PoiController: IController = {
       const {
         description,
         address,
+        phoneNumber,
         isAccepted,
         name,
         image,
@@ -137,8 +138,9 @@ export const PoiController: IController = {
         .findOne({ where: { id: userId } });
 
       if (
-        cityOfPoi?.userAdminCity.id !== userId ||
-        currentUser?.role !== UserRole.ADMIN
+        cityOfPoi?.userAdminCity.id !== userId &&
+        currentUser?.role !== UserRole.ADMIN &&
+        currentUser?.role !== UserRole.ADMIN_CITY
       ) {
         res.status(403).send({
           error: "You are not authorized to create a point of interest",
@@ -198,6 +200,12 @@ export const PoiController: IController = {
         if (req.file !== undefined)
           await unlink(`./public/poi/${req.file.filename}`);
         return;
+      }
+
+      // check phone number
+
+      if (!validator.isNumeric(phoneNumber)) {
+        res.status(400).send({ error: "Incorrect format of phone number" });
       }
 
       // check if foreign key are uuid type
@@ -290,6 +298,7 @@ export const PoiController: IController = {
       res.status(201).send("Created point of interest");
     } catch (err) {
       res.status(400).send({ error: "Something went wrong" });
+      console.log({ err });
       if (req.file !== undefined)
         await unlink(`./public/poi/${req.file.filename}`);
     }
@@ -302,6 +311,7 @@ export const PoiController: IController = {
       const {
         description,
         address,
+        phoneNumber,
         isAccepted,
         name,
         category,
@@ -374,6 +384,15 @@ export const PoiController: IController = {
         if (req.file !== undefined)
           await unlink(`./public/poi/${req.file.filename}`);
 
+        return;
+      }
+
+      // check phone number
+
+      if (!validator.isNumeric(phoneNumber)) {
+        res.status(400).send({ error: "Incorrect format of phone number" });
+        if (req.file !== undefined)
+          await unlink(`./public/poi/${req.file.filename}`);
         return;
       }
 

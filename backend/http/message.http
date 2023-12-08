@@ -1,0 +1,9 @@
+
+POST http://localhost:5000/api/contact
+Content-Type: application/json
+
+{
+  "email": "naji@gmail.com", 
+  "title": "test", 
+  "message": "test"
+}

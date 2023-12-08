@@ -15,8 +15,13 @@
     "@types/react": "^18.2.7",
     "@types/react-dom": "^18.2.4",
     "@types/react-fontawesome": "^1.6.5",
+<<<<<<< HEAD
     "@types/react-leaflet-markercluster": "^3.0.4",
     "axios": "^1.6.1",
+=======
+    "joi": "^17.11.0",
+    "@types/react-router-hash-link": "^2.4.9",
+>>>>>>> c085a77d2c20bf63a311ad221e3fb9c4010571a8
     "leaflet": "^1.9.4",
     "leaflet-geosearch": "^3.11.0",
     "react": "^18.2.0",
@@ -26,6 +31,7 @@
     "react-leaflet": "^4.2.1",
     "react-leaflet-cluster": "^2.1.0",
     "react-router-dom": "^6.15.0",
+    "react-router-hash-link": "^2.4.3",
     "react-scripts": "5.0.1",
     "react-slick": "^0.29.0",
     "saas": "^1.0.0",
