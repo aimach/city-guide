@@ -2,10 +2,7 @@ import { Link } from "react-router-dom";
 import FilterSearch from "../../components/filterSearch/FilterSearch";
 import styles from "./SearchPOI.module.scss";
 import { useState, useEffect } from "react";
-<<<<<<< HEAD
 import Card from "../../components/common/card/Card";
-=======
->>>>>>> c085a77d2c20bf63a311ad221e3fb9c4010571a8
 import Caroussel from "../../components/common/Caroussel/Caroussel";
 import { CardType, City } from "../../utils/types";
 
@@ -28,20 +25,6 @@ const SearchPOI = () => {
     getCities();
   }, []);
 
-<<<<<<< HEAD
-  useEffect(() => {
-    if (filterSearch) {
-      setCitiesToBeShown(
-        totalCities.filter((city) =>
-          city.name.toLowerCase().startsWith(filterSearch.toLowerCase())
-        )
-      );
-    } else {
-      setCitiesToBeShown(totalCities.slice(0, 4) ?? []);
-    }
-  }, [filterSearch, totalCities]);
-
-=======
   const allCitiesWithPoi = totalCities.filter(
     (city) => city.poi != null && city.poi.length > 0
   );
@@ -58,7 +41,6 @@ const SearchPOI = () => {
     }
   }, [filterSearch, totalCities]);
 
->>>>>>> c085a77d2c20bf63a311ad221e3fb9c4010571a8
   return (
     <>
       <div className={styles.mainSearchPOI}>
@@ -81,21 +63,13 @@ const SearchPOI = () => {
           />
           <Link
             className={`${styles.buttonSearchPoi} textButton`}
-<<<<<<< HEAD
-            to={`/map?search=${filterSearch}`}
-=======
             to={`/carte?search=${filterSearch}`}
->>>>>>> c085a77d2c20bf63a311ad221e3fb9c4010571a8
           >
             Voir la carte
           </Link>
         </div>
         <div className={styles.separatingBorder}></div>
-<<<<<<< HEAD
-        <section className={styles.filterSearchComponent}>
-=======
         <section className={styles.filterSearchComponent} id="cities">
->>>>>>> c085a77d2c20bf63a311ad221e3fb9c4010571a8
           <Caroussel
             title="Villes"
             data={citiesToBeShown}
