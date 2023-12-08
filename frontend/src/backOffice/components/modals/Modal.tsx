@@ -3,51 +3,123 @@ import styles from "./Modal.module.scss";
 import { City } from "./../../../utils/types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { updateCity } from "../../../utils/api";
 
 interface Props {
 	city: City;
 	onClose: () => void;
-	// isOpen: string | null;
 	isOpen: boolean;
-	// isOpen: () => void;
 }
+
+export interface IFormData {
+	name: string;
+	coordinates: number[];
+	image: string;
+	userAdminCity: string;
+}
+
 const Modal = ({ city, onClose, isOpen }: Props) => {
-	// const [cities, setCities] = useState<City[]>([]);
 	const { id, name, coordinates, userAdminCity } = city;
-	// const [inputValue, setInputValue] = useState("");
+	const [formData, setFormData] = useState<IFormData>({
+		name: city.name,
+		coordinates: city.coordinates.coordinates,
+		image: city.image,
+		userAdminCity: city.userAdminCity ? city.userAdminCity.username : "",
+	});
 
-	// maj changement de valeur dans les input
-	// const handleInputChange = (event: any) => {
-	// 	console.log(event.target.value);
-	// 	console.log(setInputValue(event.target.value));
-	// 	setInputValue(event.target.value);
-	// };
+	const handleInputChange = (value: any, key: string) => {
+		if (key === "coordinates[0]") {
+			setFormData({
+				...formData,
+				coordinates: [value, formData.coordinates[1]],
+			});
+		} else if (key === "coordinates[1]") {
+			setFormData({
+				...formData,
+				coordinates: [formData.coordinates[0], value],
+			});
+		} else {
+			setFormData({ ...formData, [key]: value });
+		}
+	};
+	const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+		event.preventDefault();
+		console.log("submited");
+		updateCity(formData, city.id as string);
+	};
 
-	// envoi des modifications
-	// const handleSubmit = (event: any) => {
-	// 	event.preventDefault();
-	// 	console.log("Données soumises :", event, inputValue);
-	// 	// requete fetch POST
-	// };
 	return (
 		<>
 			{isOpen && (
 				<section className={styles.modalContainer}>
-					<button onClick={onClose}>
+					<button onClick={onClose} className={styles.closeButton}>
 						<FontAwesomeIcon icon={faXmark}></FontAwesomeIcon>
 					</button>
-					<p>{city.name}</p>
-					{/* <form onSubmit={handleSubmit}>
-					<label htmlFor="">Nom ville</label>
-					<input
-						type="text"
-						value={city.name}
-						// onChange={handleInputChange(city.name)}
-						onChange={handleInputChange}
-					/>
-				</form>
-				<button type="submit">Valider</button> */}
+					<form onSubmit={handleSubmit}>
+						<div className={styles.simpleInput}>
+							<label htmlFor="">Nom ville</label>
+							<input
+								type="text"
+								value={formData.name}
+								className={styles.inputModal}
+								onChange={(event) =>
+									handleInputChange(event.target.value, "name")
+								}
+							/>
+						</div>
+						<label htmlFor="">Coordonnées GPS</label>
+						<div className={styles.doubleInput}>
+							<div>
+								<label htmlFor="">Latitude</label>
+								<input
+									type="text"
+									value={formData.coordinates[0]}
+									className={styles.inputModal}
+									onChange={(event) =>
+										handleInputChange(event.target.value, "coordinates[0]")
+									}
+								/>
+							</div>
+							<div>
+								<label htmlFor="">Longitude</label>
+								<input
+									type="text"
+									value={formData.coordinates[1]}
+									className={styles.inputModal}
+									onChange={(event) =>
+										handleInputChange(event.target.value, "coordinates[1]")
+									}
+								/>
+							</div>
+						</div>
+						<div className={styles.simpleInput}>
+							<label htmlFor="">Image</label>
+							<input
+								type="text"
+								// value={city.image}
+								value={formData.image}
+								className={styles.inputModal}
+								onChange={(event) =>
+									handleInputChange(event.target.value, "image")
+								}
+							/>
+						</div>
+						<div className={styles.simpleInput}>
+							<label htmlFor="">Administrateur de ville</label>
+							<input
+								type="text"
+								value={formData.userAdminCity}
+								className={styles.inputModal}
+								onChange={(event) =>
+									handleInputChange(event.target.value, "userAdminCity")
+								}
+							/>
+						</div>
+						<button type="submit" className={styles.buttonModal}>
+							Valider
+						</button>
+					</form>
 				</section>
 			)}
 		</>

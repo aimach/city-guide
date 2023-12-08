@@ -1,8 +1,7 @@
 import { City } from "./types";
+import { IFormData } from "../backOffice/components/modals/Modal";
 
 const callRestApi = async (
-	// pour simplifier les callAPI - les fonctions en rapport avec l'api placé ici
-	// pb on ne peut pas mettre de state ici car ce n'est pa sun fichier tsx.
 	method: string,
 	path: string,
 	body?: any,
@@ -123,5 +122,26 @@ export const removeFavouritePoiToUser = async (
 		return data;
 	} catch (error) {
 		console.log("delete error", error);
+	}
+};
+
+// UPDATE CITY
+export const updateCity = async (
+	body: IFormData,
+	id: string
+): Promise<void> => {
+	try {
+		const response = await fetch(`http://localhost:5000/api/cities/${id}`, {
+			method: "PUT",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			credentials: "include",
+			body: JSON.stringify(body),
+		});
+		const data = await response.json();
+		return data;
+	} catch (error) {
+		console.log("update error", error);
 	}
 };
