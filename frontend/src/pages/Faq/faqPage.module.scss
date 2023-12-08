@@ -27,6 +27,7 @@ section {
   font-family: v.$poppinsFont;
   color: v.$primary_color;
   text-align: left;
+  margin-left: 50px;
 }
 
 .faqHeader {
@@ -36,10 +37,12 @@ section {
 
 details {
   margin-bottom: 10px;
-  border: 1px solid v.$secondary_color;
+  border: 1px solid v.$primary_color;
   padding: 5px;
   border-radius: 5px;
   position: relative;
+  margin-left: 50px;
+  margin-right: 50px;
 
   summary {
     font-weight: bold;
