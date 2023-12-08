@@ -9,8 +9,7 @@ COPY package.json package.json
 COPY package-lock.json package-lock.json
 COPY tsconfig.json ./
 
-
-RUN npm install --verbose
+RUN npm install
 
 COPY src src
 COPY scss.d.ts scss.d.ts
