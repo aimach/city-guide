@@ -7,63 +7,63 @@ import { Link } from "react-router-dom";
 import useWindowDimensions from "../../utils/hooks/useWindowDimensions";
 
 export interface FormProps {
-	email: string;
-	password: string;
-	username: string;
+  email: string;
+  password: string;
+  username: string;
 }
 
 const Register = () => {
-	const {
-		handleSubmit,
-		register,
-		setError,
-		formState: { errors },
-	} = useForm<FormProps>({
-		defaultValues: {
-			email: "",
-			username: "",
-			password: "",
-		},
-	});
+  const {
+    handleSubmit,
+    register,
+    setError,
+    formState: { errors },
+  } = useForm<FormProps>({
+    defaultValues: {
+      email: "",
+      username: "",
+      password: "",
+    },
+  });
 
   const navigate = useNavigate();
   const windowSize = useWindowDimensions();
 
-	const onSubmit = async (userData: FormProps) => {
-		try {
-			const response = await fetch("http://localhost:5000/api/auth/register", {
-				method: "POST",
-				credentials: "include",
-				headers: {
-					"Content-Type": "application/json",
-					Accept: "application/json",
-				},
-				body: JSON.stringify(userData),
-			});
+  const onSubmit = async (userData: FormProps) => {
+    try {
+      const response = await fetch("http://localhost:5000/api/auth/register", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify(userData),
+      });
 
-			const data = await response.json();
+      const data = await response.json();
 
-			console.log(data);
-			if (response.status !== 201) {
-				// On gère l'erreur à ce niveau
-				// Object.keys(data.errors) = ['email', 'username', 'password']
-				// Pour chaque paramètre de data.errors, on va afficher le message d'erreur dans le champ correspondant
+      console.log(data);
+      if (response.status !== 201) {
+        // On gère l'erreur à ce niveau
+        // Object.keys(data.errors) = ['email', 'username', 'password']
+        // Pour chaque paramètre de data.errors, on va afficher le message d'erreur dans le champ correspondant
 
-				Object.keys(data.errors).forEach((error) => {
-					setError(error as keyof FormProps, {
-						message: data.errors[error],
-					});
-				});
-				return;
-			} else {
-				navigate("/");
-			}
+        Object.keys(data.errors).forEach((error) => {
+          setError(error as keyof FormProps, {
+            message: data.errors[error],
+          });
+        });
+        return;
+      } else {
+        navigate("/");
+      }
 
-			// Handle other cases here
-		} catch (error: any) {
-			console.log("error", error.message);
-		}
-	};
+      // Handle other cases here
+    } catch (error: any) {
+      console.log("error", error.message);
+    }
+  };
 
   return (
     <section className={styles.section_register}>
@@ -73,45 +73,41 @@ const Register = () => {
       <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
         <h3>Inscription</h3>
 
-					<div className="input-wrapper">
-						<FontAwesomeIcon icon={faAt} className="icon" />
-						<input
-							type="text"
-							placeholder="Adresse mail"
-							{...register("email", {
-								required: "Vous devez renseigner ce champ",
-							})}
-						/>
-					</div>
-					{errors.email && <p className="error">{errors.email.message}</p>}
+        <div className="input-wrapper">
+          <FontAwesomeIcon icon={faAt} className="icon" />
+          <input
+            type="text"
+            placeholder="Adresse mail"
+            {...register("email", {
+              required: "Vous devez renseigner ce champ",
+            })}
+          />
+        </div>
+        {errors.email && <p className="error">{errors.email.message}</p>}
 
-					<div className="input-wrapper">
-						<FontAwesomeIcon icon={faUser} className="icon" />
-						<input
-							type="text"
-							placeholder="Nom d'utilisateur"
-							{...register("username", {
-								required: "Vous devez renseigner ce champ",
-							})}
-						/>
-					</div>
-					{errors.username && (
-						<p className="error">{errors.username.message}</p>
-					)}
+        <div className="input-wrapper">
+          <FontAwesomeIcon icon={faUser} className="icon" />
+          <input
+            type="text"
+            placeholder="Nom d'utilisateur"
+            {...register("username", {
+              required: "Vous devez renseigner ce champ",
+            })}
+          />
+        </div>
+        {errors.username && <p className="error">{errors.username.message}</p>}
 
-					<div className="input-wrapper">
-						<FontAwesomeIcon icon={faKey} className="icon" />
-						<input
-							type="password"
-							placeholder="Mot de passe"
-							{...register("password", {
-								required: "Vous devez renseigner ce champ",
-							})}
-						/>
-					</div>
-					{errors.password && (
-						<p className="error">{errors.password.message}</p>
-					)}
+        <div className="input-wrapper">
+          <FontAwesomeIcon icon={faKey} className="icon" />
+          <input
+            type="password"
+            placeholder="Mot de passe"
+            {...register("password", {
+              required: "Vous devez renseigner ce champ",
+            })}
+          />
+        </div>
+        {errors.password && <p className="error">{errors.password.message}</p>}
 
         <input type="submit" value="Explorer" />
         <Link to="/auth/login">
@@ -127,13 +123,12 @@ const Register = () => {
           </>
         ) : null}
 
-					{errors.root?.serverError && (
-						<p className="error">{errors.root.serverError.message}</p>
-					)}
-				</form>
-			</section>
-		</Layout>
-	);
+        {errors.root?.serverError && (
+          <p className="error">{errors.root.serverError.message}</p>
+        )}
+      </form>
+    </section>
+  );
 };
 
 export default Register;
