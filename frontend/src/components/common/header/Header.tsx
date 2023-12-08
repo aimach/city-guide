@@ -72,6 +72,16 @@ const Header = ({ size }: headerProps) => {
 										</Link>
 									</li>
 								) : null}
+								{role === Role.ADMIN ? (
+									<li>
+										<Link
+											to="/dashboard"
+											onClick={() => setDisplayProfileMenu(false)}
+										>
+											Dashboard
+										</Link>
+									</li>
+								) : null}
 							</ul>
 							{role === Role.VISITOR ? (
 								<button className={`${style.buttonHeader} textButton`}>
