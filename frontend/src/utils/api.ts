@@ -1,4 +1,3 @@
-import { City } from "./types";
 import { IFormData } from "../backOffice/components/modals/Modal";
 import Joi from "joi";
 
