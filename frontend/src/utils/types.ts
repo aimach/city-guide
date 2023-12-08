@@ -32,6 +32,7 @@ export type User = {
 	id: string | null;
 	username: string;
 	email: string;
+	bio: string | null;
 	image: string | null;
 	role: Role;
 	city: string | null;

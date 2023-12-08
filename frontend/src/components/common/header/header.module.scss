@@ -99,6 +99,7 @@
 	.headerMobile {
 		position: fixed;
 		bottom: 0;
+		z-index: 2;
 		width: 100%;
 		background-color: v.$white_color;
 		border-radius: 0.5rem 0.5rem 0 0;

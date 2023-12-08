@@ -16,8 +16,6 @@ const HomePage = () => {
 		window.addEventListener("resize", updateDimension);
 	}, [windowSize]);
 
-	// On vérifie si l'utilisateur est connecté.
-
 	return (
 		<>
 			{windowSize > 768 ? (
@@ -59,9 +57,6 @@ const HomePage = () => {
 					>
 						Explorez
 					</button>
-					<h2 className="subtitleCategoryDark">
-						Trouvez votre point d'intérêt !
-					</h2>
 					<SearchPOI />
 				</section>
 			)}

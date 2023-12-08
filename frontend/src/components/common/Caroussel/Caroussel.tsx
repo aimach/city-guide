@@ -1,4 +1,4 @@
-import { useContext, useRef, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 import { CardType, City, DataType, Poi } from "../../../utils/types";
 import styles from "./caroussel.module.scss";
 import Card from "../card/Card";
@@ -128,7 +128,7 @@ const Caroussel = ({
 	const selectActionOnCardClick = (id: string, name: string) => {
 		switch (cardType) {
 			case CardType.CITY:
-				navigate(`poi/${id}`);
+				navigate(`/poi/${id}`);
 				break;
 			case CardType.CATEGORY:
 				if (currentCity != null) {
@@ -220,6 +220,7 @@ const Caroussel = ({
 						{data.map((item) => {
 							return (
 								<PoiView
+									key={item.id}
 									poi={item as Poi}
 									modaleOpen={poiModaleOpen}
 									openOnClick={openModalePoi}
@@ -236,18 +237,16 @@ const Caroussel = ({
 					<div className={styles.cardsContainer}>
 						{data.map((item) => {
 							return (
-								<>
-									<Card
-										data={item}
-										key={item.id}
-										cardType={cardType}
-										onClick={() => selectActionOnCardClick(item.id!, item.name)}
-										categorySelected={categorySelected}
-										currentCity={currentCity}
-										handleFavourite={handleFavourite}
-										isLiked={isLiked}
-									/>
-								</>
+								<Card
+									data={item}
+									key={item.id}
+									cardType={cardType}
+									onClick={() => selectActionOnCardClick(item.id!, item.name)}
+									categorySelected={categorySelected}
+									currentCity={currentCity}
+									handleFavourite={handleFavourite}
+									isLiked={isLiked}
+								/>
 							);
 						})}
 					</div>
