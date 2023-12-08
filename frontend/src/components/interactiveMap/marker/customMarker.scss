@@ -1,9 +1,12 @@
 @import '../../../style/variable';
 
 .popup--container {
+    left: -162px !important;
+    bottom: 40px !important;
     .popup-image {
             width: 100%;
-            height: auto;
+            max-height: 200px;
+            border-radius: 20px;
         }
     h3 {
         font-size: 32px;
@@ -32,8 +35,8 @@
             color: $primary_color;
         }
 
-        h4:not(:first-of-type) {
-            margin: 1em 0;
+        h4:not(h4:first-of-type) {
+            margin: 0.5em 0;
         }
 
 
@@ -41,6 +44,9 @@
         p {
             margin: 0;
         }
+    
     }
+
+     
  
 }

@@ -1,4 +1,4 @@
-import { Marker, Popup } from "react-leaflet";
+import { Marker, Popup, useMap } from "react-leaflet";
 import L, { LatLngTuple } from "leaflet";
 import "./customMarker.scss";
 // @ts-ignore
@@ -22,10 +22,20 @@ const CustomMarker = ({
   const customIcon = new L.Icon({
     iconUrl: iconSVG,
     iconSize: [50, 50],
-    iconAnchor: [25, 0],
+    iconAnchor: [12, 50],
   });
+  const map = useMap();
+
   return (
-    <Marker position={position} icon={customIcon}>
+    <Marker
+      position={position}
+      icon={customIcon}
+      eventHandlers={{
+        click: () => {
+          map.setView([position[0] + 0.02, position[1]], 13);
+        },
+      }}
+    >
       <Popup className="popup--container">
         <img src={image} alt={name} className="popup-image" />
         <h3>{name}</h3>

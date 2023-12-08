@@ -5,7 +5,7 @@
 
 .headerDesktop {
   @include m.flexLayout(space-between, center);
-  padding: 2rem;
+  padding: 0 2rem;
   //position: sticky;
   top: 0;
   z-index: 10;

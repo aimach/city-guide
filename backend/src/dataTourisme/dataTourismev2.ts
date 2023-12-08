@@ -20,7 +20,7 @@ type FormattedPoi = {
 
 async function loadDataPoi(
   // from: number = 0,
-  size: number = 10
+  size: number = 50
 ): Promise<FormattedPoi[]> {
   const graphqlQuery = `
 query getAllPOI	 {
@@ -107,9 +107,9 @@ query getAllPOI	 {
         : "Non renseignée";
     // IMAGE POI
 
-    //  const imagePOI = {
-    //   responseAPI.hasRepresentation
-    //  }
+    // const imagePOI =
+    //   responseAPI.hasMainRepresentation.ebucore_hasRelatedResource
+    //     .ebucore_locator;
 
     // On pousse tout les éléments récupérés sur l'API data tourisme dans notre tableau
     formattedPoi.push({
@@ -120,10 +120,9 @@ query getAllPOI	 {
       // image: "https://picsum.photos/200/300",
       image: "https://picsum.photos/200/300",
       phoneNumber: 0,
-      is_accepted: false,
+      is_accepted: true,
     });
   }
-  console.log(formattedPoi);
 
   return formattedPoi;
 }
