@@ -3,6 +3,8 @@ import { useParams } from 'react-router-dom';
 import { CardType, Category, City, Poi } from '../../utils/types';
 import Caroussel from '../../components/common/Caroussel/Caroussel';
 import styles from './poiListView.module.scss';
+import { FaArrowLeftLong } from 'react-icons/fa6';
+import { HashLink } from 'react-router-hash-link';
 
 const PoiListView = () => {
    const { cityId } = useParams();
@@ -32,6 +34,7 @@ const PoiListView = () => {
          ?.poi!.filter((poi) => poi.isAccepted === true)
          .map((poi) => poi.category) ?? [];
 
+   // Filter categories to avoid duplicates
    const filterCategories = () => {
       poiCategories.forEach((cat) => {
          if (!categories.find((category) => category.id === cat.id)) {
@@ -68,7 +71,15 @@ const PoiListView = () => {
    return (
       <section className={styles.container}>
          <div>
-            <h1>{currentCity?.name}</h1>
+            <div className={styles.header}>
+               <HashLink smooth to="/#cities">
+                  <button className={styles.previousButton}>
+                     <FaArrowLeftLong className={styles.arrow} /> Retour
+                  </button>
+               </HashLink>
+
+               <h1>{currentCity?.name}</h1>
+            </div>
 
             {categories && (
                <div className={styles.categories}>
