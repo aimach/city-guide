@@ -15,14 +15,14 @@ export default function BackOfficeLayout({ children }: PropsWithChildren) {
     window.addEventListener("resize", updateDimension);
   }, [windowSize]);
 
-  // useEffect(() => {
-  //   // Si on a fait la requête pour savoir si l'utilisateur est connecté
-  //   // et qu'il ne l'est pas,
-  //   // on le redirige vers la page de connexion.
-  //   if (!isAuthenticated() && loaded) {
-  //     redirectToLogin();
-  //   }
-  // }, [isAuthenticated, loaded, redirectToLogin]);
+  useEffect(() => {
+    // Si on a fait la requête pour savoir si l'utilisateur est connecté
+    // et qu'il ne l'est pas,
+    // on le redirige vers la page de connexion.
+    if (!isAuthenticated() && loaded) {
+      redirectToLogin();
+    }
+  }, [isAuthenticated, loaded, redirectToLogin]);
 
   return (
     <>
