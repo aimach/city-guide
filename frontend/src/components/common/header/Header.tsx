@@ -72,7 +72,7 @@ const Header = ({ size }: headerProps) => {
 										</Link>
 									</li>
 								) : null}
-								{role === Role.ADMIN ? (
+								{role === Role.ADMIN || Role.ADMIN_CITY ? (
 									<li>
 										<Link
 											to="/dashboard"
