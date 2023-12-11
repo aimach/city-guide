@@ -30,7 +30,7 @@ const AsideMenu = () => {
 							<span className={styles.itemFlex}>
 								<FontAwesomeIcon icon={faUser} className={styles.iconSpaces} />
 								<Link to="/dashboard/admin" className={styles.itemAsideMenu}>
-									Administrateur
+									Administrateur du site
 								</Link>
 							</span>
 							<ol>
