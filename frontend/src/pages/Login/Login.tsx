@@ -5,6 +5,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAt, faKey } from "@fortawesome/free-solid-svg-icons";
 import styles from "../../style/form.module.scss";
 import useWindowDimensions from "../../utils/hooks/useWindowDimensions";
+import { useContext } from "react";
+import { UsersContext } from "../../contexts/UserContext";
 
 export interface FormProps {
   email: string;
@@ -20,6 +22,7 @@ const Login = () => {
   } = useForm<FormProps>();
   const navigate = useNavigate();
   const windowSize = useWindowDimensions();
+  const { setReloadHeader } = useContext(UsersContext);
   const onSubmit = async (userData: FormProps) => {
     try {
       const response = await fetch("http://localhost:5000/api/auth/login", {
@@ -49,6 +52,7 @@ const Login = () => {
         });
         return;
       }
+      setReloadHeader(true);
       navigate("/");
     } catch (error) {
       console.log(error);

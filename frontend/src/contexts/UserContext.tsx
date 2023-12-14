@@ -11,6 +11,8 @@ interface ContextProps {
   profile: User | null;
   logout: () => void;
   redirectToLogin: () => void;
+  reloadHeader: boolean;
+  setReloadHeader: (reloadHeader: boolean) => void;
 }
 
 export const UsersContext = createContext<ContextProps>({
@@ -18,6 +20,8 @@ export const UsersContext = createContext<ContextProps>({
   isAuthenticated: () => false,
   logout: () => {},
   redirectToLogin: () => {},
+  reloadHeader: false,
+  setReloadHeader: () => {},
 });
 
 export const UserProvider = ({ children }: ProviderProps) => {
@@ -70,9 +74,19 @@ export const UserProvider = ({ children }: ProviderProps) => {
       navigate("/auth/login");
     }
   };
+
+  const [reloadHeader, setReloadHeader] = useState<boolean>(false);
+
   return (
     <UsersContext.Provider
-      value={{ profile, isAuthenticated, logout, redirectToLogin }}
+      value={{
+        profile,
+        isAuthenticated,
+        logout,
+        redirectToLogin,
+        reloadHeader,
+        setReloadHeader,
+      }}
     >
       {children}
     </UsersContext.Provider>
