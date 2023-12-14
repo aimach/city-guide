@@ -160,7 +160,7 @@ export const updateUserExceptPassword = async (
       .min(3)
       .max(20)
       .messages({
-        "string.empty": `Ce champ ne peut être vide`,
+        "string.empty": `Ce champ ne peut pas être vide`,
         "string.pattern.base": `Le pseudo doit faire entre 3 et 20 caractères et ne peut contenir que des lettres et des chiffres`,
         "string.min": `Le pseudo doit faire au moins 3 caractères`,
         "string.max": `Le pseudo doit faire au max 20 caractères`,
