@@ -60,10 +60,15 @@ export const UserProvider = ({ children }: ProviderProps) => {
 
   const logout = async () => {
     try {
-      const response = await fetch("http://localhost:5000/api/auth/logout");
+      const response = await fetch("http://localhost:5000/api/auth/logout", {
+        credentials: "include",
+      });
       const data = await response.json();
-      console.log(data);
-      setProfile(null);
+      if (data === "Logged out") {
+        setProfile(null);
+        setReloadHeader(true);
+        navigate("/");
+      }
     } catch (error) {
       console.log(error);
     }

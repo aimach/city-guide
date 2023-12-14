@@ -9,12 +9,12 @@ import { UsersContext } from "../../contexts/UserContext";
 
 const HomePage = () => {
   const windowSize: number = useWindowDimensions();
-  const { reloadHeader, setReloadHeader } = useContext(UsersContext);
+  const { reloadHeader, setReloadHeader, profile } = useContext(UsersContext);
 
   useEffect(() => {
     if (reloadHeader) window.location.reload();
     setReloadHeader(false);
-  }, [reloadHeader]);
+  }, [reloadHeader, profile]);
 
   return (
     <>

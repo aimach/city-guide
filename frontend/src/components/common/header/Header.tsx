@@ -6,7 +6,6 @@ import { Link } from "react-router-dom";
 import { useContext, useState } from "react";
 import { UsersContext } from "../../../contexts/UserContext";
 import { Role } from "../../../utils/types";
-import { useEffect } from "react";
 
 type headerProps = {
   size: string;

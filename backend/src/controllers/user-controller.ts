@@ -161,8 +161,8 @@ export const AuthController: IController = {
   // LOGOUT
   logout: async (req: Request, res: Response) => {
     try {
-      res.clearCookie("jwt", { httpOnly: true });
-      return res.status(200).send("Sucess");
+      res.clearCookie("jwt");
+      return res.status(200).json("Logged out");
     } catch (error) {
       return res.status(500).send({ error: "Error" });
     }
