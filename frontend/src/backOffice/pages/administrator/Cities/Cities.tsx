@@ -6,18 +6,7 @@ import { useEffect, useState } from "react";
 import { City } from "../../../../utils/types";
 import Checkbox from "../../../components/common/Checkbox/Checkbox";
 import Button from "../../../components/common/Button/Button";
-
-// 1. Récupérer la liste des villes depuis l'API.
-// 2. Implémenter le Thead
-// 3. Pour ville, implémenter la ligne (.map), en affichant les données et les boutons.
-// 4. Gérer l'évènement de clic sur modifier
-// 		- Déterminer quel comportement à adopter sur le bouton "Modifier".
-// 		- Implémenter le formulaire et l'évènement de submit.
-// 5. Gérer l'évènement de clic sur supprimer
-// 		- Déterminer quel comportement à adopter sur le bouton "Modifier"
-// 			-> Ça supprime directement ? (dans un 1er temps)
-// 			-> Modale (si on a le temps)
-// 		- Implémenter le comportement sur le bouton modifier
+import Modal from "../../../components/modals/Modal";
 
 const Cities = () => {
 	const columns = [
@@ -27,79 +16,84 @@ const Cities = () => {
 		"Administrateur de ville",
 	];
 
-	// 1. Créer un state, appelé `cities`, qui va contenir la liste des villes
-	const [cities, setCities] = useState<City[]>([]); // stockage des donnees de l'API
-	// typage : au chargement liste vide ([]) et elle se rempli par le getCities <City[]> en qql fractions de seondes
-
-	// 2. Créer un useEffect, qui s'exécute une fois, au lancement du composant,
-	//    Dans ce useEffect, on charge les villes dans le state.
-	// 		- GET /api/cities
-	// 		- setCities(data)
-	// appel à l'API
+	const [cities, setCities] = useState<City[]>([]);
 	const getCities = async () => {
 		try {
 			const response = await fetch("http://localhost:5000/api/cities", {});
 			const data = await response.json();
+			console.log("data", data);
 			setCities(
 				data.map((item: any) => {
-					console.log(item.coordinates.coordinates[0]);
-					return {
-						...item,
-						coordinates: item.coordinates.coordinates,
-					};
+					console.log("item", item);
+					return item;
+					// return {
+					// 	...item,
+					// };
 				})
 			);
 		} catch (error) {
 			console.log(error);
 		}
 	};
-
 	useEffect(() => {
 		getCities();
 	}, []);
 
 	const [checkedCities, setCheckedCities] = useState<City[]>([]);
-	// const [deletedCities, setDeletedCities] = useState<City[]>([]);
 
-	// checkbox selectionne tout
 	const handleSelectOrUnselectAll = () => {
-		setCheckedCities(
-			checkedCities.length === cities.length
-				? // On déselectionne tout
-				  []
-				: // On sélectionne tout
-				  cities
-		);
+		setCheckedCities(checkedCities.length === cities.length ? [] : cities);
 	};
 
-	// checxbox par ligne
 	const handleSelectOrUnselectOne = (city: City) => {
-		// On cherche si la ville est déjà dans le tableau des villes sélectionnées
 		const cityFoundInSelectedCities = checkedCities.find(
 			(c) => c.id === city.id
 		);
 
-		// Si elle est déjà dans le tableau, on la retire
 		if (cityFoundInSelectedCities) {
 			setCheckedCities(
 				checkedCities.filter((city) => city.id !== cityFoundInSelectedCities.id)
 			);
-			// Si elle n'est pas dans le tableau, on l'ajoute
 		} else {
 			setCheckedCities([...checkedCities, city]);
 		}
 	};
+	// DELETE One City
+	const handleDeleteOneCity = async (cityToDelete: City) => {
+		try {
+			await fetch(`http://localhost:5000/api/cities/${cityToDelete.id}`, {
+				// a stocké dans le dotenv - on ne met pas l'utl localhost:5000
+				method: "DELETE",
+				credentials: "include",
+				body: null,
+			});
+			const updatedCities = cities.filter(
+				(city) => city.id !== cityToDelete.id
+			);
+			setCities(updatedCities);
+		} catch (error) {
+			console.log("delete error", error);
+		}
+	};
 
-	// const handleDeleteOneCity = (cityToDelete: City) => {
-	// 	const updatedCities = cities.filter((city) => city.id !== cityToDelete.id);
-	// 	setCities(updatedCities);
-	// };
+	//  UPDATE, Modify One City
+	const [isModalOpen, setIsModalOpen] = useState<string | null>(null);
+
+	const [cityToModified, setcityToModified] = useState<City | null>(null);
+
+	const handleUpdateOneCity = (city: City) => {
+		setcityToModified(city);
+		setIsModalOpen(city.id);
+	};
+	const handleCloseModal = () => {
+		setIsModalOpen(null);
+	};
 
 	return (
 		<BackOfficeLayout>
 			<Title icon={faCity} name={"Villes"}></Title>
 			<h4 className={`${styles.subtitleTable} subtitleDashboard`}>
-				Liste des administrateurs de villes
+				Liste des villes
 			</h4>
 			<table>
 				<thead>
@@ -124,59 +118,55 @@ const Cities = () => {
 					</tr>
 				</thead>
 				<tbody>
-					{cities.map((city) => (
-						<tr key={city.id}>
-							<td className={styles.startColumn}>
-								<Checkbox
-									value={!!checkedCities.find((c) => c.id === city.id)}
-									onChange={() => handleSelectOrUnselectOne(city)}
-								/>
-							</td>
-							<td className={`fieldTableBody`}>{city.name}</td>
-							<td className={`fieldTableBody`}>
-								{/* {city.coordinates.coordinates[0]} */}
-								{/* {city.coordinates.coordinates[1]} */}
-							</td>
-							<td className={`fieldTableBody`}>{city.image}</td>
-							<td className={`fieldTableBody`}>
-								{city.userAdminCity?.username}
-							</td>
-							<td className={styles.titleTable}>
-								<Button icon={faPen} />
-							</td>
-							<td className={styles.endColumn}>
-								<Button
-									icon={faTrashCan}
-									// onClick={() => handleDeleteOneCity(city)}
-								/>
-							</td>
-						</tr>
-					))}
+					{cities.map((city) => {
+						return (
+							<tr key={city.id}>
+								<td className={styles.startColumn}>
+									<Checkbox
+										value={!!checkedCities.find((c) => c.id === city.id)}
+										onChange={() => handleSelectOrUnselectOne(city)}
+									/>
+								</td>
+								<td className={`fieldTableBody`}>{city.name}</td>
+								<td className={`fieldTableBody`}>
+									{city.coordinates.coordinates[0]}
+									{city.coordinates.coordinates[1]}
+								</td>
+								<td className={`${styles.fieldImage} fieldTableBody`}>
+									{city.image}
+								</td>
+								<td className={`fieldTableBody`}>
+									{city.userAdminCity?.username}
+								</td>
+								<td className={styles.titleTable}>
+									<Button
+										icon={faPen}
+										onClick={() => {
+											handleUpdateOneCity(city);
+										}}
+									/>
+								</td>
+								<td className={styles.endColumn}>
+									<Button
+										icon={faTrashCan}
+										onClick={() => handleDeleteOneCity(city)}
+									/>
+								</td>
+							</tr>
+						);
+					})}
 				</tbody>
 			</table>
+
+			{isModalOpen && (
+				<Modal
+					onClose={handleCloseModal}
+					isOpen={true}
+					city={cityToModified as City}
+				></Modal>
+			)}
 		</BackOfficeLayout>
 	);
 };
 
 export default Cities;
-
-// const table = data.map(({ title, image }) => {
-// 	return (
-// 		<Table
-// 			title={name}
-// 			image={image}
-
-// 		/>
-// 	);
-// });
-
-// import Table from "../../../components/common/Table/Table";
-// import { DataType, TableType } from "../../../../utils/types";
-
-// interface TableProps {
-// 	title: string;
-// 	data: DataType;
-//     tableType: TableType;
-// }
-
-// const Cities = ({title, data, tableType}: TableProps) => {

@@ -15,10 +15,7 @@ th {
 	border-top: 1.5px solid v.$primary_color;
 	padding: 20px 0 20px 0;
 }
-// .titleTable:first-child {
-// 	text-align: left;
-// 	padding-left: 25px;
-// }
+
 .titleTable {
 	text-align: left;
 	padding-right: 25px;
@@ -34,4 +31,9 @@ td {
 	padding: 20px 0 20px 0;
 	border-bottom: 1.5px solid v.$primary_color;
 	font-size: 14px;
+}
+.fieldImage {
+	overflow: hidden;
+	word-break: break-word;
+	text-overflow: ellipsis;
 }

@@ -26,8 +26,8 @@ const Register = () => {
     },
   });
 
-  const navigate = useNavigate();
-  const windowSize = useWindowDimensions();
+	const navigate = useNavigate();
+	const windowSize = useWindowDimensions();
 
   const onSubmit = async (userData: FormProps) => {
     try {
@@ -65,70 +65,70 @@ const Register = () => {
     }
   };
 
-  return (
-    <section className={styles.section_register}>
-      {windowSize > 768 ? (
-        <h2 className={styles.h2_register}>Nous rejoindre</h2>
-      ) : null}
-      <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
-        <h3>Inscription</h3>
+	return (
+		<section className={styles.section_register}>
+			{windowSize > 768 ? (
+				<h2 className={styles.h2_register}>Nous rejoindre</h2>
+			) : null}
+			<form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
+				<h3>Inscription</h3>
 
-        <div className="input-wrapper">
-          <FontAwesomeIcon icon={faAt} className="icon" />
-          <input
-            type="text"
-            placeholder="Adresse mail"
-            {...register("email", {
-              required: "Vous devez renseigner ce champ",
-            })}
-          />
-        </div>
-        {errors.email && <p className="error">{errors.email.message}</p>}
+				<div className="input-wrapper">
+					<FontAwesomeIcon icon={faAt} className="icon" />
+					<input
+						type="text"
+						placeholder="Adresse mail"
+						{...register("email", {
+							required: "Vous devez renseigner ce champ",
+						})}
+					/>
+				</div>
+				{errors.email && <p className="error">{errors.email.message}</p>}
 
-        <div className="input-wrapper">
-          <FontAwesomeIcon icon={faUser} className="icon" />
-          <input
-            type="text"
-            placeholder="Nom d'utilisateur"
-            {...register("username", {
-              required: "Vous devez renseigner ce champ",
-            })}
-          />
-        </div>
-        {errors.username && <p className="error">{errors.username.message}</p>}
+				<div className="input-wrapper">
+					<FontAwesomeIcon icon={faUser} className="icon" />
+					<input
+						type="text"
+						placeholder="Nom d'utilisateur"
+						{...register("username", {
+							required: "Vous devez renseigner ce champ",
+						})}
+					/>
+				</div>
+				{errors.username && <p className="error">{errors.username.message}</p>}
 
-        <div className="input-wrapper">
-          <FontAwesomeIcon icon={faKey} className="icon" />
-          <input
-            type="password"
-            placeholder="Mot de passe"
-            {...register("password", {
-              required: "Vous devez renseigner ce champ",
-            })}
-          />
-        </div>
-        {errors.password && <p className="error">{errors.password.message}</p>}
+				<div className="input-wrapper">
+					<FontAwesomeIcon icon={faKey} className="icon" />
+					<input
+						type="password"
+						placeholder="Mot de passe"
+						{...register("password", {
+							required: "Vous devez renseigner ce champ",
+						})}
+					/>
+				</div>
+				{errors.password && <p className="error">{errors.password.message}</p>}
 
-        <input type="submit" value="Explorer" />
-        <Link to="/auth/login">
-          Vous avez déjà un compte ? Connectez-vous ici !
-        </Link>
-        {windowSize > 768 ? (
-          <>
-            <span>Téléchargez l’application ici !</span>
-            <div id="logoStore-wrapper">
-              <img src="/appleDownload.svg" alt="Apple Store" />
-              <img src="/google-play-badge.png" alt="Google Store" />
-            </div>
-          </>
-        ) : null}
+				<input type="submit" value="Explorer" />
+				<Link to="/auth/login">
+					Vous avez déjà un compte ? Connectez-vous ici !
+				</Link>
+				{windowSize > 768 ? (
+					<>
+						<span>Téléchargez l’application ici !</span>
+						<div id="logoStore-wrapper">
+							<img src="/appleDownload.svg" alt="Apple Store" />
+							<img src="/google-play-badge.png" alt="Google Store" />
+						</div>
+					</>
+				) : null}
 
-        {errors.root?.serverError && (
-          <p className="error">{errors.root.serverError.message}</p>
-        )}
-      </form>
-    </section>
-  );
+				{errors.root?.serverError && (
+					<p className="error">{errors.root.serverError.message}</p>
+				)}
+			</form>
+		</section>
+	);
 };
 
 export default Register;
