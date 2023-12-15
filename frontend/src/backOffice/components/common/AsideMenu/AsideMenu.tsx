@@ -8,9 +8,8 @@ import {
 	faUserPlus,
 	faUsers,
 } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styles from "./AsideMenu.module.scss";
-import { Link } from "react-router-dom";
+import ItemLi from "../ItemLi/Itemli";
 
 const AsideMenu = () => {
 	return (
@@ -18,152 +17,74 @@ const AsideMenu = () => {
 			<section className={styles.contentAsideMenu}>
 				<aside>
 					<ul>
-						<li className={`textButtonList`}>
-							<span className={styles.itemFlex}>
-								<FontAwesomeIcon icon={faHouse} className={styles.iconSpaces} />
-								<Link to={"/"} className={styles.itemAsideMenu}>
-									Retour sur le site
-								</Link>
-							</span>
-						</li>
-						<li className={`textButtonList`}>
-							<span className={styles.itemFlex}>
-								<FontAwesomeIcon icon={faUser} className={styles.iconSpaces} />
-								<Link to="/dashboard/admin" className={styles.itemAsideMenu}>
-									Administrateur du site
-								</Link>
-							</span>
+						<ItemLi icon={faHouse} name="Retour sur le site" path="/"></ItemLi>
+						<ItemLi
+							icon={faUser}
+							name="Administrateur du site"
+							path="/dashboard/admin"
+						>
 							<ol>
-								<li className={`textButtonSublist`}>
-									<span
-										className={`${styles.itemFlex} ${styles.alignIconAndText}`}
-									>
-										<FontAwesomeIcon
-											icon={faEnvelope}
-											className={styles.iconSpaces}
-										/>
-										<Link
-											to="/dashboard/message"
-											className={styles.itemAsideMenu}
-										>
-											Messages
-										</Link>
-									</span>
-								</li>
-								<li className={`textButtonSublist`}>
-									<span className={styles.itemFlex}>
-										<FontAwesomeIcon
-											icon={faUser}
-											className={styles.iconSpaces}
-										/>
-										<Link
-											to="/dashboard/profil"
-											className={styles.itemAsideMenu}
-										>
-											Profils
-										</Link>
-									</span>
-								</li>
-								<li className={`textButtonSublist`}>
-									<span className={styles.itemFlex}>
-										<FontAwesomeIcon
-											icon={faCity}
-											className={styles.iconSpaces}
-										/>
+								{/* className={`${styles.itemFlex} ${styles.alignIconAndText}`} */}
+								<ItemLi
+									icon={faEnvelope}
+									name="Messages"
+									path="/dashboard/message"
+								></ItemLi>
+								<ItemLi
+									icon={faUser}
+									name="Profils"
+									path="/dashboard/profil"
+								></ItemLi>
 
-										<Link
-											to="/dashboard/cities"
-											className={styles.itemAsideMenu}
-										>
-											Villes
-										</Link>
-									</span>
-								</li>
-								<li className={`textButtonSublist`}>
-									<span className={styles.itemFlex}>
-										<FontAwesomeIcon
-											icon={faFolder}
-											className={styles.iconSpaces}
-										/>
-										<Link
-											to="/dashboard/categories"
-											className={styles.itemAsideMenu}
-										>
-											Catégories
-										</Link>
-									</span>
-								</li>
-								<li className={`textButtonSublist`}>
-									<span className={styles.itemFlex}>
-										<FontAwesomeIcon
-											icon={faLocationDot}
-											className={styles.iconSpaces}
-										/>
+								<ItemLi
+									icon={faCity}
+									name="Villes"
+									path="/dashboard/cities"
+								></ItemLi>
 
-										<Link to="/dashboard/poi" className={styles.itemAsideMenu}>
-											Point d'intérêts
-										</Link>
-									</span>
-								</li>
-								<li className={`textButtonSublist`}>
-									<span className={styles.itemFlex}>
-										<FontAwesomeIcon
-											icon={faUserPlus}
-											className={styles.iconSpaces}
-										/>
+								<ItemLi
+									icon={faFolder}
+									name="Catégories"
+									path="/dashboard/categories"
+								></ItemLi>
 
-										<Link
-											to="/dashboard/users"
-											className={styles.itemAsideMenu}
-										>
-											Utilisateurs
-										</Link>
-									</span>
-								</li>
+								<ItemLi
+									icon={faLocationDot}
+									name="Point d'intérêts"
+									path="/dashboard/poi"
+								></ItemLi>
+
+								<ItemLi
+									icon={faUserPlus}
+									name="Utilisateurs"
+									path="/dashboard/users"
+								></ItemLi>
 							</ol>
-						</li>
+						</ItemLi>
 						<li className={`textButtonList`}>
-							<span className={styles.itemFlex}>
-								<FontAwesomeIcon icon={faUsers} className={styles.iconSpaces} />
-								<Link
-									to="/dashboard/adminCity"
-									className={styles.itemAsideMenu}
-								>
-									Administrateur de ville
-								</Link>
-							</span>
-							<ol>
-								<li className={`textButtonSublist`}>
-									<span className={styles.itemFlex}>
-										<FontAwesomeIcon
-											icon={faLocationDot}
-											className={styles.iconSpaces}
-										/>
-
-										<Link
-											to="/dashboard/adminCityPoi"
-											className={styles.itemAsideMenu}
-										>
-											Point d'intérêts
-										</Link>
-									</span>
-								</li>
-
-								<li className={`textButtonSublist`}>
-									<span className={styles.itemFlex}>
-										<FontAwesomeIcon
-											icon={faUser}
-											className={styles.iconSpaces}
-										/>
-										<Link
-											to="/dashboard/adminCityUsers"
-											className={styles.itemAsideMenu}
-										>
-											Utilisateurs
-										</Link>
-									</span>
-								</li>
-							</ol>
+							<ItemLi
+								icon={faUsers}
+								name="Administrateur de ville"
+								path="/dashboard/adminCity"
+							>
+								<ol>
+									<ItemLi
+										icon={faLocationDot}
+										name="Point d'intérêts"
+										path="/dashboard/adminCityPoi"
+									></ItemLi>
+									<ItemLi
+										icon={faUser}
+										name="Utilisateurs"
+										path="/dashboard/adminCityUsers"
+									></ItemLi>
+									<ItemLi
+										icon={faUser}
+										name="Profils"
+										path="/dashboard/adminCityProfils"
+									></ItemLi>
+								</ol>
+							</ItemLi>
 						</li>
 					</ul>
 				</aside>

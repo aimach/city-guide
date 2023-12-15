@@ -3,7 +3,6 @@ import { poiRoutes } from "./poi-routes";
 import { profileRoutes } from "./profile-routes";
 import { citiesRoutes } from "./cities-routes";
 import { categoriesRoutes } from "./categories-routes";
-import { dashboardRoutes } from "./dashboard-routes";
 import { messageRoutes } from "./message-routes";
 
 export {
@@ -13,5 +12,4 @@ export {
 	citiesRoutes,
 	categoriesRoutes,
 	messageRoutes,
-	dashboardRoutes,
 };

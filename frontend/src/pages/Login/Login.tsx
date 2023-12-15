@@ -49,13 +49,7 @@ const Login = () => {
 				});
 				return;
 			}
-			if (data.role === "admin" || data.role === "admin_city") {
-				console.log("role user", data.role);
-				/// pb ici la redirection vers le dashboard ne fonctionne plus
-				navigate("/dashboard");
-			} else {
-				navigate("/");
-			}
+			navigate("/");
 		} catch (error) {
 			console.log(error);
 		}

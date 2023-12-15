@@ -1,20 +1,12 @@
 import InteractiveMap from "../../components/interactiveMap/InteractiveMap";
-import { useEffect, useState } from "react";
 import SearchPOI from "../SearchPOI/SearchPOI";
 import styles from "./homePage.module.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
+import useWindowDimensions from "../../utils/hooks/useWindowDimensions";
 
 const HomePage = () => {
-	const [windowSize, setWindowSize] = useState<number>(window.innerWidth);
-
-	function updateDimension() {
-		setWindowSize(window.innerWidth);
-	}
-
-	useEffect(() => {
-		window.addEventListener("resize", updateDimension);
-	}, [windowSize]);
+	const windowSize = useWindowDimensions();
 
 	return (
 		<>

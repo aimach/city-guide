@@ -21,11 +21,14 @@ const Cities = () => {
 		try {
 			const response = await fetch("http://localhost:5000/api/cities", {});
 			const data = await response.json();
+			console.log("data", data);
 			setCities(
 				data.map((item: any) => {
-					return {
-						...item,
-					};
+					console.log("item", item);
+					return item;
+					// return {
+					// 	...item,
+					// };
 				})
 			);
 		} catch (error) {
@@ -59,6 +62,7 @@ const Cities = () => {
 	const handleDeleteOneCity = async (cityToDelete: City) => {
 		try {
 			await fetch(`http://localhost:5000/api/cities/${cityToDelete.id}`, {
+				// a stocké dans le dotenv - on ne met pas l'utl localhost:5000
 				method: "DELETE",
 				credentials: "include",
 				body: null,
@@ -128,7 +132,7 @@ const Cities = () => {
 									{city.coordinates.coordinates[0]}
 									{city.coordinates.coordinates[1]}
 								</td>
-								<td className={`${styles.toto} fieldTableBody`}>
+								<td className={`${styles.fieldImage} fieldTableBody`}>
 									{city.image}
 								</td>
 								<td className={`fieldTableBody`}>

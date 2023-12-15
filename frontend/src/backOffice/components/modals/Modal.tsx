@@ -45,7 +45,6 @@ const Modal = ({ city, onClose, isOpen }: Props) => {
 	};
 	const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
-		console.log("submited");
 		updateCity(formData, city.id as string);
 	};
 
@@ -58,7 +57,7 @@ const Modal = ({ city, onClose, isOpen }: Props) => {
 					</button>
 					<form onSubmit={handleSubmit}>
 						<div className={styles.simpleInput}>
-							<label htmlFor="">Nom ville</label>
+							<label htmlFor="Nom ville">Nom ville</label>
 							<input
 								type="text"
 								value={formData.name}
@@ -68,10 +67,10 @@ const Modal = ({ city, onClose, isOpen }: Props) => {
 								}
 							/>
 						</div>
-						<label htmlFor="">Coordonnées GPS</label>
+						<label htmlFor="Coordonnées GPS">Coordonnées GPS</label>
 						<div className={styles.doubleInput}>
 							<div>
-								<label htmlFor="">Latitude</label>
+								<label htmlFor="Latitude">Latitude</label>
 								<input
 									type="text"
 									value={formData.coordinates[0]}
@@ -82,7 +81,7 @@ const Modal = ({ city, onClose, isOpen }: Props) => {
 								/>
 							</div>
 							<div>
-								<label htmlFor="">Longitude</label>
+								<label htmlFor="Longitude">Longitude</label>
 								<input
 									type="text"
 									value={formData.coordinates[1]}
@@ -94,7 +93,7 @@ const Modal = ({ city, onClose, isOpen }: Props) => {
 							</div>
 						</div>
 						<div className={styles.simpleInput}>
-							<label htmlFor="">Image</label>
+							<label htmlFor="Image">Image</label>
 							<input
 								type="text"
 								// value={city.image}
@@ -106,7 +105,9 @@ const Modal = ({ city, onClose, isOpen }: Props) => {
 							/>
 						</div>
 						<div className={styles.simpleInput}>
-							<label htmlFor="">Administrateur de ville</label>
+							<label htmlFor="Administrateur de ville">
+								Administrateur de ville
+							</label>
 							<input
 								type="text"
 								value={formData.userAdminCity}
