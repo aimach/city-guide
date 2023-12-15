@@ -1,0 +1,14 @@
+@use "../../../../style/variable" as v;
+@use "../../../../style/mixin" as m;
+
+ol {
+	list-style-type: unset;
+}
+.contentAsideMenu {
+	background-color: v.$cream_color;
+	padding: 68px 33px;
+	height: 100%;
+}
+.alignIconAndText {
+	align-items: center;
+}

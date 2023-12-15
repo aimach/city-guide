@@ -2,91 +2,91 @@
 @use "../../style/mixin" as m;
 
 .faqPage {
-  background-color: v.$cream_color;
-  padding-bottom: 0;
-  margin-bottom: 0;
+	background-color: v.$cream_color;
+	padding-bottom: 0;
+	margin-bottom: 0;
 
-  h1 {
-    font-family: v.$poppinsFont;
-    color: v.$primary_color;
-    max-width: 1300px;
-    margin: 0 auto;
-    text-align: center;
-    width: 100%;
-    padding-top: 20px;
-    padding-bottom: 0;
-  }
+	h1 {
+		font-family: v.$poppinsFont;
+		color: v.$primary_color;
+		max-width: 1300px;
+		margin: 0 auto;
+		text-align: center;
+		width: 100%;
+		padding-top: 20px;
+		padding-bottom: 0;
+	}
 }
 
 .sectionTitle {
-  font-family: v.$poppinsFont;
-  color: v.$primary_color;
-  text-align: left;
-  margin-left: 50px;
+	font-family: v.$poppinsFont;
+	color: v.$primary_color;
+	text-align: left;
+	margin-left: 50px;
 }
 
 .faqHeader {
-  font-size: 1.5em;
-  margin-bottom: 10px;
+	font-size: 1.5em;
+	margin-bottom: 10px;
 }
 
 details {
-  margin-bottom: 10px;
-  border: 1px solid v.$primary_color;
-  padding: 5px;
-  border-radius: 5px;
-  position: relative;
-  margin-left: 50px;
-  margin-right: 50px;
+	margin-bottom: 10px;
+	border: 1px solid v.$primary_color;
+	padding: 5px;
+	border-radius: 5px;
+	position: relative;
+	margin-left: 50px;
+	margin-right: 50px;
 
-  summary {
-    font-weight: bold;
-    cursor: pointer;
-    list-style: none;
-    &::-webkit-details-marker {
-      display: none;
-    }
+	summary {
+		font-weight: bold;
+		cursor: pointer;
+		list-style: none;
+		&::-webkit-details-marker {
+			display: none;
+		}
 
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding-right: 30px;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding-right: 30px;
 
-    .icon {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: absolute;
-      top: 50%;
-      right: 10px;
-      transform: translateY(-50%);
-    }
-  }
-  &:last-of-type {
-    margin-bottom: 0;
-  }
+		.icon {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			position: absolute;
+			top: 50%;
+			right: 10px;
+			transform: translateY(-50%);
+		}
+	}
+	&:last-of-type {
+		margin-bottom: 0;
+	}
 }
 
 .WaveImage {
-  background-image: url(../../assets/fond_vague_creme.png);
-  background-repeat: no-repeat;
-  background-position: bottom center;
-  background-size: 100% auto;
-  height: 20vh;
-  margin-top: 0;
-  margin-bottom: 0;
+	background-image: url(../../assets/fond_vague_creme.png);
+	background-repeat: no-repeat;
+	background-position: bottom center;
+	background-size: 100% auto;
+	height: 20vh;
+	margin-top: 0;
+	margin-bottom: 0;
 }
 
 @media (max-width: 768px) {
-  .faqPage h1 {
-    font-size: 1.2em;
-  }
+	.faqPage h1 {
+		font-size: 1.2em;
+	}
 
-  .faqHeader {
-    font-size: 1.2em;
-  }
+	.faqHeader {
+		font-size: 1.2em;
+	}
 
-  details {
-    padding: 10px;
-  }
+	details {
+		padding: 10px;
+	}
 }
