@@ -11,8 +11,8 @@ interface ContextProps {
   profile: User | null;
   logout: () => void;
   redirectToLogin: () => void;
-  reloadHeader: boolean;
-  setReloadHeader: (reloadHeader: boolean) => void;
+  loaded: boolean;
+  checkUserSession: () => void;
 }
 
 export const UsersContext = createContext<ContextProps>({
@@ -20,8 +20,8 @@ export const UsersContext = createContext<ContextProps>({
   isAuthenticated: () => false,
   logout: () => {},
   redirectToLogin: () => {},
-  reloadHeader: false,
-  setReloadHeader: () => {},
+  loaded: false,
+  checkUserSession: () => {},
 });
 
 export const UserProvider = ({ children }: ProviderProps) => {
@@ -30,29 +30,31 @@ export const UserProvider = ({ children }: ProviderProps) => {
   const [loaded, setLoaded] = useState(false);
 
   const navigate = useNavigate();
-  // useEffect
-  useEffect(() => {
-    const checkUserSession = async () => {
-      // GET /my-profile, en cas de succès on setUser avec les infos de l'utilisateur //
-      try {
-        const response = await fetch(
-          "http://localhost:5000/api/profile/my-profile",
-          {
-            credentials: "include",
-          }
-        );
-        const data = await response.json();
 
-        setLoaded(true);
-        if (!data.error) {
-          setProfile(data);
+  const checkUserSession = async () => {
+    // GET /my-profile, en cas de succès on setUser avec les infos de l'utilisateur //
+    try {
+      const response = await fetch(
+        "http://localhost:5000/api/profile/my-profile",
+        {
+          credentials: "include",
         }
-      } catch (err) {
-        setLoaded(true);
+      );
+      const data = await response.json();
+
+      setLoaded(true);
+      if (!data.error) {
+        setProfile(data);
       }
-    };
+    } catch (err) {
+      setLoaded(true);
+      navigate("/auth/login");
+    }
+  };
+
+  useEffect(() => {
     checkUserSession();
-  }, []);
+  }, [navigate]);
 
   const isAuthenticated = () => {
     return profile !== null;
@@ -66,7 +68,6 @@ export const UserProvider = ({ children }: ProviderProps) => {
       const data = await response.json();
       if (data === "Logged out") {
         setProfile(null);
-        setReloadHeader(true);
         navigate("/");
       }
     } catch (error) {
@@ -80,8 +81,6 @@ export const UserProvider = ({ children }: ProviderProps) => {
     }
   };
 
-  const [reloadHeader, setReloadHeader] = useState<boolean>(false);
-
   return (
     <UsersContext.Provider
       value={{
@@ -89,8 +88,8 @@ export const UserProvider = ({ children }: ProviderProps) => {
         isAuthenticated,
         logout,
         redirectToLogin,
-        reloadHeader,
-        setReloadHeader,
+        loaded,
+        checkUserSession,
       }}
     >
       {children}

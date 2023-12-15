@@ -22,7 +22,7 @@ const Login = () => {
   } = useForm<FormProps>();
   const navigate = useNavigate();
   const windowSize = useWindowDimensions();
-  const { setReloadHeader } = useContext(UsersContext);
+  const { checkUserSession } = useContext(UsersContext);
   const onSubmit = async (userData: FormProps) => {
     try {
       const response = await fetch("http://localhost:5000/api/auth/login", {
@@ -51,9 +51,10 @@ const Login = () => {
           });
         });
         return;
+      } else {
+        checkUserSession();
+        navigate("/");
       }
-      setReloadHeader(true);
-      navigate("/");
     } catch (error) {
       console.log(error);
     }

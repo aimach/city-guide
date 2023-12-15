@@ -4,17 +4,9 @@ import styles from "./homePage.module.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import useWindowDimensions from "../../utils/hooks/useWindowDimensions";
-import { useContext, useEffect } from "react";
-import { UsersContext } from "../../contexts/UserContext";
 
 const HomePage = () => {
   const windowSize: number = useWindowDimensions();
-  const { reloadHeader, setReloadHeader, profile } = useContext(UsersContext);
-
-  useEffect(() => {
-    if (reloadHeader) window.location.reload();
-    setReloadHeader(false);
-  }, [reloadHeader, profile]);
 
   return (
     <>
