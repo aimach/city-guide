@@ -203,7 +203,7 @@ export const AuthController: IController = {
           minSymbols: 1,
         })
       ) {
-        return res.status(400).send({
+        return res.status(401).send({
           errors: {
             password:
               "Le mot de passe doit contenir au moins 8 caractères, 1 chiffre, une majuscule et 1 symbole",

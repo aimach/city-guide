@@ -1,3 +1,4 @@
+import { IFormData } from "../backOffice/components/modals/Modal";
 import Joi from "joi";
 
 const callRestApi = async (
@@ -257,5 +258,26 @@ export const deleteUser = async (id: string): Promise<void> => {
     return data;
   } catch (error) {
     console.log("delete error", error);
+  }
+};
+
+// UPDATE CITY
+export const updateCity = async (
+  body: IFormData,
+  id: string
+): Promise<void> => {
+  try {
+    const response = await fetch(`http://localhost:5000/api/cities/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify(body),
+    });
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.log("update error", error);
   }
 };

@@ -6,10 +6,10 @@ import { categoriesRoutes } from "./categories-routes";
 import { messageRoutes } from "./message-routes";
 
 export {
-  authRoutes,
-  poiRoutes,
-  profileRoutes,
-  citiesRoutes,
-  categoriesRoutes,
-  messageRoutes,
+	authRoutes,
+	poiRoutes,
+	profileRoutes,
+	citiesRoutes,
+	categoriesRoutes,
+	messageRoutes,
 };
