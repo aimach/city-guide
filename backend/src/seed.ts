@@ -11,11 +11,11 @@ import { PoiFactory } from "./factories/poiFactory";
 import { CityFactory } from "./factories/cityFactory";
 import { CategoryFactory } from "./factories/categoryFactory";
 
-const { DB_HOST, DB_PORT, DB_USER, DB_PASSWORD, DB_NAME } = process.env;
+const { SEED_HOST, DB_PORT, DB_USER, DB_PASSWORD, DB_NAME } = process.env;
 
 const options: DataSourceOptions & SeederOptions = {
   type: "postgres",
-  host: DB_HOST,
+  host: SEED_HOST,
   port: DB_PORT !== undefined ? parseInt(DB_PORT) : 5432,
   username: DB_USER,
   password: DB_PASSWORD,
