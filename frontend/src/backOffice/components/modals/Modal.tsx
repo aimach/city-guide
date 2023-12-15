@@ -18,6 +18,8 @@ export interface IFormData {
 	image: string;
 	userAdminCity: string;
 }
+// pour le cas ajouter un ville  si j'ouvre la modal je ne rempli pas le champ input
+// requete POST dans Cities.tsx
 
 const Modal = ({ city, onClose, isOpen }: Props) => {
 	const { id, name, coordinates, userAdminCity } = city;

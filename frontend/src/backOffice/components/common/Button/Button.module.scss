@@ -1,7 +1,7 @@
 @use "../../../../style/mixin" as m;
 @use "../../../../style/variable" as v;
 
-.buttonStyle {
+.buttonIcon {
 	width: 29px;
 	height: 29px;
 	color: v.$primary_color;
@@ -14,4 +14,8 @@
 	&:active {
 		background-color: v.$secondary_color;
 	}
+}
+
+.buttonText {
+	background-color: red;
 }

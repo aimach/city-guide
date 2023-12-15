@@ -95,6 +95,13 @@ const Cities = () => {
 			<h4 className={`${styles.subtitleTable} subtitleDashboard`}>
 				Liste des villes
 			</h4>
+			{/* <Button
+				onClick={() => {
+					console.log("hello");
+				}}
+				typeButton="text"
+				text="Ajouter une ville"
+			/> */}
 			<table>
 				<thead>
 					<tr>
@@ -144,12 +151,14 @@ const Cities = () => {
 										onClick={() => {
 											handleUpdateOneCity(city);
 										}}
+										typeButton={"icon"}
 									/>
 								</td>
 								<td className={styles.endColumn}>
 									<Button
 										icon={faTrashCan}
 										onClick={() => handleDeleteOneCity(city)}
+										typeButton={"icon"}
 									/>
 								</td>
 							</tr>
