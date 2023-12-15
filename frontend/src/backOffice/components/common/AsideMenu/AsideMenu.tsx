@@ -24,12 +24,13 @@ const AsideMenu = () => {
 							path="/dashboard/admin"
 						>
 							<ol>
-								{/* className={`${styles.itemFlex} ${styles.alignIconAndText}`} */}
-								<ItemLi
-									icon={faEnvelope}
-									name="Messages"
-									path="/dashboard/message"
-								></ItemLi>
+								<ul className={styles.alignIconAndText}>
+									<ItemLi
+										icon={faEnvelope}
+										name="Messages"
+										path="/dashboard/message"
+									></ItemLi>
+								</ul>
 								<ItemLi
 									icon={faUser}
 									name="Profils"

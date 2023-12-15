@@ -10,5 +10,11 @@ ol {
 	height: 100%;
 }
 .alignIconAndText {
-	align-items: center;
+	padding: unset;
+	li {
+		span {
+			display: flex;
+			align-items: center;
+		}
+	}
 }
