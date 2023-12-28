@@ -17,7 +17,9 @@ export const CityController: IController = {
          const allCities = await dataSource.getRepository(City).find({
             relations: {
                userAdminCity: true,
-               poi: true,
+               poi: {
+                  category: true,
+               },
             },
             select: {
                userAdminCity: {

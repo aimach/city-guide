@@ -30,7 +30,11 @@ export default function App() {
             })}
          >
             <Tab.Screen name="Map" component={MapScreen} />
-            <Tab.Screen name="Home" component={HomeScreen} />
+            <Tab.Screen
+               name="Home"
+               component={HomeScreen}
+               options={{ headerShown: false }}
+            />
             <Tab.Screen name="Profil" component={ProfileScreen} />
          </Tab.Navigator>
       </NavigationContainer>
