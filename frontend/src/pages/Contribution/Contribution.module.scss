@@ -2,19 +2,18 @@
 @use "../../style/variable" as v;
 @use "../../style/placeholder";
 
-.section {
-  // height: 100vh;
+.section_contribution {
   @include m.flexLayout(center, center, column);
-  background: url("../../../public/bg-wave.svg"),
-    url("../../../public/Illu_man.svg");
-  background-position: 100% 320%, left 17% bottom 20%;
-  background-size: auto, 11%;
+  background: url("../../../public/bg-wave_login.svg"),
+    url("../../../public/Illu_man_login.svg");
+  background-size: cover, 11%;
+  background-position: 0 180px, left 10% top 25%;
+  background-repeat: no-repeat, no-repeat;
 
   h2 {
     font-family: v.$comicNeueFont;
     font-size: 48px;
     font-weight: 700;
-    color: v.$primary_color;
   }
 
   li {
@@ -37,7 +36,7 @@
     gap: 1rem;
     width: 40vw;
     padding: 2em;
-    margin-bottom: 10rem;
+    margin-bottom: 5rem;
 
     h3 {
       @include m.flexLayout(start, start, column);
@@ -79,6 +78,7 @@
     }
 
     input[type="submit"] {
+      width: 40%;
       border-radius: 10px;
       background: v.$cream_color;
       color: v.$primary_color;
@@ -89,26 +89,6 @@
       border: none;
     }
 
-    span {
-      color: v.$primary_color;
-      text-align: center;
-      font-size: 16px;
-      font-family: v.$poppinsFont;
-      font-style: normal;
-      font-weight: 500;
-      line-height: normal;
-    }
-
-    div {
-      display: flex;
-      gap: 1em;
-
-      img {
-        width: 100px;
-        height: auto;
-      }
-    }
-
     a {
       color: v.$primary_color;
       font-size: 16px;
@@ -117,34 +97,15 @@
     }
   }
 }
-.section_login {
-  @extend .section;
-  background: url("../../../public/bg-wave_login.svg"),
-    url("../../../public/Illu_man_login.svg");
-  background-size: cover, 11%;
-  background-position: 0 180px, left 10% top 25%;
-  background-repeat: no-repeat, no-repeat;
-}
-
-.section_register {
-  @extend .section;
-  background: url("../../../public/bg-wave.svg"),
-    url("../../../public/Illu_man.svg");
-  background-size: cover, 11%;
-  background-position: -10px -160px, left 10% bottom 25%;
-  background-repeat: no-repeat, no-repeat;
-}
 
 @media (max-width: 768px) {
-  .section_register {
+  .section_contribution {
     background: url("../../../public/bg-wave_login.svg");
     background-size: cover;
     background-position: 0 180px;
     background-repeat: no-repeat;
     justify-content: flex-end;
-    h2 {
-      color: v.$cream_color;
-    }
+
     form {
       width: 70vw;
       padding: 0.5em;

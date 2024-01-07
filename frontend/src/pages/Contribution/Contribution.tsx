@@ -78,7 +78,7 @@ const Contribution = () => {
 
   return (
     <Layout>
-      <section className={styles.section_register}>
+      <section className={styles.section_contribution}>
         {windowSize > 768 && <ItemLi icon={faHouse} name="" path="/"></ItemLi>}
 
         <h2>Une idée ?</h2>
