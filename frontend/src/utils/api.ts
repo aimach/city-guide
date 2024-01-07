@@ -281,3 +281,25 @@ export const updateCity = async (
     console.log("update error", error);
   }
 };
+
+// CREATE POI
+
+export const createPoi = async (body: any) => {
+  try {
+    const response = await fetch(
+      `${process.env.REACT_APP_PUBLIC_BACKEND_URL}/api/poi`,
+      {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+        },
+        credentials: "include",
+        body: body,
+      }
+    );
+
+    return response;
+  } catch (error) {
+    console.log("createPoi error", error);
+  }
+};

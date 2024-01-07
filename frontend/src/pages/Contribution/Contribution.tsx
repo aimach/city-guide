@@ -3,6 +3,8 @@ import Layout from "../../components/layout/Layout";
 import { useEffect, useState } from "react";
 import { Category, City } from "../../utils/types";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
+import { createPoi } from "../../utils/api";
 
 type Inputs = {
   name: string;
@@ -16,6 +18,7 @@ type Inputs = {
 };
 
 const Contribution = () => {
+  const navigate = useNavigate();
   const [cities, setCities] = useState<City[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const getCities = async () => {
@@ -60,39 +63,10 @@ const Contribution = () => {
     formData.append("image", poiData.image[0]);
 
     try {
-      const response = await fetch(
-        `${process.env.REACT_APP_PUBLIC_BACKEND_URL}/api/poi`,
-        {
-          method: "POST",
-          headers: {
-            Accept: "application/json",
-          },
-          credentials: "include",
-          body: formData,
-        }
-      );
-
-      const data = await response.json();
-      console.log(data);
-
-      // if (data.error) {
-      //   setError("password", {
-      //     type: "custom",
-      //     message: data.error,
-      //   });
-      // }
-
-      // if (response.status !== 200) {
-      //   Object.keys(data.errors).forEach((error) => {
-      //     setError(error as keyof FormProps, {
-      //       message: data.errors[error],
-      //     });
-      //   });
-      //   return;
-      // } else {
-      //   checkUserSession();
-      //   navigate("/");
-      // }
+      const response = await createPoi(formData);
+      if (response?.status === 201) {
+        navigate("/");
+      }
     } catch (error) {
       console.log(error);
     }
