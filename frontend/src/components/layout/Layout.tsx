@@ -17,6 +17,7 @@ const Layout = ({ children }: PropsWithChildren) => {
       {isPageWithoutHeaderAndFooter ? null : (
         <Header size={windowSize > 768 ? "desktop" : "mobile"} />
       )}
+
       {children}
       {isPageWithoutHeaderAndFooter ? null : windowSize > 768 ? (
         <Footer />

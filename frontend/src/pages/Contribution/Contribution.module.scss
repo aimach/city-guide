@@ -14,14 +14,18 @@
     font-family: v.$comicNeueFont;
     font-size: 48px;
     font-weight: 700;
-  }
-
-  .h2_login {
-    color: v.$cream_color;
-  }
-
-  .h2_register {
     color: v.$primary_color;
+  }
+
+  li {
+    list-style: none;
+    font-size: small;
+    background-color: v.$secondary_color;
+    border-radius: 10px;
+    padding: 0.5em;
+    position: fixed;
+    left: 1rem;
+    top: 1rem;
   }
 
   // FORM
@@ -33,6 +37,7 @@
     gap: 1rem;
     width: 40vw;
     padding: 2em;
+    margin-bottom: 10rem;
 
     h3 {
       @include m.flexLayout(start, start, column);
@@ -55,7 +60,7 @@
     input,
     select {
       @extend %inputForm;
-      @include m.buttonSize(80%, auto, unset);
+      @include m.buttonSize(80%, auto, 1em);
       padding: 1em;
       border: none;
     }
@@ -110,11 +115,6 @@
       font-weight: 500;
       text-align: center;
     }
-    // Contribution form
-
-    select {
-      @include m.buttonSize(85%, auto, unset);
-    }
   }
 }
 .section_login {
@@ -136,37 +136,19 @@
 }
 
 @media (max-width: 768px) {
-  .section_login {
-    background-size: cover, 30%;
-    background-position: 0 180px, left 50% top 5%;
-    background-repeat: no-repeat, no-repeat;
-    justify-content: flex-end;
-    form {
-      width: 70vw;
-      height: 50vh;
-      padding: 0.5em;
-      margin-bottom: 7rem;
-      svg {
-        left: 15%;
-      }
-    }
-  }
-
   .section_register {
-    background: url("../../../public/bg-wave_login.svg"),
-      url("../../../public/illu_man_lying.svg");
-    background-size: cover, 55%;
-    background-position: 0 180px, left 50% top 15%;
-    background-repeat: no-repeat, no-repeat;
+    background: url("../../../public/bg-wave_login.svg");
+    background-size: cover;
+    background-position: 0 180px;
+    background-repeat: no-repeat;
     justify-content: flex-end;
+    h2 {
+      color: v.$cream_color;
+    }
     form {
       width: 70vw;
-      height: 50vh;
       padding: 0.5em;
       margin-bottom: 7rem;
-      svg {
-        left: 30px;
-      }
     }
   }
 }

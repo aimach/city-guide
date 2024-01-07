@@ -5,6 +5,9 @@ import { Category, City } from "../../utils/types";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { createPoi } from "../../utils/api";
+import ItemLi from "../../backOffice/components/common/ItemLi/Itemli";
+import { faHouse } from "@fortawesome/free-solid-svg-icons";
+import useWindowDimensions from "../../utils/hooks/useWindowDimensions";
 
 type Inputs = {
   name: string;
@@ -19,6 +22,7 @@ type Inputs = {
 
 const Contribution = () => {
   const navigate = useNavigate();
+  const windowSize = useWindowDimensions();
   const [cities, setCities] = useState<City[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const getCities = async () => {
@@ -75,11 +79,11 @@ const Contribution = () => {
   return (
     <Layout>
       <section className={styles.section_register}>
-        <h2 className={styles.h2_register}>Une idée ?</h2>
-        <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
-          {/* <form className={styles.form}> */}
-          <h3>Contribution</h3>
+        {windowSize > 768 && <ItemLi icon={faHouse} name="" path="/"></ItemLi>}
 
+        <h2>Une idée ?</h2>
+        <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
+          <h3>Contribution</h3>
           <div className="input-wrapper">
             {
               // MAX 100 CHARACTERS
@@ -113,7 +117,6 @@ const Contribution = () => {
           {errors.description && (
             <p className="error">{errors.description.message}</p>
           )}
-
           <div className="input-wrapper">
             <input
               type="text"
@@ -124,7 +127,6 @@ const Contribution = () => {
             />
           </div>
           {errors.address && <p className="error">{errors.address.message}</p>}
-
           <div className="input-wrapper">
             <input
               type="tel"
@@ -143,7 +145,6 @@ const Contribution = () => {
           {errors.phoneNumber && (
             <p className="error">{errors.phoneNumber.message}</p>
           )}
-
           <div className="input-wrapper">
             <select
               {...register("city", {
@@ -159,7 +160,6 @@ const Contribution = () => {
             </select>
           </div>
           {errors.city && <p className="error">{errors.city.message}</p>}
-
           <div className="input-wrapper">
             <input
               type="text"
@@ -176,7 +176,6 @@ const Contribution = () => {
           {errors.coordinates?.[0] && (
             <p className="error">{errors.coordinates[0].message}</p>
           )}
-
           <div className="input-wrapper">
             <input
               type="text"
@@ -193,7 +192,6 @@ const Contribution = () => {
           {errors.coordinates?.[1] && (
             <p className="error">{errors.coordinates[1].message}</p>
           )}
-
           <div className="input-wrapper">
             <select
               {...register("category", {
@@ -211,7 +209,6 @@ const Contribution = () => {
           {errors.category && (
             <p className="error">{errors.category.message}</p>
           )}
-
           <div className="input-wrapper">
             <input
               type="file"
