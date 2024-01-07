@@ -60,7 +60,7 @@ function App() {
             <Route path="favorites" element={<ProfileFavorite />} />
           </Route>
 
-          <Route path="/contribution" element={<Contribution />} />
+          <Route path="contribution" element={<Contribution />} />
 
           <Route path="poi">
             <Route path=":cityId" index element={<PoiListView />} />
