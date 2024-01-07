@@ -110,6 +110,9 @@
       width: 70vw;
       padding: 0.5em;
       margin-bottom: 7rem;
+      input[type="submit"] {
+        width: 60%;
+      }
     }
   }
 }
