@@ -10,9 +10,9 @@ type Inputs = {
   address: string;
   phoneNumber: string;
   city: string;
-  coordinates: [longitude: string, latitude: string];
+  coordinates: [latitude: string, longitude: string];
   category: string;
-  image: string;
+  image: File[] | string;
 };
 
 const Contribution = () => {
@@ -50,10 +50,52 @@ const Contribution = () => {
   const onSubmit: SubmitHandler<Inputs> = async (poiData: Inputs) => {
     const formData = new FormData();
 
+    Object.keys(poiData).forEach((key) => {
+      if (key !== "image") {
+        formData.append(key, poiData[key as keyof Inputs] as string);
+      }
+    });
+
     // include image file in body
     formData.append("image", poiData.image[0]);
-    poiData = { ...poiData, image: poiData.image[0].name };
-    formData.append("poi", JSON.stringify(poiData));
+
+    try {
+      const response = await fetch(
+        `${process.env.REACT_APP_PUBLIC_BACKEND_URL}/api/poi`,
+        {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+          },
+          credentials: "include",
+          body: formData,
+        }
+      );
+
+      const data = await response.json();
+      console.log(data);
+
+      // if (data.error) {
+      //   setError("password", {
+      //     type: "custom",
+      //     message: data.error,
+      //   });
+      // }
+
+      // if (response.status !== 200) {
+      //   Object.keys(data.errors).forEach((error) => {
+      //     setError(error as keyof FormProps, {
+      //       message: data.errors[error],
+      //     });
+      //   });
+      //   return;
+      // } else {
+      //   checkUserSession();
+      //   navigate("/");
+      // }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -73,6 +115,10 @@ const Contribution = () => {
               placeholder="Nom du point d'intérêt"
               {...register("name", {
                 required: "Vous devez renseigner ce champ",
+                minLength: {
+                  value: 2,
+                  message: "Le nom doit faire 2 caractères minimum",
+                },
                 maxLength: {
                   value: 100,
                   message: "Le nom doit faire 100 caractères maximum",
@@ -143,7 +189,7 @@ const Contribution = () => {
           <div className="input-wrapper">
             <input
               type="text"
-              placeholder="Longitude"
+              placeholder="Latitude"
               {...register("coordinates.0", {
                 required: "Vous devez renseigner ce champ",
                 pattern: {
@@ -160,7 +206,7 @@ const Contribution = () => {
           <div className="input-wrapper">
             <input
               type="text"
-              placeholder="Latitude"
+              placeholder="Longitude"
               {...register("coordinates.1", {
                 required: "Vous devez renseigner ce champ",
                 pattern: {

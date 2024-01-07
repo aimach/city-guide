@@ -109,12 +109,16 @@ export const PoiController: IController = {
   // CREATE POI
 
   createPoi: async (req: Request, res: Response): Promise<void> => {
+    console.log(req.body);
     try {
+      const { userId } = req.params;
+      // add user id in body
+      req.body.user = userId;
+
       const {
         description,
         address,
         phoneNumber,
-        isAccepted,
         name,
         image,
         category,
@@ -122,9 +126,6 @@ export const PoiController: IController = {
         user,
         coordinates,
       } = req.body;
-
-      // Check if user connected is admin city or admin
-      const { userId } = req.params;
 
       const cityOfPoi = await dataSource.getRepository(City).findOne({
         where: { id: city },
@@ -138,16 +139,13 @@ export const PoiController: IController = {
         .findOne({ where: { id: userId } });
 
       if (
-        cityOfPoi?.userAdminCity.id !== userId &&
+        cityOfPoi?.userAdminCity?.id !== userId &&
         currentUser?.role !== UserRole.ADMIN &&
         currentUser?.role !== UserRole.ADMIN_CITY
       ) {
-        res.status(403).send({
-          error: "You are not authorized to create a point of interest",
-        });
-        if (req.file !== undefined)
-          await unlink(`./public/poi/${req.file.filename}`);
-        return;
+        req.body.isAccepted = false;
+      } else {
+        req.body.isAccepted = true;
       }
 
       // check if input with string are alpha and not empty
@@ -224,15 +222,6 @@ export const PoiController: IController = {
         if (value !== undefined) await checkIfUUID(value);
       });
 
-      // check if isAccepted is boolean
-
-      if (!validator.isBoolean(isAccepted)) {
-        res.status(400).send({ error: "is_accepted must be a boolean" });
-        if (req.file !== undefined)
-          await unlink(`./public/poi/${req.file.filename}`);
-        return;
-      }
-
       // check if image is an object
 
       if (image !== undefined && typeof image !== "object") {
@@ -244,8 +233,16 @@ export const PoiController: IController = {
         return;
       }
 
+      // format coordinates
+      const latitude = req.body.coordinates.split(",")[0];
+      const longitude = req.body.coordinates.split(",")[0];
+      req.body.coordinates = {
+        type: "Point",
+        coordinates: [parseInt(latitude, 10), parseInt(longitude, 10)],
+      };
+
       // check coordinates format
-      if (coordinates.length > 2) {
+      if (req.body.coordinates.length > 2) {
         res.status(400).send({
           error: "Incorrect format of coordinates (must be [lat, long])",
         });
@@ -269,12 +266,6 @@ export const PoiController: IController = {
           await unlink(`./public/poi/${req.file.filename}`);
         return;
       }
-
-      // format coordinates
-      req.body.coordinates = {
-        type: "Point",
-        coordinates: [coordinates[0], coordinates[1]],
-      };
 
       // rename file image
       if (req.file !== undefined) {
