@@ -12,7 +12,7 @@ type Inputs = {
   city: string;
   coordinates: [longitude: string, latitude: string];
   category: string;
-  file: string;
+  image: string;
 };
 
 const Contribution = () => {
@@ -48,7 +48,12 @@ const Contribution = () => {
   } = useForm<Inputs>();
 
   const onSubmit: SubmitHandler<Inputs> = async (poiData: Inputs) => {
-    console.log(poiData);
+    const formData = new FormData();
+
+    // include image file in body
+    formData.append("image", poiData.image[0]);
+    poiData = { ...poiData, image: poiData.image[0].name };
+    formData.append("poi", JSON.stringify(poiData));
   };
 
   return (
@@ -190,12 +195,12 @@ const Contribution = () => {
           <div className="input-wrapper">
             <input
               type="file"
-              // {...register("username", {
-              //   required: "Vous devez renseigner ce champ",
-              // })}
+              {...register("image", {
+                required: "Vous devez soumettre une image",
+              })}
             />
           </div>
-          {/* {errors.username && <p className="error">{errors.username.message}</p>} */}
+          {errors.image && <p className="error">{errors.image.message}</p>}
           <input type="submit" value="Contribuer" />
         </form>
       </section>
