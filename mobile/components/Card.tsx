@@ -5,22 +5,27 @@ import {
    Image,
    ImageSourcePropType,
    ImageURISource,
+   Pressable,
 } from 'react-native';
 import React from 'react';
-import { Category, City, Poi } from '../utils/types';
+import { CardType, Category, City, Poi } from '../utils/types';
 
 interface Props {
    data: City | Category | Poi;
+   handlePress: (cardType: CardType, name: string) => void;
+   cardType: CardType;
+   modaleOpen?: boolean;
 }
 
-const Card = ({ data }: Props) => {
+const Card = ({ data, handlePress, cardType, modaleOpen }: Props) => {
    return (
       <View style={styles.container}>
-         <View style={styles.imageContainer}>
-            <Image source={{ uri: data.image }} style={styles.image} />
-
-            <Text style={styles.text}>{data.name}</Text>
-         </View>
+         <Pressable onPress={() => handlePress(cardType, data.name)}>
+            <View style={styles.imageContainer}>
+               <Image source={{ uri: data.image }} style={styles.image} />
+               <Text style={styles.text}>{data.name}</Text>
+            </View>
+         </Pressable>
       </View>
    );
 };

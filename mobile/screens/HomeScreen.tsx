@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { ScrollView, Text, View, StyleSheet } from 'react-native';
-import { Category, City, Poi } from '../utils/types';
+import { CardType, Category, City, Poi } from '../utils/types';
 import Card from '../components/Card';
 
 export const HomeScreen = () => {
    const [cities, setCities] = useState<City[]>([]);
+   const [poiList, setPoiList] = useState<Poi[]>([]);
+   const [modaleOpen, setModaleOpen] = useState(false);
    const getCities = async () => {
       try {
          const response = await fetch('http://192.168.1.104:5000/api/cities');
@@ -15,7 +17,7 @@ export const HomeScreen = () => {
       }
    };
 
-   const cityToShow = cities.length > 0 ? cities[1] : null;
+   const cityToShow = cities.length > 0 ? cities[2] : null;
    let cityCategories: Category[] = [];
    let cityPoi: Poi[] = [];
    cityToShow?.poi?.forEach((poi) => {
@@ -29,7 +31,34 @@ export const HomeScreen = () => {
 
    useEffect(() => {
       getCities();
+      setPoiList(cityPoi);
    }, []);
+
+   const getPoiByCityAndCategory = async (
+      categoryName?: string,
+      cityName?: string
+   ): Promise<void> => {
+      try {
+         const response = await fetch(
+            `http://192.168.1.104:5000/api/poi?city=${cityName}&category=${categoryName}`
+         );
+         const data = await response.json();
+         if (!data.error) {
+            setPoiList(data);
+         }
+      } catch (error) {
+         console.log(error);
+      }
+   };
+
+   const handlePress = (cardType: CardType, name: string) => {
+      if (cardType === CardType.CATEGORY && cityToShow != null) {
+         getPoiByCityAndCategory(name, cityToShow.name);
+      }
+      if (cardType === CardType.POI) {
+         setModaleOpen((state) => !state);
+      }
+   };
 
    return (
       <ScrollView>
@@ -46,18 +75,28 @@ export const HomeScreen = () => {
                contentContainerStyle={styles.cardContainer}
             >
                {cityCategories.map((cat) => (
-                  <Card key={cat.id} data={cat} />
+                  <Card
+                     key={cat.id}
+                     data={cat}
+                     handlePress={handlePress}
+                     cardType={CardType.CATEGORY}
+                  />
                ))}
             </ScrollView>
 
             <Text style={styles.poiHeader}>
-               {cityPoi.length > 0
-                  ? `${cityPoi.length} points d'intérêt trouvés`
+               {poiList.length > 0
+                  ? `${poiList.length} points d'intérêt trouvés`
                   : "Aucun point d'intérêt"}
             </Text>
             <View style={styles.cardContainer}>
-               {cityPoi.map((poi) => (
-                  <Card key={poi.id} data={poi} />
+               {poiList.map((poi) => (
+                  <Card
+                     key={poi.id}
+                     data={poi}
+                     cardType={CardType.POI}
+                     handlePress={() => {}}
+                  />
                ))}
             </View>
          </View>
