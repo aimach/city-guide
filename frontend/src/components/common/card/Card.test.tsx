@@ -1,7 +1,7 @@
-import { fireEvent, render, screen } from '@testing-library/react';
-import '@testing-library/jest-dom';
+import { fireEvent, render, screen } from "@testing-library/react";
+import "@testing-library/jest-dom";
 
-import Card from './Card';
+import Card from "./Card";
 import {
   CardType,
   Category,
@@ -9,22 +9,22 @@ import {
   Poi,
   Role,
   User,
-} from '../../../utils/types';
-import { UsersContext } from '../../../contexts/UserContext';
+} from "../../../utils/types";
+import { UsersContext } from "../../../contexts/UserContext";
 
 const mockedCategory: Category = {
   image:
-    'http://localhost:5000/api/cities/83985288-d7bb-4b51-a17b-dfc439c70662',
-  name: 'category test',
-  id: '1',
+    "http://localhost:5000/api/cities/83985288-d7bb-4b51-a17b-dfc439c70662",
+  name: "category test",
+  id: "1",
   poi: null,
 };
 
 const mockedUser: User = {
-  id: '1',
-  username: 'user test',
-  email: 'email test',
-  image: '',
+  id: "1",
+  username: "user test",
+  email: "email test",
+  image: "",
   role: Role.FREE_USER,
   city: null,
   bio: null,
@@ -34,32 +34,33 @@ const mockedUser: User = {
 };
 
 const mockedCity: City = {
-  id: '1',
-  name: 'ville test',
-  image: '',
-  coordinates: { type: 'point', coordinates: [0, 5] },
+  id: "1",
+  name: "ville test",
+  image: "",
+  coordinates: { type: "point", coordinates: [0, 5] },
   poi: null,
   users: null,
   userAdminCity: null,
 };
+
 const mockedPoi: Poi = {
-  id: '1234',
-  name: 'test',
-  coordinates: { type: 'point', coordinates: [0, 2] },
-  description: 'description test',
-  address: 'adresse test',
-  image: '',
+  id: "1234",
+  name: "test",
+  coordinates: { type: "point", coordinates: [0, 2] },
+  description: "description test",
+  address: "adresse test",
+  image: "",
   category: mockedCategory,
   city: mockedCity,
   user: mockedUser,
 };
 
-describe('Card', () => {
+describe("Card", () => {
   const onClick = jest.fn();
   const handleFavourite = jest.fn();
   const logout = jest.fn();
   const redirectToLogin = jest.fn();
-  it('renders a card', () => {
+  it("renders a card", () => {
     render(
       <Card
         data={mockedPoi}
@@ -71,7 +72,7 @@ describe('Card', () => {
     );
   });
 
-  it('calls a fonction when user clicks on card image', () => {
+  it("calls a fonction when user clicks on card image", () => {
     render(
       <Card
         data={mockedPoi}
@@ -81,12 +82,12 @@ describe('Card', () => {
         isLiked={() => false}
       />
     );
-    fireEvent.click(screen.getByTestId('image-container'));
+    fireEvent.click(screen.getByTestId("image-container"));
     expect(onClick).toHaveBeenCalledTimes(1);
   });
 
-  describe('when user is not logged in', () => {
-    it('does not render a like button for city card', () => {
+  describe("when user is not logged in", () => {
+    it("does not render a like button for city card", () => {
       render(
         <UsersContext.Provider
           value={{
@@ -105,10 +106,10 @@ describe('Card', () => {
           />
         </UsersContext.Provider>
       );
-      expect(screen.queryByRole('button')).not.toBeInTheDocument();
+      expect(screen.queryByRole("button")).not.toBeInTheDocument();
     });
 
-    it('does not render a like button for poi card', () => {
+    it("does not render a like button for poi card", () => {
       render(
         <UsersContext.Provider
           value={{
@@ -127,10 +128,10 @@ describe('Card', () => {
           />
         </UsersContext.Provider>
       );
-      expect(screen.queryByRole('button')).not.toBeInTheDocument();
+      expect(screen.queryByRole("button")).not.toBeInTheDocument();
     });
 
-    it('does not render a like button for category card', () => {
+    it("does not render a like button for category card", () => {
       render(
         <UsersContext.Provider
           value={{
@@ -149,12 +150,12 @@ describe('Card', () => {
           />
         </UsersContext.Provider>
       );
-      expect(screen.queryByRole('button')).not.toBeInTheDocument();
+      expect(screen.queryByRole("button")).not.toBeInTheDocument();
     });
   });
 
-  describe('when user is logged in', () => {
-    it('renders a like button for city card', () => {
+  describe("when user is logged in", () => {
+    it("renders a like button for city card", () => {
       render(
         <UsersContext.Provider
           value={{
@@ -173,10 +174,10 @@ describe('Card', () => {
           />
         </UsersContext.Provider>
       );
-      expect(screen.getByRole('button')).toBeInTheDocument();
+      expect(screen.getByRole("button")).toBeInTheDocument();
     });
 
-    it('renders a like button with for poi card', () => {
+    it("renders a like button with for poi card", () => {
       render(
         <UsersContext.Provider
           value={{
@@ -195,10 +196,10 @@ describe('Card', () => {
           />
         </UsersContext.Provider>
       );
-      expect(screen.getByRole('button')).toBeInTheDocument();
+      expect(screen.getByRole("button")).toBeInTheDocument();
     });
 
-    it('does not render a like button for category card', () => {
+    it("does not render a like button for category card", () => {
       render(
         <UsersContext.Provider
           value={{
@@ -217,11 +218,11 @@ describe('Card', () => {
           />
         </UsersContext.Provider>
       );
-      expect(screen.queryByRole('button')).not.toBeInTheDocument();
+      expect(screen.queryByRole("button")).not.toBeInTheDocument();
     });
 
-    describe('when poi is liked', () => {
-      it('should render a filled heart icon', () => {
+    describe("when poi is liked", () => {
+      it("should render a filled heart icon", () => {
         render(
           <UsersContext.Provider
             value={{
@@ -240,12 +241,12 @@ describe('Card', () => {
             />
           </UsersContext.Provider>
         );
-        expect(screen.getByTestId('filled-heart')).toBeInTheDocument();
+        expect(screen.getByTestId("filled-heart")).toBeInTheDocument();
       });
     });
 
-    describe('when poi is not liked', () => {
-      it('should render an empty heart icon', () => {
+    describe("when poi is not liked", () => {
+      it("should render an empty heart icon", () => {
         render(
           <UsersContext.Provider
             value={{
@@ -264,12 +265,12 @@ describe('Card', () => {
             />
           </UsersContext.Provider>
         );
-        expect(screen.getByTestId('empty-heart')).toBeInTheDocument();
+        expect(screen.getByTestId("empty-heart")).toBeInTheDocument();
       });
     });
 
-    describe('when user clicks on like button', () => {
-      it('should call a function to handle favourites', () => {
+    describe("when user clicks on like button", () => {
+      it("should call a function to handle favourites", () => {
         render(
           <UsersContext.Provider
             value={{
@@ -288,7 +289,7 @@ describe('Card', () => {
             />
           </UsersContext.Provider>
         );
-        fireEvent.click(screen.getByRole('button'));
+        fireEvent.click(screen.getByRole("button"));
         expect(handleFavourite).toHaveBeenCalledTimes(1);
       });
     });
