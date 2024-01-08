@@ -10,6 +10,7 @@
 	background-color: v.$white_color;
 	&:hover {
 		background-color: v.$cream_color;
+		cursor: pointer;
 	}
 	&:active {
 		background-color: v.$secondary_color;
@@ -17,5 +18,13 @@
 }
 
 .buttonText {
-	background-color: red;
+	background-color: v.$primary_color;
+	border-radius: 10px;
+	color: v.$white_color;
+	padding: 4px 8px;
+	border: unset;
+	height: 31px;
+	&:hover {
+		cursor: pointer;
+	}
 }

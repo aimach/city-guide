@@ -21,10 +21,10 @@ const Cities = () => {
 		try {
 			const response = await fetch("http://localhost:5000/api/cities", {});
 			const data = await response.json();
-			console.log("data", data);
+			// console.log("data", data);
 			setCities(
 				data.map((item: any) => {
-					console.log("item", item);
+					// console.log("item", item);
 					return item;
 					// return {
 					// 	...item,
@@ -82,6 +82,8 @@ const Cities = () => {
 	const [cityToModified, setcityToModified] = useState<City | null>(null);
 
 	const handleUpdateOneCity = (city: City) => {
+		// console.log(city.coordinates);
+
 		setcityToModified(city);
 		setIsModalOpen(city.id);
 	};
@@ -89,19 +91,43 @@ const Cities = () => {
 		setIsModalOpen(null);
 	};
 
+	// ADDED One City
+
+	const [newCity, setNewCity] = useState<City | null>(null);
+
+	const addOneCity = async (city: City) => {
+		console.log("addOneCity", city);
+		setNewCity(city);
+		setIsModalOpen("");
+		// try {
+		// 	await fetch(`http://localhost:5000/api/cities/${cityToAdd.id}`, {
+		// 		// a stocké dans le dotenv - on ne met pas l'url localhost:5000
+		// 		method: "POST",
+		// 		credentials: "include",
+		// 		body: null,
+		// 	});
+
+		// } catch (error) {
+		// 	console.log("added error", error);
+		// }
+	};
+
 	return (
 		<BackOfficeLayout>
 			<Title icon={faCity} name={"Villes"}></Title>
-			<h4 className={`${styles.subtitleTable} subtitleDashboard`}>
-				Liste des villes
-			</h4>
-			{/* <Button
-				onClick={() => {
-					console.log("hello");
-				}}
-				typeButton="text"
-				text="Ajouter une ville"
-			/> */}
+			<div className={styles.titleAndButton}>
+				<h4 className={`${styles.subtitleTable} subtitleDashboard`}>
+					Liste des villes
+				</h4>
+				<Button
+					// onClick={() => {
+					// 	console.log("hello");
+					// }}
+					typeButton="text"
+					text="Ajouter une ville"
+					onClick={() => addOneCity(newCity as City)}
+				/>
+			</div>
 			<table>
 				<thead>
 					<tr>
@@ -136,8 +162,10 @@ const Cities = () => {
 								</td>
 								<td className={`fieldTableBody`}>{city.name}</td>
 								<td className={`fieldTableBody`}>
-									{city.coordinates.coordinates[0]}
-									{city.coordinates.coordinates[1]}
+									<div className={styles.fieldCoordinates}>
+										<span>Lattitude : {city.coordinates.coordinates[0]}</span>
+										<span>Longitude : {city.coordinates.coordinates[1]}</span>
+									</div>
 								</td>
 								<td className={`${styles.fieldImage} fieldTableBody`}>
 									{city.image}
