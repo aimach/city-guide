@@ -96,6 +96,8 @@ describe("Header", () => {
     const userMenu = screen.getByRole("button");
     fireEvent.click(userMenu);
     const profileLink = screen.getByText(/mon profil/i);
+    const logoutLink = screen.getByText(/se déconnecter/i);
     expect(profileLink).toBeInTheDocument();
+    expect(logoutLink).toBeInTheDocument();
   });
 });
