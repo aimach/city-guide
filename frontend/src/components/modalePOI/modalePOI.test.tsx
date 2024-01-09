@@ -1,7 +1,7 @@
 import { BrowserRouter } from "react-router-dom";
 import { UsersContext } from "../../contexts/UserContext";
 import ModalePOI from "./modalePOI";
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import { User, Role, Poi, Category, City } from "../../utils/types";
 
@@ -41,9 +41,10 @@ describe("ModalePOI", () => {
     id: "1234",
     name: "test",
     coordinates: { type: "point", coordinates: [0, 2] },
-    description: "description test",
-    address: "adresse test",
+    description: "test",
+    address: "test",
     image: "",
+    phoneNumber: "0123456789",
     category: mockedCategory,
     city: mockedCity,
     user: mockedUser,
@@ -130,16 +131,16 @@ describe("ModalePOI", () => {
     expect(connexionButton).toBeInTheDocument();
   });
 
-  it("should display POI address when user connected", () => {
+  it("should NOT render connexion button when profile null", () => {
     render(
       <BrowserRouter>
         <UsersContext.Provider
           value={{
-            isAuthenticated: () => false,
+            isAuthenticated: () => true,
             profile: mockedUser,
             redirectToLogin,
             logout,
-            loaded: false,
+            loaded: true,
           }}
         >
           <ModalePOI
@@ -152,15 +153,68 @@ describe("ModalePOI", () => {
       </BrowserRouter>
     );
 
-    // const addressText = screen.getByText(/Adresse/i);
-    const phoneNb = screen.getByRole("heading", {
-      description: "Numéro de téléphone",
-    });
+    expect(
+      screen.queryByRole("button", { name: "Connexion" })
+    ).not.toBeInTheDocument();
+  });
+
+  it("should display POI infos when user connected", () => {
+    render(
+      <BrowserRouter>
+        <UsersContext.Provider
+          value={{
+            isAuthenticated: () => true,
+            profile: mockedUser,
+            redirectToLogin,
+            logout,
+            loaded: true,
+          }}
+        >
+          <ModalePOI
+            poi={mockedPoi}
+            onClose={onClose}
+            handleFavourite={handleFavourite}
+            isLiked={isLiked}
+          />
+        </UsersContext.Provider>
+      </BrowserRouter>
+    );
+
+    const addressText = screen.getByText(/Adresse/i);
+    const phoneNb = screen.getByText(/Numéro de téléphone/i);
     const gpsCoords = screen.getByText(/Coordonnées GPS/i);
     const descriptionText = screen.getByText(/Description/i);
-    // expect(addressText).toBeInTheDocument();
+    expect(addressText).toBeInTheDocument();
     expect(phoneNb).toBeInTheDocument();
     expect(gpsCoords).toBeInTheDocument();
     expect(descriptionText).toBeInTheDocument();
+  });
+
+  it("should display favorite button", () => {
+    render(
+      <BrowserRouter>
+        <UsersContext.Provider
+          value={{
+            isAuthenticated: () => true,
+            profile: mockedUser,
+            redirectToLogin,
+            logout,
+            loaded: true,
+          }}
+        >
+          <ModalePOI
+            poi={mockedPoi}
+            onClose={onClose}
+            handleFavourite={handleFavourite}
+            isLiked={isLiked}
+          />
+        </UsersContext.Provider>
+      </BrowserRouter>
+    );
+
+    const likeButton = screen.getByTestId("like-button");
+    expect(likeButton).toBeInTheDocument();
+    fireEvent.click(likeButton);
+    expect(handleFavourite).toHaveBeenCalledTimes(1);
   });
 });

@@ -38,7 +38,10 @@ const ModalePOI = ({ poi, onClose, handleFavourite, isLiked }: Props) => {
         {isAuthenticated() ? (
           <div className={styles.icons}>
             <FaShareAlt className={styles.socialIcon} />
-            <div onClick={() => handleFavourite(id, CardType.POI)}>
+            <div
+              onClick={() => handleFavourite(id, CardType.POI)}
+              data-testid="like-button"
+            >
               {isLiked(id) ? (
                 <IoIosHeart
                   className={styles.filledHeart}
