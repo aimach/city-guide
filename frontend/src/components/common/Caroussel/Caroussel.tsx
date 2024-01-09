@@ -1,25 +1,25 @@
-import React, { useContext, useRef, useState } from 'react';
-import { CardType, City, DataType, Poi } from '../../../utils/types';
-import styles from './caroussel.module.scss';
-import Card from '../card/Card';
-import Slider from 'react-slick';
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
+import React, { useContext, useRef, useState } from "react";
+import { CardType, City, DataType, Poi } from "../../../utils/types";
+import styles from "./caroussel.module.scss";
+import Card from "../card/Card";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 import {
   IoIosArrowDroprightCircle,
   IoIosArrowDropleftCircle,
-} from 'react-icons/io';
+} from "react-icons/io";
 
-import { useNavigate } from 'react-router-dom';
-import PoiView from '../../poiView/PoiView';
-import { UsersContext } from '../../../contexts/UserContext';
+import { useNavigate } from "react-router-dom";
+import PoiView from "../../poiView/PoiView";
+import { UsersContext } from "../../../contexts/UserContext";
 import {
   removeFavouriteCityToUser,
   addFavouriteCityToUser,
   removeFavouritePoiToUser,
   addFavouritePoiToUser,
-} from '../../../utils/api';
-import useWindowDimensions from '../../../utils/hooks/useWindowDimensions';
+} from "../../../utils/api";
+import useWindowDimensions from "../../../utils/hooks/useWindowDimensions";
 
 interface Props {
   title: string;
@@ -38,7 +38,7 @@ const Caroussel = ({
 }: Props) => {
   const navigate = useNavigate();
   const { profile } = useContext(UsersContext);
-  const userId = profile?.id ?? '';
+  const userId = profile?.id ?? "";
 
   const [categorySelected, setCategorySelected] = useState<string | null>(null);
   const [poiModaleOpen, setPoiModaleOpen] = useState<string | null>(null);
@@ -94,7 +94,7 @@ const Caroussel = ({
     }
   };
 
-  const handleFavourite = (id: string | null, cardType: CardType) => {
+  const handleFavourite = (id: string | null) => {
     if (cardType === CardType.CITY && id != null) {
       handleUserFavouriteCities(id, userId, favouriteCities);
     }

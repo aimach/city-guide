@@ -1,0 +1,19 @@
+@use "../../../../style/variable" as v;
+@use "../../../../style/mixin" as m;
+
+.iconSpaces {
+	padding-right: 15px;
+}
+
+.itemFlex {
+	display: flex;
+	align-items: baseline;
+}
+
+.itemAsideMenu {
+	color: v.$primary_color;
+}
+
+.svg-inline--fa {
+	vertical-align: unset;
+}
