@@ -1,7 +1,7 @@
 import { BrowserRouter } from "react-router-dom";
 import { UserProvider } from "../../../contexts/UserContext";
 import Modal from "./Modal";
-import { render, screen } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import ImageModal from "./ImageModal";
 import { User, Role } from "../../../utils/types";
@@ -227,5 +227,43 @@ describe("PasswordModal", () => {
     expect(closeButton).toBeInTheDocument();
     expect(originalPWInput).toBeInTheDocument();
     expect(newPWInput).toBeInTheDocument();
+  });
+
+  it("should change original password value on change", () => {
+    render(
+      <BrowserRouter>
+        <UserProvider>
+          <PasswordModal
+            setDisplayModals={setDisplayModals}
+            displayModals={displayModals}
+          />
+        </UserProvider>
+      </BrowserRouter>
+    );
+
+    const passwordInput = screen.getByLabelText(
+      "Mot de passe actuel"
+    ) as HTMLInputElement;
+    fireEvent.change(passwordInput, { target: { value: "Test" } });
+    expect(passwordInput).toHaveValue("Test");
+  });
+
+  it("should change new password value on change", () => {
+    render(
+      <BrowserRouter>
+        <UserProvider>
+          <PasswordModal
+            setDisplayModals={setDisplayModals}
+            displayModals={displayModals}
+          />
+        </UserProvider>
+      </BrowserRouter>
+    );
+
+    const passwordInput = screen.getByLabelText(
+      "Nouveau mot de passe"
+    ) as HTMLInputElement;
+    fireEvent.change(passwordInput, { target: { value: "Test" } });
+    expect(passwordInput).toHaveValue("Test");
   });
 });
