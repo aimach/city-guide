@@ -154,7 +154,7 @@ describe("ModalePOI", () => {
 
     // const addressText = screen.getByText(/Adresse/i);
     const phoneNb = screen.getByRole("heading", {
-      description: "Your session is about to expire",
+      description: "Numéro de téléphone",
     });
     const gpsCoords = screen.getByText(/Coordonnées GPS/i);
     const descriptionText = screen.getByText(/Description/i);

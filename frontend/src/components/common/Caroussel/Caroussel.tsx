@@ -94,7 +94,8 @@ const Caroussel = ({
     }
   };
 
-  const handleFavourite = (id: string | null) => {
+  const handleFavourite = (id: string | null, cardType: CardType) => {
+    console.log(id);
     if (cardType === CardType.CITY && id != null) {
       handleUserFavouriteCities(id, userId, favouriteCities);
     }
@@ -153,6 +154,7 @@ const Caroussel = ({
   };
 
   const cards = data.map((item) => {
+    console.log(item);
     return (
       <Card
         data={item}
