@@ -14,7 +14,7 @@ import { CategoryFactory } from "./factories/categoryFactory";
 const options: DataSourceOptions & SeederOptions = {
   type: "postgres",
   host: "localhost",
-  port: 5432,
+  port: 5440,
   username: "postgres",
   password: "example",
   database: "postgres",

@@ -2,15 +2,77 @@ import { faUser } from "@fortawesome/free-solid-svg-icons";
 import BackOfficeLayout from "../../../components/layout/BackOfficeLayout";
 import styles from "./Profil.module.scss";
 import Title from "../../../components/common/Title/Title";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { UsersContext } from "../../../../contexts/UserContext";
-import { Link } from "react-router-dom";
+import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
 
 const Profil = () => {
   const { profile } = useContext(UsersContext);
+  const [formData, setFormData] = useState({
+    username: "",
+    email: "",
+    bio: "",
+    image: "",
+    role: "",
+    password: "",
+  });
+
+  const [passwordVisible, setPasswordVisible] = useState(false);
+
+  useEffect(() => {
+    if (profile) {
+      setFormData({
+        username: profile.username ?? "",
+        email: profile.email ?? "",
+        bio: profile.bio ?? "",
+        image: profile.image ?? "",
+        role: profile.role ?? "",
+        password: "",
+      });
+    }
+  }, [profile]);
+
+  const handleInputChange = (e: any) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const handleSubmit = async (e: any) => {
+    e.preventDefault();
+
+    const userId = profile?.id;
+    const apiUrl = `http://localhost:5000/api/profile/${userId}`;
+    try {
+      const response = await fetch(apiUrl, {
+        method: "PUT",
+        credentials: "include",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        alert("Profil mis à jour avec succès.");
+      } else {
+        alert(`Erreur: ${data.error}`);
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        alert(`Erreur de connexion au serveur: ${error.message}`);
+      } else {
+        alert("Une erreur inconnue s'est produite.");
+      }
+    }
+  };
 
   const handleFileButtonClick = () => {
     document.getElementById("imageAvatar")?.click();
+  };
+
+  const togglePasswordVisibility = () => {
+    setPasswordVisible(!passwordVisible);
   };
 
   return (
@@ -18,16 +80,17 @@ const Profil = () => {
       <Title name={"Profil"} icon={faUser} />
       <div className={styles.profilContainer}>
         <h4 className={styles.titleForm}>Modifier ses données du profil</h4>
-        <form className={styles.profilForm}>
+        <form className={styles.profilForm} onSubmit={handleSubmit}>
           <div className={styles.twoColumns}>
             <div className={styles.inputGroup}>
               <label htmlFor="name">Nom</label>
               <input
                 id="name"
                 type="text"
-                name="name"
+                name="username"
                 placeholder="Nom"
-                value={profile?.username ?? ""}
+                value={formData.username}
+                onChange={handleInputChange}
               />
             </div>
             <div className={styles.inputGroup}>
@@ -35,8 +98,9 @@ const Profil = () => {
               <input
                 type="text"
                 id="status"
-                name="status"
-                value={profile?.role ?? ""}
+                name="role"
+                value={formData.role}
+                onChange={handleInputChange}
               />
             </div>
           </div>
@@ -48,21 +112,28 @@ const Profil = () => {
                 type="email"
                 name="email"
                 placeholder="Email"
-                value={profile?.email ?? ""}
+                value={formData.email}
+                onChange={handleInputChange}
               />
             </div>
             <div className={styles.inputGroup}>
               <label htmlFor="password">Mot de passe</label>
-              <input
-                id="password"
-                type="password"
-                name="password"
-                placeholder="Mot de passe"
-                value="⚈⚈⚈⚈⚈⚈⚈⚈⚈⚈⚈⚈⚈⚈⚈"
-                // disabled={disableInputs.password}
-              />
-              {/* <Link {}/> */}
-              <p>Ici ub lien</p>
+              <div className={styles.inputWithIcon}>
+                <input
+                  id="password"
+                  type={passwordVisible ? "text" : "password"}
+                  name="password"
+                  placeholder="Mot de passe"
+                  value={formData.password}
+                  onChange={handleInputChange}
+                />
+                <span
+                  onClick={togglePasswordVisibility}
+                  className={styles.passwordIcon}
+                >
+                  {passwordVisible ? <IoEyeOffOutline /> : <IoEyeOutline />}
+                </span>
+              </div>
             </div>
           </div>
           <div className={styles.fullWidth}>
@@ -71,10 +142,11 @@ const Profil = () => {
               <input
                 id="imageAvatar"
                 type="file"
-                name="imageAvatar"
+                name="image"
                 placeholder="Image"
                 style={{ display: "none" }}
-                value={profile?.image ?? ""}
+                value={formData.image}
+                onChange={handleInputChange}
               />
               <button type="button" onClick={handleFileButtonClick}>
                 ...
@@ -85,13 +157,14 @@ const Profil = () => {
             <label htmlFor="descriptionBio">Description - Bio</label>
             <textarea
               id="descriptionBio"
-              name="descriptionBio"
+              name="bio"
               placeholder="Description"
-              value={profile?.bio ?? ""}
+              value={formData.bio}
+              onChange={handleInputChange}
             />
           </div>
           <div className={styles.fullWidth}>
-            <button type="submit">Ajouter</button>
+            <button type="submit">Mettre à jour</button>
           </div>
         </form>
       </div>

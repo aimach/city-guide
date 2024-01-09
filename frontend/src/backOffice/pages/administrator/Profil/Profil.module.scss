@@ -117,3 +117,19 @@ button {
     background-color: darken(v.$primary_color, 10%);
   }
 }
+
+.inputWithIcon {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.inputWithIcon input {
+  flex-grow: 1;
+}
+
+.passwordIcon {
+  position: absolute;
+  right: 10px;
+  cursor: pointer;
+}
