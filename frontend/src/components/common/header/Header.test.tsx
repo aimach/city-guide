@@ -31,6 +31,7 @@ describe("Header", () => {
             profile: null,
             redirectToLogin,
             logout,
+            loaded: false,
           }}
         >
           <Header size="desktop" />
@@ -48,6 +49,7 @@ describe("Header", () => {
             profile: null,
             redirectToLogin,
             logout,
+            loaded: false,
           }}
         >
           <Header size="mobile" />
@@ -65,6 +67,7 @@ describe("Header", () => {
             profile: null,
             redirectToLogin,
             logout,
+            loaded: true,
           }}
         >
           <Header size="desktop" />
@@ -86,6 +89,7 @@ describe("Header", () => {
             profile: mockedUser,
             redirectToLogin,
             logout,
+            loaded: true,
           }}
         >
           <Header size="desktop" />

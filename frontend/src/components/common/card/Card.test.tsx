@@ -95,6 +95,7 @@ describe("Card", () => {
             profile: null,
             redirectToLogin,
             logout,
+            loaded: false,
           }}
         >
           <Card
@@ -117,6 +118,7 @@ describe("Card", () => {
             profile: null,
             redirectToLogin,
             logout,
+            loaded: false,
           }}
         >
           <Card
@@ -139,6 +141,7 @@ describe("Card", () => {
             profile: null,
             redirectToLogin,
             logout,
+            loaded: false,
           }}
         >
           <Card
@@ -163,6 +166,7 @@ describe("Card", () => {
             profile: null,
             redirectToLogin,
             logout,
+            loaded: true,
           }}
         >
           <Card
@@ -185,6 +189,7 @@ describe("Card", () => {
             profile: null,
             redirectToLogin,
             logout,
+            loaded: true,
           }}
         >
           <Card
@@ -207,6 +212,7 @@ describe("Card", () => {
             profile: null,
             redirectToLogin,
             logout,
+            loaded: false,
           }}
         >
           <Card
@@ -230,6 +236,7 @@ describe("Card", () => {
               profile: null,
               redirectToLogin,
               logout,
+              loaded: false,
             }}
           >
             <Card
@@ -254,6 +261,7 @@ describe("Card", () => {
               profile: null,
               redirectToLogin,
               logout,
+              loaded: false,
             }}
           >
             <Card
@@ -278,6 +286,7 @@ describe("Card", () => {
               profile: null,
               redirectToLogin,
               logout,
+              loaded: false,
             }}
           >
             <Card
