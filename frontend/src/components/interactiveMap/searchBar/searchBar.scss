@@ -4,6 +4,10 @@
 .leaflet-bar {
     border: initial!important;
 }
+
+.leaflet-control-zoom {
+    display: none;
+}
 .leaflet-control-container {
     >.leaflet-top.leaflet-left {
         position: relative;
@@ -13,6 +17,7 @@
 }
 
 .geosearch {
+    position: relative;
     form {
         display: flex;
         flex-direction: column;
@@ -54,7 +59,11 @@
             }
         }
     }
-    a {
+    form + .leaflet-bar-part {
+        // position: absolute;
+        // top: 30%;
+        // left: 65%;
+        // border: 1px solid black;
         display: none;
     }
 }

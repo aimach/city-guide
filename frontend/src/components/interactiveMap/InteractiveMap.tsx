@@ -15,7 +15,6 @@ import style from "./InteractiveMap.module.scss";
 import icon from "../../assets/marker.svg";
 import {} from "react-leaflet";
 import SearchBar from "./searchBar/SearchBar";
-// 1 ) Import Provider + SearchBarControl
 
 type coordinates = {
   type: Point;
@@ -23,7 +22,7 @@ type coordinates = {
 };
 
 const InteractiveMap = () => {
-  const [data, setData] = useState<
+  const [pois, setPois] = useState<
     Array<{
       name: string;
       image: string;
@@ -34,18 +33,25 @@ const InteractiveMap = () => {
     }>
   >([]);
 
+  const mapRef = useRef(null);
+
   const fetchData = async () => {
     try {
       const response = await axios.get("http://localhost:5000/api/poi");
-      setData(response.data);
+      console.log(response.data);
+
+      setPois(response.data);
     } catch (error) {
-      console.error("Error fetching data:", error);
+      console.error(error);
     }
   };
+
   // Récupère les POI disponibles en base de donnée à l'affichage du composant
   useEffect(() => {
     fetchData();
   }, []);
+
+  useEffect(() => {}, [mapRef]);
 
   const createClusterCustomIcon = (cluster: MarkerCluster) => {
     return L.divIcon({
@@ -68,6 +74,7 @@ const InteractiveMap = () => {
         zoom={6}
         scrollWheelZoom={true}
         minZoom={6}
+        ref={mapRef}
       >
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -78,18 +85,12 @@ const InteractiveMap = () => {
 
         <>
           <MarkerClusterGroup iconCreateFunction={createClusterCustomIcon}>
-            {data.map((poi, index) => {
+            {pois.map((poi, index) => {
               // GET LAT/LONG
-              // console.log(poi);
 
               const latitude = poi.coordinates.coordinates[0];
               const longitude = poi.coordinates.coordinates[1];
 
-              // poi.coordinates.map((e) => {
-              //   console.log(e);
-              // });
-              // const latitude = poi.coordinates[0];
-              // const longitude = poi.coordinates[1];
               return (
                 <CustomMarker
                   key={index}

@@ -10,13 +10,13 @@ export const PoiFactory = setSeederFactory(Poi, (faker: Faker) => {
   });
   poi.address = faker.location.streetAddress();
   const latitude = faker.number.float({
-    min: 41.333,
-    max: 51.124,
+    min: 43.66886,
+    max: 49.7466,
     precision: 0.000001,
   });
   const longitude = faker.number.float({
-    min: -5.142,
-    max: 9.561,
+    min: -1.17146,
+    max: 5.77409,
     precision: 0.000001,
   });
 

@@ -32,7 +32,7 @@ const CustomMarker = ({
       icon={customIcon}
       eventHandlers={{
         click: () => {
-          map.setView([position[0] + 0.02, position[1]], 13);
+          map.flyTo([position[0] + 0.02, position[1]], 13);
         },
       }}
     >
