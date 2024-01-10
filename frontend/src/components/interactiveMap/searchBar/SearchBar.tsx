@@ -1,4 +1,3 @@
-// Importez les modules nécessaires
 import { useEffect } from "react";
 import { GeoSearchControl, OpenStreetMapProvider } from "leaflet-geosearch";
 import { useMap } from "react-leaflet";
@@ -7,32 +6,27 @@ import "leaflet/dist/leaflet.css";
 import "./searchBar.scss";
 
 const SearchBar = () => {
-  // Créez une instance du fournisseur de recherche (OpenStreetMap dans ce cas)
   const provider = new OpenStreetMapProvider({
     params: {
-      "accept-language": "fr", // Langue des résultats
-      countrycodes: "fr", //
+      "accept-language": "fr",
+      countrycodes: "fr",
       addressdetails: 1,
       namedetails: 1,
     },
   });
 
-  // Créez une instance de GeoSearchControl avec l'icône personnalisée
   const searchControl = GeoSearchControl({
     provider: provider,
     searchLabel: "Entrer une ville, un point d'interet...",
     showMarker: false,
   });
 
-  // Utilisez le hook useMap pour obtenir l'instance actuelle de la carte
   const map = useMap();
 
-  // Ajoutez le GeoSearchControl à la carte
   useEffect(() => {
     map.addControl(searchControl);
 
     return () => {
-      // Supprimez le GeoSearchControl lorsque le composant est démonté
       map.removeControl(searchControl);
     };
   }, [map, searchControl]);
@@ -69,7 +63,7 @@ const SearchBar = () => {
     });
   }, []);
 
-  return null; // Ce composant ne rend rien visuellement
+  return null;
 };
 
 export default SearchBar;

@@ -10,16 +10,6 @@ import { Poi } from "./entities/Poi";
 import { PoiFactory } from "./factories/poiFactory";
 import { CityFactory } from "./factories/cityFactory";
 import { CategoryFactory } from "./factories/categoryFactory";
-<<<<<<< HEAD
-
-const options: DataSourceOptions & SeederOptions = {
-  type: "postgres",
-  host: "localhost",
-  port: 5432,
-  username: "postgres",
-  password: "example",
-  database: "postgres",
-=======
 
 const { SEED_HOST, DB_PORT, DB_USER, DB_PASSWORD, DB_NAME } = process.env;
 
@@ -30,7 +20,6 @@ const options: DataSourceOptions & SeederOptions = {
   username: DB_USER,
   password: DB_PASSWORD,
   database: DB_NAME,
->>>>>>> 170e4341e9b305fc663f052b28f917061d8c0619
 
   synchronize: true,
 
@@ -42,7 +31,6 @@ const options: DataSourceOptions & SeederOptions = {
 
 const dataSource = new DataSource(options);
 
-<<<<<<< HEAD
 const start = async (): Promise<void> => {
   await dataSource.initialize();
   await dataSource.synchronize(true);
@@ -51,15 +39,3 @@ const start = async (): Promise<void> => {
 };
 
 void start();
-=======
-dataSource
-  .initialize()
-  .then(async () => {
-    await dataSource.synchronize(true);
-    await runSeeders(dataSource);
-    process.exit();
-  })
-  .catch((error) => {
-    console.error(error);
-  });
->>>>>>> 170e4341e9b305fc663f052b28f917061d8c0619

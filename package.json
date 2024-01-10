@@ -1,8 +1,0 @@
-{
-  "devDependencies": {
-    "@types/leaflet": "^1.9.6"
-  },
-  "dependencies": {
-    "leaflet-geosearch": "^3.11.0"
-  }
-}

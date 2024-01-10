@@ -39,7 +39,6 @@ const InteractiveMap = () => {
     }
   };
 
-  // Récupère les POI disponibles en base de donnée à l'affichage du composant
   useEffect(() => {
     fetchData();
   }, []);

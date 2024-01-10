@@ -18,7 +18,6 @@ const HomePage = () => {
   const navigate = useNavigate();
   const { isAuthenticated, logout, redirectToLogin } = useContext(UsersContext);
   // On vérifie si l'utilisateur est connecté.
-  console.log(isAuthenticated);
 
   const windowSize: number = useWindowDimensions();
 
