@@ -30,10 +30,12 @@ import ProfileMenuMobile from "./pages/Profile/ProfileMenuMobile";
 import ProfileFavorite from "./pages/Profile/ProfileFavorites";
 import FaqPage from "./pages/Faq/FaqPage";
 import ContactPage from "./pages/Contact/ContactPage";
+import ScrollToTop from "./components/layout/ScrollToTop";
 
 const Root = () => {
   return (
     <UserProvider>
+      <ScrollToTop />
       <Layout>
         <Outlet /> {/* Outlet is where the child routes will be rendered */}
       </Layout>
@@ -44,27 +46,46 @@ const Root = () => {
 function App() {
   const router = createBrowserRouter(
     createRoutesFromElements(
-      <Route path="/" element={<Root />}>
-        <Route index element={<HomePage />} />
+      <>
+        <Route path="/" element={<Root />}>
+          <Route index element={<HomePage />} />
+          <Route path="/auth">
+            <Route path="login" element={<Login />} />
+            <Route path="register" element={<Register />} />
+          </Route>
+          <Route path="/profile">
+            <Route path="page" element={<Profile />} />
+            <Route path="menu" element={<ProfileMenuMobile />} />
+            <Route path="favorites" element={<ProfileFavorite />} />
+          </Route>
+          <Route path="/contribution" element={<Contribution />} />
+          <Route path="poi">
+            <Route path=":cityId" index element={<PoiListView />} />
+          </Route>
+          <Route path="/map" element={<InteractiveMap />} />
+          <Route>
+            <Route path="/faq" element={<FaqPage />} />
+            <Route path="/contact" element={<ContactPage />} />
+          </Route>
+          <Route path="/dashboard" element={<BackOfficeHomePage />} />
+          <Route path="/dashboard">
+            <Route path="cities" element={<Cities />} />
+            <Route path="message" element={<Message />} />
+            <Route path="admin" element={<Admin />} />
+            <Route path="profil" element={<Profil />} />
+            <Route path="categories" element={<Categories />} />
+            <Route path="poi" element={<Poi />} />
+            <Route path="users" element={<Users />} />
+            <Route path="adminCityPoi" element={<PoiCitiesAdmin />} />
+            <Route path="adminCityUsers" element={<UsersCitiesAdmin />} />
+          </Route>
+        </Route>
+
         <Route path="/auth">
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
         </Route>
-        <Route path="/profile">
-          <Route path="page" element={<Profile />} />
-          <Route path="menu" element={<ProfileMenuMobile />} />
-          <Route path="favorites" element={<ProfileFavorite />} />
-        </Route>
-        <Route path="/contribution" element={<Contribution />} />
-        <Route path="poi">
-          <Route path=":cityId" index element={<PoiListView />} />
-        </Route>
-        <Route path="/map" element={<InteractiveMap />} />
-        <Route>
-          <Route path="/faq" element={<FaqPage />} />
-          <Route path="/contact" element={<ContactPage />} />
-        </Route>
-      </Route>
+      </>
     )
   );
 

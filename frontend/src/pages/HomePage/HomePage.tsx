@@ -15,20 +15,12 @@ import { UsersContext } from "../../contexts/UserContext";
 import useWindowDimensions from "../../utils/hooks/useWindowDimensions";
 
 const HomePage = () => {
-  const windowSize = useWindowDimensions();
-
-  // function updateDimension() {
-  //   setWindowSize(window.innerWidth);
-  // }
-
-  // useEffect(() => {
-  //   window.addEventListener("resize", updateDimension);
-  // }, [windowSize]);
-
   const navigate = useNavigate();
   const { isAuthenticated, logout, redirectToLogin } = useContext(UsersContext);
   // On vérifie si l'utilisateur est connecté.
   console.log(isAuthenticated);
+
+  const windowSize: number = useWindowDimensions();
 
   return (
     <>
@@ -69,9 +61,6 @@ const HomePage = () => {
           >
             Explorez
           </button>
-          <h2 className="subtitleCategoryDark">
-            Trouvez votre point d'intérêt !
-          </h2>
           <SearchPOI />
         </section>
       )}
