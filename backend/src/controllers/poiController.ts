@@ -109,7 +109,6 @@ export const PoiController: IController = {
   // CREATE POI
 
   createPoi: async (req: Request, res: Response): Promise<void> => {
-    console.log(req.body);
     try {
       const { userId } = req.params;
       // add user id in body
