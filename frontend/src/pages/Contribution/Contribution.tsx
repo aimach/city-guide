@@ -27,7 +27,9 @@ const Contribution = () => {
   const [categories, setCategories] = useState<Category[]>([]);
   const getCities = async () => {
     try {
-      const response = await fetch("http://localhost:5000/api/cities");
+      const response = await fetch(
+        `${process.env.REACT_APP_PUBLIC_BACKEND_URL}/api/cities`
+      );
       const data = await response.json();
       setCities(data);
     } catch (error) {
@@ -36,7 +38,9 @@ const Contribution = () => {
   };
   const getCategories = async () => {
     try {
-      const response = await fetch("http://localhost:5000/api/categories");
+      const response = await fetch(
+        `${process.env.REACT_APP_PUBLIC_BACKEND_URL}/api/categories`
+      );
       const data = await response.json();
       setCategories(data);
     } catch (error) {
