@@ -5,7 +5,8 @@ import { Category } from "../entities/Category";
 export const CategoryFactory = setSeederFactory(Category, (faker: Faker) => {
   const category = new Category();
   const categories = [
-    "Restaurants, Bar",
+    "Restaurants", 
+    "Bar",
     "Hotel",
     "Point de vue",
     "Soirée",
