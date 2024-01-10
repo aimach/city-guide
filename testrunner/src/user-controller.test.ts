@@ -6,6 +6,8 @@ const userGoodIdentifiers = {
   password: "Test123!",
 };
 
+let token = "";
+
 describe("user register", () => {
   describe("when a field is empty", () => {
     describe("when email is mising", () => {
@@ -17,8 +19,8 @@ describe("user register", () => {
         });
         const data = await res.json();
         expect(res.status).toEqual(422);
-        expect(data.errors).toBeDefined();
-        expect(data.errors.email).toBe("Ce champ est requis");
+        expect(data.error).toBeDefined();
+        expect(data.error.email).toBe("Ce champ est requis");
       });
     });
 
@@ -31,8 +33,8 @@ describe("user register", () => {
         });
         const data = await res.json();
         expect(res.status).toEqual(422);
-        expect(data.errors).toBeDefined();
-        expect(data.errors.username).toBe("Ce champ est requis");
+        expect(data.error).toBeDefined();
+        expect(data.error.username).toBe("Ce champ est requis");
       });
     });
 
@@ -45,9 +47,18 @@ describe("user register", () => {
         });
         const data = await res.json();
         expect(res.status).toEqual(422);
-        expect(data.errors).toBeDefined();
-        expect(data.errors.password).toBe("Ce champ est requis");
+        expect(data.error).toBeDefined();
+        expect(data.error.password).toBe("Ce champ est requis");
       });
+    });
+  });
+
+  describe("when all fields are correct", () => {
+    it("should return a code 201 and a token", async () => {
+      const res = await register(userGoodIdentifiers);
+      const data = await res.json();
+      expect(res.status).toEqual(201);
+      expect(data.token).toMatch(/^[\w-]*\.[\w-]*\.[\w-]*$/);
     });
   });
 
@@ -60,8 +71,8 @@ describe("user register", () => {
       });
       const data = await res.json();
       expect(res.status).toEqual(401);
-      expect(data.errors).toBeDefined();
-      expect(data.errors.email).toBe("Cet email est invalide");
+      expect(data.error).toBeDefined();
+      expect(data.error.email).toBe("Cet email est invalide");
     });
   });
 
@@ -75,8 +86,8 @@ describe("user register", () => {
         });
         const data = await res.json();
         expect(res.status).toEqual(401);
-        expect(data.errors).toBeDefined();
-        expect(data.errors.username).toBe(
+        expect(data.error).toBeDefined();
+        expect(data.error.username).toBe(
           "Le nom d'utilisateur doit contenir entre 3 et 20 caractères sans symboles"
         );
       });
@@ -92,8 +103,8 @@ describe("user register", () => {
         });
         const data = await res.json();
         expect(res.status).toEqual(401);
-        expect(data.errors).toBeDefined();
-        expect(data.errors.username).toBe(
+        expect(data.error).toBeDefined();
+        expect(data.error.username).toBe(
           "Le nom d'utilisateur doit contenir entre 3 et 20 caractères sans symboles"
         );
       });
@@ -108,99 +119,59 @@ describe("user register", () => {
         });
         const data = await res.json();
         expect(res.status).toEqual(401);
-        expect(data.errors).toBeDefined();
-        expect(data.errors.username).toBe(
+        expect(data.error).toBeDefined();
+        expect(data.error.username).toBe(
           "Le nom d'utilisateur doit contenir entre 3 et 20 caractères sans symboles"
         );
       });
     });
   });
-
-  describe("when all fields are correct", () => {
-    it("should return a code 201 and a token", async () => {
-      const res = await register(userGoodIdentifiers);
-      const data = await res.json();
-      expect(res.status).toEqual(201);
-      expect(data.token).toMatch(/^[\w-]*\.[\w-]*\.[\w-]*$/);
-    });
-  });
 });
 
 describe("user login", () => {
-  describe("when a field is empty", () => {
-    describe("when email is missing", () => {
-      it("should return a code 422 and an error message with email as key", async () => {
-        const res = await login({
-          email: "",
-          password: "Test123!",
-        });
-        const data = await res.json();
-        expect(res.status).toEqual(422);
-        expect(data.errors).toBeDefined();
-        expect(data.errors.email).toBe("Ce champ est requis");
-      });
-    });
-
-    describe("when password is missing", () => {
-      it("should return a code 422 and an error message with password as key", async () => {
-        const res = await login({
-          password: "",
-          email: "email@test.fr",
-        });
-        const data = await res.json();
-        expect(res.status).toEqual(422);
-        expect(data.errors).toBeDefined();
-        expect(data.errors.password).toBe("Ce champ est requis");
-      });
-    });
-  });
-
-  describe("when email is not valid", () => {
-    it("should return a code 404 and an error message", async () => {
+  describe("when all fields are correct", () => {
+    it("should return a code 201 and a token", async () => {
       const res = await login({
-        email: "email1@test.fr",
-        password: "Test123!",
+        email: userGoodIdentifiers.email,
+        password: userGoodIdentifiers.password,
       });
       const data = await res.json();
-      expect(res.status).toEqual(404);
-      expect(data.errors).toBeDefined();
-      expect(data.errors.username).toBe("Identifiants incorrects");
+      expect(res.status).toEqual(201);
+      expect(data.token).toMatch(/^[\w-]*\.[\w-]*\.[\w-]*$/);
+      token = data.token;
     });
-  });
 
-  describe("when password is not valid", () => {
-    it("should return a code 400 and an error message", async () => {
-      const res = await login({
-        email: "email1@test.fr",
-        password: "Test123@@@",
+    describe("when email is not valid", () => {
+      it("should return a code 400 and an error message", async () => {
+        const res = await login({
+          email: "email1654684@test.fr",
+          password: userGoodIdentifiers.password,
+        });
+        const data = await res.json();
+        expect(res.status).toEqual(400);
+        expect(data.error).toBeDefined();
+        expect(data.error).toBe("Identifiants incorrects");
       });
-      const data = await res.json();
-      expect(res.status).toEqual(400);
-      expect(data.errors).toBeDefined();
-      expect(data.errors.username).toBe("Identifiants incorrects");
     });
-  });
-});
 
-describe("when all fields are correct", () => {
-  it("should return a code 201 and a token", async () => {
-    const res = await login({
-      email: userGoodIdentifiers.email,
-      password: userGoodIdentifiers.password,
+    describe("when password is not valid", () => {
+      it("should return a code 400 and an error message", async () => {
+        const res = await login({
+          email: userGoodIdentifiers.email,
+          password: "Test123@@@",
+        });
+        const data = await res.json();
+        expect(res.status).toEqual(400);
+        expect(data.error).toBeDefined();
+        expect(data.error).toBe("Identifiants incorrects");
+      });
     });
-    const data = await res.json();
-    expect(res.status).toEqual(201);
-    expect(data.token).toMatch(/^[\w-]*\.[\w-]*\.[\w-]*$/);
   });
 });
 
 describe("delete user", () => {
   it("should return a code 200", async () => {
-    const res = await logout({
-      email: userGoodIdentifiers.email,
-      password: userGoodIdentifiers.password,
-    });
-    const data = await res.json();
+    const res = await logout();
     expect(res.status).toEqual(200);
   });
 });

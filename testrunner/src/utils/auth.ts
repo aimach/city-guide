@@ -41,22 +41,10 @@ export const register = async ({
   return res;
 };
 
-export const logout = async ({
-  email,
-  password,
-}: {
-  email: string;
-  password: string;
-}) => {
-  const res = await fetch("http://backend:5000/api/auth/login", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      email,
-      password,
-    }),
+export const logout = async () => {
+  const res = await fetch("http://backend:5000/api/auth/logout", {
+    method: "GET",
+    headers: { credntials: "include" },
   });
   return res;
 };

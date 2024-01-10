@@ -22,7 +22,7 @@ export const AuthController: IController = {
 
     const checkIfEmpty = (key: string, value: string): boolean => {
       if (validator.isEmpty(value, { ignore_whitespace: true })) {
-        res.status(422).send({ errors: { [key]: "Ce champ est requis" } });
+        res.status(422).send({ error: { [key]: "Ce champ est requis" } });
         return true;
       }
       return false;
@@ -54,7 +54,7 @@ export const AuthController: IController = {
       if (existingEmail !== null) {
         return res
           .status(409)
-          .send({ errors: { email: "Cet email est déjà utilisé" } });
+          .send({ error: { email: "Cet email est déjà utilisé" } });
       }
 
       // Check if username is already taken
@@ -64,14 +64,14 @@ export const AuthController: IController = {
         .findOneBy({ username });
       if (existingUsername !== null) {
         return res.status(409).send({
-          errors: { username: "Ce nom d'utilisateur est déjà utilisé" },
+          error: { username: "Ce nom d'utilisateur est déjà utilisé" },
         });
       }
 
       if (!validator.isEmail(email)) {
         return res
           .status(401)
-          .send({ errors: { email: "Cet email est invalide" } });
+          .send({ error: { email: "Cet email est invalide" } });
       }
 
       if (
@@ -81,7 +81,7 @@ export const AuthController: IController = {
         )
       ) {
         return res.status(401).send({
-          errors: {
+          error: {
             username:
               "Le nom d'utilisateur doit contenir entre 3 et 20 caractères sans symboles",
           },
@@ -97,7 +97,7 @@ export const AuthController: IController = {
         })
       ) {
         return res.status(401).send({
-          errors: {
+          error: {
             password:
               "Le mot de passe doit contenir au moins 8 caractères, 1 chiffre, une majuscule et 1 symbole",
           },
@@ -126,23 +126,7 @@ export const AuthController: IController = {
   login: async (req: Request, res: Response) => {
     const { email, password } = req.body;
 
-    const checkIfEmpty = (key: string, value: string): boolean => {
-      if (validator.isEmpty(value, { ignore_whitespace: true })) {
-        res.status(422).send({ errors: { [key]: "Ce champ est requis" } });
-        return true;
-      }
-      return false;
-    };
     try {
-      // On liste les clés de l'objet req.body.
-      const inputs: string[] = ["email", "password"];
-
-      // On utilise la méthode some() pour vérifier s'il y a au moins une erreur.
-      const someError: boolean = inputs.some((key) =>
-        checkIfEmpty(key, req.body[key])
-      );
-      if (someError) return;
-
       // retrieve user email
       const getUserByEmail = await dataSource
         .getRepository(User)
@@ -150,7 +134,7 @@ export const AuthController: IController = {
 
       // check if I don't have email
       if (getUserByEmail === null) {
-        return res.status(404).send({ error: "Identifiants incorrects" });
+        return res.status(400).send({ error: "Identifiants incorrects" });
       }
 
       const user = getUserByEmail;
@@ -168,7 +152,7 @@ export const AuthController: IController = {
           }
         );
         res.cookie("jwt", token, { httpOnly: true });
-        return res.status(200).send({ token });
+        return res.status(201).send({ token });
       }
     } catch (error) {
       console.log(error);
@@ -177,6 +161,7 @@ export const AuthController: IController = {
 
   // LOGOUT
   logout: async (req: Request, res: Response) => {
+    console.log(req.cookies);
     try {
       res.clearCookie("jwt", { httpOnly: true });
       return res.status(200).send("Sucess");
@@ -221,7 +206,7 @@ export const AuthController: IController = {
         })
       ) {
         return res.status(401).send({
-          errors: {
+          error: {
             password:
               "Le mot de passe doit contenir au moins 8 caractères, 1 chiffre, une majuscule et 1 symbole",
           },
