@@ -11,12 +11,59 @@ import { PoiFactory } from "./factories/poiFactory";
 import { CityFactory } from "./factories/cityFactory";
 import { CategoryFactory } from "./factories/categoryFactory";
 
-const { SEED_HOST, DB_PORT, DB_USER, DB_PASSWORD, DB_NAME } = process.env;
+import * as dotenv from "dotenv";
+dotenv.config();
+
+// Accès aux variables d'environnement
+const DB_HOST: string = process.env.DB_HOST || "";
+const DB_PORT: number = parseInt(process.env.DB_PORT || "5432", 10);
+const DB_USER: string = process.env.DB_USER || "";
+const DB_PASSWORD: string = process.env.DB_PASSWORD || "";
+const DB_NAME: string = process.env.DB_NAME || "";
+const SEED_HOST: string = process.env.SEED_HOST || "";
+const FRONTEND_URL: string = process.env.FRONTEND_URL || "";
+const DEPLOY_URL: string = process.env.DEPLOY_URL || "";
+const BACK_PORT: number = parseInt(process.env.BACK_PORT || "5000", 10);
+
+// Vérification des variables
+if (
+  DB_HOST === "" ||
+  DB_PORT === 0 ||
+  DB_USER === "" ||
+  DB_PASSWORD === "" ||
+  DB_NAME === "" ||
+  SEED_HOST === "" ||
+  FRONTEND_URL === "" ||
+  DEPLOY_URL === "" ||
+  BACK_PORT === 0
+) {
+  console.error("Certaines variables d'environnement ne sont pas définies.");
+  process.exit(1);
+}
+
+// const { SEED_HOST, DB_PORT, DB_USER, DB_PASSWORD, DB_NAME } = process.env;
+
+// if (
+//   SEED_HOST == null ||
+//   DB_PORT == null ||
+//   DB_USER == null ||
+//   DB_PASSWORD == null ||
+//   DB_NAME == null
+// ) {
+//   console.log(SEED_HOST);
+//   console.log(DB_PORT);
+//   console.log(DB_USER);
+//   console.log(DB_PASSWORD);
+//   console.log(SEED_HOST);
+
+//   // console.error("Certaines variables d'environnement ne sont pas définies.");
+//   process.exit(1);
+// }
 
 const options: DataSourceOptions & SeederOptions = {
   type: "postgres",
   host: SEED_HOST,
-  port: DB_PORT !== undefined ? parseInt(DB_PORT) : 5432,
+  port: DB_PORT,
   username: DB_USER,
   password: DB_PASSWORD,
   database: DB_NAME,

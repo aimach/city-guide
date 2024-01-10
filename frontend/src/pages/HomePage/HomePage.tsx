@@ -1,8 +1,4 @@
-/* eslint-disable no-lone-blocks */
-// import React, { useContext } from 'react'
-
-import InteractiveMap from "../../components/interactiveMap/InteractiveMap";
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 
 import SearchPOI from "../SearchPOI/SearchPOI";
 
