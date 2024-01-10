@@ -1,6 +1,4 @@
-import { register } from "./utils/register";
-import { login } from "./utils/login";
-import { logout } from "./utils/logout";
+import { register, login, logout } from "./utils/auth";
 
 const userGoodIdentifiers = {
   email: "email@test.fr",
