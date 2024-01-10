@@ -3,9 +3,8 @@ import { useEffect } from "react";
 import { GeoSearchControl, OpenStreetMapProvider } from "leaflet-geosearch";
 import { useMap } from "react-leaflet";
 import L from "leaflet";
-import "leaflet/dist/leaflet.css"; // Assurez-vous d'importer le CSS de Leaflet
+import "leaflet/dist/leaflet.css";
 import "./searchBar.scss";
-// @ts-ignore
 
 const SearchBar = () => {
   // Créez une instance du fournisseur de recherche (OpenStreetMap dans ce cas)
@@ -49,8 +48,10 @@ const SearchBar = () => {
           fillOpacity: 0.5,
           radius: 5000,
         }).addTo(map);
+        console.log(selectedResult);
 
         map.fitBounds(circle.getBounds());
+
         map.flyTo([selectedResult.y, selectedResult.x], 11);
       }
     };

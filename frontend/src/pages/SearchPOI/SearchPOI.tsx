@@ -63,7 +63,7 @@ const SearchPOI = () => {
           />
           <Link
             className={`${styles.buttonSearchPoi} textButton`}
-            to={`/carte?search=${filterSearch}`}
+            to={`/map?search=${filterSearch}`}
           >
             Voir la carte
           </Link>

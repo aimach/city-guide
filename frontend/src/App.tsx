@@ -13,13 +13,23 @@ import { UserProvider } from "./contexts/UserContext";
 import * as React from "react";
 import Contribution from "./pages/Contribution/Contribution";
 import InteractiveMap from "./components/interactiveMap/InteractiveMap";
-import PoiListView from "./pages/PoiListView/PoiListView";
+import { default as BackOfficeHomePage } from "./backOffice/pages/HomePage/BackOfficeHomePage";
+import Cities from "./backOffice/pages/administrator/Cities/Cities";
+import Message from "./backOffice/pages/administrator/Message/Message";
+import Admin from "./backOffice/pages/administrator/Admin/Admin";
+import Profil from "./backOffice/pages/administrator/Profil/Profil";
+import Categories from "./backOffice/pages/administrator/Categories/Categories";
+import Poi from "./backOffice/pages/administrator/Poi/Poi";
+import Users from "./backOffice/pages/administrator/Users/Users";
+import PoiCitiesAdmin from "./backOffice/pages/cities administrator/Poi/PoiCitiesAdmin";
+import UsersCitiesAdmin from "./backOffice/pages/cities administrator/Users/UsersCitiesAdmin";
 import Layout from "./components/layout/Layout";
+import PoiListView from "./pages/PoiListView/PoiListView";
+import Profile from "./pages/Profile/Profile";
+import ProfileMenuMobile from "./pages/Profile/ProfileMenuMobile";
+import ProfileFavorite from "./pages/Profile/ProfileFavorites";
 import FaqPage from "./pages/Faq/FaqPage";
 import ContactPage from "./pages/Contact/ContactPage";
-import ProfileFavorite from "./pages/Profile/ProfileFavorites";
-import ProfileMenuMobile from "./pages/Profile/ProfileMenuMobile";
-import Profile from "./pages/Profile/Profile";
 
 const Root = () => {
   return (

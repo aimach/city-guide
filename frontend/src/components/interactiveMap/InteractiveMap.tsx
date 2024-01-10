@@ -1,19 +1,12 @@
 import axios from "axios";
 import { useEffect, useState, useRef } from "react";
 import L, { LatLngTuple, MarkerCluster, Point } from "leaflet";
-import {
-  MapContainer,
-  MapContainerProps,
-  TileLayer,
-  useMap,
-} from "react-leaflet";
+import { MapContainer, TileLayer } from "react-leaflet";
 import MarkerClusterGroup from "react-leaflet-cluster";
 import CustomMarker from "../interactiveMap/marker/CustomMarker";
 import style from "./InteractiveMap.module.scss";
-
 // @ts-ignore
 import icon from "../../assets/marker.svg";
-import {} from "react-leaflet";
 import SearchBar from "./searchBar/SearchBar";
 
 type coordinates = {
@@ -63,9 +56,6 @@ const InteractiveMap = () => {
       iconUrl: icon,
     });
   };
-
-  // SEARCH BAR
-
   return (
     <>
       <MapContainer
@@ -80,31 +70,27 @@ const InteractiveMap = () => {
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://tile.jawg.io/78a4b677-e817-42a6-8184-16a7c7017384/{z}/{x}/{y}{r}.png?access-token=VsqNhlNeeh2fYcI97JN1VuaKPpHNNeQSYYllqIf29xrB8in1XrrCycJkjpz6aJZX"
         />
-        {/* Ajoute le contrôle de recherche à la carte */}
+        {/* Barre de recherche */}
         {<SearchBar />}
 
-        <>
-          <MarkerClusterGroup iconCreateFunction={createClusterCustomIcon}>
-            {pois.map((poi, index) => {
-              // GET LAT/LONG
+        <MarkerClusterGroup iconCreateFunction={createClusterCustomIcon}>
+          {pois.map((poi, index) => {
+            const latitude = poi.coordinates.coordinates[0];
+            const longitude = poi.coordinates.coordinates[1];
 
-              const latitude = poi.coordinates.coordinates[0];
-              const longitude = poi.coordinates.coordinates[1];
-
-              return (
-                <CustomMarker
-                  key={index}
-                  position={[latitude, longitude]}
-                  name={poi.name}
-                  image={poi.image}
-                  address={poi.address}
-                  phoneNumber={poi.phoneNumber}
-                  description={poi.description}
-                />
-              );
-            })}
-          </MarkerClusterGroup>
-        </>
+            return (
+              <CustomMarker
+                key={index}
+                position={[latitude, longitude]}
+                name={poi.name}
+                image={poi.image}
+                address={poi.address}
+                phoneNumber={poi.phoneNumber}
+                description={poi.description}
+              />
+            );
+          })}
+        </MarkerClusterGroup>
       </MapContainer>
     </>
   );

@@ -6,13 +6,12 @@ import {
 	OneToOne,
 	JoinColumn,
 	Entity,
-	BaseEntity,
 } from "typeorm";
 import { Poi } from "./Poi";
 import { User } from "./User";
 
 @Entity()
-export class City extends BaseEntity {
+export class City {
 	@PrimaryGeneratedColumn("uuid")
 	id: string;
 

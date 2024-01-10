@@ -2,6 +2,7 @@ import { ReactNode, useState, createContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { User } from "../utils/types";
 
+// fournit le context de l'utilisateur
 interface ProviderProps {
   children?: ReactNode;
 }
@@ -11,6 +12,7 @@ interface ContextProps {
   profile: User | null;
   logout: () => void;
   redirectToLogin: () => void;
+  loaded: boolean;
 }
 
 export const UsersContext = createContext<ContextProps>({
@@ -18,6 +20,7 @@ export const UsersContext = createContext<ContextProps>({
   isAuthenticated: () => false,
   logout: () => {},
   redirectToLogin: () => {},
+  loaded: false,
 });
 
 export const UserProvider = ({ children }: ProviderProps) => {
@@ -75,7 +78,7 @@ export const UserProvider = ({ children }: ProviderProps) => {
   };
   return (
     <UsersContext.Provider
-      value={{ profile, isAuthenticated, logout, redirectToLogin }}
+      value={{ profile, isAuthenticated, logout, redirectToLogin, loaded }}
     >
       {children}
     </UsersContext.Provider>

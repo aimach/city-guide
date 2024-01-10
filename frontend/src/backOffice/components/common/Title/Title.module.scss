@@ -1,0 +1,19 @@
+@use "../../../../style/variable" as v;
+@use "../../../../style/mixin" as m;
+
+.titleContainer {
+	// @include flexLayout(center, space-around, center);
+	display: flex;
+	align-items: center;
+	padding-bottom: 30px;
+	padding-top: 34px;
+	h3,
+	.iconSpaces {
+		color: v.$primary_color;
+	}
+
+	.iconSpaces {
+		font-size: 25px;
+		padding-right: 30px;
+	}
+}

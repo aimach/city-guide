@@ -12,17 +12,18 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import { UsersContext } from "../../contexts/UserContext";
+import useWindowDimensions from "../../utils/hooks/useWindowDimensions";
 
 const HomePage = () => {
-  const [windowSize, setWindowSize] = useState<number>(window.innerWidth);
+  const windowSize = useWindowDimensions();
 
-  function updateDimension() {
-    setWindowSize(window.innerWidth);
-  }
+  // function updateDimension() {
+  //   setWindowSize(window.innerWidth);
+  // }
 
-  useEffect(() => {
-    window.addEventListener("resize", updateDimension);
-  }, [windowSize]);
+  // useEffect(() => {
+  //   window.addEventListener("resize", updateDimension);
+  // }, [windowSize]);
 
   const navigate = useNavigate();
   const { isAuthenticated, logout, redirectToLogin } = useContext(UsersContext);

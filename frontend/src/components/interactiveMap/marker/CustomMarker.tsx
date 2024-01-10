@@ -1,8 +1,9 @@
-import { Marker, Popup, useMap } from "react-leaflet";
+import { Marker, Popup, useMap, useMapEvent } from "react-leaflet";
 import L, { LatLngTuple } from "leaflet";
 import "./customMarker.scss";
 // @ts-ignore
 import iconSVG from "../../../assets/marker.svg";
+import { useEffect, useState } from "react";
 
 const CustomMarker = ({
   name,
