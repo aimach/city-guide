@@ -41,10 +41,10 @@ export const register = async ({
   return res;
 };
 
-export const logout = async () => {
+export const logout = async (token: string) => {
   const res = await fetch("http://backend:5000/api/auth/logout", {
     method: "GET",
-    headers: { credntials: "include" },
+    headers: { credentials: "include" },
   });
   return res;
 };

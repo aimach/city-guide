@@ -6,7 +6,7 @@ const userGoodIdentifiers = {
   password: "Test123!",
 };
 
-let token = "";
+let token: string = "";
 
 describe("user register", () => {
   describe("when a field is empty", () => {
@@ -171,7 +171,7 @@ describe("user login", () => {
 
 describe("delete user", () => {
   it("should return a code 200", async () => {
-    const res = await logout();
+    const res = await logout(token);
     expect(res.status).toEqual(200);
   });
 });
