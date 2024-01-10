@@ -75,10 +75,17 @@ export const CityController: IController = {
 	// CREATE CITY
 
 	createCity: async (req: Request, res: Response): Promise<void> => {
-		try {
-			const { name, image, coordinates, userAdminCityId } = req.body;
-			const { userId } = req.params;
+		console.log("req.body POST", req.body);
 
+		const { name, coordinates, userAdminCity } = req.body;
+		const { userId } = req.params;
+
+		req.body.coordinates = [
+			parseInt(coordinates[0], 10),
+			parseInt(coordinates[1], 10),
+		];
+
+		try {
 			// Check if current user is admin
 			const currentUser = await dataSource
 				.getRepository(User)
@@ -87,6 +94,22 @@ export const CityController: IController = {
 			if (currentUser?.role !== UserRole.ADMIN) {
 				res.status(403).send({
 					error: "You are not authorized to create a city",
+				});
+				if (req.file !== undefined)
+					await unlink(`./public/city/${req.file?.filename}`);
+				return;
+			}
+
+			// Get UserAdminCityId
+			const currentUserAdminCity = await dataSource
+				.getRepository(User)
+				.findOne({
+					where: { username: userAdminCity },
+				});
+
+			if (currentUserAdminCity === null) {
+				res.status(403).send({
+					error: "User admin city doesn't exist",
 				});
 				if (req.file !== undefined)
 					await unlink(`./public/city/${req.file?.filename}`);
@@ -112,7 +135,12 @@ export const CityController: IController = {
 
 			// check if coordinates are type [number, number]
 
-			if (coordinates.length > 2) {
+			if (
+				req.body.coordinates !== null &&
+				(req.body.coordinates.length > 2 ||
+					(typeof req.body.coordinates[0] !== "number" &&
+						typeof req.body.coordinates[1] !== "number"))
+			) {
 				res.status(400).send({
 					error: "Incorrect format of coordinates (must be [lat, long])",
 				});
@@ -121,8 +149,15 @@ export const CityController: IController = {
 				return;
 			}
 
-			// check if userAdminCity is UUID type
-			if (userAdminCityId !== null && !validator.isUUID(userAdminCityId)) {
+			// check if userAdminCity is UUID type -
+			if (
+				currentUserAdminCity !== null &&
+				!validator.isUUID(currentUserAdminCity.id)
+			) {
+				console.log("userAdminCity", currentUserAdminCity);
+				console.log("userAdminCity ID", currentUserAdminCity.id);
+				console.log("typeof userAdminCity", typeof userAdminCity);
+
 				res.status(400).send({
 					error: "Incorrect format of admin city id (must be uuid)",
 				});
@@ -173,13 +208,22 @@ export const CityController: IController = {
 			}
 
 			// format coordinates
+			// req.body.coordinates = {
+			// 	type: "Point",
+			// 	coordinates: [coordinates[0], coordinates[1]],
+			// };
+
 			req.body.coordinates = {
 				type: "Point",
-				coordinates: [coordinates[0], coordinates[1]],
+				coordinates: [req.body.coordinates[0], req.body.coordinates[1]],
 			};
 
 			await dataSource.getRepository(City).save(req.body);
+			// await dataSource
+			//     .getRepository(User)
+			//     .update(currentUserAdminCity.id, currentUserAdminCityBody);
 			res.status(201).send("Created city");
+			console.log("res.status POST", res.status);
 		} catch (error: any) {
 			// check if error is 'Key ("userAdminCityId")=(id) already exists'
 			if (error.code === "23505") {
@@ -210,7 +254,7 @@ export const CityController: IController = {
 		];
 
 		console.log("req.body", req.body);
-		console.log("req.params", req.params);
+		// console.log("req.params", req.params);
 
 		try {
 			// Check if current user is admin
@@ -393,7 +437,8 @@ export const CityController: IController = {
 				.getRepository(User)
 				.update(currentUserAdminCity.id, currentUserAdminCityBody);
 
-			res.status(200).send("Updated city");
+			// res.status(200).send("Updated city");
+			res.status(200).json("Updated city");
 		} catch (error: any) {
 			// check if error is 'Key ("userAdminCityId")=(id) already exists'
 			if (error.code === "23505") {

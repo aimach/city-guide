@@ -1,4 +1,5 @@
-import { IFormData } from "../backOffice/components/modals/Modal";
+// import { IFormData, InputFormData } from "../backOffice/components/modals/Modal";
+import { InputFormData } from "../backOffice/components/modals/Modal";
 import Joi from "joi";
 
 const callRestApi = async (
@@ -263,9 +264,12 @@ export const deleteUser = async (id: string): Promise<void> => {
 
 // UPDATE CITY
 export const updateCity = async (
-	body: IFormData,
+	// body: IFormData,
+	body: InputFormData,
 	id: string
 ): Promise<void> => {
+	// console.log("body apu update", body);
+
 	try {
 		const response = await fetch(`http://localhost:5000/api/cities/${id}`, {
 			method: "PUT",
@@ -276,8 +280,35 @@ export const updateCity = async (
 			body: JSON.stringify(body),
 		});
 		const data = await response.json();
+		console.log("data update", data);
+
 		return data;
 	} catch (error) {
 		console.log("update error", error);
+	}
+};
+
+// ADD CITY
+
+export const addCity = async (body: any): Promise<void> => {
+	console.log("body api add city", body);
+
+	try {
+		const response = await fetch("http://localhost:5000/api/cities", {
+			method: "POST",
+			headers: {
+				// "Content-Type": "application/json",
+				Accept: "application/json",
+			},
+			credentials: "include",
+			// body: JSON.stringify(body),
+			body: body,
+		});
+
+		const data = await response.json();
+		console.log("data", data);
+		return data;
+	} catch (error) {
+		console.log("add error", error);
 	}
 };

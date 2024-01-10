@@ -77,7 +77,9 @@ const Cities = () => {
 	};
 
 	//  UPDATE, Modify One City
-	const [isModalOpen, setIsModalOpen] = useState<string | null>(null);
+	const [isModalOpenModify, setIsModalOpenModify] = useState<string | null>(
+		null
+	);
 
 	const [cityToModified, setcityToModified] = useState<City | null>(null);
 
@@ -85,31 +87,24 @@ const Cities = () => {
 		// console.log(city.coordinates);
 
 		setcityToModified(city);
-		setIsModalOpen(city.id);
-	};
-	const handleCloseModal = () => {
-		setIsModalOpen(null);
+		setIsModalOpenModify(city.id);
 	};
 
 	// ADDED One City
+	const [isModalOpenAdd, setIsModalOpenAdd] = useState<boolean>(false);
+	// pour le cas ajouter un ville  si j'ouvre la modal input vide
+	const newCity = {
+		name: "",
+		coordinates: [0, 0],
+		image: "",
+		userAdminCity: "",
+	};
+	// console.log("newCity",newCity);
 
-	const [newCity, setNewCity] = useState<City | null>(null);
-
-	const addOneCity = async (city: City) => {
-		console.log("addOneCity", city);
-		setNewCity(city);
-		setIsModalOpen("");
-		// try {
-		// 	await fetch(`http://localhost:5000/api/cities/${cityToAdd.id}`, {
-		// 		// a stocké dans le dotenv - on ne met pas l'url localhost:5000
-		// 		method: "POST",
-		// 		credentials: "include",
-		// 		body: null,
-		// 	});
-
-		// } catch (error) {
-		// 	console.log("added error", error);
-		// }
+	// Close Modal for Add and Modify modal
+	const handleCloseModal = () => {
+		setIsModalOpenModify(null);
+		setIsModalOpenAdd(false);
 	};
 
 	return (
@@ -120,12 +115,9 @@ const Cities = () => {
 					Liste des villes
 				</h4>
 				<Button
-					// onClick={() => {
-					// 	console.log("hello");
-					// }}
 					typeButton="text"
 					text="Ajouter une ville"
-					onClick={() => addOneCity(newCity as City)}
+					onClick={() => setIsModalOpenAdd(true)}
 				/>
 			</div>
 			<table>
@@ -195,11 +187,20 @@ const Cities = () => {
 				</tbody>
 			</table>
 
-			{isModalOpen && (
+			{isModalOpenModify && (
 				<Modal
 					onClose={handleCloseModal}
 					isOpen={true}
 					city={cityToModified as City}
+					type="modifyCity"
+				></Modal>
+			)}
+			{isModalOpenAdd && (
+				<Modal
+					onClose={handleCloseModal}
+					isOpen={true}
+					city={newCity}
+					type="addCity"
 				></Modal>
 			)}
 		</BackOfficeLayout>

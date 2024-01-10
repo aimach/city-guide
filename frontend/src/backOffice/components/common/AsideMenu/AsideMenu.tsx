@@ -62,7 +62,7 @@ const AsideMenu = () => {
 								></ItemLi>
 							</ol>
 						</ItemLi>
-						<li className={`textButtonList`}>
+						<ul className={`textButtonList`}>
 							<ItemLi
 								icon={faUsers}
 								name="Administrateur de ville"
@@ -86,7 +86,7 @@ const AsideMenu = () => {
 									></ItemLi>
 								</ol>
 							</ItemLi>
-						</li>
+						</ul>
 					</ul>
 				</aside>
 			</section>
