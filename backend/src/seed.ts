@@ -41,25 +41,6 @@ if (
   process.exit(1);
 }
 
-// const { SEED_HOST, DB_PORT, DB_USER, DB_PASSWORD, DB_NAME } = process.env;
-
-// if (
-//   SEED_HOST == null ||
-//   DB_PORT == null ||
-//   DB_USER == null ||
-//   DB_PASSWORD == null ||
-//   DB_NAME == null
-// ) {
-//   console.log(SEED_HOST);
-//   console.log(DB_PORT);
-//   console.log(DB_USER);
-//   console.log(DB_PASSWORD);
-//   console.log(SEED_HOST);
-
-//   // console.error("Certaines variables d'environnement ne sont pas définies.");
-//   process.exit(1);
-// }
-
 const options: DataSourceOptions & SeederOptions = {
   type: "postgres",
   host: SEED_HOST,
