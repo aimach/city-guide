@@ -1,9 +1,9 @@
-import { useRef } from "react";
+import { useRef, useContext } from "react";
 import { IDisplayModals } from "../../../pages/Profile/Profile";
 import style from "./Modal.module.scss";
 import { User } from "../../../utils/types";
 import { updateUserExceptPassword } from "../../../utils/api";
-
+import { UsersContext } from "../../../contexts/UserContext";
 interface Props {
   setDisplayModals: (arg0: IDisplayModals) => void;
   displayModals: IDisplayModals;
@@ -13,8 +13,9 @@ interface Props {
 const ImageModal = ({ setDisplayModals, displayModals, userInfo }: Props) => {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const formData = new FormData();
+  const { checkUserSession } = useContext(UsersContext);
 
-  const hSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const hSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (inputRef.current !== null && inputRef.current.files) {
       formData.append("image", inputRef.current.files[0]);
@@ -34,8 +35,11 @@ const ImageModal = ({ setDisplayModals, displayModals, userInfo }: Props) => {
       });
     }
     setDisplayModals({ ...displayModals, image: false });
-    if (userInfo !== null && userInfo.id !== null)
-      updateUserExceptPassword(userInfo.id, formData, "formData");
+
+    if (userInfo !== null && userInfo.id !== null) {
+      await updateUserExceptPassword(userInfo.id, formData, "formData");
+      checkUserSession();
+    }
   };
   return (
     <>
