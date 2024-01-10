@@ -1,3 +1,5 @@
+const fetchMock = require("fetch-mock-jest");
+
 export const login = async ({
   email,
   password,
@@ -41,10 +43,10 @@ export const register = async ({
   return res;
 };
 
-export const logout = async (token: string) => {
+export const logout = async () => {
+  const myHeaders = new Headers();
   const res = await fetch("http://backend:5000/api/auth/logout", {
     method: "GET",
-    headers: { credentials: "include" },
   });
   return res;
 };

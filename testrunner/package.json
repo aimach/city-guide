@@ -19,6 +19,8 @@
   },
   "devDependencies": {
     "@types/jsonwebtoken": "^9.0.5",
-    "@types/supertest": "^2.0.16"
+    "@types/supertest": "^2.0.16",
+    "fetch-mock": "^9.11.0",
+    "fetch-mock-jest": "^1.5.1"
   }
 }
