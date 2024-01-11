@@ -265,7 +265,7 @@ export const deleteUser = async (id: string): Promise<void> => {
 // UPDATE CITY
 export const updateCity = async (
 	// body: IFormData,
-	body: InputFormData,
+	body: any,
 	id: string
 ): Promise<void> => {
 	// console.log("body apu update", body);
@@ -274,10 +274,12 @@ export const updateCity = async (
 		const response = await fetch(`http://localhost:5000/api/cities/${id}`, {
 			method: "PUT",
 			headers: {
-				"Content-Type": "application/json",
+				// "Content-Type": "application/json",
+				Accept: "application/json",
 			},
 			credentials: "include",
-			body: JSON.stringify(body),
+			// body: JSON.stringify(body),
+			body: body,
 		});
 		const data = await response.json();
 		console.log("data update", data);
@@ -297,11 +299,10 @@ export const addCity = async (body: any): Promise<void> => {
 		const response = await fetch("http://localhost:5000/api/cities", {
 			method: "POST",
 			headers: {
-				// "Content-Type": "application/json",
+				// "Content-Type": "multipart/form-data",
 				Accept: "application/json",
 			},
 			credentials: "include",
-			// body: JSON.stringify(body),
 			body: body,
 		});
 

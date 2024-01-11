@@ -24,7 +24,6 @@ interface Props {
 
 const Modal = ({ city, onClose, isOpen, type }: Props) => {
 	// const { id, name, coordinates, userAdminCity } = city;
-	// const [formData, setFormData] = useState<IFormData>({
 	const [inputFormData, setInputFormData] = useState<InputFormData>({
 		name: city.name,
 		coordinates:
@@ -58,11 +57,7 @@ const Modal = ({ city, onClose, isOpen, type }: Props) => {
 	const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
 
-		// const formData = new FormData();
-		const formData = new FormData(event.currentTarget);
-		console.log(event.currentTarget.image);
-		// console.log(event.currentTarget.name as HTMLInputElement);
-		console.log(inputFormData);
+		const formData = new FormData();
 
 		Object.keys(inputFormData).forEach((key) => {
 			if (key !== "image") {
@@ -71,21 +66,37 @@ const Modal = ({ city, onClose, isOpen, type }: Props) => {
 					inputFormData[key as keyof InputFormData] as string
 				);
 			}
+
+			// if type modify et que useRef === vide
+			// dans le champ image je recupere l'info
 		});
 
 		// include image file in body
 		console.log("inputRef.current ", inputRef);
-
-		if (inputRef.current !== null && inputRef.current.files) {
+		if (
+			inputRef.current !== null &&
+			inputRef.current.files &&
+			inputRef.current.files[0] !== undefined
+		) {
 			formData.append("image", inputRef.current.files[0]);
 		}
+		// else {
+		// 	formData.append("image", inputFormData.image as string);
+		// }
 
-		for (let pair of formData.entries()) {
-			console.log(pair[0] + ", " + pair[1]);
-		}
+		// for (let pair of formData.entries()) {
+		// 	console.log(pair[0] + ", " + pair[1]);
+		// }
+		// probleme sur les coordonnées dans le AddCity
+
+		// Pour l'UPDATE si je ne modiife pas le fichier je garde l'image
+		// je modifie le fichier je refais le formData pour la requete updateCity
+		console.log("formData", [...formData.entries()]);
+
 		type === "modifyCity"
-			? updateCity(inputFormData, (city as City).id as string) //formData
-			: // : addCity(inputFormData);
+			? updateCity(formData, (city as City).id as string) //formData
+			: // ? updateCity(inputFormData, (city as City).id as string) //formData
+			  // : addCity(inputFormData);
 			  addCity(formData);
 	};
 
@@ -97,7 +108,6 @@ const Modal = ({ city, onClose, isOpen, type }: Props) => {
 						<FontAwesomeIcon icon={faXmark}></FontAwesomeIcon>
 					</button>
 					<form onSubmit={handleSubmit}>
-						{/* <form onSubmit={handleSubmit(onSubmit)}> */}
 						<div className={styles.simpleInput}>
 							<label htmlFor="Nom ville">Nom ville</label>
 							<input
@@ -122,20 +132,19 @@ const Modal = ({ city, onClose, isOpen, type }: Props) => {
 									onChange={(event) =>
 										handleInputChange(event.target.value, "coordinates[0]")
 									}
-									// name="coordinates0"
-									name="coordinates[]"
+									name="coordinates"
 								/>
 							</div>
 							<div>
 								<label htmlFor="Longitude">Longitude</label>
 								<input
-									type="text" // type="number"
+									type="text"
 									value={inputFormData.coordinates[1]}
 									className={styles.inputModal}
 									onChange={(event) =>
 										handleInputChange(event.target.value, "coordinates[1]")
 									}
-									name="coordinates[]"
+									name="coordinates"
 								/>
 							</div>
 						</div>
@@ -153,12 +162,15 @@ const Modal = ({ city, onClose, isOpen, type }: Props) => {
 							/>
 						</div> */}
 						<div className={styles.simpleInput}>
-							<label htmlFor="Image perso">Image perso</label>
+							<label htmlFor="Image perso">Image</label>
 							<input
 								type="file"
 								className={styles.inputModal}
 								name="image"
 								ref={inputRef} // ref sur l'input pour recuperer son contenu
+								// onChange={(event) =>
+								// 	handleInputChange(event.target.value, "image")
+								// }
 							/>
 						</div>
 						<div className={styles.simpleInput}>

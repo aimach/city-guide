@@ -80,10 +80,15 @@ export const CityController: IController = {
 		const { name, coordinates, userAdminCity } = req.body;
 		const { userId } = req.params;
 
+		// req.body.coordinates = [
+		// 	parseInt(coordinates[0], 10),
+		// 	parseInt(coordinates[1], 10),
+		// ];
 		req.body.coordinates = [
-			parseInt(coordinates[0], 10),
-			parseInt(coordinates[1], 10),
+			parseInt(req.body.coordinates.split(",")[0], 10),
+			parseInt(req.body.coordinates.split(",")[1], 10),
 		];
+		console.log("Create req.body.coordinates", req.body.coordinates);
 
 		try {
 			// Check if current user is admin
@@ -106,6 +111,16 @@ export const CityController: IController = {
 				.findOne({
 					where: { username: userAdminCity },
 				});
+
+			const currentUserAdminCityBody = {
+				id: currentUserAdminCity?.id,
+				username: currentUserAdminCity?.username,
+				email: currentUserAdminCity?.email,
+				password: currentUserAdminCity?.password,
+				image: currentUserAdminCity?.image,
+				role: UserRole.ADMIN_CITY,
+				city: currentUserAdminCity?.city,
+			};
 
 			if (currentUserAdminCity === null) {
 				res.status(403).send({
@@ -148,6 +163,7 @@ export const CityController: IController = {
 					await unlink(`./public/city/${req.file?.filename}`);
 				return;
 			}
+			console.log("test", currentUserAdminCity);
 
 			// check if userAdminCity is UUID type -
 			if (
@@ -161,6 +177,7 @@ export const CityController: IController = {
 				res.status(400).send({
 					error: "Incorrect format of admin city id (must be uuid)",
 				});
+				console.log("req.file", req.file);
 				if (req.file !== undefined)
 					await unlink(`./public/city/${req.file?.filename}`);
 				return;
@@ -190,7 +207,10 @@ export const CityController: IController = {
 			}
 
 			// rename file image
+			console.log("add req.file01", req.file);
+
 			if (req.file !== undefined) {
+				console.log("add req.file02", req.file);
 				const originalname = req.file.originalname;
 				const filename = req.file.filename;
 				const newName = `${uuidv4()}-${originalname}`;
@@ -202,27 +222,26 @@ export const CityController: IController = {
 					}
 				);
 				req.body.image = `/public/city/${newName}`;
+				console.log("req.body.image", req.body.image);
 			} else {
 				res.status(400).send({ error: "An image is required" });
 				return;
 			}
 
 			// format coordinates
-			// req.body.coordinates = {
-			// 	type: "Point",
-			// 	coordinates: [coordinates[0], coordinates[1]],
-			// };
-
 			req.body.coordinates = {
 				type: "Point",
 				coordinates: [req.body.coordinates[0], req.body.coordinates[1]],
 			};
 
-			await dataSource.getRepository(City).save(req.body);
-			// await dataSource
-			//     .getRepository(User)
-			//     .update(currentUserAdminCity.id, currentUserAdminCityBody);
-			res.status(201).send("Created city");
+			await dataSource
+				.getRepository(City)
+				.save({ ...req.body, userAdminCity: currentUserAdminCity });
+			await dataSource
+				.getRepository(User)
+				.update(currentUserAdminCity.id, currentUserAdminCityBody);
+			// res.status(201).send("Created city");
+			res.status(201).json("Created city");
 			console.log("res.status POST", res.status);
 		} catch (error: any) {
 			// check if error is 'Key ("userAdminCityId")=(id) already exists'
@@ -243,18 +262,22 @@ export const CityController: IController = {
 	// UPDATE CITY BY ID
 
 	updateCity: async (req: Request, res: Response): Promise<void> => {
+		console.log("req.body UPDATE", req.body);
+		// console.log("req.params", req.params);
 		const { id } = req.params;
 
 		const { name, image, coordinates, userAdminCity } = req.body;
 		const { userId } = req.params;
 
+		// req.body.coordinates = [
+		// 	parseInt(coordinates[0], 10),
+		// 	parseInt(coordinates[1], 10),
+		// ];
 		req.body.coordinates = [
-			parseInt(coordinates[0], 10),
-			parseInt(coordinates[1], 10),
+			parseInt(req.body.coordinates.split(",")[0], 10),
+			parseInt(req.body.coordinates.split(",")[1], 10),
 		];
-
-		console.log("req.body", req.body);
-		// console.log("req.params", req.params);
+		console.log("Create req.body.coordinates", req.body.coordinates);
 
 		try {
 			// Check if current user is admin
@@ -263,6 +286,7 @@ export const CityController: IController = {
 				.findOne({ where: { id: userId } });
 
 			if (currentUser?.role !== UserRole.ADMIN) {
+				console.log("currentUserAdminCity role admin", currentUser);
 				res.status(403).send({
 					error: "You are not authorized to update a city",
 				});
@@ -287,11 +311,17 @@ export const CityController: IController = {
 				role: currentUserAdminCity?.role,
 				city: currentUserAdminCity?.city,
 			};
+			console.log("test id02", id);
+			// console.log("currentUserAdminCity", currentUserAdminCity);
 
 			if (currentUserAdminCity !== null) {
 				req.body.userAdminCity = currentUserAdminCity.id;
 				currentUserAdminCityBody.role = UserRole.ADMIN_CITY;
 			} else {
+				console.log(
+					"currentUserAdminCity role admin city",
+					currentUserAdminCity
+				);
 				res.status(403).send({
 					error: "User admin city doesn't exist",
 				});
@@ -301,6 +331,7 @@ export const CityController: IController = {
 			}
 
 			// check if name is alpha or not empty
+			console.log("test id03", id);
 
 			if (
 				name !== null &&
@@ -310,6 +341,7 @@ export const CityController: IController = {
 				) ||
 					validator.isEmpty(name, { ignore_whitespace: true }))
 			) {
+				console.log("name test");
 				res.status(400).send({
 					error: `Field must contains only characters`,
 				});
@@ -319,8 +351,15 @@ export const CityController: IController = {
 			}
 
 			// check if image is alpha or not empty
+			console.log("test id04", id);
+			console.log("image test", image);
 
-			if (image !== null && validator.isEmpty(image)) {
+			if (
+				image !== null &&
+				typeof image === "string" &&
+				validator.isEmpty(image)
+			) {
+				console.log("image test");
 				res.status(400).send({
 					error: `Field must contains only characters`,
 				});
@@ -328,6 +367,7 @@ export const CityController: IController = {
 					await unlink(`./public/city/${req.file?.filename}`);
 				return;
 			}
+			console.log("test id04 bis", id);
 
 			// check if coordinates are type [number, number]
 			if (
@@ -336,6 +376,7 @@ export const CityController: IController = {
 					(typeof req.body.coordinates[0] !== "number" &&
 						typeof req.body.coordinates[1] !== "number"))
 			) {
+				console.log("coordinates test");
 				res.status(400).send({
 					error: "Incorrect format of coordinates (must be [lat, long])",
 				});
@@ -345,11 +386,17 @@ export const CityController: IController = {
 			}
 
 			// check if userAdminCity is UUID type
+			console.log("test id05", id);
+			console.log(
+				"test id05 et req.body.userAdminCity",
+				req.body.userAdminCity
+			);
 
 			if (
 				req.body.userAdminCity !== null &&
 				!validator.isUUID(req.body.userAdminCity)
 			) {
+				console.log("userAdminCity", req.body.userAdminCity);
 				res.status(400).send({
 					error: "Incorrect format of admin city id (must be uuid)",
 				});
@@ -357,6 +404,7 @@ export const CityController: IController = {
 					await unlink(`./public/city/${req.file?.filename}`);
 				return;
 			}
+			console.log("test id06", id);
 
 			// check if city exists by id
 			const cityToUpdate = await dataSource
@@ -364,6 +412,7 @@ export const CityController: IController = {
 				.findOneBy({ id });
 
 			if (cityToUpdate === null) {
+				console.log("cityToUpdate", cityToUpdate);
 				res.status(404).send({ error: "City not found" });
 				if (req.file !== undefined)
 					await unlink(`./public/city/${req.file?.filename}`);
@@ -380,6 +429,7 @@ export const CityController: IController = {
 					// check every tuples except the one updating
 					.count({ where: { name, id: Not(id) } });
 				if (nameAlreadyExist > 0) {
+					console.log("nameAlreadyExist");
 					res.status(409).send({ error: "City already exists" });
 					if (req.file !== undefined)
 						await unlink(`./public/city/${req.file?.filename}`);
@@ -399,6 +449,7 @@ export const CityController: IController = {
 					},
 				});
 				if (coordsAlreadyExist > 0) {
+					console.log("coordsAlreadyExist");
 					res.status(409).send({ error: "City already exists" });
 					if (req.file !== undefined)
 						await unlink(`./public/city/${req.file?.filename}`);
@@ -427,27 +478,30 @@ export const CityController: IController = {
 				req.body.image = `/public/city/${newName}`;
 
 				// delete the older file
-				if (cityToUpdate.image !== null) {
+				if (cityToUpdate.image?.includes("public/city")) {
 					await unlink("." + cityToUpdate.image);
 				}
 			}
 
 			await dataSource.getRepository(City).update(id, req.body);
+			console.log("test id", id);
 			await dataSource
 				.getRepository(User)
 				.update(currentUserAdminCity.id, currentUserAdminCityBody);
-
+			console.log("save update city");
 			// res.status(200).send("Updated city");
 			res.status(200).json("Updated city");
 		} catch (error: any) {
 			// check if error is 'Key ("userAdminCityId")=(id) already exists'
 			if (error.code === "23505") {
+				console.log("save update city Error01");
 				res.status(409).send({
 					error: "User is already administrator in another city",
 				});
 				if (req.file !== undefined)
 					await unlink(`./public/city/${req.file?.filename}`);
 			} else {
+				console.log("save update city Error02", error);
 				res.status(400).send({ error: error.message });
 				if (req.file !== undefined)
 					await unlink(`./public/city/${req.file?.filename}`);
