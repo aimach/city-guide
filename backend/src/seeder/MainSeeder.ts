@@ -16,16 +16,18 @@ export default class MainSeeder implements Seeder {
     // USERS
     const userFactory = factoryManager.get(User);
     const users = await userFactory.saveMany(10);
+
     // CITY
     const cityFactory = factoryManager.get(City);
     const cities = await cityFactory.saveMany(10);
     // CATEGORY
     const CategoryFactory = factoryManager.get(Category);
-    const categories = await CategoryFactory.saveMany(10);
+    const categories = await CategoryFactory.saveMany(3);
+
     // POI
     const poiFactory = factoryManager.get(Poi);
     const pois = await Promise.all(
-      Array(40)
+      Array(150)
         .fill("")
         .map(async () => {
           const made = await poiFactory.make({

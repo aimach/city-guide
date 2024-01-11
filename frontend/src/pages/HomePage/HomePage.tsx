@@ -1,11 +1,20 @@
-import InteractiveMap from "../../components/interactiveMap/InteractiveMap";
+import { useContext } from "react";
+
 import SearchPOI from "../SearchPOI/SearchPOI";
+
 import styles from "./homePage.module.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
+import { useNavigate } from "react-router-dom";
+import { UsersContext } from "../../contexts/UserContext";
 import useWindowDimensions from "../../utils/hooks/useWindowDimensions";
 
 const HomePage = () => {
+  const navigate = useNavigate();
+  const { isAuthenticated, logout, redirectToLogin } = useContext(UsersContext);
+  // On vérifie si l'utilisateur est connecté.
+
   const windowSize: number = useWindowDimensions();
 
   return (
@@ -29,9 +38,7 @@ const HomePage = () => {
             </div>
           </section>
           <section>
-            <div className={`${styles.mapSection}`}>
-              <InteractiveMap />
-            </div>
+            <div className={`${styles.mapSection}`}></div>
             <div className={`${styles.pictoPlane}`}>
               <img src="/picto_avion.png" alt="picto avion" />
             </div>
