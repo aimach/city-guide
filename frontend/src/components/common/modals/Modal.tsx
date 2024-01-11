@@ -9,9 +9,21 @@ interface Props {
   setDisplayModals: (arg0: IDisplayModals) => void;
   displayModals: IDisplayModals;
   type: string;
+  setIsModalOpenModify?: (isModalOpenModify: boolean) => void;
+  isModalOpenModify?: boolean;
+  setIsModalOpenAdd?: (isModalOpenAdd: boolean) => void;
+  isModalOpenAdd?: boolean;
 }
 
-const Modal = ({ setDisplayModals, displayModals, type }: Props) => {
+const Modal = ({
+  setDisplayModals,
+  displayModals,
+  type,
+  setIsModalOpenModify,
+  isModalOpenModify,
+  setIsModalOpenAdd,
+  isModalOpenAdd,
+}: Props) => {
   let modalContent;
 
   if (type === "validation")
@@ -64,6 +76,10 @@ const Modal = ({ setDisplayModals, displayModals, type }: Props) => {
             type="button"
             onClick={() => {
               setDisplayModals({ ...displayModals, [type]: false });
+              isModalOpenModify &&
+                setIsModalOpenModify &&
+                setIsModalOpenModify(false);
+              isModalOpenAdd && setIsModalOpenAdd && setIsModalOpenAdd(false);
             }}
           >
             Fermer
