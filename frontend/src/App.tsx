@@ -12,6 +12,7 @@ import HomePage from "./pages/HomePage/HomePage";
 import { UserProvider } from "./contexts/UserContext";
 import * as React from "react";
 import Contribution from "./pages/Contribution/Contribution";
+import InteractiveMap from "./components/interactiveMap/InteractiveMap";
 import { default as BackOfficeHomePage } from "./backOffice/pages/HomePage/BackOfficeHomePage";
 import Cities from "./backOffice/pages/administrator/Cities/Cities";
 import Message from "./backOffice/pages/administrator/Message/Message";
@@ -48,29 +49,24 @@ function App() {
       <>
         <Route path="/" element={<Root />}>
           <Route index element={<HomePage />} />
-
           <Route path="/auth">
             <Route path="login" element={<Login />} />
             <Route path="register" element={<Register />} />
           </Route>
-
           <Route path="/profile">
             <Route path="page" element={<Profile />} />
             <Route path="menu" element={<ProfileMenuMobile />} />
             <Route path="favorites" element={<ProfileFavorite />} />
           </Route>
-
           <Route path="contribution" element={<Contribution />} />
-
           <Route path="poi">
             <Route path=":cityId" index element={<PoiListView />} />
           </Route>
-
+          <Route path="/map" element={<InteractiveMap />} />
           <Route>
             <Route path="/faq" element={<FaqPage />} />
             <Route path="/contact" element={<ContactPage />} />
           </Route>
-
           <Route path="/dashboard" element={<BackOfficeHomePage />} />
           <Route path="/dashboard">
             <Route path="cities" element={<Cities />} />
