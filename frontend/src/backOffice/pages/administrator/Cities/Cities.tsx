@@ -72,6 +72,7 @@ const Cities = () => {
         (city) => city.id !== cityToDelete.id
       );
       setCities(updatedCities);
+      setDisplayModals({ ...displayModals, validation: true });
     } catch (error) {
       console.log("delete error", error);
     }
