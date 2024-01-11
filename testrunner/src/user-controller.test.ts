@@ -1,7 +1,7 @@
 import { register, login, logout } from "./utils/auth";
 import { deleteUser, getProfile, getProfiles } from "./utils/profile";
 
-const userGoodIdentifiers = {
+export const userGoodIdentifiers = {
   email: "email@test.fr",
   username: "test",
   password: "Test123!",

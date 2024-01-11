@@ -1,5 +1,3 @@
-const fetchMock = require("fetch-mock-jest");
-
 export const login = async ({
   email,
   password,
