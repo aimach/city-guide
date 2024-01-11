@@ -17,7 +17,7 @@ const SearchBar = () => {
 
   const searchControl = GeoSearchControl({
     provider: provider,
-    searchLabel: "Entrer une ville, un point d'interet...",
+    searchLabel: "Rechercher...",
     showMarker: false,
   });
 

@@ -71,3 +71,25 @@
         cursor: pointer;
     }
 }
+
+
+@media (max-width: 768px) {
+
+    .geosearch {
+        margin-left: 0 !important;
+     
+        form {
+            input {
+                font-size: 15px;
+
+                &::placeholder {
+                    font-size: 15px;
+                    font-weight: bold;
+                }
+            }
+        }
+    }
+ 
+
+ 
+}
