@@ -23,7 +23,6 @@ export default class MainSeeder implements Seeder {
     // CATEGORY
     const CategoryFactory = factoryManager.get(Category);
     const categories = await CategoryFactory.saveMany(3);
-    console.log(categories);
 
     // POI
     const poiFactory = factoryManager.get(Poi);

@@ -9,6 +9,7 @@ export const PoiFactory = setSeederFactory(Poi, (faker: Faker) => {
     max: 6,
   });
   poi.address = faker.location.streetAddress();
+  poi.phoneNumber = faker.phone.number();
   const latitude = faker.number.float({
     min: 43.66886,
     max: 49.7466,
