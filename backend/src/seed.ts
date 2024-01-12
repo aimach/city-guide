@@ -16,7 +16,7 @@ dotenv.config();
 
 // Accès aux variables d'environnement
 const DB_HOST: string = process.env.DB_HOST ?? "";
-const DB_PORT: number = parseInt(process.env.DB_PORT ?? "5432", 10);
+const DB_PORT: number = parseInt(process.env.DB_PORT ?? "5440", 10);
 const DB_USER: string = process.env.DB_USER ?? "";
 const DB_PASSWORD: string = process.env.DB_PASSWORD ?? "";
 const DB_NAME: string = process.env.DB_NAME ?? "";
