@@ -483,6 +483,7 @@ export const CityController: IController = {
 					},
 				},
 			});
+
 			if (cityToDelete === null) {
 				res.status(404).send({ error: "City not found" });
 				return;
