@@ -24,10 +24,10 @@ const HomePage = () => {
           <section className={`${styles.backgroundWave}`}>
             <div className={`presentationText ${styles.presentationSection} `}>
               <p>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum
-                blanditiis aperiam ad, aspernatur incidunt voluptatem ea
-                molestias nemo rem ratione nesciunt neque corporis nihil
-                recusandae cum minima. Id, voluptatum tenetur?
+                Que vous soyez passionné d'histoire, amateur d'art, amoureux de
+                la nature ou à la recherche d'aventures uniques, parcourez City
+                Guide à la découverte des points d'intérêt touristiques et
+                culturels de vos régions !
               </p>
               <button
                 className={`buttonHomePage textButton ${styles.presentationButton}`}
