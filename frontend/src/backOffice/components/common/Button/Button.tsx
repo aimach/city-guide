@@ -17,11 +17,6 @@ const Button = ({ icon, onClick, typeButton, text }: interfaceButtonProps) => {
 				}
 				onClick={onClick}
 			>
-				{/* <FontAwesomeIcon icon={icon} /> */}
-				{/* je veux un bouton reutilisable pour qu'il switch 
-                selon mes besoins d'un bouton icon à bouton text 
-                - passer un type au children : props nommé typeButton 
-                - si typeBuutoon === icon => j'affiche l'icon*/}
 				{typeButton === "icon" && <FontAwesomeIcon icon={icon as IconProp} />}
 				{typeButton === "text" && <p>{text}</p>}
 			</button>

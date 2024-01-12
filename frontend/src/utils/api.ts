@@ -263,7 +263,6 @@ export const deleteUser = async (id: string): Promise<void> => {
 // CREATE POI
 
 export const createPoi = async (body: any) => {
-	console.log(process.env.REACT_APP_PUBLIC_BACKEND_URL);
 	try {
 		const response = await fetch(
 			`${process.env.REACT_APP_PUBLIC_BACKEND_URL}/api/poi`,
