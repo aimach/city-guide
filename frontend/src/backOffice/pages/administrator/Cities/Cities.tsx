@@ -31,9 +31,6 @@ const Cities = () => {
       console.log(error);
     }
   };
-  useEffect(() => {
-    getCities();
-  }, []);
 
   const [checkedCities, setCheckedCities] = useState<City[]>([]);
 
@@ -105,6 +102,10 @@ const Cities = () => {
     validation: false,
     error: false,
   });
+
+  useEffect(() => {
+    getCities();
+  }, [isModalOpenAdd, isModalOpenModify]);
 
   return (
     <BackOfficeLayout>
