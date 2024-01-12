@@ -37,7 +37,7 @@ const HomePage = () => {
               </button>
             </div>
           </section>
-          <section>
+          <section id="parcourir">
             <div className={`${styles.mapSection}`}></div>
             <div className={`${styles.pictoPlane}`}>
               <img src="/picto_avion.png" alt="picto avion" />

@@ -53,14 +53,6 @@ const Header = ({ size }: headerProps) => {
                     Parcourir
                   </a>
                 </li>
-                <li>
-                  <a
-                    href="#abonnement"
-                    onClick={() => setDisplayProfileMenu(false)}
-                  >
-                    Abonnement
-                  </a>
-                </li>
 
                 {role === Role.VISITOR ? (
                   <li>
