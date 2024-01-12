@@ -24,12 +24,13 @@ const AsideMenu = () => {
 							path="/dashboard/admin"
 						>
 							<ol>
-								{/* className={`${styles.itemFlex} ${styles.alignIconAndText}`} */}
-								<ItemLi
-									icon={faEnvelope}
-									name="Messages"
-									path="/dashboard/message"
-								></ItemLi>
+								<ul className={styles.alignIconAndText}>
+									<ItemLi
+										icon={faEnvelope}
+										name="Messages"
+										path="/dashboard/message"
+									></ItemLi>
+								</ul>
 								<ItemLi
 									icon={faUser}
 									name="Profils"
@@ -61,7 +62,7 @@ const AsideMenu = () => {
 								></ItemLi>
 							</ol>
 						</ItemLi>
-						<li className={`textButtonList`}>
+						<ul className={`textButtonList`}>
 							<ItemLi
 								icon={faUsers}
 								name="Administrateur de ville"
@@ -85,7 +86,7 @@ const AsideMenu = () => {
 									></ItemLi>
 								</ol>
 							</ItemLi>
-						</li>
+						</ul>
 					</ul>
 				</aside>
 			</section>

@@ -6,7 +6,8 @@ import { useEffect, useState } from "react";
 import { City } from "../../../../utils/types";
 import Checkbox from "../../../components/common/Checkbox/Checkbox";
 import Button from "../../../components/common/Button/Button";
-import Modal from "../../../components/modals/Modal";
+import Modal from "../../../../components/common/modals/Modal";
+import ModalAdmin from "../../../components/modals/ModalAdmin";
 
 const Cities = () => {
 	const columns = [
@@ -21,14 +22,9 @@ const Cities = () => {
 		try {
 			const response = await fetch("http://localhost:5000/api/cities", {});
 			const data = await response.json();
-			console.log("data", data);
 			setCities(
 				data.map((item: any) => {
-					console.log("item", item);
 					return item;
-					// return {
-					// 	...item,
-					// };
 				})
 			);
 		} catch (error) {
@@ -62,7 +58,6 @@ const Cities = () => {
 	const handleDeleteOneCity = async (cityToDelete: City) => {
 		try {
 			await fetch(`http://localhost:5000/api/cities/${cityToDelete.id}`, {
-				// a stocké dans le dotenv - on ne met pas l'utl localhost:5000
 				method: "DELETE",
 				credentials: "include",
 				body: null,
@@ -71,30 +66,70 @@ const Cities = () => {
 				(city) => city.id !== cityToDelete.id
 			);
 			setCities(updatedCities);
+			setDisplayModals({ ...displayModals, validation: true });
 		} catch (error) {
 			console.log("delete error", error);
 		}
 	};
 
 	//  UPDATE, Modify One City
-	const [isModalOpen, setIsModalOpen] = useState<string | null>(null);
+	const [isModalOpenModify, setIsModalOpenModify] = useState<boolean>(false);
 
 	const [cityToModified, setcityToModified] = useState<City | null>(null);
 
 	const handleUpdateOneCity = (city: City) => {
 		setcityToModified(city);
-		setIsModalOpen(city.id);
+		setIsModalOpenModify(true);
 	};
+
+	// ADDED One City
+	const [isModalOpenAdd, setIsModalOpenAdd] = useState<boolean>(false);
+	const newCity = {
+		name: "",
+		coordinates: [0, 0],
+		image: "",
+		userAdminCity: "",
+	};
+
+	// Close Modal for Add and Modify modal
 	const handleCloseModal = () => {
-		setIsModalOpen(null);
+		setIsModalOpenModify(true);
+		setIsModalOpenAdd(false);
 	};
+
+	// state for modal management
+	const [displayModals, setDisplayModals] = useState<{
+		validation: boolean;
+		error: boolean;
+	}>({
+		validation: false,
+		error: false,
+	});
 
 	return (
 		<BackOfficeLayout>
+			{displayModals.validation ? (
+				<Modal
+					setDisplayModals={setDisplayModals}
+					displayModals={displayModals}
+					type="validation"
+					setIsModalOpenModify={setIsModalOpenModify}
+					isModalOpenModify={isModalOpenModify}
+					setIsModalOpenAdd={setIsModalOpenAdd}
+					isModalOpenAdd={isModalOpenAdd}
+				/>
+			) : null}
 			<Title icon={faCity} name={"Villes"}></Title>
-			<h4 className={`${styles.subtitleTable} subtitleDashboard`}>
-				Liste des villes
-			</h4>
+			<div className={styles.titleAndButton}>
+				<h4 className={`${styles.subtitleTable} subtitleDashboard`}>
+					Liste des villes
+				</h4>
+				<Button
+					typeButton="text"
+					text="Ajouter une ville"
+					onClick={() => setIsModalOpenAdd(true)}
+				/>
+			</div>
 			<table>
 				<thead>
 					<tr>
@@ -129,8 +164,10 @@ const Cities = () => {
 								</td>
 								<td className={`fieldTableBody`}>{city.name}</td>
 								<td className={`fieldTableBody`}>
-									{city.coordinates.coordinates[0]}
-									{city.coordinates.coordinates[1]}
+									<div className={styles.fieldCoordinates}>
+										<span>Lattitude : {city.coordinates.coordinates[0]}</span>
+										<span>Longitude : {city.coordinates.coordinates[1]}</span>
+									</div>
 								</td>
 								<td className={`${styles.fieldImage} fieldTableBody`}>
 									{city.image}
@@ -144,12 +181,14 @@ const Cities = () => {
 										onClick={() => {
 											handleUpdateOneCity(city);
 										}}
+										typeButton={"icon"}
 									/>
 								</td>
 								<td className={styles.endColumn}>
 									<Button
 										icon={faTrashCan}
 										onClick={() => handleDeleteOneCity(city)}
+										typeButton={"icon"}
 									/>
 								</td>
 							</tr>
@@ -158,12 +197,25 @@ const Cities = () => {
 				</tbody>
 			</table>
 
-			{isModalOpen && (
-				<Modal
+			{isModalOpenModify && (
+				<ModalAdmin
 					onClose={handleCloseModal}
 					isOpen={true}
 					city={cityToModified as City}
-				></Modal>
+					type="modifyCity"
+					setDisplayModals={setDisplayModals}
+					displayModals={displayModals}
+				></ModalAdmin>
+			)}
+			{isModalOpenAdd && (
+				<ModalAdmin
+					onClose={handleCloseModal}
+					isOpen={true}
+					city={newCity}
+					type="addCity"
+					setDisplayModals={setDisplayModals}
+					displayModals={displayModals}
+				></ModalAdmin>
 			)}
 		</BackOfficeLayout>
 	);

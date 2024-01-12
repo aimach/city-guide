@@ -25,16 +25,17 @@ const Card = ({
   const { isAuthenticated } = useContext(UsersContext);
 
   const { id, name, image } = data;
-
+  const imageURL = image.includes("public")
+    ? `http://localhost:5000${image}`
+    : image;
   return (
     <>
       <div
         className={`${styles.container} ${
           categorySelected !== id &&
           categorySelected != null &&
-          cardType === CardType.CATEGORY
-            ? styles.unselected
-            : ""
+          cardType === CardType.CATEGORY &&
+          styles.unselected
         } `}
       >
         <div
@@ -42,11 +43,11 @@ const Card = ({
           className={styles.imageContainer}
           data-testid="image-container"
         >
-          <img src={image} alt={name} className={styles.image} />
+          <img src={imageURL} alt={name} className={styles.image} />
           <h3 className={`${styles.title} titleCard`}>{name}</h3>
         </div>
         {cardType !== CardType.CATEGORY && isAuthenticated() ? (
-          <button
+          <div
             className={styles.likeButton}
             onClick={() => {
               handleFavourite(id, cardType);
@@ -65,7 +66,7 @@ const Card = ({
                 data-testid="empty-heart"
               />
             )}
-          </button>
+          </div>
         ) : (
           ""
         )}

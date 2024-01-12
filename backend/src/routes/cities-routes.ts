@@ -1,6 +1,5 @@
 import express from "express";
 import multer from "multer";
-
 import { auth } from "../middlewares/auth";
 import { CityController } from "../controllers/cityController";
 
@@ -15,10 +14,10 @@ citiesRoutes.get("/:id", CityController.getOneCity);
 citiesRoutes.post("/", auth, upload.single("image"), CityController.createCity);
 
 citiesRoutes.put(
-  "/:id",
-  auth,
-  upload.single("image"),
-  CityController.updateCity
+	"/:id",
+	auth,
+	upload.single("image"),
+	CityController.updateCity
 );
 
 citiesRoutes.delete("/:id", auth, CityController.deleteCity);
