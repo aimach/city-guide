@@ -5,6 +5,17 @@ import { Message } from "../entities/Message";
 import validator from "validator";
 
 export const MessageController: IController = {
+  getMessages: async (req: Request, res: Response): Promise<void> => {
+    try {
+      const allMessages = await dataSource.getRepository(Message).find();
+      console.log(allMessages);
+      res.status(200).send(allMessages);
+    } catch (err) {
+      console.error(err);
+      res.status(500).send({ error: "Error while reading messages" });
+    }
+  },
+
   createMessage: async (req: Request, res: Response): Promise<void> => {
     const { email, title, message } = req.body;
 

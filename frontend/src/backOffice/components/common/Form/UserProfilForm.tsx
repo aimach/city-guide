@@ -2,10 +2,10 @@ import { useContext, useEffect, useState } from "react";
 import styles from "./UserProfilForm.module.scss";
 import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
 import { UsersContext } from "../../../../contexts/UserContext";
-import { User } from "../../../../utils/types"; // Ajustez le chemin selon votre structure de projet
+import { User } from "../../../../utils/types";
 
 interface UserProfilFormProps {
-  onSubmit: (formData: FormData) => void; // Remplacez par le type approprié de votre fonction onSubmit
+  onSubmit: (formData: FormData) => void;
   role: string;
   profile: User | null;
 }
@@ -18,8 +18,6 @@ interface FormData {
   role: string;
   password: string;
 }
-
-// Vous pouvez étendre cette interface si vous avez d'autres champs.
 
 const UserProfilForm: React.FC<UserProfilFormProps> = ({
   onSubmit,
