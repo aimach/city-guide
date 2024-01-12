@@ -7,11 +7,13 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "ts-node-dev src/index.ts",
     "dev": "ts-node-dev --respawn src/index.ts",
-    "seed": "ts-node src/seed.ts"
+    "seed": "ts-node src/seed.ts",
+    "dataTourisme": "ts-node src/dataTourisme/dataTourismev2.ts"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@faker-js/faker": "^8.0.2",
     "@types/bcrypt": "^5.0.0",
     "@types/cookie-parser": "^1.4.3",
     "@types/express": "^4.17.17",
@@ -46,6 +48,8 @@
     "@faker-js/faker": "^8.0.2",
     "@types/multer": "^1.4.7",
     "cross-fetch": "^4.0.0",
+    "axios": "^1.6.0",
+    "graphql": "^15.8.0",
     "helmet": "^7.0.0",
     "multer": "^1.4.5-lts.1",
     "typeorm-extension": "^3.0.1"

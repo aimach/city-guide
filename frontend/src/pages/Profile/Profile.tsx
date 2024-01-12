@@ -11,7 +11,7 @@ import PasswordModal from "../../components/common/modals/PasswordModal";
 import Caroussel from "../../components/common/Caroussel/Caroussel";
 import { handleFormErrors } from "../../utils/handleFormError";
 import useWindowDimensions from "../../utils/hooks/useWindowDimensions";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Navigate, useNavigate, Link } from "react-router-dom";
 export interface IDisableInputs {
   city: boolean;
   email: boolean;
@@ -258,7 +258,9 @@ const Profile = () => {
           </div>
         </form>
         <div className={style.buttonSection}>
-          <button type="button">Suggérer un point d'intérêt</button>
+          <Link to="/contribution">
+            <button type="button">Suggérer un point d'intérêt</button>
+          </Link>
           <button
             type="button"
             onClick={() =>

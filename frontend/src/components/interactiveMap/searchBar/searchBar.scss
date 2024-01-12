@@ -1,0 +1,95 @@
+@use "../../../style/mixin" as m;
+@use "../../../style/variable" as v;
+
+.leaflet-bar {
+    border: initial!important;
+}
+
+.leaflet-control-zoom {
+    display: none;
+}
+.leaflet-control-container {
+    >.leaflet-top.leaflet-left {
+        position: relative;
+        text-align: center;
+        margin: 0 auto;
+    }
+}
+
+.geosearch {
+    position: relative;
+    form {
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        width: 100vw;
+        
+        input {
+            border: 1px solid v.$secondary_color;
+            width: 40vw;
+            padding: 1em;
+            font-size: 24px;
+            font-family: v.$comicNeueFont;
+            margin: 0 auto;
+            &::placeholder {
+                font-size: 24px;
+                font-family: v.$comicNeueFont;
+                font-weight: 700;
+                color: v.$primary_color;
+            }
+        }
+
+        button {
+            display: none;
+        }
+
+        .results.active {
+            width: 40vw;
+            margin: 0 auto;
+            background-color: white;
+            padding: 0 2em;
+            text-align: initial;
+
+            div[data-key="0"] {
+                margin: 0.5em 0;
+            }
+
+            div[data-key="1"],div[data-key="2"],div[data-key="3"]  {
+                display: none;
+            }
+        }
+    }
+    form + .leaflet-bar-part {
+        // position: absolute;
+        // top: 30%;
+        // left: 65%;
+        // border: 1px solid black;
+        display: none;
+    }
+
+    div.results {
+        cursor: pointer;
+    }
+}
+
+
+@media (max-width: 768px) {
+
+    .geosearch {
+        margin-left: 0 !important;
+     
+        form {
+            input {
+                font-size: 15px;
+
+                &::placeholder {
+                    font-size: 15px;
+                    font-weight: bold;
+                }
+            }
+        }
+    }
+ 
+
+ 
+}

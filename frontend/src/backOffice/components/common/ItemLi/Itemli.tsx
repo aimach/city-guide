@@ -5,26 +5,26 @@ import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { ReactNode } from "react";
 
 type ItemLiProps = {
-	icon: IconProp;
-	path: string;
-	name: string;
-	children?: ReactNode;
+  icon: IconProp;
+  path: string;
+  name: string;
+  children?: ReactNode;
 };
 
 const ItemLi = ({ icon, path, name, children }: ItemLiProps) => {
-	return (
-		<>
-			<li className={`textButtonList`}>
-				<span>
-					<FontAwesomeIcon icon={icon} />
-					<Link to={path} className={styles.itemAsideMenu}>
-						{name}
-					</Link>
-				</span>
-				{children}
-			</li>
-		</>
-	);
+  return (
+    <>
+      <li className={`textButtonList`}>
+        <Link to={path} className={styles.itemAsideMenu}>
+          <span>
+            <FontAwesomeIcon icon={icon} />
+            {name}
+          </span>
+        </Link>
+        {children}
+      </li>
+    </>
+  );
 };
 
 export default ItemLi;

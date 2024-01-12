@@ -13,6 +13,7 @@ interface ContextProps {
   logout: () => void;
   redirectToLogin: () => void;
   loaded: boolean;
+  checkUserSession: () => void;
 }
 
 export const UsersContext = createContext<ContextProps>({
@@ -21,6 +22,7 @@ export const UsersContext = createContext<ContextProps>({
   logout: () => {},
   redirectToLogin: () => {},
   loaded: false,
+  checkUserSession: () => {},
 });
 
 export const UserProvider = ({ children }: ProviderProps) => {
@@ -29,29 +31,31 @@ export const UserProvider = ({ children }: ProviderProps) => {
   const [loaded, setLoaded] = useState(false);
 
   const navigate = useNavigate();
-  // useEffect
-  useEffect(() => {
-    const checkUserSession = async () => {
-      // GET /my-profile, en cas de succès on setUser avec les infos de l'utilisateur //
-      try {
-        const response = await fetch(
-          "http://localhost:5000/api/profile/my-profile",
-          {
-            credentials: "include",
-          }
-        );
-        const data = await response.json();
 
-        setLoaded(true);
-        if (!data.error) {
-          setProfile(data);
+  const checkUserSession = async () => {
+    // GET /my-profile, en cas de succès on setUser avec les infos de l'utilisateur //
+    try {
+      const response = await fetch(
+        "http://localhost:5000/api/profile/my-profile",
+        {
+          credentials: "include",
         }
-      } catch (err) {
-        setLoaded(true);
+      );
+      const data = await response.json();
+
+      setLoaded(true);
+      if (!data.error) {
+        setProfile(data);
       }
-    };
+    } catch (err) {
+      setLoaded(true);
+      navigate("/auth/login");
+    }
+  };
+
+  useEffect(() => {
     checkUserSession();
-  }, []);
+  }, [navigate]);
 
   const isAuthenticated = () => {
     return profile !== null;
@@ -59,10 +63,14 @@ export const UserProvider = ({ children }: ProviderProps) => {
 
   const logout = async () => {
     try {
-      const response = await fetch("http://localhost:5000/api/auth/logout");
+      const response = await fetch("http://localhost:5000/api/auth/logout", {
+        credentials: "include",
+      });
       const data = await response.json();
-      console.log(data);
-      setProfile(null);
+      if (data === "Logged out") {
+        setProfile(null);
+        navigate("/");
+      }
     } catch (error) {
       console.log(error);
     }
@@ -73,9 +81,17 @@ export const UserProvider = ({ children }: ProviderProps) => {
       navigate("/auth/login");
     }
   };
+
   return (
     <UsersContext.Provider
-      value={{ profile, isAuthenticated, logout, redirectToLogin, loaded }}
+      value={{
+        profile,
+        isAuthenticated,
+        logout,
+        redirectToLogin,
+        loaded,
+        checkUserSession,
+      }}
     >
       {children}
     </UsersContext.Provider>

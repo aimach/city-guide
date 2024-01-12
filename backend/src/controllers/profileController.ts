@@ -217,13 +217,14 @@ export const ProfileController: IController = {
         const emailAlreadyExist = await dataSource
           .getRepository(User)
           .findOne({ where: { email } });
-        if (emailAlreadyExist !== null) {
-          if (emailAlreadyExist.email !== currentUser.email) {
-            res.status(409).send({ error: "Email already exists" });
-            if (req.file !== undefined)
-              await unlink(`./public/user/${req.file?.filename}`);
-            return;
-          }
+        if (
+          emailAlreadyExist !== null &&
+          emailAlreadyExist.email !== currentUser.email
+        ) {
+          res.status(409).send({ error: "Email already exists" });
+          if (req.file !== undefined)
+            await unlink(`./public/user/${req.file?.filename}`);
+          return;
         }
         if (!validator.isEmail(email)) {
           res.status(401).send({ error: "Incorrect email format" });

@@ -25,10 +25,7 @@ app.use(
   })
 );
 app.use((req, res, next) => {
-  const corsWhitelist = [
-    "http://localhost:3000",
-    "https://lamarr4.wns.wilders.dev",
-  ];
+  const corsWhitelist = [process.env.FRONTEND_URL, process.env.DEPLOY_URL];
 
   if (
     req.headers.origin !== undefined &&
@@ -57,17 +54,9 @@ app.use("/api/categories", categoriesRoutes);
 app.use("/api/contact", messageRoutes);
 
 const start = async (): Promise<void> => {
-  const port = 5000;
+  const port = process.env.BACK_PORT as string;
 
   await dataSource.initialize();
-
-  /*  if (process.env.NODE_ENV !== 'production') {
-      try {
-         await seed();
-      } catch (error) {
-         console.log('Seed error: ' + error);
-      }
-   } */
 
   app.listen({ port }, () => {
     console.log(`Backend app ready at http://localhost:${port}`);
