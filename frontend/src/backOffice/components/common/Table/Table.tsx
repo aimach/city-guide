@@ -48,12 +48,12 @@ function Table<T>({
             ))}
             {onUpdate && (
               <td>
-                <Button icon={faPen} onClick={() => {}} />
+                <Button icon={faPen} onClick={() => {}} typeButton={""} />
               </td>
             )}
             {onDelete && (
               <td>
-                <Button icon={faTrashCan} onClick={() => {}} />
+                <Button icon={faTrashCan} onClick={() => {}} typeButton={""} />
               </td>
             )}
           </tr>
