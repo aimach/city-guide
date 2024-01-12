@@ -60,6 +60,7 @@ describe("Card", () => {
   const handleFavourite = jest.fn();
   const logout = jest.fn();
   const redirectToLogin = jest.fn();
+  const checkUserSession = jest.fn();
   it("renders a card", () => {
     render(
       <Card
@@ -96,6 +97,7 @@ describe("Card", () => {
             redirectToLogin,
             logout,
             loaded: false,
+            checkUserSession,
           }}
         >
           <Card
@@ -119,6 +121,7 @@ describe("Card", () => {
             redirectToLogin,
             logout,
             loaded: false,
+            checkUserSession,
           }}
         >
           <Card
@@ -142,6 +145,7 @@ describe("Card", () => {
             redirectToLogin,
             logout,
             loaded: false,
+            checkUserSession,
           }}
         >
           <Card
@@ -167,6 +171,7 @@ describe("Card", () => {
             redirectToLogin,
             logout,
             loaded: true,
+            checkUserSession,
           }}
         >
           <Card
@@ -190,6 +195,7 @@ describe("Card", () => {
             redirectToLogin,
             logout,
             loaded: true,
+            checkUserSession,
           }}
         >
           <Card
@@ -213,6 +219,7 @@ describe("Card", () => {
             redirectToLogin,
             logout,
             loaded: false,
+            checkUserSession,
           }}
         >
           <Card
@@ -237,6 +244,7 @@ describe("Card", () => {
               redirectToLogin,
               logout,
               loaded: false,
+              checkUserSession,
             }}
           >
             <Card
@@ -262,6 +270,7 @@ describe("Card", () => {
               redirectToLogin,
               logout,
               loaded: false,
+              checkUserSession,
             }}
           >
             <Card
@@ -287,6 +296,7 @@ describe("Card", () => {
               redirectToLogin,
               logout,
               loaded: false,
+              checkUserSession,
             }}
           >
             <Card

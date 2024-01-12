@@ -21,7 +21,7 @@ const mockedUser: User = {
 describe("Header", () => {
   const logout = jest.fn();
   const redirectToLogin = jest.fn();
-
+  const checkUserSession = jest.fn();
   it("should render in desktop", () => {
     render(
       <BrowserRouter>
@@ -32,6 +32,7 @@ describe("Header", () => {
             redirectToLogin,
             logout,
             loaded: false,
+            checkUserSession,
           }}
         >
           <Header size="desktop" />
@@ -50,6 +51,7 @@ describe("Header", () => {
             redirectToLogin,
             logout,
             loaded: false,
+            checkUserSession,
           }}
         >
           <Header size="mobile" />
@@ -68,6 +70,7 @@ describe("Header", () => {
             redirectToLogin,
             logout,
             loaded: true,
+            checkUserSession,
           }}
         >
           <Header size="desktop" />
@@ -90,6 +93,7 @@ describe("Header", () => {
             redirectToLogin,
             logout,
             loaded: true,
+            checkUserSession,
           }}
         >
           <Header size="desktop" />

@@ -55,6 +55,7 @@ describe("ModalePOI", () => {
   const isLiked = jest.fn();
   const logout = jest.fn();
   const redirectToLogin = jest.fn();
+  const checkUserSession = jest.fn();
 
   it("should render validation modal", () => {
     render(
@@ -66,6 +67,7 @@ describe("ModalePOI", () => {
             redirectToLogin,
             logout,
             loaded: false,
+            checkUserSession,
           }}
         >
           <ModalePOI
@@ -89,6 +91,7 @@ describe("ModalePOI", () => {
             redirectToLogin,
             logout,
             loaded: false,
+            checkUserSession,
           }}
         >
           <ModalePOI
@@ -115,6 +118,7 @@ describe("ModalePOI", () => {
             redirectToLogin,
             logout,
             loaded: false,
+            checkUserSession,
           }}
         >
           <ModalePOI
@@ -141,6 +145,7 @@ describe("ModalePOI", () => {
             redirectToLogin,
             logout,
             loaded: true,
+            checkUserSession,
           }}
         >
           <ModalePOI
@@ -168,6 +173,7 @@ describe("ModalePOI", () => {
             redirectToLogin,
             logout,
             loaded: true,
+            checkUserSession,
           }}
         >
           <ModalePOI
@@ -200,6 +206,7 @@ describe("ModalePOI", () => {
             redirectToLogin,
             logout,
             loaded: true,
+            checkUserSession,
           }}
         >
           <ModalePOI
