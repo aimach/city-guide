@@ -7,4 +7,4 @@ messageRoutes.get("/", MessageController.getMessages);
 
 messageRoutes.post("/", MessageController.createMessage);
 
-messageRoutes.delete("/:id", MessageController.deleteMessage);
+// messageRoutes.delete("/:id", MessageController.deleteMessage);
