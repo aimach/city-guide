@@ -37,3 +37,11 @@ td {
 	word-break: break-word;
 	text-overflow: ellipsis;
 }
+.titleAndButton {
+	display: flex;
+	justify-content: space-between;
+}
+.fieldCoordinates {
+	display: flex;
+	flex-direction: column;
+}

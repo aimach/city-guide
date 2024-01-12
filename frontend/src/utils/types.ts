@@ -1,4 +1,4 @@
-type Coordinates = { type: string; coordinates: [number, number] };
+export type Coordinates = { type: string; coordinates: [number, number] };
 
 export enum Role {
 	FREE_USER = "free_user",

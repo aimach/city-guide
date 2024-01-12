@@ -22,9 +22,9 @@ export interface IDisableInputs {
 
 export interface IDisplayModals {
   validation: boolean;
-  image: boolean;
-  deleteUser: boolean;
-  password: boolean;
+  image?: boolean;
+  deleteUser?: boolean;
+  password?: boolean;
   error: boolean;
 }
 export interface IError {
