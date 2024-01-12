@@ -5,26 +5,27 @@ import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { ReactNode } from "react";
 
 type ItemLiProps = {
-  icon: IconProp;
-  path: string;
-  name: string;
-  children?: ReactNode;
+	icon: IconProp;
+	path: string;
+	name: string;
+	children?: ReactNode; // ? pas obligatoite, tous les composants ItemLi appelé dans AsideMenu ne sont pas obligé d'avoir des enfants
+	// ReactNode car le PropsWithChildren ne fonctionnait pas on a trouvé le ReactNode en inspectant le PropsWithChildren
 };
 
 const ItemLi = ({ icon, path, name, children }: ItemLiProps) => {
-  return (
-    <>
-      <li className={`textButtonList`}>
-        <Link to={path} className={styles.itemAsideMenu}>
-          <span>
-            <FontAwesomeIcon icon={icon} />
-            {name}
-          </span>
-        </Link>
-        {children}
-      </li>
-    </>
-  );
+	return (
+		<>
+			<li className={`textButtonList`}>
+				<span className={styles.itemFlex}>
+					<FontAwesomeIcon icon={icon} className={styles.spacingIconText} />
+					<Link to={path} className={styles.itemAsideMenu}>
+						{name}
+					</Link>
+				</span>
+				{children}
+			</li>
+		</>
+	);
 };
 
 export default ItemLi;
