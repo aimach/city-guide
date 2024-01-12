@@ -89,12 +89,12 @@ const ModalePOI = ({ poi, onClose, handleFavourite, isLiked }: Props) => {
           </>
         )}
       </div>
-      <div className={styles.buttonContainer}>
+      {/* <div className={styles.buttonContainer}>
         <button className={styles.mapButton}>
           <FontAwesomeIcon icon={faLocationDot} className={styles.icon} />
           Voir sur la carte
         </button>
-      </div>
+      </div> */}
     </div>
   );
 };
