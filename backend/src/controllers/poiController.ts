@@ -234,10 +234,10 @@ export const PoiController: IController = {
 
       // format coordinates
       const latitude = req.body.coordinates.split(",")[0];
-      const longitude = req.body.coordinates.split(",")[0];
+      const longitude = req.body.coordinates.split(",")[1];
       req.body.coordinates = {
         type: "Point",
-        coordinates: [parseInt(latitude, 10), parseInt(longitude, 10)],
+        coordinates: [parseFloat(latitude), parseFloat(longitude)],
       };
 
       // check coordinates format
