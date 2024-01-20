@@ -1,49 +1,69 @@
-import { City } from "./entities/City";
+import "reflect-metadata";
+import { DataSource, DataSourceOptions } from "typeorm";
+import { runSeeders, SeederOptions } from "typeorm-extension";
 import { User } from "./entities/User";
+import { UsersFactory } from "./factories/userFactory";
+import MainSeeder from "./seeder/MainSeeder";
+import { Category } from "./entities/Category";
+import { City } from "./entities/City";
+import { Poi } from "./entities/Poi";
+import { PoiFactory } from "./factories/poiFactory";
+import { CityFactory } from "./factories/cityFactory";
+import { CategoryFactory } from "./factories/categoryFactory";
 
-/**
- * Cette fonction permet d'ajouter des données de test utiles en développement.
- */
-export async function seed() {
-	const user = new User();
-	user.email = "user@example.com";
-	user.username = "user";
-	user.password = "password";
-	user.city = "Lyon";
-	await user.save();
+import * as dotenv from "dotenv";
+dotenv.config();
 
-	const paris = new City();
-	paris.name = "Paris";
-	paris.userAdminCity = user;
-	paris.image =
-		"https://www.thetrainline.com/cms/media/1360/france-eiffel-tower-paris.jpg?mode=crop&width=1080&height=1080&quality=70";
-	await paris.save();
+// Accès aux variables d'environnement
+const DB_HOST: string = process.env.DB_HOST || "";
+const DB_PORT: number = parseInt(process.env.DB_PORT || "5432", 10);
+const DB_USER: string = process.env.DB_USER || "";
+const DB_PASSWORD: string = process.env.DB_PASSWORD || "";
+const DB_NAME: string = process.env.DB_NAME || "";
+const SEED_HOST: string = process.env.SEED_HOST || "";
+const FRONTEND_URL: string = process.env.FRONTEND_URL || "";
+const DEPLOY_URL: string = process.env.DEPLOY_URL || "";
+const BACK_PORT: number = parseInt(process.env.BACK_PORT || "5000", 10);
 
-	const user2 = new User();
-	user2.email = "user2@example.com";
-	user2.username = "user2";
-	user2.password = "password";
-	user2.city = "Lyon";
-	await user2.save();
-
-	const user3 = new User();
-	user3.email = "user3@example.com";
-	user3.username = "user3";
-	user3.password = "password";
-	user3.city = "Lyon";
-	await user3.save();
-
-	const lyon = new City();
-	lyon.name = "Lyon";
-	lyon.userAdminCity = user2;
-	lyon.image =
-		"https://www.larousse.fr/encyclopedie/data/images/1314872-Lyon.jpg";
-	await lyon.save();
-
-	const marseille = new City();
-	marseille.name = "Marseille";
-	marseille.userAdminCity = user3;
-	marseille.image =
-		"https://www.okvoyage.com/wp-content/uploads/2020/03/marseille-france.jpg";
-	await marseille.save();
+// Vérification des variables
+if (
+  DB_HOST === "" ||
+  DB_PORT === 0 ||
+  DB_USER === "" ||
+  DB_PASSWORD === "" ||
+  DB_NAME === "" ||
+  SEED_HOST === "" ||
+  FRONTEND_URL === "" ||
+  DEPLOY_URL === "" ||
+  BACK_PORT === 0
+) {
+  console.error("Certaines variables d'environnement ne sont pas définies.");
+  process.exit(1);
 }
+
+const options: DataSourceOptions & SeederOptions = {
+  type: "postgres",
+  host: SEED_HOST,
+  port: DB_PORT,
+  username: DB_USER,
+  password: DB_PASSWORD,
+  database: DB_NAME,
+
+  synchronize: true,
+
+  entities: [User, Category, City, Poi],
+  // additional config options brought by typeorm-extension
+  factories: [UsersFactory, PoiFactory, CityFactory, CategoryFactory],
+  seeds: [MainSeeder],
+};
+
+const dataSource = new DataSource(options);
+
+const start = async (): Promise<void> => {
+  await dataSource.initialize();
+  await dataSource.synchronize(true);
+  await runSeeders(dataSource);
+  process.exit();
+};
+
+void start();

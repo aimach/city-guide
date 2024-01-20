@@ -26,8 +26,8 @@ jobs:
         name: Login to Docker Hub
         with:
           # generate some credentials from Dockerhub and store them into the repo secrets
-          username: ${{ secrets.DOCKER_HUB_USERNAME }}
-          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       # prepare buildx for docker
       - uses: docker/setup-buildx-action@v1
@@ -40,7 +40,7 @@ jobs:
           context: ./frontend
           file: ./frontend/Dockerfile
           push: true
-          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/city-guide-frontend:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/cg-frontend:latest
 
   docker_backend:
     # The type of runner that the job will run on
@@ -56,8 +56,8 @@ jobs:
         name: Login to Docker Hub
         with:
           # generate some credentials from Dockerhub and store them into the repo secrets
-          username: ${{ secrets.DOCKER_HUB_USERNAME }}
-          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       # prepare buildx for docker
       - uses: docker/setup-buildx-action@v1
@@ -70,7 +70,7 @@ jobs:
           context: ./backend
           file: ./backend/Dockerfile
           push: true
-          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/city-guide-backend:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/cg-backend:latest
 
   send_redeploy_webhook:
     needs:

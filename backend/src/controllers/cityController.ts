@@ -32,7 +32,6 @@ export const CityController: IController = {
       });
       res.status(200).send(allCities);
     } catch (err) {
-      console.log(err);
       res.status(400).send({ error: "Error while reading cities" });
     }
   },
@@ -46,9 +45,12 @@ export const CityController: IController = {
         where: { id },
         relations: {
           userAdminCity: true,
-          poi: true,
+          poi: {
+            category: true,
+          },
         },
         select: {
+          poi: true,
           userAdminCity: {
             id: true,
             username: true,
@@ -72,10 +74,15 @@ export const CityController: IController = {
   // CREATE CITY
 
   createCity: async (req: Request, res: Response): Promise<void> => {
-    try {
-      const { name, coordinates, userAdminCityId } = req.body;
-      const { userId } = req.params;
+    const { name, coordinates, userAdminCity } = req.body;
+    const { userId } = req.params;
 
+    req.body.coordinates = [
+      parseFloat(req.body.coordinates.split(",")[0]),
+      parseFloat(req.body.coordinates.split(",")[1]),
+    ];
+
+    try {
       // Check if current user is admin
       const currentUser = await dataSource
         .getRepository(User)
@@ -84,6 +91,32 @@ export const CityController: IController = {
       if (currentUser?.role !== UserRole.ADMIN) {
         res.status(403).send({
           error: "You are not authorized to create a city",
+        });
+        if (req.file !== undefined)
+          await unlink(`./public/city/${req.file?.filename}`);
+        return;
+      }
+
+      // Get UserAdminCityId
+      const currentUserAdminCity = await dataSource
+        .getRepository(User)
+        .findOne({
+          where: { username: userAdminCity },
+        });
+
+      const currentUserAdminCityBody = {
+        id: currentUserAdminCity?.id,
+        username: currentUserAdminCity?.username,
+        email: currentUserAdminCity?.email,
+        password: currentUserAdminCity?.password,
+        image: currentUserAdminCity?.image,
+        role: UserRole.ADMIN_CITY,
+        city: currentUserAdminCity?.city,
+      };
+
+      if (currentUserAdminCity === null) {
+        res.status(403).send({
+          error: "User admin city doesn't exist",
         });
         if (req.file !== undefined)
           await unlink(`./public/city/${req.file?.filename}`);
@@ -109,7 +142,12 @@ export const CityController: IController = {
 
       // check if coordinates are type [number, number]
 
-      if (coordinates.length > 2) {
+      if (
+        req.body.coordinates !== null &&
+        (req.body.coordinates.length > 2 ||
+          (typeof req.body.coordinates[0] !== "number" &&
+            typeof req.body.coordinates[1] !== "number"))
+      ) {
         res.status(400).send({
           error: "Incorrect format of coordinates (must be [lat, long])",
         });
@@ -118,8 +156,11 @@ export const CityController: IController = {
         return;
       }
 
-      // check if userAdminCity is UUID type
-      if (userAdminCityId !== null && !validator.isUUID(userAdminCityId)) {
+      // check if userAdminCity is UUID type -
+      if (
+        currentUserAdminCity !== null &&
+        !validator.isUUID(currentUserAdminCity.id)
+      ) {
         res.status(400).send({
           error: "Incorrect format of admin city id (must be uuid)",
         });
@@ -152,6 +193,7 @@ export const CityController: IController = {
       }
 
       // rename file image
+
       if (req.file !== undefined) {
         const originalname = req.file.originalname;
         const filename = req.file.filename;
@@ -172,11 +214,16 @@ export const CityController: IController = {
       // format coordinates
       req.body.coordinates = {
         type: "Point",
-        coordinates: [coordinates[0], coordinates[1]],
+        coordinates: [req.body.coordinates[0], req.body.coordinates[1]],
       };
 
-      await dataSource.getRepository(City).save(req.body);
-      res.status(201).send("Created city");
+      await dataSource
+        .getRepository(City)
+        .save({ ...req.body, userAdminCity: currentUserAdminCity });
+      await dataSource
+        .getRepository(User)
+        .update(currentUserAdminCity.id, currentUserAdminCityBody);
+      res.status(201).json("Created city");
     } catch (error: any) {
       // check if error is 'Key ("userAdminCityId")=(id) already exists'
       if (error.code === "23505") {
@@ -201,9 +248,13 @@ export const CityController: IController = {
     const { name, image, coordinates, userAdminCity } = req.body;
     const { userId } = req.params;
 
+    req.body.coordinates = [
+      parseFloat(req.body.coordinates.split(",")[0]),
+      parseFloat(req.body.coordinates.split(",")[1]),
+    ];
+
     try {
       // Check if current user is admin
-
       const currentUser = await dataSource
         .getRepository(User)
         .findOne({ where: { id: userId } });
@@ -211,6 +262,35 @@ export const CityController: IController = {
       if (currentUser?.role !== UserRole.ADMIN) {
         res.status(403).send({
           error: "You are not authorized to update a city",
+        });
+        if (req.file !== undefined)
+          await unlink(`./public/city/${req.file?.filename}`);
+        return;
+      }
+
+      // Get UserAdminCityId
+      const currentUserAdminCity = await dataSource
+        .getRepository(User)
+        .findOne({
+          where: { username: userAdminCity },
+        });
+
+      const currentUserAdminCityBody = {
+        id: currentUserAdminCity?.id,
+        username: currentUserAdminCity?.username,
+        email: currentUserAdminCity?.email,
+        password: currentUserAdminCity?.password,
+        image: currentUserAdminCity?.image,
+        role: currentUserAdminCity?.role,
+        city: currentUserAdminCity?.city,
+      };
+
+      if (currentUserAdminCity !== null) {
+        req.body.userAdminCity = currentUserAdminCity.id;
+        currentUserAdminCityBody.role = UserRole.ADMIN_CITY;
+      } else {
+        res.status(403).send({
+          error: "User admin city doesn't exist",
         });
         if (req.file !== undefined)
           await unlink(`./public/city/${req.file?.filename}`);
@@ -237,7 +317,11 @@ export const CityController: IController = {
 
       // check if image is alpha or not empty
 
-      if (image !== null && validator.isEmpty(image)) {
+      if (
+        image !== null &&
+        typeof image === "string" &&
+        validator.isEmpty(image)
+      ) {
         res.status(400).send({
           error: `Field must contains only characters`,
         });
@@ -247,12 +331,11 @@ export const CityController: IController = {
       }
 
       // check if coordinates are type [number, number]
-
       if (
-        coordinates !== null &&
-        (coordinates.length > 2 ||
-          (typeof coordinates[0] === "number" &&
-            typeof coordinates[1] === "number"))
+        req.body.coordinates !== null &&
+        (req.body.coordinates.length > 2 ||
+          (typeof req.body.coordinates[0] !== "number" &&
+            typeof req.body.coordinates[1] !== "number"))
       ) {
         res.status(400).send({
           error: "Incorrect format of coordinates (must be [lat, long])",
@@ -264,7 +347,10 @@ export const CityController: IController = {
 
       // check if userAdminCity is UUID type
 
-      if (userAdminCity !== null && !validator.isUUID(userAdminCity)) {
+      if (
+        req.body.userAdminCity !== null &&
+        !validator.isUUID(req.body.userAdminCity)
+      ) {
         res.status(400).send({
           error: "Incorrect format of admin city id (must be uuid)",
         });
@@ -308,7 +394,7 @@ export const CityController: IController = {
           where: {
             coordinates: {
               type: "Point",
-              coordinates: [coordinates[0], coordinates[1]],
+              coordinates: [req.body.coordinates[0], req.body.coordinates[1]],
             },
             id: Not(id),
           },
@@ -322,7 +408,7 @@ export const CityController: IController = {
         // format coordinates
         req.body.coordinates = {
           type: "Point",
-          coordinates: [coordinates[0], coordinates[1]],
+          coordinates: [req.body.coordinates[0], req.body.coordinates[1]],
         };
       }
 
@@ -342,13 +428,16 @@ export const CityController: IController = {
         req.body.image = `/public/city/${newName}`;
 
         // delete the older file
-        if (cityToUpdate.image !== null) {
+        if (cityToUpdate.image?.includes("public/city")) {
           await unlink("." + cityToUpdate.image);
         }
       }
 
       await dataSource.getRepository(City).update(id, req.body);
-      res.status(200).send("Updated city");
+      await dataSource
+        .getRepository(User)
+        .update(currentUserAdminCity.id, currentUserAdminCityBody);
+      res.status(200).json("Updated city");
     } catch (error: any) {
       // check if error is 'Key ("userAdminCityId")=(id) already exists'
       if (error.code === "23505") {
@@ -383,22 +472,45 @@ export const CityController: IController = {
 
         return;
       }
+
       // check if city exists in db
-      const cityToDelete = await dataSource
-        .getRepository(City)
-        .findOneBy({ id });
+      const cityToDelete = await dataSource.getRepository(City).findOne({
+        where: { id },
+        relations: { userAdminCity: true },
+        select: {
+          userAdminCity: {
+            id: true,
+          },
+        },
+      });
+
       if (cityToDelete === null) {
         res.status(404).send({ error: "City not found" });
         return;
       }
 
-      await dataSource.getRepository(City).delete(id);
-      // delete image in public directory
-      if (cityToDelete.image !== null) {
-        await unlink("." + cityToDelete.image);
+      // remove status admin to user
+      const userAdminCity = await dataSource
+        .getRepository(User)
+        .findOne({ where: { id: cityToDelete.userAdminCity.id } });
 
-        res.status(200).send("Deleted city");
+      if (userAdminCity !== null) {
+        delete (userAdminCity as any).favouritePoi;
+        delete (userAdminCity as any).favouriteCities;
+        userAdminCity.role = UserRole.FREE_USER;
+        await dataSource.getRepository(City).delete(id);
+        await dataSource
+          .getRepository(User)
+          .update(userAdminCity.id, userAdminCity);
       }
+
+      if (
+        cityToDelete.image !== null &&
+        !cityToDelete.image.includes("loremflickr")
+      ) {
+        await unlink("." + cityToDelete.image);
+      }
+      res.status(200).send("Deleted city");
     } catch (err) {
       res.status(400).send({ error: "Error while deleting city" });
     }

@@ -1,0 +1,47 @@
+@use "../../../../style/mixin" as m;
+@use "../../../../style/variable" as v;
+
+.subtitleTable {
+	padding-bottom: 30px;
+}
+
+table {
+	width: 100%;
+	border-collapse: collapse;
+}
+
+th {
+	border-bottom: 1.5px solid v.$primary_color;
+	border-top: 1.5px solid v.$primary_color;
+	padding: 20px 0 20px 0;
+}
+
+.titleTable {
+	text-align: left;
+	padding-right: 25px;
+}
+.startColumn {
+	padding-left: 25px;
+	padding-right: 30px;
+}
+.endColumn {
+	padding-right: 25px;
+}
+td {
+	padding: 20px 0 20px 0;
+	border-bottom: 1.5px solid v.$primary_color;
+	font-size: 14px;
+}
+.fieldImage {
+	overflow: hidden;
+	word-break: break-word;
+	text-overflow: ellipsis;
+}
+.titleAndButton {
+	display: flex;
+	justify-content: space-between;
+}
+.fieldCoordinates {
+	display: flex;
+	flex-direction: column;
+}

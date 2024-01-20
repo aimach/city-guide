@@ -21,6 +21,7 @@ export const ProfileController: IController = {
         .select([
           "user.id",
           "user.username",
+          "user.bio",
           "user.image",
           "user.role",
           "user.city",
@@ -50,6 +51,7 @@ export const ProfileController: IController = {
         .select([
           "user.id",
           "user.username",
+          "user.bio",
           "user.image",
           "user.role",
           "user.city",
@@ -87,16 +89,19 @@ export const ProfileController: IController = {
         .select([
           "user.id",
           "user.username",
+          "user.bio",
           "user.image",
           "user.role",
           "user.city",
           "user.email",
         ])
         .leftJoinAndSelect("user.createdPoi", "createdPoi")
+        .leftJoinAndSelect("user.favouriteCities", "favouriteCities")
+        .leftJoinAndSelect("user.favouritePoi", "favouritePoi")
         .where("user.id = :id", { id })
         .getOne();
       if (myProfile === null) {
-        return res.status(404).send("User not found");
+        return res.status(404).send({ error: "User not found" });
       } else {
         return res.status(200).send(myProfile);
       }
@@ -110,10 +115,9 @@ export const ProfileController: IController = {
   updateProfile: async (req: Request, res: Response): Promise<void> => {
     try {
       const { id, userId } = req.params;
-      const { username, email, city, password, role } = req.body as User;
+      const { username, email, bio, city, role } = req.body as User;
 
       // check if input with string are alpha and not empty
-
       const checkIfStringAndNotEmpty = async (value: string): Promise<void> => {
         if (
           validator.isEmpty(value, { ignore_whitespace: true }) ||
@@ -128,10 +132,14 @@ export const ProfileController: IController = {
         }
       };
 
-      const inputString: string[] = [username, email, city, password];
+      const inputString: string[] = [username, email];
       inputString.forEach(async (value) => {
         if (value !== null) await checkIfStringAndNotEmpty(value);
       });
+
+      // check if input is "null"
+      if (bio === "null") req.body.bio = null;
+      if (city === "null") req.body.city = null;
 
       // check enum in role
       const roles: UserRole[] = Object.values(UserRole);
@@ -150,7 +158,6 @@ export const ProfileController: IController = {
         res.status(404).send({ error: "User not found" });
         if (req.file !== undefined)
           await unlink(`./public/user/${req.file?.filename}`);
-
         return;
       }
 
@@ -160,13 +167,7 @@ export const ProfileController: IController = {
         .findOne({ where: { id: userId } });
 
       if (role !== null && currentUser?.role !== UserRole.ADMIN) {
-        res.status(403).send({
-          error: "You are not authorized to update this property",
-        });
-        if (req.file !== undefined)
-          await unlink(`./public/user/${req.file?.filename}`);
-
-        return;
+        req.body.role = currentUser?.role;
       }
 
       // Check if connected user has the same id than profile to update or if he is admin
@@ -179,7 +180,6 @@ export const ProfileController: IController = {
         });
         if (req.file !== undefined)
           await unlink(`./public/user/${req.file?.filename}`);
-
         return;
       }
 
@@ -187,12 +187,16 @@ export const ProfileController: IController = {
       if (username !== null) {
         const usernameAlreadyExist = await dataSource
           .getRepository(User)
-          .count({ where: { username } });
-        if (usernameAlreadyExist > 0) {
-          res.status(409).send({ error: "Username already exists" });
-          if (req.file !== undefined)
-            await unlink(`./public/user/${req.file?.filename}`);
+          .findOne({ where: { username } });
+        if (usernameAlreadyExist !== null) {
+          if (usernameAlreadyExist.username !== currentUser.username) {
+            res.status(409).send({ error: "Username already exists" });
+            if (req.file !== undefined)
+              await unlink(`./public/user/${req.file?.filename}`);
+            return;
+          }
         }
+
         if (
           !validator.matches(
             username,
@@ -204,6 +208,7 @@ export const ProfileController: IController = {
           });
           if (req.file !== undefined)
             await unlink(`./public/user/${req.file?.filename}`);
+          return;
         }
       }
 
@@ -211,16 +216,21 @@ export const ProfileController: IController = {
       if (email !== null) {
         const emailAlreadyExist = await dataSource
           .getRepository(User)
-          .count({ where: { email } });
-        if (emailAlreadyExist > 0) {
+          .findOne({ where: { email } });
+        if (
+          emailAlreadyExist !== null &&
+          emailAlreadyExist.email !== currentUser.email
+        ) {
           res.status(409).send({ error: "Email already exists" });
           if (req.file !== undefined)
             await unlink(`./public/user/${req.file?.filename}`);
+          return;
         }
         if (!validator.isEmail(email)) {
           res.status(401).send({ error: "Incorrect email format" });
           if (req.file !== undefined)
             await unlink(`./public/user/${req.file?.filename}`);
+          return;
         }
       }
 
@@ -237,20 +247,40 @@ export const ProfileController: IController = {
             if (err !== null) throw err;
           }
         );
-        req.body.image = `/public/user/${newName}`;
+        req.body.image = `./public/user/${newName}`;
 
         // delete
-        if (profileToUpdate.image !== null) {
-          await unlink("." + profileToUpdate.image);
+        if (
+          profileToUpdate.image !== null &&
+          profileToUpdate.image !== undefined
+        ) {
+          await unlink(profileToUpdate.image);
         }
       }
 
-      await dataSource.getRepository(User).update(id, req.body);
-      res.status(200).send("Updated user");
+      const newUser: User = new User();
+      newUser.username = username;
+      newUser.email = email;
+      newUser.bio = bio;
+      newUser.city = city;
+      newUser.role = role;
+      newUser.image = req.body.image;
+
+      await dataSource.getRepository(User).update(id, newUser);
+
+      res.status(200).json("Updated user");
+      return;
     } catch (err) {
-      res.status(400).send({ error: "Error while updating user" });
       if (req.file !== undefined)
-        await unlink(`./public/user/${req.file?.filename}`);
+        try {
+          await unlink(req.body.image);
+        } catch (error) {
+          res.status(400).send({ error: "Cannot delete avatar" });
+          return;
+        }
+
+      res.status(400).send({ error: "Error while updating user" });
+      return;
     }
   },
 
@@ -445,7 +475,7 @@ export const ProfileController: IController = {
         cityToAdd,
       ];
       await dataSource.getRepository(User).save(userToUpdate);
-      res.status(200).send("Favorite city added to user");
+      res.status(200).json("Favorite city added to user");
     } catch (err) {
       console.log(err);
       res.status(400).send({
@@ -500,7 +530,7 @@ export const ProfileController: IController = {
         (poi) => poi.id !== idCity
       );
       await dataSource.getRepository(User).save(userToUpdate);
-      res.status(200).send("Favorite city remove to user");
+      res.status(200).json("Favorite city remove to user");
     } catch (err) {
       console.log(err);
       res.status(400).send({

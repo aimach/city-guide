@@ -1,0 +1,46 @@
+@import "../../style/variable";
+@import "../../style/mixin";
+
+.container {
+    background-color: $cream-color;
+    padding: 50px 0px;
+
+    .categories {
+        border-bottom: 1px solid $primary-color;
+        border-top: 1px solid $primary-color;
+        padding: 0 auto;
+    }
+
+    .header {
+        width: 80%;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        margin-bottom: 50px;
+    }
+
+    .previousButton {
+        @include unbuttonize;
+        @include buttonSize(auto, 40px, 0 18px);
+        @include buttonColor($secondary_color, $primary_color);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-family: $poppinsFont;
+        font-weight: 600;
+        cursor: pointer;
+
+        .arrow {
+            margin-right: 7px;
+        }
+    }
+
+    h1 {
+        text-align: center;
+        color: $primary-color;
+        font-size: 48px;
+        font-weight: 500;
+        margin: 0;
+    }
+}

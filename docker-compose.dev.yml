@@ -20,10 +20,13 @@ services:
       - WDS_SOCKET_HOST=127.0.0.1
       - CHOKIDAR_USEPOLLING=true
       - WATCHPACK_POLLING=true
+    env_file: ./frontend/.env
 
   postgres:
     image: "postgis/postgis"
     restart: always
+    ports:
+      - "5432:5432"
     environment:
       POSTGRES_PASSWORD: example
 

@@ -19,3 +19,13 @@ docker compose up --build
 - Import des images :
   => pour le moment placer les images dans le dossier public car on ne peut pas les importer depuis un dossier assets dans src
   => pour utiliser une image avec la propriete Css background-image: url(''), placer l'image dans le dossier de son composant et non dans le dossier public
+
+Etapes pour envoyer les données
+
+Node
+Créer entité typeOrm ajouter à datasource
+Créer un controller
+Créer un fichier contact-route qui liste les routes liées au prise de contact
+
+React
+Appeler l'api messageController

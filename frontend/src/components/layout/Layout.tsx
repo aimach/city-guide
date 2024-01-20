@@ -1,22 +1,27 @@
-import React, { PropsWithChildren, useEffect, useState } from "react";
+import { PropsWithChildren } from "react";
+import { useLocation } from "react-router";
 import Header from "../common/header/Header";
 import Footer from "../common/footer/Footer";
+import useWindowDimensions from "../../utils/hooks/useWindowDimensions";
 
 const Layout = ({ children }: PropsWithChildren) => {
-  const [windowSize, setWindowSize] = useState<number>(window.innerWidth);
+  const windowSize = useWindowDimensions();
+  let location = useLocation();
+  const isPageWithoutHeaderAndFooter =
+    (location.pathname.includes("register") && windowSize > 768) ||
+    (location.pathname.includes("login") && windowSize > 768) ||
+    (location.pathname.includes("contribution") && windowSize > 768);
 
-  function updateDimension() {
-    setWindowSize(window.innerWidth);
-  }
-
-  useEffect(() => {
-    window.addEventListener("resize", updateDimension);
-  }, [windowSize]);
   return (
     <>
-      <Header size={windowSize > 768 ? "desktop" : "mobile"} />
+      {isPageWithoutHeaderAndFooter ? null : (
+        <Header size={windowSize > 768 ? "desktop" : "mobile"} />
+      )}
+
       {children}
-      <Footer />
+      {isPageWithoutHeaderAndFooter ? null : windowSize > 768 ? (
+        <Footer />
+      ) : null}
     </>
   );
 };

@@ -57,7 +57,10 @@ export const PoiController: IController = {
           .getRepository(City)
           .findOneBy({ userAdminCity: { id: userId } });
         // update searchQueries with the city where user is admin
-        searchQueries = { ...searchQueries, city: cityWhereUserIsAdmin?.name };
+        searchQueries = {
+          ...searchQueries,
+          city: cityWhereUserIsAdmin?.name,
+        };
         allPoi = await dataSource.getRepository(Poi).find({
           relations: {
             category: true,
@@ -79,7 +82,9 @@ export const PoiController: IController = {
         res.status(200).send(allPoi);
       }
     } catch (err) {
-      res.status(400).send({ error: "Error while reading points of interest" });
+      res.status(400).send({
+        error: "Error while reading points of interest",
+      });
     }
   },
 
@@ -95,7 +100,9 @@ export const PoiController: IController = {
         res.status(200).send(poiToRead);
       }
     } catch (err) {
-      res.status(400).send({ error: "Error while reading point of interest" });
+      res.status(400).send({
+        error: "Error while reading point of interest",
+      });
     }
   },
 
@@ -103,10 +110,14 @@ export const PoiController: IController = {
 
   createPoi: async (req: Request, res: Response): Promise<void> => {
     try {
+      const { userId } = req.params;
+      // add user id in body
+      req.body.user = userId;
+
       const {
         description,
         address,
-        isAccepted,
+        phoneNumber,
         name,
         image,
         category,
@@ -114,9 +125,6 @@ export const PoiController: IController = {
         user,
         coordinates,
       } = req.body;
-
-      // Check if user connected is admin city or admin
-      const { userId } = req.params;
 
       const cityOfPoi = await dataSource.getRepository(City).findOne({
         where: { id: city },
@@ -130,15 +138,13 @@ export const PoiController: IController = {
         .findOne({ where: { id: userId } });
 
       if (
-        cityOfPoi?.userAdminCity.id !== userId ||
-        currentUser?.role !== UserRole.ADMIN
+        cityOfPoi?.userAdminCity?.id !== userId &&
+        currentUser?.role !== UserRole.ADMIN &&
+        currentUser?.role !== UserRole.ADMIN_CITY
       ) {
-        res.status(403).send({
-          error: "You are not authorized to create a point of interest",
-        });
-        if (req.file !== undefined)
-          await unlink(`./public/poi/${req.file.filename}`);
-        return;
+        req.body.isAccepted = false;
+      } else {
+        req.body.isAccepted = true;
       }
 
       // check if input with string are alpha and not empty
@@ -148,9 +154,9 @@ export const PoiController: IController = {
           validator.isEmpty(value, { ignore_whitespace: true }) ||
           typeof value !== "string"
         ) {
-          res
-            .status(400)
-            .send({ error: `Field must contains only characters` });
+          res.status(400).send({
+            error: `Field must contains only characters`,
+          });
           if (req.file !== undefined)
             await unlink(`./public/poi/${req.file?.filename}`);
         }
@@ -193,13 +199,19 @@ export const PoiController: IController = {
         return;
       }
 
+      // check phone number
+
+      if (!validator.isNumeric(phoneNumber)) {
+        res.status(400).send({ error: "Incorrect format of phone number" });
+      }
+
       // check if foreign key are uuid type
 
       const checkIfUUID = async (value: string): Promise<void> => {
         if (!validator.isUUID(value)) {
-          res
-            .status(400)
-            .send({ error: "Incorrect format of foreign key (must be uuid)" });
+          res.status(400).send({
+            error: "Incorrect format of foreign key (must be uuid)",
+          });
           if (req.file !== undefined)
             await unlink(`./public/poi/${req.file?.filename}`);
         }
@@ -208,15 +220,6 @@ export const PoiController: IController = {
       foreignKeys.forEach(async (value) => {
         if (value !== undefined) await checkIfUUID(value);
       });
-
-      // check if isAccepted is boolean
-
-      if (!validator.isBoolean(isAccepted)) {
-        res.status(400).send({ error: "is_accepted must be a boolean" });
-        if (req.file !== undefined)
-          await unlink(`./public/poi/${req.file.filename}`);
-        return;
-      }
 
       // check if image is an object
 
@@ -229,8 +232,16 @@ export const PoiController: IController = {
         return;
       }
 
+      // format coordinates
+      const latitude = req.body.coordinates.split(",")[0];
+      const longitude = req.body.coordinates.split(",")[1];
+      req.body.coordinates = {
+        type: "Point",
+        coordinates: [parseFloat(latitude), parseFloat(longitude)],
+      };
+
       // check coordinates format
-      if (coordinates.length > 2) {
+      if (req.body.coordinates.length > 2) {
         res.status(400).send({
           error: "Incorrect format of coordinates (must be [lat, long])",
         });
@@ -255,12 +266,6 @@ export const PoiController: IController = {
         return;
       }
 
-      // format coordinates
-      req.body.coordinates = {
-        type: "Point",
-        coordinates: [coordinates[0], coordinates[1]],
-      };
-
       // rename file image
       if (req.file !== undefined) {
         const originalname = req.file.originalname;
@@ -283,6 +288,7 @@ export const PoiController: IController = {
       res.status(201).send("Created point of interest");
     } catch (err) {
       res.status(400).send({ error: "Something went wrong" });
+      console.log({ err });
       if (req.file !== undefined)
         await unlink(`./public/poi/${req.file.filename}`);
     }
@@ -295,6 +301,7 @@ export const PoiController: IController = {
       const {
         description,
         address,
+        phoneNumber,
         isAccepted,
         name,
         category,
@@ -312,9 +319,9 @@ export const PoiController: IController = {
           validator.isEmpty(value, { ignore_whitespace: true }) ||
           typeof value !== "string"
         ) {
-          res
-            .status(400)
-            .send({ error: `Field must contains only characters` });
+          res.status(400).send({
+            error: `Field must contains only characters`,
+          });
           if (req.file !== undefined)
             await unlink(`./public/poi/${req.file.filename}`);
         }
@@ -367,6 +374,15 @@ export const PoiController: IController = {
         if (req.file !== undefined)
           await unlink(`./public/poi/${req.file.filename}`);
 
+        return;
+      }
+
+      // check phone number
+
+      if (!validator.isNumeric(phoneNumber)) {
+        res.status(400).send({ error: "Incorrect format of phone number" });
+        if (req.file !== undefined)
+          await unlink(`./public/poi/${req.file.filename}`);
         return;
       }
 
@@ -443,7 +459,9 @@ export const PoiController: IController = {
           },
         });
         if (coordsAlreadyExist > 0) {
-          res.status(404).send({ error: "Point of interest already exist" });
+          res.status(404).send({
+            error: "Point of interest already exist",
+          });
           if (req.file !== undefined)
             await unlink(`./public/poi/${req.file.filename}`);
           return;
@@ -482,7 +500,9 @@ export const PoiController: IController = {
       await dataSource.getRepository(Poi).update(id, req.body);
       res.status(200).send("Updated point of interest");
     } catch (err) {
-      res.status(400).send({ error: "Error while updating point of interest" });
+      res.status(400).send({
+        error: "Error while updating point of interest",
+      });
       if (req.file !== undefined)
         await unlink(`./public/poi/${req.file.filename}`);
     }

@@ -4,104 +4,117 @@
 // DESKTOP STYLE
 
 .headerDesktop {
-  @include m.flexLayout(space-between, center);
-  padding: 2rem;
-  position: sticky;
-  top: 0;
-  z-index: 10;
-  background-color: v.$primary_color;
+	@include m.flexLayout(space-between, center);
+	padding: 2rem;
+	//position: sticky;
+	top: 0;
+	z-index: 10;
+	background-color: v.$primary_color;
 }
 
 .menu {
-  @include m.flexLayout(space-between, center);
-
-  ul {
-    display: flex;
-    li {
-      list-style-type: none;
-      margin-right: 2rem;
-      padding: 0;
-      color: v.$cream_color;
-      a:hover {
-        transition: color 0.5s ease;
-        color: v.$secondary_color;
-      }
-    }
-  }
+	@include m.flexLayout(space-between, center);
+	position: absolute;
+	right: 2rem;
+	ul {
+		display: flex;
+		li {
+			list-style-type: none;
+			margin-right: 2rem;
+			padding: 0;
+			color: v.$cream_color;
+			a:hover {
+				transition: color 0.5s ease;
+				color: v.$secondary_color;
+			}
+		}
+	}
 }
 
 .buttonHeader {
-  @include m.unbuttonize;
-  @include m.buttonColor(v.$secondary_color, v.$primary_color);
-  padding: 0.2rem 0.5rem 0.2rem 0.5rem;
-  border-radius: 0.5rem;
-  &:hover {
-    @include m.buttonColor(v.$cream_color, v.$primary_color);
-    transition: background-color 0.4s ease;
-  }
-  a {
-    color: v.$primary_color;
-  }
+	@include m.unbuttonize;
+	@include m.buttonColor(v.$secondary_color, v.$primary_color);
+	padding: 0.2rem 0.5rem 0.2rem 0.5rem;
+	border-radius: 0.5rem;
+	&:hover {
+		@include m.buttonColor(v.$cream_color, v.$primary_color);
+		transition: background-color 0.4s ease;
+	}
+	a {
+		color: v.$primary_color;
+	}
 }
 
 .avatarButton {
-  @include m.buttonSize(50px, 50px, 0);
-  border-radius: 50%;
-  border: 2px solid v.$secondary_color;
-  color: v.$white_color;
-  background-color: v.$primary_color;
-  @include m.flexLayout(center, center);
+	@include m.buttonSize(50px, 50px, 0);
+	border-radius: 50%;
+	border: 2px solid v.$secondary_color;
+	color: v.$white_color;
+	background-color: v.$primary_color;
+	@include m.flexLayout(center, center);
+	cursor: pointer;
+	img {
+		width: 50px;
+		height: 50px;
+		border-radius: 50%;
+		border: 2px solid v.$secondary_color;
+	}
 }
 
 .floatingMenu {
-  position: absolute;
-  right: 30px;
-  bottom: -20px;
-  width: 200px;
-  border: 2px solid v.$secondary_color;
-  color: v.$white_color;
-  background-color: v.$primary_color;
-  @include m.flexLayout(center, flex-start, column);
-  padding: 0.5rem;
+	position: absolute;
+	right: 0;
+	top: 60px;
+	width: 200px;
+	border: 2px solid v.$secondary_color;
+	color: v.$white_color;
+	background-color: v.$primary_color;
+	@include m.flexLayout(center, flex-start, column);
+	padding: 1rem;
+	border-radius: 0.5rem;
+	gap: 1rem;
+	button {
+		@include m.unbuttonize;
+		cursor: pointer;
+	}
 }
 
 // MIDDLE SIZE STYLE
 // style management between desktop and mobile for a better responsive
 
 @media (max-width: 1000px) {
-  .headerDesktop {
-    @include m.flexLayout(center, center, column);
-  }
-  .headerDesktop {
-    @include m.flexLayout(center, center);
-    flex-direction: column;
-  }
-  .menu {
-    padding-top: 30px;
-  }
+	.headerDesktop {
+		@include m.flexLayout(center, center, column);
+	}
+
+	.menu {
+		position: relative;
+		right: 0;
+	}
 }
 
 // MOBILE STYLE
 
 @media (max-width: 768px) {
-  .headerMobile {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    background-color: v.$white_color;
-    border-radius: 0.5rem 0.5rem 0 0;
-    nav {
-      @include m.flexLayout(space-between, center);
-      padding-top: 1rem;
-      padding-bottom: 1rem;
-      margin: 0 auto;
-      width: 85%;
-    }
-  }
+	.headerMobile {
+		position: fixed;
+		bottom: 0;
+		z-index: 1000;
+		width: 100%;
+		background-color: v.$white_color;
+		border-radius: 0.5rem 0.5rem 0 0;
+		nav {
+			@include m.flexLayout(space-between, center);
+			padding-top: 1rem;
+			padding-bottom: 1rem;
+			margin: 0 auto;
+			width: 85%;
+		}
+	}
 
-  .iconStyle {
-    color: v.$gray_color;
-    width: 38px;
-    height: 38px;
-  }
+	.iconStyle {
+		color: v.$gray_color;
+		width: 38px;
+		height: 38px;
+	}
 }
