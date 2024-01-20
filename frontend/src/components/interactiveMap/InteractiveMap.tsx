@@ -30,7 +30,9 @@ const InteractiveMap = () => {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/api/poi");
+      const response = await axios.get(
+        `${process.env.REACT_APP_PUBLIC_BACKEND_URL}/api/poi`
+      );
       console.log(response.data);
 
       setPois(response.data);

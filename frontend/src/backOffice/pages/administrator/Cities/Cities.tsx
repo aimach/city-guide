@@ -20,7 +20,9 @@ const Cities = () => {
   const [cities, setCities] = useState<City[]>([]);
   const getCities = async () => {
     try {
-      const response = await fetch("http://localhost:5000/api/cities", {});
+      const response = await fetch(
+        `${process.env.REACT_APP_PUBLIC_BACKEND_URL}/api/cities`
+      );
       const data = await response.json();
       setCities(
         data.map((item: any) => {
@@ -54,11 +56,14 @@ const Cities = () => {
   // DELETE One City
   const handleDeleteOneCity = async (cityToDelete: City) => {
     try {
-      await fetch(`http://localhost:5000/api/cities/${cityToDelete.id}`, {
-        method: "DELETE",
-        credentials: "include",
-        body: null,
-      });
+      await fetch(
+        `${process.env.REACT_APP_PUBLIC_BACKEND_URL}/api/cities/${cityToDelete.id}`,
+        {
+          method: "DELETE",
+          credentials: "include",
+          body: null,
+        }
+      );
       const updatedCities = cities.filter(
         (city) => city.id !== cityToDelete.id
       );

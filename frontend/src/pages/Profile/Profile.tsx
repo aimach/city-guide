@@ -110,7 +110,7 @@ const Profile = () => {
             {imageURL !== undefined ? (
               <>
                 <img
-                  src={`http://localhost:5000${imageURL}`}
+                  src={`${process.env.REACT_APP_PUBLIC_BACKEND_URL}${imageURL}`}
                   alt="avatar"
                   className={displayEditImg ? style.imageOpacity : undefined}
                   onMouseOver={() => setDisplayEditImg(true)}

@@ -36,7 +36,7 @@ export const UserProvider = ({ children }: ProviderProps) => {
     // GET /my-profile, en cas de succès on setUser avec les infos de l'utilisateur //
     try {
       const response = await fetch(
-        "http://localhost:5000/api/profile/my-profile",
+        `${process.env.REACT_APP_PUBLIC_BACKEND_URL}/api/profile/my-profile`,
         {
           credentials: "include",
         }
@@ -63,9 +63,12 @@ export const UserProvider = ({ children }: ProviderProps) => {
 
   const logout = async () => {
     try {
-      const response = await fetch("http://localhost:5000/api/auth/logout", {
-        credentials: "include",
-      });
+      const response = await fetch(
+        `${process.env.REACT_APP_PUBLIC_BACKEND_URL}/api/auth/logout`,
+        {
+          credentials: "include",
+        }
+      );
       const data = await response.json();
       if (data === "Logged out") {
         setProfile(null);

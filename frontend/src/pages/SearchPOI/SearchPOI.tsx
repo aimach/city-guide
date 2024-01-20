@@ -13,7 +13,9 @@ const SearchPOI = () => {
 
   const getCities = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/api/cities`);
+      const response = await fetch(
+        `${process.env.REACT_APP_PUBLIC_BACKEND_URL}/api/cities`
+      );
       const data = await response.json();
       setTotalCities(data);
     } catch (error) {
