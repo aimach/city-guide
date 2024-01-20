@@ -40,7 +40,7 @@ jobs:
           context: ./frontend
           file: ./frontend/Dockerfile
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/city-guide-frontend:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/cg-frontend:latest
 
   docker_backend:
     # The type of runner that the job will run on
@@ -70,7 +70,7 @@ jobs:
           context: ./backend
           file: ./backend/Dockerfile
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/city-guide-backend:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/cg-backend:latest
 
   send_redeploy_webhook:
     needs:
