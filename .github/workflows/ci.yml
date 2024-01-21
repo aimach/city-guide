@@ -11,7 +11,7 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v2
       - name: Goto frontend and run tests
-        run: cd frontend && npm run test
+        run: cd frontend && npm i && npm run test
 
   # test-backend:
   #   runs-on: ubuntu-latest
