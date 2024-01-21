@@ -23,7 +23,6 @@ jobs:
 
   docker-frontend:
     needs: test-frontend
-    if: github.ref == 'refs/heads/dev'
     runs-on: ubuntu-latest
     steps:
       - name: Set up QEMU
@@ -44,7 +43,6 @@ jobs:
 
   docker-backend:
     # needs: test-backend
-    if: github.ref == 'refs/heads/dev'
     runs-on: ubuntu-latest
     steps:
       - name: Set up QEMU
