@@ -21,7 +21,7 @@ jobs:
   #     - name: Goto backend and run tests
   #       run: cd backend && npm run test
 
-  docker-frontend:
+  update-docker-image-frontend:
     needs: test-frontend
     runs-on: ubuntu-latest
     steps:
@@ -41,7 +41,7 @@ jobs:
           context: "{{defaultContext}}:frontend"
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/cg-frontend:latest
 
-  docker-backend:
+  update-docker-image-backend:
     # needs: test-backend
     runs-on: ubuntu-latest
     steps:
@@ -60,3 +60,24 @@ jobs:
           push: true
           context: "{{defaultContext}}:backend"
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/cg-backend:latest
+
+  send_staging_webhook:
+    needs:
+      - update-docker-image-frontend
+      - update-docker-image-backend
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Send Webhook
+        env:
+          WEBHOOK_URL: ${{ secrets.WEBHOOK_STAGING_URL }} # Define the webhook URL as a secret in your repository
+        run: |
+          curl -X POST -H "Content-Type: application/json" -d '{
+            "repository": "${{ github.repository }}",
+            "ref": "${{ github.ref }}",
+            "commits": ${{ toJson(github.event.commits) }}
+          }' $WEBHOOK_URL
