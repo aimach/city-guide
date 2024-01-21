@@ -14,16 +14,18 @@ import { CategoryFactory } from "./factories/categoryFactory";
 import * as dotenv from "dotenv";
 dotenv.config();
 
+console.log(process.env);
+
 // Accès aux variables d'environnement
-const DB_HOST: string = process.env.DB_HOST || "";
-const DB_PORT: number = parseInt(process.env.DB_PORT || "5432", 10);
-const DB_USER: string = process.env.DB_USER || "";
-const DB_PASSWORD: string = process.env.DB_PASSWORD || "";
-const DB_NAME: string = process.env.DB_NAME || "";
-const SEED_HOST: string = process.env.SEED_HOST || "";
-const FRONTEND_URL: string = process.env.FRONTEND_URL || "";
-const DEPLOY_URL: string = process.env.DEPLOY_URL || "";
-const BACK_PORT: number = parseInt(process.env.BACK_PORT || "5000", 10);
+const DB_HOST: string = process.env.DB_HOST as string;
+const DB_PORT: number = parseInt(process.env.DB_PORT as string, 10);
+const DB_USER: string = process.env.DB_USER as string;
+const DB_PASSWORD: string = process.env.DB_PASSWORD as string;
+const DB_NAME: string = process.env.DB_NAME as string;
+const SEED_HOST: string = process.env.SEED_HOST as string;
+const FRONTEND_URL: string = process.env.FRONTEND_URL as string;
+const DEPLOY_URL: string = process.env.DEPLOY_URL as string;
+const BACK_PORT: number = parseInt(process.env.BACK_PORT as string, 10);
 
 // Vérification des variables
 if (
