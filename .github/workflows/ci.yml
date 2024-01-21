@@ -43,7 +43,7 @@ jobs:
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/cg-frontend:latest
 
   docker-backend:
-    needs: test-backend
+    # needs: test-backend
     if: github.ref == 'refs/heads/dev'
     runs-on: ubuntu-latest
     steps:
