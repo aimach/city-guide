@@ -37,7 +37,7 @@ const Root = () => {
     <UserProvider>
       <ScrollToTop />
       <Layout>
-        <Outlet /> {/* Outlet is where the child routes will be rendered */}
+        <Outlet />
       </Layout>
     </UserProvider>
   );
