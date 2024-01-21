@@ -61,7 +61,7 @@ const start = async (): Promise<void> => {
   await dataSource.initialize();
 
   app.listen({ port }, () => {
-    console.log(`Backend app at http://localhost:${port}`);
+    console.log(`Backend app ready at http://localhost:${port}`);
   });
 };
 void start();
