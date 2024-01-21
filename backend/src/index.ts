@@ -53,6 +53,8 @@ app.use("/api/cities", citiesRoutes);
 app.use("/api/categories", categoriesRoutes);
 app.use("/api/contact", messageRoutes);
 
+console.log(process.env);
+
 const start = async (): Promise<void> => {
   const port = process.env.BACK_PORT as string;
 

@@ -14,8 +14,6 @@ import { CategoryFactory } from "./factories/categoryFactory";
 import * as dotenv from "dotenv";
 dotenv.config();
 
-console.log(process.env);
-
 // Accès aux variables d'environnement
 const DB_HOST: string = process.env.DB_HOST as string;
 const DB_PORT: number = parseInt(process.env.DB_PORT as string, 10);
