@@ -15,18 +15,18 @@ import helmet from "helmet";
 
 dotenv.config();
 
-const app = express();
+export const app = express();
 app.use(express.json());
-
+console.log("helloooooo");
 app.use(cookieParser());
 app.use(
   helmet({
     crossOriginResourcePolicy: { policy: "cross-origin" },
   })
 );
+
 app.use((req, res, next) => {
   const corsWhitelist = [process.env.FRONTEND_URL, process.env.DEPLOY_URL];
-
   if (
     req.headers.origin !== undefined &&
     corsWhitelist.includes(req.headers.origin)
