@@ -15,8 +15,8 @@ const adminIdentifiers = {
 };
 
 const userGoodIdentifiers = {
-  email: "email@test.fr",
-  username: "test",
+  email: "email2@test.fr",
+  username: "test2",
   password: "Test123!",
 };
 
@@ -165,7 +165,6 @@ describe("update category", () => {
 
     const res = await updateCategory(adminToken, formdata, categoryCreatedId);
     const data = await res.json();
-    console.log(data.error);
     expect(res.status).toEqual(409);
     expect(data.error).toBe("Category name already exist");
   });
