@@ -1,7 +1,7 @@
 import { DataSource } from "typeorm";
 import { faker } from "@faker-js/faker";
 import { Seeder, SeederFactoryManager } from "typeorm-extension";
-import { User } from "../entities/User";
+import { User, UserRole } from "../entities/User";
 import { Poi } from "../entities/Poi";
 import { City } from "../entities/City";
 import { Category } from "../entities/Category";
@@ -12,10 +12,16 @@ export default class MainSeeder implements Seeder {
     factoryManager: SeederFactoryManager
   ): Promise<any> {
     const poiRepository = dataSource.getRepository(Poi);
-
+    const { SEED_ADMIN_MAIL, SEED_ADMIN_PASSWORD } = process.env;
     // USERS
     const userFactory = factoryManager.get(User);
     const users = await userFactory.saveMany(10);
+    await userFactory.save({
+      username: "admin",
+      email: SEED_ADMIN_MAIL,
+      password: SEED_ADMIN_PASSWORD,
+      role: UserRole.ADMIN,
+    });
 
     // CITY
     const cityFactory = factoryManager.get(City);
@@ -27,7 +33,7 @@ export default class MainSeeder implements Seeder {
     // POI
     const poiFactory = factoryManager.get(Poi);
     const pois = await Promise.all(
-      Array(150)
+      Array(50)
         .fill("")
         .map(async () => {
           const made = await poiFactory.make({
