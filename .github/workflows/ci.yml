@@ -25,7 +25,7 @@ jobs:
       - name: build and run Docker Container
         run: docker-compose -f docker-compose.dev.yml up -d --build
       - name: See container logs
-        run: docker logs city-guide-backend
+        run: docker ps
       - name: Seed database
         run: cd backend && npm i && npm run seed
         env:
