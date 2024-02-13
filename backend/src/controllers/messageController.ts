@@ -7,6 +7,7 @@ import validator from "validator";
 export const MessageController: IController = {
   createMessage: async (req: Request, res: Response): Promise<void> => {
     const { email, title, message } = req.body;
+    console.log(req.body);
 
     const checkIfEmpty = (key: string, value: string): boolean => {
       if (validator.isEmpty(value, { ignore_whitespace: true })) {
@@ -33,6 +34,7 @@ export const MessageController: IController = {
       await dataSource.getRepository(Message).save(newMessage);
       res.status(201).send(newMessage);
     } catch (error) {
+      console.log(error);
       res.status(500).send("Erreur serveur");
     }
   },

@@ -178,7 +178,7 @@ describe("update city", () => {
       }`
     );
     formdata.set("image", mockFile);
-    const res = await createCity(adminToken, formdata);
+    const res = await updateCity(adminToken, formdata, cityCreatedId);
     const data = await res.json();
     expect(res.status).toEqual(409);
     expect(data.error).toBe("City already exists");

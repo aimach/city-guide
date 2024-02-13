@@ -119,10 +119,8 @@ export const PoiController: IController = {
         address,
         phoneNumber,
         name,
-        image,
         category,
         city,
-        user,
         coordinates,
       } = req.body;
 
@@ -216,19 +214,17 @@ export const PoiController: IController = {
             await unlink(`./public/poi/${req.file?.filename}`);
         }
       };
-      const foreignKeys: string[] = [category, city, user];
+      const foreignKeys: string[] = [category, city];
       foreignKeys.forEach(async (value) => {
         if (value !== undefined) await checkIfUUID(value);
       });
 
       // check if image is an object
 
-      if (image !== undefined && typeof image !== "object") {
+      if (req.file !== undefined && typeof req.file !== "object") {
         res.status(400).send({
           error: `Field image must contains a file`,
         });
-        if (req.file !== undefined)
-          await unlink(`./public/poi/${req.file.filename}`);
         return;
       }
 
@@ -239,16 +235,6 @@ export const PoiController: IController = {
         type: "Point",
         coordinates: [parseFloat(latitude), parseFloat(longitude)],
       };
-
-      // check coordinates format
-      if (req.body.coordinates.length > 2) {
-        res.status(400).send({
-          error: "Incorrect format of coordinates (must be [lat, long])",
-        });
-        if (req.file !== undefined)
-          await unlink(`./public/poi/${req.file.filename}`);
-        return;
-      }
 
       // check if coords doesn't already exist in db
       const coordsAlreadyExist = await dataSource.getRepository(Poi).count({
@@ -298,19 +284,15 @@ export const PoiController: IController = {
 
   updatePoi: async (req: Request, res: Response): Promise<void> => {
     try {
-      const {
-        description,
-        address,
-        phoneNumber,
-        isAccepted,
-        name,
-        category,
-        city,
-        user,
-        coordinates,
-      } = req.body;
+      const { description, address, phoneNumber, name, city, coordinates } =
+        req.body;
 
       const { id } = req.params;
+
+      req.body.coordinates = [
+        parseFloat(req.body.coordinates.split(",")[0]),
+        parseFloat(req.body.coordinates.split(",")[1]),
+      ];
 
       // check if input with string are alpha and not empty
 
@@ -332,17 +314,6 @@ export const PoiController: IController = {
         if (value !== undefined) await checkIfStringAndNotEmpty(value);
       });
 
-      // check coordinates format
-      if (coordinates.length > 2) {
-        res.status(400).send({
-          error: "Incorrect format of coordinates (must be [lat, long])",
-        });
-        if (req.file !== undefined)
-          await unlink(`./public/poi/${req.file.filename}`);
-
-        return;
-      }
-
       // check name
       if (
         name !== null &&
@@ -360,7 +331,6 @@ export const PoiController: IController = {
       }
 
       // check address
-
       if (
         address !== null &&
         !validator.matches(
@@ -378,35 +348,8 @@ export const PoiController: IController = {
       }
 
       // check phone number
-
       if (!validator.isNumeric(phoneNumber)) {
         res.status(400).send({ error: "Incorrect format of phone number" });
-        if (req.file !== undefined)
-          await unlink(`./public/poi/${req.file.filename}`);
-        return;
-      }
-
-      // check if foreign key are uuid type
-
-      const checkIfUUID = async (value: string): Promise<void> => {
-        if (!validator.isUUID(value)) {
-          res.status(400).send({
-            error: "Incorrect format of foreign key (must be uuid)",
-          });
-          if (req.file !== undefined)
-            await unlink(`./public/poi/${req.file?.filename}`);
-        }
-      };
-
-      const foreignKeys: string[] = [category, city, user];
-      foreignKeys.forEach(async (value) => {
-        if (value !== undefined) await checkIfUUID(value);
-      });
-
-      // check if is_accepted is boolean
-
-      if (isAccepted !== null && typeof isAccepted !== "boolean") {
-        res.status(400).send({ error: "is_accepted must be a boolean" });
         if (req.file !== undefined)
           await unlink(`./public/poi/${req.file.filename}`);
         return;
@@ -436,11 +379,11 @@ export const PoiController: IController = {
         .findOne({ where: { id: userId } });
 
       if (
-        cityOfPoi?.userAdminCity.id !== userId ||
+        cityOfPoi?.userAdminCity?.id !== userId ||
         currentUser?.role !== UserRole.ADMIN
       ) {
         res.status(403).send({
-          error: "You are not authorized to create a point of interest",
+          error: "You are not authorized to update a point of interest",
         });
         if (req.file !== undefined)
           await unlink(`./public/poi/${req.file.filename}`);
@@ -459,7 +402,7 @@ export const PoiController: IController = {
           },
         });
         if (coordsAlreadyExist > 0) {
-          res.status(404).send({
+          res.status(409).send({
             error: "Point of interest already exist",
           });
           if (req.file !== undefined)
@@ -515,7 +458,11 @@ export const PoiController: IController = {
       const { id } = req.params;
 
       // check if POI exists in db
-      const poiToDelete = await dataSource.getRepository(Poi).findOneBy({ id });
+      const poiToDelete = await dataSource.getRepository(Poi).findOne({
+        where: { id },
+        relations: { city: true },
+        select: { city: { id: true } },
+      });
       if (poiToDelete === null) {
         res.status(404).send({ error: "Point of interest not found" });
         return;
@@ -523,22 +470,34 @@ export const PoiController: IController = {
 
       // check if user is admin
       const { userId } = req.params;
-
-      const cityOfPoi = await dataSource
-        .getRepository(City)
-        .findOne({ where: { id: poiToDelete.city.id } });
-
+      const cityOfPoi = await dataSource.getRepository(City).findOne({
+        where: { id: poiToDelete.city.id },
+        relations: {
+          userAdminCity: true,
+        },
+        select: {
+          userAdminCity: {
+            id: true,
+            username: true,
+            email: true,
+            city: true,
+            image: true,
+            createdPoi: true,
+          },
+        },
+      });
       const currentUser = await dataSource
         .getRepository(User)
         .findOne({ where: { id: userId } });
 
       if (
-        cityOfPoi?.userAdminCity.id !== userId ||
-        currentUser?.role !== UserRole.ADMIN
+        currentUser?.role !== UserRole.ADMIN &&
+        cityOfPoi?.userAdminCity?.id !== userId
       ) {
         res.status(403).send({
           error: "You are not authorized to delete a point of interest",
         });
+        return;
       }
 
       await dataSource.getRepository(Poi).delete(id);
