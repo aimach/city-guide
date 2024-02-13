@@ -27,7 +27,7 @@ export const register = async ({
   username: string;
   password: string;
 }) => {
-  const res = await fetch("http://localhost:5000/api/auth/register", {
+  const res = await fetch("http://127.0.0.1:5000/api/auth/register", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -42,7 +42,7 @@ export const register = async ({
 };
 
 export const logout = async () => {
-  const res = await fetch("http://localhost:5000/api/auth/logout", {
+  const res = await fetch("http://127.0.0.1:5000/api/auth/logout", {
     method: "GET",
   });
   return res;
