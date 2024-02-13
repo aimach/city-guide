@@ -24,18 +24,18 @@ jobs:
           node-version: 20
       - name: build and run Docker Container
         run: docker-compose -f docker-compose.dev.yml up -d --build
-      - name: Seed database
-        run: cd backend && npm i && npm run seed
-        env:
-          DB_PORT: 5432
-          DB_USER: postgres
-          DB_PASSWORD: ${{ secrets.STAGING_DB_PASSWORD }}
-          DB_NAME: postgres
-          SEED_HOST: localhost
-          SEED_ADMIN_MAIL: ${{ secrets.STAGING_SEED_ADMIN_MAIL }}
-          SEED_ADMIN_PASSWORD: ${{ secrets.STAGING_SEED_ADMIN_PASSWORD }}
+      # - name: Seed database
+      #   run: cd backend && npm i && npm run seed
+      #   env:
+      #     DB_PORT: 5432
+      #     DB_USER: postgres
+      #     DB_PASSWORD: ${{ secrets.STAGING_DB_PASSWORD }}
+      #     DB_NAME: postgres
+      #     SEED_HOST: localhost
+      #     SEED_ADMIN_MAIL: ${{ secrets.STAGING_SEED_ADMIN_MAIL }}
+      #     SEED_ADMIN_PASSWORD: ${{ secrets.STAGING_SEED_ADMIN_PASSWORD }}
       - name: See container logs
-        run: docker logs c88963282953
+        run: docker container ls
       # - name: Goto backend and run tests
       #   run: cd backend && npm run test
       #   env:
