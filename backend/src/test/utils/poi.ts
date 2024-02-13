@@ -1,5 +1,4 @@
 export const getPois = async () => {
-  console.log(`${process.env.DEPLOY_URL as string}/api/poi`);
   const res = await fetch(`${process.env.DEPLOY_URL as string}/api/poi`, {
     method: "GET",
   });

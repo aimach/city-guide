@@ -29,7 +29,19 @@ export default class MainSeeder implements Seeder {
     const cities = await cityFactory.saveMany(10);
     // CATEGORY
     const CategoryFactory = factoryManager.get(Category);
-    const categories = await CategoryFactory.saveMany(3);
+    const restaurant = await CategoryFactory.save({
+      name: "Restaurant",
+      image: faker.image.urlLoremFlickr({ category: "activities" }),
+    });
+    const sport = await CategoryFactory.save({
+      name: "Sport",
+      image: faker.image.urlLoremFlickr({ category: "activities" }),
+    });
+    const tourism = await CategoryFactory.save({
+      name: "Tourisme",
+      image: faker.image.urlLoremFlickr({ category: "activities" }),
+    });
+    const categories = [restaurant, sport, tourism];
 
     // POI
     const poiFactory = factoryManager.get(Poi);
