@@ -24,6 +24,8 @@ jobs:
           node-version: 20
       - name: build and run Docker Container
         run: docker-compose -f docker-compose.dev.yml up -d --build
+      - name: See container logs
+        run: docker logs city-guide-backend
       - name: Seed database
         run: cd backend && npm i && npm run seed
         env:
@@ -35,8 +37,6 @@ jobs:
           SEED_ADMIN_MAIL: ${{ secrets.STAGING_SEED_ADMIN_MAIL }}
           SEED_ADMIN_PASSWORD: ${{ secrets.STAGING_SEED_ADMIN_PASSWORD }}
 
-      - name: See container logs
-        run: docker logs city-guide-backend
       # - name: Goto backend and run tests
       #   run: cd backend && npm run test
       #   env:
