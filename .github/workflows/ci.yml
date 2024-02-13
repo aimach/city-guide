@@ -25,7 +25,7 @@ jobs:
       - name: build and run Docker Container
         run: docker-compose -f docker-compose.dev.yml up -d
       - name: Seed database
-        run: cd backend && npm run seed
+        run: cd backend && npm i && npm run seed
       - name: Goto backend and run tests
         run: cd backend npm run test
         env:
