@@ -24,6 +24,8 @@ jobs:
           node-version: 20
       - name: build and run Docker Container
         run: docker-compose -f docker-compose.dev.yml up -d
+      - name: Goto backend and run tests
+        run: cd backend && npm i && npm run seed && npm run test
         env:
           TOKEN: ${{ secrets.STAGING_TOKEN }}
           DB_HOST: postgres
@@ -37,8 +39,6 @@ jobs:
           FRONTEND_URL: http://localhost:3000
           DEPLOY_URL: https://city-guide.aimach.fr
           BACK_PORT: 5000
-      - name: Goto backend and run tests
-        run: cd backend && npm i && npm run seed && npm run test
 
   # update-docker-image-frontend:
   #   needs: test-frontend
