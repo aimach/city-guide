@@ -12,7 +12,7 @@ services:
       - DB_HOST: postgres
       - DB_PORT: 5432
       - DB_USER: postgres
-      - DB_PASSWORD: ${{ secrets.STAGING_DB_PASSWORD }}
+      - DB_PASSWORD: example
       - DB_NAME: postgres
       - SEED_HOST: localhost
       - SEED_ADMIN_MAIL: admin@mail.fr
