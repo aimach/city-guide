@@ -24,33 +24,33 @@ jobs:
           node-version: 20
       - name: build and run Docker Container
         run: docker-compose -f docker-compose.dev.yml up -d --build
-      # - name: Seed database
-      #   run: cd backend && npm i && npm run seed
-      #   env:
-      #     DB_PORT: 5432
-      #     DB_USER: postgres
-      #     DB_PASSWORD: ${{ secrets.STAGING_DB_PASSWORD }}
-      #     DB_NAME: postgres
-      #     SEED_HOST: localhost
-      #     SEED_ADMIN_MAIL: ${{ secrets.STAGING_SEED_ADMIN_MAIL }}
-      #     SEED_ADMIN_PASSWORD: ${{ secrets.STAGING_SEED_ADMIN_PASSWORD }}
+      - name: Seed database
+        run: cd backend && npm i && npm run seed
+        env:
+          DB_PORT: 5432
+          DB_USER: postgres
+          DB_PASSWORD: ${{ secrets.STAGING_DB_PASSWORD }}
+          DB_NAME: postgres
+          SEED_HOST: localhost
+          SEED_ADMIN_MAIL: ${{ secrets.STAGING_SEED_ADMIN_MAIL }}
+          SEED_ADMIN_PASSWORD: ${{ secrets.STAGING_SEED_ADMIN_PASSWORD }}
+      - name: Goto backend and run tests
+        run: cd backend && npm run test
+        env:
+          TOKEN: ${{ secrets.STAGING_TOKEN }}
+          DB_HOST: postgres
+          DB_PORT: 5432
+          DB_USER: postgres
+          DB_PASSWORD: ${{ secrets.STAGING_DB_PASSWORD }}
+          DB_NAME: postgres
+          SEED_HOST: localhost
+          SEED_ADMIN_MAIL: ${{ secrets.STAGING_SEED_ADMIN_MAIL }}
+          SEED_ADMIN_PASSWORD: ${{ secrets.STAGING_SEED_ADMIN_PASSWORD }}
+          FRONTEND_URL: http://localhost:3000
+          DEPLOY_URL: https://city-guide.aimach.fr
+          BACK_PORT: 5000
       - name: See container logs
         run: docker logs city-guide_backend_1
-      # - name: Goto backend and run tests
-      #   run: cd backend && npm run test
-      #   env:
-      #     TOKEN: ${{ secrets.STAGING_TOKEN }}
-      #     DB_HOST: postgres
-      #     DB_PORT: 5432
-      #     DB_USER: postgres
-      #     DB_PASSWORD: ${{ secrets.STAGING_DB_PASSWORD }}
-      #     DB_NAME: postgres
-      #     SEED_HOST: localhost
-      #     SEED_ADMIN_MAIL: ${{ secrets.STAGING_SEED_ADMIN_MAIL }}
-      #     SEED_ADMIN_PASSWORD: ${{ secrets.STAGING_SEED_ADMIN_PASSWORD }}
-      #     FRONTEND_URL: http://localhost:3000
-      #     DEPLOY_URL: https://city-guide.aimach.fr
-      #     BACK_PORT: 5000
 
   # update-docker-image-frontend:
   #   needs: test-frontend
