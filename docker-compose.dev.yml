@@ -7,8 +7,8 @@ services:
     volumes:
       - ./backend/src:/app/src
       - ./backend/public:/app/public
-    env_file:
-      - ./backend/.env
+    # env_file:
+    #   - ./backend/.env
 
   frontend:
     build: ./frontend
@@ -20,8 +20,8 @@ services:
       - WDS_SOCKET_HOST=127.0.0.1
       - CHOKIDAR_USEPOLLING=true
       - WATCHPACK_POLLING=true
-    env_file:
-      - ./frontend/.env
+    # env_file:
+    #   - ./frontend/.env
 
   postgres:
     image: "postgis/postgis"
