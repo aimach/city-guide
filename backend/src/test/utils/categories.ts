@@ -1,24 +1,21 @@
 export const getCategories = async () => {
-  const res = await fetch("http://city-guide-backend:5000/api/categories", {
+  const res = await fetch("http://127.0.0.1:5000/api/categories", {
     method: "GET",
   });
   return res;
 };
 
 export const getCategory = async (id: string) => {
-  const res = await fetch(
-    `http://city-guide-backend:5000/api/categories/${id}`,
-    {
-      method: "GET",
-    }
-  );
+  const res = await fetch(`http://127.0.0.1:5000/api/categories/${id}`, {
+    method: "GET",
+  });
   return res;
 };
 
 export const createCategory = async (token: string, body: FormData) => {
   const newHeaders = new Headers();
   newHeaders.append("Cookie", `jwt=${token}`);
-  const res = await fetch(`http://city-guide-backend:5000/api/categories`, {
+  const res = await fetch(`http://127.0.0.1:5000/api/categories`, {
     method: "POST",
     credentials: "include",
     headers: newHeaders,
@@ -35,15 +32,12 @@ export const updateCategory = async (
 ) => {
   const newHeaders = new Headers();
   newHeaders.append("Cookie", `jwt=${token}`);
-  const res = await fetch(
-    `http://city-guide-backend:5000/api/categories/${id}`,
-    {
-      method: "PUT",
-      credentials: "include",
-      headers: newHeaders,
-      body,
-    }
-  );
+  const res = await fetch(`http://127.0.0.1:5000/api/categories/${id}`, {
+    method: "PUT",
+    credentials: "include",
+    headers: newHeaders,
+    body,
+  });
 
   return res;
 };
@@ -51,14 +45,11 @@ export const updateCategory = async (
 export const deleteCategory = async (token: string, id: string) => {
   const newHeaders = new Headers();
   newHeaders.append("Cookie", `jwt=${token}`);
-  const res = await fetch(
-    `http://city-guide-backend:5000/api/categories/${id}`,
-    {
-      method: "DELETE",
-      credentials: "include",
-      headers: newHeaders,
-    }
-  );
+  const res = await fetch(`http://127.0.0.1:5000/api/categories/${id}`, {
+    method: "DELETE",
+    credentials: "include",
+    headers: newHeaders,
+  });
 
   return res;
 };
