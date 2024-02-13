@@ -6,7 +6,6 @@ on:
 
 jobs:
   update-docker-image-frontend:
-    if: github.ref == 'refs/heads/dev'
     runs-on: ubuntu-latest
     steps:
       - name: Set up QEMU
