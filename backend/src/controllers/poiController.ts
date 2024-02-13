@@ -503,7 +503,7 @@ export const PoiController: IController = {
       await dataSource.getRepository(Poi).delete(id);
 
       // delete image in public directory
-      if (poiToDelete.image !== null) {
+      if (poiToDelete.image.includes("/public")) {
         await unlink("." + poiToDelete.image);
       }
 
