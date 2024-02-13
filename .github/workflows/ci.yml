@@ -36,7 +36,7 @@ jobs:
           SEED_ADMIN_PASSWORD: ${{ secrets.STAGING_SEED_ADMIN_PASSWORD }}
 
       - name: Goto backend and run tests
-        run: cd backend npm run test
+        run: cd backend && npm run test
         env:
           TOKEN: ${{ secrets.STAGING_TOKEN }}
           DB_HOST: postgres
