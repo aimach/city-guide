@@ -41,8 +41,7 @@ if (
   process.exit(1);
 }
 
-console.log(DB_PASSWORD);
-console.log(typeof DB_PASSWORD);
+console.log(process.env);
 
 const options: DataSourceOptions & SeederOptions = {
   type: "postgres",
