@@ -32,8 +32,8 @@ jobs:
           DB_PASSWORD: ${{ secrets.STAGING_DB_PASSWORD }}
           DB_NAME: postgres
           SEED_HOST: localhost
-          SEED_ADMIN_MAIL: admin@mail.fr
-          SEED_ADMIN_PASSWORD: "@Admin3010"
+          SEED_ADMIN_MAIL: ${{ secrets.STAGING_SEED_ADMIN_MAIL }}
+          SEED_ADMIN_PASSWORD: ${{ secrets.STAGING_SEED_ADMIN_PASSWORD }}
           FRONTEND_URL: http://localhost:3000
           DEPLOY_URL: https://city-guide.aimach.fr
           BACK_PORT: 5000
