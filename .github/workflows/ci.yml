@@ -19,7 +19,7 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v2
       - name: Goto backend and run tests
-        run: cd backend && npm run test
+        run: cd backend && npm i && npm run test
 
   # update-docker-image-frontend:
   #   needs: test-frontend
