@@ -1,5 +1,6 @@
 #!/bin/sh
 npm run seed
-npm start
+npm start &
+sleep 10
 npm run test
 
