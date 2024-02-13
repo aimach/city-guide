@@ -8,18 +8,18 @@ services:
       - ./backend/src:/app/src
       - ./backend/public:/app/public
     environment:
-      - TOKEN=crkEbzhJpJa2LqUi4CxQrGZMHr542LBVsYOlvu7H
-      - DB_HOST=postgres
-      - DB_PORT=5432
-      - DB_USER=postgres
-      - DB_PASSWORD=example
-      - DB_NAME=postgres
-      - SEED_HOST=localhost
-      - SEED_ADMIN_MAIL=admin@mail.fr
-      - SEED_ADMIN_PASSWORD=@Admin3010
-      - FRONTEND_URL=http://localhost:3000
-      - DEPLOY_URL=https://city-guide.aimach.fr
-      - BACK_PORT=5000
+      - TOKEN: crkEbzhJpJa2LqUi4CxQrGZMHr542LBVsYOlvu7H
+      - DB_HOST: postgres
+      - DB_PORT: 5432
+      - DB_USER: postgres
+      - DB_PASSWORD: ${{ secrets.STAGING_DB_PASSWORD }}
+      - DB_NAME: postgres
+      - SEED_HOST: localhost
+      - SEED_ADMIN_MAIL: admin@mail.fr
+      - SEED_ADMIN_PASSWORD: Admin@3010
+      - FRONTEND_URL: http://localhost:3000
+      - DEPLOY_URL: https://city-guide.aimach.fr
+      - BACK_PORT: 5000
 
   frontend:
     build: ./frontend
