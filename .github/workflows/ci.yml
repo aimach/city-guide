@@ -25,11 +25,11 @@ jobs:
       - name: build and run Docker Container
         run: docker-compose -f docker-compose.dev.yml up -d
         env:
-          TOKEN: crkEbzhJpJa2LqUi4CxQrGZMHr542LBVsYOlvu7H
+          TOKEN: ${{ secrets.STAGING_TOKEN }}
           DB_HOST: postgres
           DB_PORT: 5432
           DB_USER: postgres
-          DB_PASSWORD: example
+          DB_PASSWORD: ${{ secrets.STAGING_DB_PASSWORD }}
           DB_NAME: postgres
           SEED_HOST: localhost
           SEED_ADMIN_MAIL: admin@mail.fr
