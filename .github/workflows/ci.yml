@@ -35,7 +35,7 @@ jobs:
       #     SEED_ADMIN_MAIL: ${{ secrets.STAGING_SEED_ADMIN_MAIL }}
       #     SEED_ADMIN_PASSWORD: ${{ secrets.STAGING_SEED_ADMIN_PASSWORD }}
       - name: See container logs
-        run: docker container ls
+        run: docker logs city-guide_backend_1
       # - name: Goto backend and run tests
       #   run: cd backend && npm run test
       #   env:
