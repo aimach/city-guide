@@ -1,27 +1,4 @@
 services:
-  backend:
-    build: ./backend
-    ports:
-      - 5000:5000
-    command: npm run dev
-    volumes:
-      - ./backend/src:/app/src
-      - ./backend/public:/app/public
-    env_file:
-      - ./backend/.env
-
-  frontend:
-    build: ./frontend
-    ports:
-      - 3000:3000
-    volumes:
-      - ./frontend/src:/app/src
-    environment:
-      - WDS_SOCKET_HOST=127.0.0.1
-      - CHOKIDAR_USEPOLLING=true
-      - WATCHPACK_POLLING=true
-    env_file: ./frontend/.env
-
   postgres:
     image: "postgis/postgis"
     restart: always
@@ -35,3 +12,28 @@ services:
     restart: always
     ports:
       - 8080:8080
+
+  backend:
+    build: ./backend
+    ports:
+      - 5000:5000
+    command: ./init.sh
+    volumes:
+      - ./backend/src:/app/src
+      - ./backend/public:/app/public
+    env_file:
+      - ./backend/.env
+    depends_on:
+      - postgres
+
+  frontend:
+    build: ./frontend
+    ports:
+      - 3000:3000
+    volumes:
+      - ./frontend/src:/app/src
+    environment:
+      - WDS_SOCKET_HOST=127.0.0.1
+      - CHOKIDAR_USEPOLLING=true
+      - WATCHPACK_POLLING=true
+    env_file: ./frontend/.env
