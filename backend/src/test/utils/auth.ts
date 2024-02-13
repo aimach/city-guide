@@ -5,7 +5,7 @@ export const login = async ({
   email: string;
   password: string;
 }) => {
-  const res = await fetch("http://backend:5000/api/auth/login", {
+  const res = await fetch("http://city-guide-backend:5000/api/auth/login", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -27,7 +27,7 @@ export const register = async ({
   username: string;
   password: string;
 }) => {
-  const res = await fetch("http://backend:5000/api/auth/register", {
+  const res = await fetch("http://city-guide-backend:5000/api/auth/register", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -42,7 +42,7 @@ export const register = async ({
 };
 
 export const logout = async () => {
-  const res = await fetch("http://backend:5000/api/auth/logout", {
+  const res = await fetch("http://city-guide-backend:5000/api/auth/logout", {
     method: "GET",
   });
   return res;
