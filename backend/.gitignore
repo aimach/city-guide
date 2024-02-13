@@ -1,5 +1,4 @@
 .env
-.env.staging
 node_modules/
 public/category/*
 public/city/*
