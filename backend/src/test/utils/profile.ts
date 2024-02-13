@@ -1,7 +1,7 @@
 export const getProfiles = async (token: string) => {
   const newHeaders = new Headers();
   newHeaders.append("Cookie", `jwt=${token}`);
-  const res = await fetch(`${process.env.DEPLOY_URL as string}/api/profile/`, {
+  const res = await fetch(`${process.env.DEPLOY_URL as string}/api/profile`, {
     method: "GET",
     credentials: "include",
     headers: newHeaders,
