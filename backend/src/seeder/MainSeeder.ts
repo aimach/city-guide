@@ -13,6 +13,7 @@ export default class MainSeeder implements Seeder {
   ): Promise<any> {
     const poiRepository = dataSource.getRepository(Poi);
     const { SEED_ADMIN_MAIL, SEED_ADMIN_PASSWORD } = process.env;
+
     // USERS
     const userFactory = factoryManager.get(User);
     const users = await userFactory.saveMany(10);
