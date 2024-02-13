@@ -1,7 +1,7 @@
 export const getProfiles = async (token: string) => {
   const newHeaders = new Headers();
   newHeaders.append("Cookie", `jwt=${token}`);
-  const res = await fetch("http://backend:5000/api/profile/", {
+  const res = await fetch("http://localhost:5000/api/profile/", {
     method: "GET",
     credentials: "include",
     headers: newHeaders,
@@ -12,7 +12,7 @@ export const getProfiles = async (token: string) => {
 export const getProfile = async (token: string) => {
   const newHeaders = new Headers();
   newHeaders.append("Cookie", `jwt=${token}`);
-  const res = await fetch("http://backend:5000/api/profile/my-profile", {
+  const res = await fetch("http://localhost:5000/api/profile/my-profile", {
     method: "GET",
     credentials: "include",
     headers: newHeaders,
@@ -23,7 +23,7 @@ export const getProfile = async (token: string) => {
 export const deleteUser = async (id: string, token: string) => {
   const newHeaders = new Headers();
   newHeaders.append("Cookie", `jwt=${token}`);
-  const res = await fetch(`http://backend:5000/api/profile/${id}`, {
+  const res = await fetch(`http://localhost:5000/api/profile/${id}`, {
     method: "DELETE",
     credentials: "include",
     headers: newHeaders,
