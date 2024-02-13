@@ -23,7 +23,7 @@ jobs:
         with:
           node-version: 20
       - name: build and run Docker Container
-        run: docker-compose -f docker-compose.dev.yml up -d
+        run: docker-compose -f docker-compose.dev.yml up -db
       - name: Seed database
         run: cd backend && npm i && npm run seed
         env:
