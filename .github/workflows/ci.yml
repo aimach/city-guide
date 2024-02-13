@@ -34,6 +34,8 @@ jobs:
           SEED_HOST: localhost
           SEED_ADMIN_MAIL: ${{ secrets.STAGING_SEED_ADMIN_MAIL }}
           SEED_ADMIN_PASSWORD: ${{ secrets.STAGING_SEED_ADMIN_PASSWORD }}
+      - name: Attendre que le backend soit prêt
+        run: dockerize -wait tcp://backend:5000 -timeout 1m
       - name: Goto backend and run tests
         run: cd backend && npm run test
         env:
