@@ -1,4 +1,5 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { render } from "@testing-library/react";
+import "../../matchMedia.mock";
 import "@testing-library/jest-dom";
 
 import Profile from "./Profile";

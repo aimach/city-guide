@@ -1,5 +1,5 @@
-window.matchMedia =
-  window.matchMedia ||
+global.matchMedia =
+  global.matchMedia ||
   function () {
     return {
       matches: false,

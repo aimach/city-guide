@@ -27,9 +27,8 @@ const ModalePOI = ({ poi, onClose, handleFavourite, isLiked }: Props) => {
       <div className={styles.close} onClick={onClose}>
         <AiOutlineClose />
       </div>
-
       <div className={styles.imageContainer}>
-        <img src={image} alt={image} />
+        <img src={image} alt={image} />d
       </div>
 
       <div className={styles.header}>
