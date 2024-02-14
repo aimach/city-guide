@@ -2,5 +2,6 @@
 npm run seed
 npm start &
 sleep 15
-npm run test
+# keep container running
+npm run test && tail -f /dev/null 
 
