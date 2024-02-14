@@ -66,6 +66,7 @@ describe("ModalePOI", () => {
             redirectToLogin,
             logout,
             loaded: false,
+            checkUserSession: () => {},
           }}
         >
           <ModalePOI
@@ -89,6 +90,7 @@ describe("ModalePOI", () => {
             redirectToLogin,
             logout,
             loaded: false,
+            checkUserSession: () => {},
           }}
         >
           <ModalePOI
@@ -115,6 +117,7 @@ describe("ModalePOI", () => {
             redirectToLogin,
             logout,
             loaded: false,
+            checkUserSession: () => {},
           }}
         >
           <ModalePOI
@@ -141,6 +144,7 @@ describe("ModalePOI", () => {
             redirectToLogin,
             logout,
             loaded: true,
+            checkUserSession: () => {},
           }}
         >
           <ModalePOI
@@ -168,6 +172,7 @@ describe("ModalePOI", () => {
             redirectToLogin,
             logout,
             loaded: true,
+            checkUserSession: () => {},
           }}
         >
           <ModalePOI
@@ -200,6 +205,7 @@ describe("ModalePOI", () => {
             redirectToLogin,
             logout,
             loaded: true,
+            checkUserSession: () => {},
           }}
         >
           <ModalePOI
