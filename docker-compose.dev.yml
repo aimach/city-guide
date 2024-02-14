@@ -17,7 +17,7 @@ services:
     build: ./backend
     ports:
       - 5000:5000
-    command: ./init.sh
+    command: ./run-test-back.sh
     volumes:
       - ./backend/src:/app/src
       - ./backend/public:/app/public
@@ -30,6 +30,7 @@ services:
     build: ./frontend
     ports:
       - 3000:3000
+    command: ./run-test-front.sh
     volumes:
       - ./frontend/src:/app/src
     environment:
