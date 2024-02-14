@@ -61,6 +61,7 @@ const SearchBar = () => {
     map.locate().on("locationfound", function (e) {
       map.flyTo(e.latlng, map.getZoom());
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return null;

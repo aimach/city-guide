@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useContext, useEffect, useState } from "react";
 import { UsersContext } from "../../contexts/UserContext";
 import style from "./profile.module.scss";
@@ -11,7 +12,8 @@ import PasswordModal from "../../components/common/modals/PasswordModal";
 import Caroussel from "../../components/common/Caroussel/Caroussel";
 import { handleFormErrors } from "../../utils/handleFormError";
 import useWindowDimensions from "../../utils/hooks/useWindowDimensions";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+
 export interface IDisableInputs {
   city: boolean;
   email: boolean;
@@ -34,6 +36,7 @@ export interface IError {
 
 const Profile = () => {
   const windowSize = useWindowDimensions();
+  const navigate = useNavigate();
 
   // get profile
   const { profile } = useContext(UsersContext);
@@ -65,7 +68,11 @@ const Profile = () => {
     : undefined;
 
   useEffect(() => {
-    if (profile !== null) setUserInfo(profile);
+    if (profile !== null) {
+      setUserInfo(profile);
+    } else {
+      navigate("/");
+    }
   }, [profile]);
 
   return (

@@ -1,8 +1,8 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Link } from "react-router-dom";
 import FilterSearch from "../../components/filterSearch/FilterSearch";
 import styles from "./SearchPOI.module.scss";
 import { useState, useEffect } from "react";
-import Card from "../../components/common/card/Card";
 import Caroussel from "../../components/common/Caroussel/Caroussel";
 import { CardType, City } from "../../utils/types";
 

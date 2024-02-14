@@ -1,33 +1,5 @@
 import Joi from "joi";
 
-const callRestApi = async (
-  method: string,
-  path: string,
-  body?: any,
-  inputHeaders?: Record<string, string>
-) => {
-  const url = `${process.env.REACT_APP_PUBLIC_BACKEND_URL}/${path}`;
-
-  const headers = new Headers();
-  headers.append("Content-Type", "application/json");
-  for (const key in inputHeaders) {
-    headers.append(key, inputHeaders[key]);
-  }
-
-  try {
-    const response = await fetch(url, {
-      body: body ? JSON.stringify(body) : undefined,
-      credentials: "include",
-      headers,
-      method,
-    });
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.log(error);
-  }
-};
-
 // ADD A FAVOURITE CITY
 
 export const addFavouriteCityToUser = async (
@@ -332,3 +304,32 @@ export const addCity = async (body: any): Promise<void> => {
     console.log("add error", error);
   }
 };
+
+// EXAMPLE
+// const callRestApi = async (
+//   method: string,
+//   path: string,
+//   body?: any,
+//   inputHeaders?: Record<string, string>
+// ) => {
+//   const url = `${process.env.REACT_APP_PUBLIC_BACKEND_URL}/${path}`;
+
+//   const headers = new Headers();
+//   headers.append("Content-Type", "application/json");
+//   for (const key in inputHeaders) {
+//     headers.append(key, inputHeaders[key]);
+//   }
+
+//   try {
+//     const response = await fetch(url, {
+//       body: body ? JSON.stringify(body) : undefined,
+//       credentials: "include",
+//       headers,
+//       method,
+//     });
+//     const data = await response.json();
+//     return data;
+//   } catch (error) {
+//     console.log(error);
+//   }
+// };
