@@ -15,7 +15,6 @@ import { UsersContext } from "../../../../contexts/UserContext";
 
 const AsideMenu = () => {
   const { profile } = useContext(UsersContext);
-  console.log(profile);
 
   return (
     <>

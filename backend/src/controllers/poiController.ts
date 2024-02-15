@@ -433,7 +433,7 @@ export const PoiController: IController = {
         );
         req.body.image = `/public/poi/${newName}`;
         // delete
-        if (poiToUpdate.image?.includes("public/city")) {
+        if (poiToUpdate.image?.includes("public/")) {
           await unlink("." + poiToUpdate.image);
         }
       } else {

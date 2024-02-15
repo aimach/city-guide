@@ -304,6 +304,28 @@ export const addCity = async (body: any): Promise<void> => {
     console.log("add error", error);
   }
 };
+// ADD POI
+
+export const addPoi = async (body: any): Promise<void> => {
+  try {
+    const response = await fetch(
+      `${process.env.REACT_APP_PUBLIC_BACKEND_URL}/api/poi`,
+      {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+        },
+        credentials: "include",
+        body: body,
+      }
+    );
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.log("add error", error);
+  }
+};
 
 // UPDATE POI
 export const updatePoi = async (body: any, id: string): Promise<void> => {
@@ -327,12 +349,12 @@ export const updatePoi = async (body: any, id: string): Promise<void> => {
   }
 };
 
-// ADD POI
+// ADD CATEGORY
 
-export const addPoi = async (body: any): Promise<void> => {
+export const addCategory = async (body: any): Promise<void> => {
   try {
     const response = await fetch(
-      `${process.env.REACT_APP_PUBLIC_BACKEND_URL}/api/poi`,
+      `${process.env.REACT_APP_PUBLIC_BACKEND_URL}/api/categories`,
       {
         method: "POST",
         headers: {
@@ -347,6 +369,28 @@ export const addPoi = async (body: any): Promise<void> => {
     return data;
   } catch (error) {
     console.log("add error", error);
+  }
+};
+
+// UPDATE CATEGORY
+export const updateCategory = async (body: any, id: string): Promise<void> => {
+  try {
+    const response = await fetch(
+      `${process.env.REACT_APP_PUBLIC_BACKEND_URL}/api/categories/${id}`,
+      {
+        method: "PUT",
+        headers: {
+          Accept: "application/json",
+        },
+        credentials: "include",
+        body: body,
+      }
+    );
+    const data = await response.json();
+
+    return data;
+  } catch (error) {
+    console.log("update error", error);
   }
 };
 
