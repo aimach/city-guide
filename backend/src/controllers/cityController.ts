@@ -29,6 +29,7 @@ export const CityController: IController = {
             createdPoi: true,
           },
         },
+        where: { userAdminCity: { id: req.query.userAdminCityId as string } },
       });
       res.status(200).send(allCities);
     } catch (err) {

@@ -76,8 +76,8 @@ function App() {
             <Route path="categories" element={<Categories />} />
             <Route path="poi" element={<Poi />} />
             <Route path="users" element={<Users />} />
-            <Route path="adminCityPoi" element={<PoiCitiesAdmin />} />
-            <Route path="adminCityUsers" element={<UsersCitiesAdmin />} />
+            <Route path="admin-city/poi" element={<PoiCitiesAdmin />} />
+            <Route path="admin-city/users" element={<UsersCitiesAdmin />} />
           </Route>
         </Route>
 

@@ -12,23 +12,12 @@ export default function BackOfficeLayout({ children }: PropsWithChildren) {
   const { isAuthenticated, loaded, redirectToLogin, profile } =
     useContext(UsersContext);
   const navigate = useNavigate();
-  // 1. il va chercher le profil du user dans userContext
-  // 2. entre temps il affiche la page du dashboard (c'est du au temps de chargement)
-  // il faudrai tajouter un composant loader pour palier à ce souci ??
-  // 3 il rentre dans la conditon et regarde si j'ai un role admin ou admin_city
-  // 4 Il affiche la page d'accueil
+
   useEffect(() => {
-    if (
-      profile &&
-      profile.role !== Role.ADMIN &&
-      profile &&
-      profile.role !== Role.ADMIN_CITY
-    )
-      navigate("/"); // protection url /dashboard
+    if (profile?.role !== Role.ADMIN && profile?.role !== Role.ADMIN_CITY)
+      navigate("/");
   }, [profile]);
 
-  // pour etre redirgeu je ne dosi pas etr ni admin ni admin_city
-  // je te redirige si tu n'es pas admin et admin_city
   function updateDimension() {
     setWindowSize(window.innerWidth);
   }
