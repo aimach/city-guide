@@ -5,7 +5,6 @@ import {
   faHouse,
   faLocationDot,
   faUser,
-  faUserPlus,
   faUsers,
 } from "@fortawesome/free-solid-svg-icons";
 import styles from "./AsideMenu.module.scss";

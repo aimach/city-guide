@@ -32,11 +32,12 @@ const PoiCityAdmin = () => {
 
   // get cities
   const [listOfPoi, setListOfPoi] = useState<Poi[]>([]);
+  const [pageNb, setPageNb] = useState<number>(1);
 
   const getAllPoi = async () => {
     try {
       const response = await fetch(
-        `${process.env.REACT_APP_PUBLIC_BACKEND_URL}/api/poi`,
+        `${process.env.REACT_APP_PUBLIC_BACKEND_URL}/api/poi?nb=5&page=${pageNb}`,
         { credentials: "include" }
       );
       const data = await response.json();
@@ -46,9 +47,11 @@ const PoiCityAdmin = () => {
     }
   };
 
+  console.log("listOfPoi", listOfPoi);
+
   useEffect(() => {
     getAllPoi();
-  }, []);
+  }, [pageNb]);
 
   // DELETE POI
   const handleDeletePoi = async (poiToDelete: Poi) => {
@@ -195,6 +198,12 @@ const PoiCityAdmin = () => {
             })}
           </tbody>
         </table>
+        <div>
+          {pageNb > 1 && (
+            <button onClick={() => setPageNb(pageNb - 1)}>Précédent</button>
+          )}
+          <button onClick={() => setPageNb(pageNb + 1)}>Suivant</button>
+        </div>
         {isModalOpenModify && (
           <ModalUpdatePoi
             onClose={handleCloseModal}

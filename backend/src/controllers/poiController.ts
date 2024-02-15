@@ -17,11 +17,15 @@ export const PoiController: IController = {
   getPoi: async (req: Request, res: Response): Promise<void> => {
     try {
       let searchQueries = {};
+      let pagination = {};
 
       // if query in url, add finding options
       if (Object.keys(req.query).length > 0) {
         const city = req.query.city as string;
         const category = req.query.category as string;
+        const nb = req.query.nb as string;
+        const page = req.query.page as string;
+
         if (city !== undefined && category !== undefined) {
           searchQueries = {
             category: { name: category },
@@ -31,6 +35,13 @@ export const PoiController: IController = {
           searchQueries = { city: { name: city } };
         } else if (category !== undefined) {
           searchQueries = { category: { name: category } };
+        }
+
+        if (nb !== undefined && page !== undefined) {
+          pagination = {
+            take: parseInt(nb),
+            skip: (parseInt(page) - 1) * parseInt(nb),
+          };
         }
       }
 
@@ -54,6 +65,7 @@ export const PoiController: IController = {
               user: true,
             },
             where: searchQueries,
+            ...pagination,
           });
         } else if (decodedToken?.role === UserRole.ADMIN_CITY) {
           // get the city name where user is admin to get only local POIs
@@ -75,6 +87,7 @@ export const PoiController: IController = {
               user: true,
             },
             where: searchQueries,
+            ...pagination,
           });
         }
       } else {
@@ -86,6 +99,7 @@ export const PoiController: IController = {
             user: true,
           },
           where: { ...searchQueries, isAccepted: true },
+          ...pagination,
         });
       }
       res.status(200).send(allPoi);
