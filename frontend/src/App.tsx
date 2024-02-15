@@ -17,9 +17,7 @@ import { default as BackOfficeHomePage } from "./backOffice/pages/HomePage/BackO
 import Cities from "./backOffice/pages/administrator/Cities/Cities";
 import MessagePage from "./backOffice/pages/administrator/Message/Message";
 import Admin from "./backOffice/pages/administrator/Admin/Admin";
-import Profil from "./backOffice/pages/administrator/Profil/Profil";
 import Categories from "./backOffice/pages/administrator/Categories/Categories";
-import Users from "./backOffice/pages/administrator/Users/Users";
 import PoiCityAdmin from "./backOffice/pages/cities administrator/Poi/PoiCityAdmin";
 import UsersCitiesAdmin from "./backOffice/pages/cities administrator/Users/UsersCitiesAdmin";
 import Layout from "./components/layout/Layout";
@@ -71,10 +69,8 @@ function App() {
             <Route path="cities" element={<Cities />} />
             <Route path="message" element={<MessagePage />} />
             <Route path="admin" element={<Admin />} />
-            <Route path="profil" element={<Profil />} />
             <Route path="categories" element={<Categories />} />
             <Route path="poi" element={<PoiCityAdmin />} />
-            <Route path="users" element={<Users />} />
             <Route path="admin-city/poi" element={<PoiCityAdmin />} />
             <Route path="admin-city/users" element={<UsersCitiesAdmin />} />
           </Route>

@@ -6,6 +6,7 @@ import { useState, useEffect, useContext } from "react";
 import Caroussel from "../../components/common/Caroussel/Caroussel";
 import { CardType, City } from "../../utils/types";
 import { UsersContext } from "../../contexts/UserContext";
+import useWindowDimensions from "../../utils/hooks/useWindowDimensions";
 
 const SearchPOI = () => {
   const [filterSearch, setFilterSearch] = useState("");
@@ -13,6 +14,7 @@ const SearchPOI = () => {
   const [citiesToBeShown, setCitiesToBeShown] = useState<City[]>([]);
 
   const { isAuthenticated } = useContext(UsersContext);
+  const windowSize = useWindowDimensions();
 
   const getCities = async () => {
     try {
@@ -66,19 +68,17 @@ const SearchPOI = () => {
             filterSearch={filterSearch}
             setFilterSearch={setFilterSearch}
           />
-          <Link
-            className={`${styles.buttonSearchPoi} textButton`}
-            // to={`/map?search=${filterSearch}`}
-            to={"/map"}
-          >
+          <Link className={`${styles.buttonSearchPoi} textButton`} to={"/map"}>
             Voir la carte
           </Link>
         </div>
-        <section>
-          <div className={`${styles.pictoPlane}`}>
-            <img src="/picto_avion.png" alt="picto avion" />
-          </div>
-        </section>
+        {windowSize > 768 && (
+          <section>
+            <div className={`${styles.pictoPlane}`}>
+              <img src="/picto_avion.png" alt="picto avion" />
+            </div>
+          </section>
+        )}
         <div className={styles.separatingBorder}></div>
 
         <section className={styles.filterSearchComponent} id="cities">

@@ -6,7 +6,7 @@ import { useState, useEffect } from "react";
 import { Message } from "../../../../utils/types";
 import Modal from "../../../../components/common/modals/Modal";
 import Button from "../../../components/common/Button/Button";
-import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
+import { faTrashCan, faReply } from "@fortawesome/free-solid-svg-icons";
 
 const MessagePage = () => {
   const columns = ["Email", "Titre", "Contenu"];
@@ -62,6 +62,10 @@ const MessagePage = () => {
     getMessages();
   }, []);
 
+  const handleReponseMessage = (message: Message) => {
+    window.location.href = `mailto:${message.email}?subject=Réponse à ${message.title}`;
+  };
+
   return (
     <>
       <BackOfficeLayout>
@@ -94,6 +98,9 @@ const MessagePage = () => {
                 </th>
               ))}
               <th className={`${styles.titleTable} fieldTableHead`}>
+                Répondre
+              </th>
+              <th className={`${styles.titleTable} fieldTableHead`}>
                 Supprimer
               </th>
             </tr>
@@ -108,6 +115,13 @@ const MessagePage = () => {
                   </td>
                   <td className={`${styles.fieldImage} fieldTableBody`}>
                     {message.message.slice(0, 20)}...
+                  </td>
+                  <td className={styles.titleTable}>
+                    <Button
+                      icon={faReply}
+                      onClick={() => handleReponseMessage(message)}
+                      typeButton={"icon"}
+                    />
                   </td>
                   <td className={styles.endColumn}>
                     <Button

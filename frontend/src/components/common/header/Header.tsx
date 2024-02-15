@@ -124,7 +124,7 @@ const Header = ({ size }: headerProps) => {
           </>
         ) : (
           <nav>
-            <Link to="/">
+            <Link to="/map">
               <FontAwesomeIcon icon={faMap} className={`${style.iconStyle}`} />
             </Link>
             <Link to="/">

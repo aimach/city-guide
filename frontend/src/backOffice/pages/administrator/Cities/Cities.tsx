@@ -4,7 +4,6 @@ import { faCity, faPen, faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import Title from "../../../components/common/Title/Title";
 import { useEffect, useState } from "react";
 import { City } from "../../../../utils/types";
-import Checkbox from "../../../components/common/Checkbox/Checkbox";
 import Button from "../../../components/common/Button/Button";
 import Modal from "../../../../components/common/modals/Modal";
 import ModalUpdateCity from "../../../components/modals/ModalUpdateCity";
@@ -34,25 +33,6 @@ const Cities = () => {
     }
   };
 
-  const [checkedCities, setCheckedCities] = useState<City[]>([]);
-
-  const handleSelectOrUnselectAll = () => {
-    setCheckedCities(checkedCities.length === cities.length ? [] : cities);
-  };
-
-  const handleSelectOrUnselectOne = (city: City) => {
-    const cityFoundInSelectedCities = checkedCities.find(
-      (c) => c.id === city.id
-    );
-
-    if (cityFoundInSelectedCities) {
-      setCheckedCities(
-        checkedCities.filter((city) => city.id !== cityFoundInSelectedCities.id)
-      );
-    } else {
-      setCheckedCities([...checkedCities, city]);
-    }
-  };
   // DELETE One City
   const handleDeleteOneCity = async (cityToDelete: City) => {
     try {
@@ -139,13 +119,6 @@ const Cities = () => {
       <table>
         <thead>
           <tr>
-            <th className={styles.startColumn}>
-              <Checkbox
-                value={checkedCities.length === cities.length}
-                onChange={handleSelectOrUnselectAll}
-              />
-            </th>
-
             {columns.map((column) => (
               <th
                 key={column}
@@ -162,12 +135,6 @@ const Cities = () => {
           {cities.map((city) => {
             return (
               <tr key={city.id}>
-                <td className={styles.startColumn}>
-                  <Checkbox
-                    value={!!checkedCities.find((c) => c.id === city.id)}
-                    onChange={() => handleSelectOrUnselectOne(city)}
-                  />
-                </td>
                 <td className={`fieldTableBody`}>{city.name}</td>
                 <td className={`fieldTableBody`}>
                   <div className={styles.fieldCoordinates}>

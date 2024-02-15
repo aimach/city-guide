@@ -23,11 +23,7 @@ const AsideMenu = () => {
           <ul>
             <ItemLi icon={faHouse} name="Retour sur le site" path="/"></ItemLi>
             {profile?.role === "admin" ? (
-              <ItemLi
-                icon={faUser}
-                name="Administrateur du site"
-                path="/dashboard/admin"
-              >
+              <ItemLi icon={faUser} name="Administrateur du site" path="">
                 <ol>
                   <ul className={styles.alignIconAndText}>
                     <ItemLi
@@ -41,23 +37,15 @@ const AsideMenu = () => {
                     name="Villes"
                     path="/dashboard/cities"
                   ></ItemLi>
-
                   <ItemLi
                     icon={faFolder}
                     name="Catégories"
                     path="/dashboard/categories"
                   ></ItemLi>
-
                   <ItemLi
                     icon={faLocationDot}
                     name="Point d'intérêts"
                     path="/dashboard/poi"
-                  ></ItemLi>
-
-                  <ItemLi
-                    icon={faUserPlus}
-                    name="Utilisateurs"
-                    path="/dashboard/users"
                   ></ItemLi>
                 </ol>
               </ItemLi>
@@ -69,11 +57,6 @@ const AsideMenu = () => {
                       icon={faLocationDot}
                       name="Point d'intérêts"
                       path="/dashboard/admin-city/poi"
-                    ></ItemLi>
-                    <ItemLi
-                      icon={faUser}
-                      name="Contributeurs"
-                      path="/dashboard/admin-city/users"
                     ></ItemLi>
                   </ol>
                 </ItemLi>

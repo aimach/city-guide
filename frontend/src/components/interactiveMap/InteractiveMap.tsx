@@ -40,6 +40,7 @@ const InteractiveMap = () => {
       console.error(error);
     }
   };
+  console.log(pois);
 
   useEffect(() => {
     fetchData();

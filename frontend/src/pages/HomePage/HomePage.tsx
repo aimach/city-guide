@@ -41,6 +41,7 @@ const HomePage = () => {
           <img src="/wave_with_map_mobile.svg" alt="wave with map" />
           <button
             className={`buttonHomePage textButton ${styles.presentationButton}`}
+            onClick={() => navigate("/map")}
           >
             Explorez
           </button>

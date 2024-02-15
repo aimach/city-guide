@@ -13,7 +13,6 @@ import {
 } from "../../../utils/api";
 import { Poi } from "../../../utils/types";
 import { IoIosHeartEmpty, IoIosHeart } from "react-icons/io";
-import { AiOutlineConsoleSql } from "react-icons/ai";
 
 const CustomMarker = ({
   name,
@@ -46,11 +45,7 @@ const CustomMarker = ({
     ? `${process.env.REACT_APP_PUBLIC_BACKEND_URL}${image}`
     : image;
 
-  useEffect(() => {
-    if (profile) {
-      setFavouriteUserPoi(profile.favouritePoi);
-    }
-  }, [profile]);
+  console.log(favouriteUserPoi);
 
   const handleUserFavouritePoi = (
     poiId: string,
@@ -60,10 +55,11 @@ const CustomMarker = ({
     if (favouritePoi != null) {
       if (favouritePoi.find((poi) => poi.id === poiId)) {
         removeFavouritePoiToUser(poiId, userId);
-        favouriteUserPoi?.filter((poi) => poi.id !== poiId);
+        const newFavoritePoi = favouritePoi.filter((poi) => poi.id !== poiId);
+        setFavouriteUserPoi(newFavoritePoi);
       } else {
-        console.log("hellooooo");
         addFavouritePoiToUser(poiId, userId);
+        setFavouriteUserPoi(profile?.favouritePoi as Poi[]);
       }
     }
   };
@@ -71,6 +67,12 @@ const CustomMarker = ({
   const isLiked = (id: string | null): Poi | undefined => {
     return favouriteUserPoi?.find((poi) => poi.id === id);
   };
+
+  useEffect(() => {
+    if (profile) {
+      setFavouriteUserPoi(profile.favouritePoi);
+    }
+  }, [profile]);
 
   return (
     <Marker

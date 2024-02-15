@@ -36,43 +36,47 @@ export const PoiController: IController = {
 
       // get poi is accepted or no depending of user status (admin or not)
       const token = req.cookies.jwt;
-      const decodedToken = jwt.verify(
-        token,
-        process.env.TOKEN as string
-      ) as jwt.JwtPayload;
+      let decodedToken = null;
 
       let allPoi;
-      if (decodedToken?.role === UserRole.ADMIN) {
-        // get all poi (accepted or not)
-        allPoi = await dataSource.getRepository(Poi).find({
-          relations: {
-            category: true,
-            city: true,
-            user: true,
-          },
-          where: searchQueries,
-        });
-      } else if (decodedToken?.role === UserRole.ADMIN_CITY) {
-        // get the city name where user is admin to get only local POIs
-        const cityWhereUserIsAdmin = await dataSource
-          .getRepository(City)
-          .findOne({
-            relations: { userAdminCity: true },
-            where: { userAdminCity: { id: decodedToken.userId } },
+
+      if (token !== undefined) {
+        decodedToken = jwt.verify(
+          token,
+          process.env.TOKEN as string
+        ) as jwt.JwtPayload;
+        if (decodedToken?.role === UserRole.ADMIN) {
+          // get all poi (accepted or not)
+          allPoi = await dataSource.getRepository(Poi).find({
+            relations: {
+              category: true,
+              city: true,
+              user: true,
+            },
+            where: searchQueries,
           });
-        // update searchQueries with the city where user is admin
-        searchQueries = {
-          ...searchQueries,
-          city: { id: cityWhereUserIsAdmin?.id },
-        };
-        allPoi = await dataSource.getRepository(Poi).find({
-          relations: {
-            category: true,
-            city: true,
-            user: true,
-          },
-          where: searchQueries,
-        });
+        } else if (decodedToken?.role === UserRole.ADMIN_CITY) {
+          // get the city name where user is admin to get only local POIs
+          const cityWhereUserIsAdmin = await dataSource
+            .getRepository(City)
+            .findOne({
+              relations: { userAdminCity: true },
+              where: { userAdminCity: { id: decodedToken.userId } },
+            });
+          // update searchQueries with the city where user is admin
+          searchQueries = {
+            ...searchQueries,
+            city: { id: cityWhereUserIsAdmin?.id },
+          };
+          allPoi = await dataSource.getRepository(Poi).find({
+            relations: {
+              category: true,
+              city: true,
+              user: true,
+            },
+            where: searchQueries,
+          });
+        }
       } else {
         // get only accepted poi
         allPoi = await dataSource.getRepository(Poi).find({

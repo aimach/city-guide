@@ -9,9 +9,10 @@
   width: 350px;
   display: flex;
   flex-direction: column;
-  position: absolute;
-  top: 350px;
-  left: 45%;
+  position: fixed;
+  top: 10%;
+  left: 40%;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 0 2000px;
 }
 .closeButton {
   background-color: unset;

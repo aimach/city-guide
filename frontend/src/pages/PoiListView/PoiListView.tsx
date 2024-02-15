@@ -30,10 +30,18 @@ const PoiListView = () => {
   };
 
   let categories: Category[] = [];
-  const poiCategories =
-    currentCity
-      ?.poi!.filter((poi) => poi.isAccepted === true)
-      .map((poi) => poi.category) ?? [];
+  let poiCategories: Category[] = [];
+
+  // Get categories from POI
+  const getCategoriesFromPoi = () => {
+    currentCity?.poi
+      ?.filter((poi: Poi) => poi.isAccepted === true)
+      .forEach((poi) => {
+        if (poi.category !== null) poiCategories.push(poi.category);
+      });
+  };
+
+  getCategoriesFromPoi();
 
   // Filter categories to avoid duplicates
   const filterCategories = () => {
@@ -55,7 +63,6 @@ const PoiListView = () => {
         `${process.env.REACT_APP_PUBLIC_BACKEND_URL}/api/poi?city=${cityName}&category=${categoryName}`
       );
       const data = await response.json();
-      console.log({ data });
 
       if (!data.error) {
         setSearchedPoi(data);

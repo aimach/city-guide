@@ -36,6 +36,9 @@ td {
   overflow: hidden;
   word-break: break-word;
   text-overflow: ellipsis;
+  svg {
+    padding-left: 2rem;
+  }
 }
 .titleAndButton {
   display: flex;
