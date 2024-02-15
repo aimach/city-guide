@@ -2,10 +2,8 @@
 import { faLocationDot } from "@fortawesome/free-solid-svg-icons";
 import Title from "../../../components/common/Title/Title";
 import BackOfficeLayout from "../../../components/layout/BackOfficeLayout";
-import { useState, useEffect, useContext } from "react";
-import { City } from "../../../../utils/types";
+import { useState, useEffect } from "react";
 import { Poi } from "../../../../utils/types";
-import { UsersContext } from "../../../../contexts/UserContext";
 import styles from "../../administrator/Cities/Cities.module.scss";
 import Button from "../../../components/common/Button/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -21,9 +19,6 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 const PoiCityAdmin = () => {
-  // get profile
-  const { profile } = useContext(UsersContext);
-
   // create columns
   const columns = [
     "Nom",
@@ -36,23 +31,23 @@ const PoiCityAdmin = () => {
   ];
 
   // get cities
-  const [adminCity, setAdminCity] = useState<City | null>(null);
-  const [poiOfAdminCity, setPoiOfAdminCity] = useState<Poi[]>([]);
+  const [listOfPoi, setListOfPoi] = useState<Poi[]>([]);
 
-  const getAdminCity = async () => {
+  const getAllPoi = async () => {
     try {
       const response = await fetch(
-        `${process.env.REACT_APP_PUBLIC_BACKEND_URL}/api/cities?userAdminCityId=${profile?.id}`
+        `${process.env.REACT_APP_PUBLIC_BACKEND_URL}/api/poi`,
+        { credentials: "include" }
       );
       const data = await response.json();
-      setAdminCity(data[0]);
-      setPoiOfAdminCity(data[0].poi);
+      setListOfPoi(data);
     } catch (error) {
       console.log(error);
     }
   };
+
   useEffect(() => {
-    getAdminCity();
+    getAllPoi();
   }, []);
 
   // DELETE POI
@@ -65,10 +60,8 @@ const PoiCityAdmin = () => {
           credentials: "include",
         }
       );
-      const updatedPoi = poiOfAdminCity.filter(
-        (poi) => poi.id !== poiToDelete.id
-      );
-      setPoiOfAdminCity(updatedPoi);
+      const updatedPoi = listOfPoi.filter((poi) => poi.id !== poiToDelete.id);
+      setListOfPoi(updatedPoi);
     } catch (error) {
       console.log("delete error", error);
     }
@@ -103,7 +96,7 @@ const PoiCityAdmin = () => {
     address: "",
     phoneNumber: "",
     isAccepted: false,
-    city: adminCity?.id as string,
+    city: "",
   };
 
   // Close Modal for Add and Modify modal
@@ -129,7 +122,7 @@ const PoiCityAdmin = () => {
         <Title name={"Point d'intérêts"} icon={faLocationDot}></Title>
         <div className={styles.titleAndButton}>
           <h4 className={`${styles.subtitleTable} subtitleDashboard`}>
-            Liste des POI de {adminCity?.name}
+            Liste des POI
           </h4>
           <Link to="/contribution">
             <div className={styles.buttonText}>Ajouter un POI</div>
@@ -155,7 +148,7 @@ const PoiCityAdmin = () => {
             </tr>
           </thead>
           <tbody>
-            {poiOfAdminCity.map((poi) => {
+            {listOfPoi.map((poi) => {
               return (
                 <tr key={poi.id}>
                   <td className={`fieldTableBody`}>{poi.name}</td>
@@ -207,7 +200,6 @@ const PoiCityAdmin = () => {
             onClose={handleCloseModal}
             isOpen={true}
             poi={poiToModified as Poi}
-            city={adminCity as City}
             type="modifyPoi"
             setDisplayModals={setDisplayModals}
             displayModals={displayModals}
@@ -219,7 +211,6 @@ const PoiCityAdmin = () => {
             isOpen={true}
             poi={newPoi}
             type="addPoi"
-            city={adminCity as City}
             setDisplayModals={setDisplayModals}
             displayModals={displayModals}
           ></ModalUpdatePoi>

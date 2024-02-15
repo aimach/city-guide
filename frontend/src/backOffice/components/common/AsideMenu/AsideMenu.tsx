@@ -37,12 +37,6 @@ const AsideMenu = () => {
                     ></ItemLi>
                   </ul>
                   <ItemLi
-                    icon={faUser}
-                    name="Profils"
-                    path="/dashboard/profil"
-                  ></ItemLi>
-
-                  <ItemLi
                     icon={faCity}
                     name="Villes"
                     path="/dashboard/cities"

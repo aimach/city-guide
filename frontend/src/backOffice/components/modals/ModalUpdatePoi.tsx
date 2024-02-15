@@ -24,12 +24,10 @@ interface Props {
   type: string;
   setDisplayModals: (displayModals: any) => void;
   displayModals: { validation: boolean; error: boolean };
-  city: City;
 }
 
 const ModalUpdatePoi = ({
   poi,
-  city,
   onClose,
   isOpen,
   type,
@@ -47,7 +45,7 @@ const ModalUpdatePoi = ({
     phoneNumber: poi.phoneNumber as string,
     image: poi.image,
     isAccepted: poi.isAccepted as boolean,
-    city: city.id as string,
+    city: (poi.city as City).id as string,
   });
 
   const handleInputChange = (value: any, key: string) => {

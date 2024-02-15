@@ -9,6 +9,7 @@ import { v4 as uuidv4 } from "uuid";
 import validator from "validator";
 import { User, UserRole } from "../entities/User";
 import { City } from "../entities/City";
+import jwt from "jsonwebtoken";
 
 export const PoiController: IController = {
   // GET ALL POI
@@ -34,14 +35,14 @@ export const PoiController: IController = {
       }
 
       // get poi is accepted or no depending of user status (admin or not)
-      const { userId } = req.params;
-
-      const currentUser = await dataSource
-        .getRepository(User)
-        .findOne({ where: { id: userId } });
+      const token = req.cookies.jwt;
+      const decodedToken = jwt.verify(
+        token,
+        process.env.TOKEN as string
+      ) as jwt.JwtPayload;
 
       let allPoi;
-      if (currentUser?.role === UserRole.ADMIN) {
+      if (decodedToken?.role === UserRole.ADMIN) {
         // get all poi (accepted or not)
         allPoi = await dataSource.getRepository(Poi).find({
           relations: {
@@ -51,15 +52,18 @@ export const PoiController: IController = {
           },
           where: searchQueries,
         });
-      } else if (currentUser?.role === UserRole.ADMIN_CITY) {
+      } else if (decodedToken?.role === UserRole.ADMIN_CITY) {
         // get the city name where user is admin to get only local POIs
         const cityWhereUserIsAdmin = await dataSource
           .getRepository(City)
-          .findOneBy({ userAdminCity: { id: userId } });
+          .findOne({
+            relations: { userAdminCity: true },
+            where: { userAdminCity: { id: decodedToken.userId } },
+          });
         // update searchQueries with the city where user is admin
         searchQueries = {
           ...searchQueries,
-          city: cityWhereUserIsAdmin?.name,
+          city: { id: cityWhereUserIsAdmin?.id },
         };
         allPoi = await dataSource.getRepository(Poi).find({
           relations: {
@@ -79,8 +83,8 @@ export const PoiController: IController = {
           },
           where: { ...searchQueries, isAccepted: true },
         });
-        res.status(200).send(allPoi);
       }
+      res.status(200).send(allPoi);
     } catch (err) {
       res.status(400).send({
         error: "Error while reading points of interest",
@@ -433,7 +437,7 @@ export const PoiController: IController = {
         );
         req.body.image = `/public/poi/${newName}`;
         // delete
-        if (poiToUpdate.image?.includes("public/")) {
+        if (poiToUpdate.image?.includes("public")) {
           await unlink("." + poiToUpdate.image);
         }
       } else {
