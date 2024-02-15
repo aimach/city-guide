@@ -15,11 +15,10 @@ import Contribution from "./pages/Contribution/Contribution";
 import InteractiveMap from "./components/interactiveMap/InteractiveMap";
 import { default as BackOfficeHomePage } from "./backOffice/pages/HomePage/BackOfficeHomePage";
 import Cities from "./backOffice/pages/administrator/Cities/Cities";
-import Message from "./backOffice/pages/administrator/Message/Message";
+import MessagePage from "./backOffice/pages/administrator/Message/Message";
 import Admin from "./backOffice/pages/administrator/Admin/Admin";
 import Profil from "./backOffice/pages/administrator/Profil/Profil";
 import Categories from "./backOffice/pages/administrator/Categories/Categories";
-import Poi from "./backOffice/pages/administrator/Poi/Poi";
 import Users from "./backOffice/pages/administrator/Users/Users";
 import PoiCityAdmin from "./backOffice/pages/cities administrator/Poi/PoiCityAdmin";
 import UsersCitiesAdmin from "./backOffice/pages/cities administrator/Users/UsersCitiesAdmin";
@@ -70,7 +69,7 @@ function App() {
           <Route path="/dashboard" element={<BackOfficeHomePage />} />
           <Route path="/dashboard">
             <Route path="cities" element={<Cities />} />
-            <Route path="message" element={<Message />} />
+            <Route path="message" element={<MessagePage />} />
             <Route path="admin" element={<Admin />} />
             <Route path="profil" element={<Profil />} />
             <Route path="categories" element={<Categories />} />

@@ -1,7 +1,7 @@
 import { faFolder } from "@fortawesome/free-solid-svg-icons";
 import Title from "../../../components/common/Title/Title";
 import BackOfficeLayout from "../../../components/layout/BackOfficeLayout";
-import styles from "./Categories.module.scss";
+import styles from "../Cities/Cities.module.scss";
 import { useState, useEffect } from "react";
 import { Category } from "../../../../utils/types";
 import Modal from "../../../../components/common/modals/Modal";
@@ -36,7 +36,7 @@ const Categories = () => {
         }
       );
       const updateCategories = categories.filter(
-        (city) => city.id !== categoryToDelete.id
+        (category) => category.id !== categoryToDelete.id
       );
       setCategories(updateCategories);
       setDisplayModals({ ...displayModals, validation: true });
