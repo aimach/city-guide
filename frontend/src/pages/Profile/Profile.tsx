@@ -40,7 +40,6 @@ const Profile = () => {
 
   // get profile
   const { profile } = useContext(UsersContext);
-  const [displayEditImg, setDisplayEditImg] = useState<boolean>(false);
   const [displayModals, setDisplayModals] = useState<IDisplayModals>({
     validation: false,
     image: false,
@@ -62,10 +61,6 @@ const Profile = () => {
     username: { message: "", status: false },
     bio: { message: "", status: false },
   });
-
-  const imageURL: string | undefined = profile?.image
-    ? profile?.image?.slice(1)
-    : undefined;
 
   useEffect(() => {
     if (profile !== null) {
@@ -114,46 +109,7 @@ const Profile = () => {
       <section className={style.formSection}>
         <div className={style.profileAvatarAndName}>
           <div className={style.avatarImg}>
-            {imageURL !== undefined ? (
-              <>
-                <img
-                  src={`${process.env.REACT_APP_PUBLIC_BACKEND_URL}${imageURL}`}
-                  alt="avatar"
-                  className={displayEditImg ? style.imageOpacity : undefined}
-                  onMouseOver={() => setDisplayEditImg(true)}
-                  onMouseOut={() => setDisplayEditImg(false)}
-                />
-                {displayEditImg && (
-                  <FontAwesomeIcon
-                    icon={faPen}
-                    className={style.iconEditImg}
-                    onMouseOver={() => setDisplayEditImg(true)}
-                    onClick={() =>
-                      setDisplayModals({ ...displayModals, image: true })
-                    }
-                  />
-                )}
-              </>
-            ) : (
-              <>
-                <div
-                  onMouseOver={() => setDisplayEditImg(true)}
-                  onMouseOut={() => setDisplayEditImg(false)}
-                >
-                  {profile?.username.substring(0, 1).toUpperCase()}
-                </div>
-                {displayEditImg && (
-                  <FontAwesomeIcon
-                    icon={faPen}
-                    className={style.iconEditImg}
-                    onMouseOver={() => setDisplayEditImg(true)}
-                    onClick={() =>
-                      setDisplayModals({ ...displayModals, image: true })
-                    }
-                  />
-                )}
-              </>
-            )}
+            <div>{profile?.username.substring(0, 1).toUpperCase()}</div>
           </div>
           <p>{profile?.username.toUpperCase()}</p>
         </div>

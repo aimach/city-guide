@@ -46,20 +46,9 @@ const Header = ({ size }: headerProps) => {
             <nav className={` ${style.menu}`}>
               <ul className="textButton">
                 <li>
-                  <a
-                    href="#parcourir"
-                    onClick={() => setDisplayProfileMenu(false)}
-                  >
+                  <Link to="/map" onClick={() => setDisplayProfileMenu(false)}>
                     Parcourir
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#abonnement"
-                    onClick={() => setDisplayProfileMenu(false)}
-                  >
-                    Abonnement
-                  </a>
+                  </Link>
                 </li>
 
                 {role === Role.VISITOR ? (
