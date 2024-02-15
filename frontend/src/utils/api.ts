@@ -305,6 +305,51 @@ export const addCity = async (body: any): Promise<void> => {
   }
 };
 
+// UPDATE POI
+export const updatePoi = async (body: any, id: string): Promise<void> => {
+  try {
+    const response = await fetch(
+      `${process.env.REACT_APP_PUBLIC_BACKEND_URL}/api/poi/${id}`,
+      {
+        method: "PUT",
+        headers: {
+          Accept: "application/json",
+        },
+        credentials: "include",
+        body: body,
+      }
+    );
+    const data = await response.json();
+
+    return data;
+  } catch (error) {
+    console.log("update error", error);
+  }
+};
+
+// ADD POI
+
+export const addPoi = async (body: any): Promise<void> => {
+  try {
+    const response = await fetch(
+      `${process.env.REACT_APP_PUBLIC_BACKEND_URL}/api/poi`,
+      {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+        },
+        credentials: "include",
+        body: body,
+      }
+    );
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.log("add error", error);
+  }
+};
+
 // EXAMPLE
 // const callRestApi = async (
 //   method: string,

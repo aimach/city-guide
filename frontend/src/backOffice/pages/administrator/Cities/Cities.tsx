@@ -7,7 +7,7 @@ import { City } from "../../../../utils/types";
 import Checkbox from "../../../components/common/Checkbox/Checkbox";
 import Button from "../../../components/common/Button/Button";
 import Modal from "../../../../components/common/modals/Modal";
-import ModalAdmin from "../../../components/modals/ModalAdmin";
+import ModalUpdateCity from "../../../components/modals/ModalUpdateCity";
 
 const Cities = () => {
   const columns = [
@@ -204,24 +204,24 @@ const Cities = () => {
       </table>
 
       {isModalOpenModify && (
-        <ModalAdmin
+        <ModalUpdateCity
           onClose={handleCloseModal}
           isOpen={true}
           city={cityToModified as City}
           type="modifyCity"
           setDisplayModals={setDisplayModals}
           displayModals={displayModals}
-        ></ModalAdmin>
+        ></ModalUpdateCity>
       )}
       {isModalOpenAdd && (
-        <ModalAdmin
+        <ModalUpdateCity
           onClose={handleCloseModal}
           isOpen={true}
           city={newCity}
           type="addCity"
           setDisplayModals={setDisplayModals}
           displayModals={displayModals}
-        ></ModalAdmin>
+        ></ModalUpdateCity>
       )}
     </BackOfficeLayout>
   );

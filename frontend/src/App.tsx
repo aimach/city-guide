@@ -21,7 +21,7 @@ import Profil from "./backOffice/pages/administrator/Profil/Profil";
 import Categories from "./backOffice/pages/administrator/Categories/Categories";
 import Poi from "./backOffice/pages/administrator/Poi/Poi";
 import Users from "./backOffice/pages/administrator/Users/Users";
-import PoiCitiesAdmin from "./backOffice/pages/cities administrator/Poi/PoiCitiesAdmin";
+import PoiCityAdmin from "./backOffice/pages/cities administrator/Poi/PoiCityAdmin";
 import UsersCitiesAdmin from "./backOffice/pages/cities administrator/Users/UsersCitiesAdmin";
 import Layout from "./components/layout/Layout";
 import PoiListView from "./pages/PoiListView/PoiListView";
@@ -76,7 +76,7 @@ function App() {
             <Route path="categories" element={<Categories />} />
             <Route path="poi" element={<Poi />} />
             <Route path="users" element={<Users />} />
-            <Route path="admin-city/poi" element={<PoiCitiesAdmin />} />
+            <Route path="admin-city/poi" element={<PoiCityAdmin />} />
             <Route path="admin-city/users" element={<UsersCitiesAdmin />} />
           </Route>
         </Route>

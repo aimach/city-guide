@@ -377,9 +377,10 @@ export const PoiController: IController = {
       const currentUser = await dataSource
         .getRepository(User)
         .findOne({ where: { id: userId } });
-
+      console.log(cityOfPoi);
+      console.log(currentUser);
       if (
-        cityOfPoi?.userAdminCity?.id !== userId ||
+        cityOfPoi?.userAdminCity?.id !== userId &&
         currentUser?.role !== UserRole.ADMIN
       ) {
         res.status(403).send({
@@ -432,7 +433,7 @@ export const PoiController: IController = {
         );
         req.body.image = `/public/poi/${newName}`;
         // delete
-        if (poiToUpdate.image !== null) {
+        if (poiToUpdate.image?.includes("public/city")) {
           await unlink("." + poiToUpdate.image);
         }
       } else {

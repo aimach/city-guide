@@ -4,11 +4,14 @@ import Title from "../../../components/common/Title/Title";
 import BackOfficeLayout from "../../../components/layout/BackOfficeLayout";
 import { useState, useEffect, useContext } from "react";
 import { City } from "../../../../utils/types";
+import { Poi } from "../../../../utils/types";
 import { UsersContext } from "../../../../contexts/UserContext";
 import styles from "../../administrator/Cities/Cities.module.scss";
 import Button from "../../../components/common/Button/Button";
-import Checkbox from "../../../components/common/Checkbox/Checkbox";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Modal from "../../../../components/common/modals/Modal";
+import ModalUpdatePoi from "../../../components/modals/ModalUpdatePoi";
+import { Link } from "react-router-dom";
 
 import {
   faCheck,
@@ -17,7 +20,7 @@ import {
   faTrashCan,
 } from "@fortawesome/free-solid-svg-icons";
 
-const PoiCitiesAdmin = () => {
+const PoiCityAdmin = () => {
   // get profile
   const { profile } = useContext(UsersContext);
 
@@ -34,6 +37,8 @@ const PoiCitiesAdmin = () => {
 
   // get cities
   const [adminCity, setAdminCity] = useState<City | null>(null);
+  const [poiOfAdminCity, setPoiOfAdminCity] = useState<Poi[]>([]);
+
   const getAdminCity = async () => {
     try {
       const response = await fetch(
@@ -41,29 +46,94 @@ const PoiCitiesAdmin = () => {
       );
       const data = await response.json();
       setAdminCity(data[0]);
+      setPoiOfAdminCity(data[0].poi);
     } catch (error) {
       console.log(error);
     }
   };
-
   useEffect(() => {
     getAdminCity();
   }, []);
-  console.log(adminCity);
+
+  // DELETE POI
+  const handleDeletePoi = async (poiToDelete: Poi) => {
+    try {
+      await fetch(
+        `${process.env.REACT_APP_PUBLIC_BACKEND_URL}/api/poi/${poiToDelete.id}`,
+        {
+          method: "DELETE",
+          credentials: "include",
+        }
+      );
+      const updatedPoi = poiOfAdminCity.filter(
+        (poi) => poi.id !== poiToDelete.id
+      );
+      setPoiOfAdminCity(updatedPoi);
+    } catch (error) {
+      console.log("delete error", error);
+    }
+  };
+
+  //  UPDATE, Modify One Poi
+  const [isModalOpenModify, setIsModalOpenModify] = useState<boolean>(false);
+
+  const [poiToModified, setPoiToModified] = useState<Poi | null>(null);
+
+  const handleUpdateOnePoi = (poi: Poi) => {
+    setPoiToModified(poi);
+    setIsModalOpenModify(true);
+  };
+
+  // state for modal management
+  const [displayModals, setDisplayModals] = useState<{
+    validation: boolean;
+    error: boolean;
+  }>({
+    validation: false,
+    error: false,
+  });
+
+  // ADDED One Poi
+  const [isModalOpenAdd, setIsModalOpenAdd] = useState<boolean>(false);
+  const newPoi = {
+    name: "",
+    coordinates: [0, 0],
+    image: "",
+    description: "",
+    address: "",
+    phoneNumber: "",
+    isAccepted: false,
+    city: adminCity?.id as string,
+  };
+
+  // Close Modal for Add and Modify modal
+  const handleCloseModal = () => {
+    setIsModalOpenModify(false);
+    setIsModalOpenAdd(false);
+  };
 
   return (
     <>
       <BackOfficeLayout>
+        {displayModals.validation && (
+          <Modal
+            setDisplayModals={setDisplayModals}
+            displayModals={displayModals}
+            type="validation"
+            setIsModalOpenModify={setIsModalOpenModify}
+            isModalOpenModify={isModalOpenModify}
+            setIsModalOpenAdd={setIsModalOpenAdd}
+            isModalOpenAdd={isModalOpenAdd}
+          />
+        )}
         <Title name={"Point d'intérêts"} icon={faLocationDot}></Title>
         <div className={styles.titleAndButton}>
           <h4 className={`${styles.subtitleTable} subtitleDashboard`}>
-            Liste des POI de ta ville
+            Liste des POI de {adminCity?.name}
           </h4>
-          <Button
-            typeButton="text"
-            text="Ajouter un POI"
-            onClick={() => console.log("ville")}
-          />
+          <Link to="/contribution">
+            <div className={styles.buttonText}>Ajouter un POI</div>
+          </Link>
         </div>
         <table>
           <thead>
@@ -85,7 +155,7 @@ const PoiCitiesAdmin = () => {
             </tr>
           </thead>
           <tbody>
-            {adminCity?.poi?.map((poi) => {
+            {poiOfAdminCity.map((poi) => {
               return (
                 <tr key={poi.id}>
                   <td className={`fieldTableBody`}>{poi.name}</td>
@@ -116,16 +186,14 @@ const PoiCitiesAdmin = () => {
                   <td className={styles.titleTable}>
                     <Button
                       icon={faPen}
-                      onClick={() => {
-                        console.log(poi);
-                      }}
+                      onClick={() => handleUpdateOnePoi(poi)}
                       typeButton={"icon"}
                     />
                   </td>
                   <td className={styles.endColumn}>
                     <Button
                       icon={faTrashCan}
-                      onClick={() => console.log(poi)}
+                      onClick={() => handleDeletePoi(poi)}
                       typeButton={"icon"}
                     />
                   </td>
@@ -134,8 +202,30 @@ const PoiCitiesAdmin = () => {
             })}
           </tbody>
         </table>
+        {isModalOpenModify && (
+          <ModalUpdatePoi
+            onClose={handleCloseModal}
+            isOpen={true}
+            poi={poiToModified as Poi}
+            city={adminCity as City}
+            type="modifyPoi"
+            setDisplayModals={setDisplayModals}
+            displayModals={displayModals}
+          ></ModalUpdatePoi>
+        )}
+        {isModalOpenAdd && (
+          <ModalUpdatePoi
+            onClose={handleCloseModal}
+            isOpen={true}
+            poi={newPoi}
+            type="addPoi"
+            city={adminCity as City}
+            setDisplayModals={setDisplayModals}
+            displayModals={displayModals}
+          ></ModalUpdatePoi>
+        )}
       </BackOfficeLayout>
     </>
   );
 };
-export default PoiCitiesAdmin;
+export default PoiCityAdmin;

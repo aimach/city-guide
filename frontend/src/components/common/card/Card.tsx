@@ -26,7 +26,7 @@ const Card = ({
 
   const { id, name, image } = data;
   const imageURL = image.includes("public")
-    ? `${process.env.REACT_APP_PUBLIC_BACKEND_URL}/${image}`
+    ? `${process.env.REACT_APP_PUBLIC_BACKEND_URL}${image}`
     : image;
   return (
     <>

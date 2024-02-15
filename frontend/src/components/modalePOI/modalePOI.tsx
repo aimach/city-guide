@@ -19,13 +19,17 @@ const ModalePOI = ({ poi, onClose, handleFavourite, isLiked }: Props) => {
 
   const { isAuthenticated } = useContext(UsersContext);
 
+  const imageURL = image.includes("public")
+    ? `${process.env.REACT_APP_PUBLIC_BACKEND_URL}${image}`
+    : image;
+
   return (
     <div className={styles.container}>
       <div className={styles.close} onClick={onClose}>
         <AiOutlineClose />
       </div>
       <div className={styles.imageContainer}>
-        <img src={image} alt={image} />
+        <img src={imageURL} alt={image} />
       </div>
 
       <div className={styles.header}>

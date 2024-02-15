@@ -42,6 +42,10 @@ const CustomMarker = ({
   const { isAuthenticated, profile } = useContext(UsersContext);
   const [favouriteUserPoi, setFavouriteUserPoi] = useState<Poi[] | null>(null);
 
+  const imageURL = image.includes("public")
+    ? `${process.env.REACT_APP_PUBLIC_BACKEND_URL}${image}`
+    : image;
+
   useEffect(() => {
     if (profile) {
       setFavouriteUserPoi(profile.favouritePoi);
@@ -79,7 +83,7 @@ const CustomMarker = ({
       }}
     >
       <Popup className="popup--container">
-        <img src={image} alt={name} className="popup-image" />
+        <img src={imageURL} alt={name} className="popup-image" />
         <div>
           <h3>{name}</h3>
           {isAuthenticated() ? (
