@@ -143,6 +143,7 @@ export const ProfileController: IController = {
 
       // check enum in role
       const roles: UserRole[] = Object.values(UserRole);
+
       if (role !== null && !roles.includes(role)) {
         res.status(400).send({ error: "User role does not exist" });
         if (req.file !== undefined)
@@ -250,10 +251,7 @@ export const ProfileController: IController = {
         req.body.image = `./public/user/${newName}`;
 
         // delete
-        if (
-          profileToUpdate.image !== null &&
-          profileToUpdate.image !== undefined
-        ) {
+        if (!profileToUpdate.image.includes("http")) {
           await unlink(profileToUpdate.image);
         }
       }
