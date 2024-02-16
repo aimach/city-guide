@@ -23,7 +23,9 @@ const Header = ({ size }: headerProps) => {
   }
 
   const imageURL: string | undefined = profile?.image
-    ? profile?.image?.slice(1)
+    ? profile?.image?.includes("http")
+      ? profile.image
+      : `${process.env.REACT_APP_PUBLIC_BACKEND_URL}${profile?.image?.slice(1)}`
     : undefined;
 
   // display profile menu
@@ -89,10 +91,7 @@ const Header = ({ size }: headerProps) => {
                   }}
                 >
                   {profile?.image !== null ? (
-                    <img
-                      src={`${process.env.REACT_APP_PUBLIC_BACKEND_URL}${imageURL}`}
-                      alt="avatar"
-                    />
+                    <img src={imageURL} alt="avatar" />
                   ) : (
                     profile?.username.substring(0, 1).toUpperCase()
                   )}

@@ -107,66 +107,22 @@ export const updateUserExceptPassword = async (
   const headers = new Headers();
   if (type === "json") {
     headers.append("Content-Type", "application/json");
-  } else {
-    headers.append("Accept", "application/json");
   }
-  // VALIDATE DATA WITH JOI
-  const schema = Joi.object({
-    city: Joi.string().allow(null, ""),
-    email: Joi.string()
-      .email({ tlds: { allow: false } })
-      .messages({
-        "string.email": `L'email doit être valide`,
-        "string.empty": `Ce champ ne peut pas être vide`,
-      }),
-    password: Joi.string()
-      .min(8)
-      .pattern(/^(?=.*[A-Z])(?=.*\d)(?=.*\W).{8,}$/)
-      .messages({
-        "string.empty": `Ce champ ne peut être vide`,
-        "string.min": `Le mot de passe doit contenir au moins 8 caractères`,
-        "string.pattern.base": `Le mot de passe doit contenir au moins 8 caractères, 1 chiffre, une majuscule et 1 symbole`,
-      }),
-    username: Joi.string()
-      .pattern(/^(?=.*[a-zA-Z]{1,})(?=.*[\d]{0,})[a-zA-Z0-9]{3,20}$/)
-      .min(3)
-      .max(20)
-      .messages({
-        "string.empty": `Ce champ ne peut pas être vide`,
-        "string.pattern.base": `Le pseudo doit faire entre 3 et 20 caractères et ne peut contenir que des lettres et des chiffres`,
-        "string.min": `Le pseudo doit faire au moins 3 caractères`,
-        "string.max": `Le pseudo doit faire au max 20 caractères`,
-      }),
-    bio: Joi.string().allow(null, ""),
-    id: Joi.string(),
-    image: Joi.string().allow(null, ""),
-    role: Joi.string(),
-    createdPoi: Joi.array(),
-    favouriteCities: Joi.array(),
-    favouritePoi: Joi.array(),
-  });
-  const checkFormDatas = schema.validate(body);
-  if (checkFormDatas.error) {
-    return {
-      key: checkFormDatas.error.details[0].context?.key,
-      error: checkFormDatas.error.details[0].message,
-    };
-  } else {
-    try {
-      const response = await fetch(
-        `${process.env.REACT_APP_PUBLIC_BACKEND_URL}/api/profile/${id}`,
-        {
-          method: "PUT",
-          credentials: "include",
-          headers,
-          body: type === "json" ? JSON.stringify(body) : body,
-        }
-      );
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      console.log("Error while updating user", error);
-    }
+
+  try {
+    const response = await fetch(
+      `${process.env.REACT_APP_PUBLIC_BACKEND_URL}/api/profile/${id}`,
+      {
+        method: "PUT",
+        credentials: "include",
+        headers,
+        body: type === "json" ? JSON.stringify(body) : body,
+      }
+    );
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.log("Error while updating user", error);
   }
 };
 
