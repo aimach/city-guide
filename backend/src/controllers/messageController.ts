@@ -5,9 +5,20 @@ import { Message } from "../entities/Message";
 import validator from "validator";
 
 export const MessageController: IController = {
+  // GET ALL MESSAGES
+
+  getMessages: async (req: Request, res: Response): Promise<void> => {
+    try {
+      const allMessages = await dataSource.getRepository(Message).find();
+      res.status(200).send(allMessages);
+    } catch (err) {
+      console.log(err);
+      res.status(400).send({ error: "Error while reading categories" });
+    }
+  },
+
   createMessage: async (req: Request, res: Response): Promise<void> => {
     const { email, title, message } = req.body;
-    console.log(req.body);
 
     const checkIfEmpty = (key: string, value: string): boolean => {
       if (validator.isEmpty(value, { ignore_whitespace: true })) {

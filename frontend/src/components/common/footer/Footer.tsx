@@ -42,8 +42,6 @@ const Footer = () => {
                   A propos
                 </h4>
                 <ul className={`textSearch`}>
-                  <li>À propos</li>
-                  <li>Presse</li>
                   <li>
                     Conditions générales <br />
                     d’utilisation
@@ -68,7 +66,6 @@ const Footer = () => {
                     className={`${styles.iconColor}`}
                   />
                 </div>
-                <p className={`textSearch`}>Politiques de confidentialité</p>
               </div>
             </div>
           </div>

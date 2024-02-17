@@ -217,8 +217,8 @@ export const CategoryController: IController = {
           }
         );
         req.body.image = `/public/category/${newName}`;
-        // delete
-        if (categoryToUpdate.image !== null) {
+        // delete the older file
+        if (categoryToUpdate.image?.includes("public/")) {
           await unlink("." + categoryToUpdate.image);
         }
       }

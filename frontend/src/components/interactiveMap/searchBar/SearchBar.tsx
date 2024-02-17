@@ -33,6 +33,7 @@ const SearchBar = () => {
 
   useEffect(() => {
     const onResultSelected = (event: any) => {
+      console.log(event.location);
       const selectedResult = event.location;
 
       if (selectedResult) {
@@ -42,7 +43,6 @@ const SearchBar = () => {
           fillOpacity: 0.5,
           radius: 5000,
         }).addTo(map);
-        console.log(selectedResult);
 
         map.fitBounds(circle.getBounds());
 
@@ -61,6 +61,7 @@ const SearchBar = () => {
     map.locate().on("locationfound", function (e) {
       map.flyTo(e.latlng, map.getZoom());
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return null;

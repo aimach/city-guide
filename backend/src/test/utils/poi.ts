@@ -1,3 +1,6 @@
+import dotenv from "dotenv";
+dotenv.config();
+
 export const getPois = async () => {
   const res = await fetch(`${process.env.DEPLOY_URL as string}/api/poi`, {
     method: "GET",

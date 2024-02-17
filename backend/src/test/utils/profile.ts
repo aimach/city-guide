@@ -1,3 +1,6 @@
+import dotenv from "dotenv";
+dotenv.config();
+
 export const getProfiles = async (token: string) => {
   const newHeaders = new Headers();
   newHeaders.append("Cookie", `jwt=${token}`);

@@ -89,7 +89,7 @@ describe("Header", () => {
       <BrowserRouter>
         <UsersContext.Provider
           value={{
-            isAuthenticated: () => false,
+            isAuthenticated: () => true,
             profile: mockedUser,
             redirectToLogin,
             logout,

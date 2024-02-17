@@ -2,25 +2,25 @@
 @use "../../../style/mixin" as m;
 
 .layoutBackOffice {
-	display: flex;
+  display: flex;
 }
 .backOfficeContent {
-	background-color: v.$white_color;
-	padding: 50px;
-	min-height: 100vh;
+  background-color: v.$white_color;
+  padding: 50px;
+  min-height: 100vh;
 }
 
 .flexAsideMenu {
-	flex: 1;
+  flex: 1;
 }
 .flexContent {
-	flex: 3;
+  flex: 4;
 }
 .footerWave {
-	background-image: url(./footer_dashbord_test.png);
-	background-repeat: no-repeat;
-	background-size: cover;
-	background-size: 100%;
-	height: 12vh;
-	background-color: v.$white_color;
+  background-image: url(./footer_dashbord_test.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-size: 100%;
+  height: 12vh;
+  background-color: v.$white_color;
 }
