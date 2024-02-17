@@ -18,8 +18,6 @@ import Cities from "./backOffice/pages/administrator/Cities/Cities";
 import MessagePage from "./backOffice/pages/administrator/Message/Message";
 import Admin from "./backOffice/pages/administrator/Admin/Admin";
 import Categories from "./backOffice/pages/administrator/Categories/Categories";
-import PoiCityAdmin from "./backOffice/pages/cityadministrator/Poi/PoiCityAdmin";
-import UsersCitiesAdmin from "./backOffice/pages/cityadministrator/Users/UsersCitiesAdmin";
 import Layout from "./components/layout/Layout";
 import PoiListView from "./pages/PoiListView/PoiListView";
 import Profile from "./pages/Profile/Profile";
@@ -28,6 +26,8 @@ import ProfileFavorite from "./pages/Profile/ProfileFavorites";
 import FaqPage from "./pages/Faq/FaqPage";
 import ContactPage from "./pages/Contact/ContactPage";
 import ScrollToTop from "./components/layout/ScrollToTop";
+import PoiCityAdmin from "./backOffice/pages/cityadministrator/Poi/PoiCityAdmin";
+import UsersCitiesAdmin from "./backOffice/pages/cityadministrator/Users/UsersCitiesAdmin";
 
 const Root = () => {
   return (
