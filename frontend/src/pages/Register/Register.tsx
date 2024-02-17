@@ -116,16 +116,6 @@ const Register = () => {
         <Link to="/auth/login">
           Vous avez déjà un compte ? Connectez-vous ici !
         </Link>
-        {windowSize > 768 ? (
-          <>
-            <span>Téléchargez l’application ici !</span>
-            <div id="logoStore-wrapper">
-              <img src="/appleDownload.svg" alt="Apple Store" />
-              <img src="/google-play-badge.png" alt="Google Store" />
-            </div>
-          </>
-        ) : null}
-
         {errors.root?.serverError && (
           <p className="error">{errors.root.serverError.message}</p>
         )}

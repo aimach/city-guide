@@ -103,15 +103,6 @@ const Login = () => {
         <Link to="/auth/register">
           Vous n’avez pas de compte ? Créez en un juste ici !
         </Link>
-        {windowSize > 768 ? (
-          <>
-            <span>Téléchargez l’application ici !</span>
-            <div id="logoStore-wrapper">
-              <img src="/appleDownload.svg" alt="Apple Store" />
-              <img src="/google-play-badge.png" alt="Google Store" />
-            </div>
-          </>
-        ) : null}
       </form>
     </section>
   );

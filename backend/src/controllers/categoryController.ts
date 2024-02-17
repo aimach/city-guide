@@ -141,7 +141,7 @@ export const CategoryController: IController = {
 
       if (currentUser?.role !== UserRole.ADMIN) {
         res.status(403).send({
-          error: "You are not authorized to create a category",
+          error: "You are not authorized to update a category",
         });
         if (req.file !== undefined)
           await unlink(`./public/category/${req.file?.filename}`);
@@ -217,8 +217,8 @@ export const CategoryController: IController = {
           }
         );
         req.body.image = `/public/category/${newName}`;
-        // delete
-        if (categoryToUpdate.image !== null) {
+        // delete the older file
+        if (categoryToUpdate.image?.includes("public/")) {
           await unlink("." + categoryToUpdate.image);
         }
       }

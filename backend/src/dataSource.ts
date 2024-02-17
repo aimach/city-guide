@@ -15,7 +15,6 @@ const dataSource = new DataSource({
   database: DB_NAME,
 
   synchronize: true,
-  // dropSchema: true, utile pour réinitialiser la BDD à chaque relancement.
 
   entities: [User, Category, City, Poi, Message],
 });

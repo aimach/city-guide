@@ -8,6 +8,8 @@ COPY public public
 COPY package.json package.json
 COPY package-lock.json package-lock.json
 COPY tsconfig.json ./
+COPY run-test-front.sh ./
+
 
 RUN npm install --verbose
 

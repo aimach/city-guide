@@ -1,12 +1,12 @@
 export const getPois = async () => {
-  const res = await fetch("http://localhost:5000/api/poi", {
+  const res = await fetch(`${process.env.DEPLOY_URL as string}/api/poi`, {
     method: "GET",
   });
   return res;
 };
 
 export const getPoi = async (id: string) => {
-  const res = await fetch(`http://localhost:5000/api/poi/${id}`, {
+  const res = await fetch(`${process.env.DEPLOY_URL as string}/api/poi/${id}`, {
     method: "GET",
   });
   return res;
@@ -15,7 +15,7 @@ export const getPoi = async (id: string) => {
 export const createPoi = async (token: string, body: FormData) => {
   const newHeaders = new Headers();
   newHeaders.append("Cookie", `jwt=${token}`);
-  const res = await fetch(`http://localhost:5000/api/poi`, {
+  const res = await fetch(`${process.env.DEPLOY_URL as string}/api/poi`, {
     method: "POST",
     credentials: "include",
     headers: newHeaders,
@@ -28,7 +28,7 @@ export const createPoi = async (token: string, body: FormData) => {
 export const updatePoi = async (token: string, body: FormData, id: string) => {
   const newHeaders = new Headers();
   newHeaders.append("Cookie", `jwt=${token}`);
-  const res = await fetch(`http://localhost:5000/api/poi/${id}`, {
+  const res = await fetch(`${process.env.DEPLOY_URL as string}/api/poi/${id}`, {
     method: "PUT",
     credentials: "include",
     headers: newHeaders,
@@ -41,7 +41,7 @@ export const updatePoi = async (token: string, body: FormData, id: string) => {
 export const deletePoi = async (token: string, id: string) => {
   const newHeaders = new Headers();
   newHeaders.append("Cookie", `jwt=${token}`);
-  const res = await fetch(`http://localhost:5000/api/poi/${id}`, {
+  const res = await fetch(`${process.env.DEPLOY_URL as string}/api/poi/${id}`, {
     method: "DELETE",
     credentials: "include",
     headers: newHeaders,

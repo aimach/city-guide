@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
-    "start": "ts-node-dev src/server.ts",
+    "start": "ts-node-dev src/index.ts",
     "dev": "ts-node-dev --respawn src/index.ts",
     "seed": "ts-node src/seed.ts",
     "dataTourisme": "ts-node src/dataTourisme/dataTourismev2.ts"

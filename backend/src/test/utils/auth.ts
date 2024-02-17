@@ -5,16 +5,19 @@ export const login = async ({
   email: string;
   password: string;
 }) => {
-  const res = await fetch("http://localhost:5000/api/auth/login", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      email,
-      password,
-    }),
-  });
+  const res = await fetch(
+    `${process.env.DEPLOY_URL as string}/api/auth/login`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email,
+        password,
+      }),
+    }
+  );
   return res;
 };
 
@@ -27,23 +30,29 @@ export const register = async ({
   username: string;
   password: string;
 }) => {
-  const res = await fetch("http://localhost:5000/api/auth/register", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      email,
-      password,
-      username,
-    }),
-  });
+  const res = await fetch(
+    `${process.env.DEPLOY_URL as string}/api/auth/register`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email,
+        password,
+        username,
+      }),
+    }
+  );
   return res;
 };
 
 export const logout = async () => {
-  const res = await fetch("http://localhost:5000/api/auth/logout", {
-    method: "GET",
-  });
+  const res = await fetch(
+    `${process.env.DEPLOY_URL as string}/api/auth/logout`,
+    {
+      method: "GET",
+    }
+  );
   return res;
 };

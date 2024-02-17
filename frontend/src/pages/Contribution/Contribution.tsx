@@ -1,13 +1,15 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import styles from "./Contribution.module.scss";
 import Layout from "../../components/layout/Layout";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Category, City } from "../../utils/types";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { createPoi } from "../../utils/api";
 import ItemLi from "../../backOffice/components/common/ItemLi/Itemli";
 import { faHouse } from "@fortawesome/free-solid-svg-icons";
 import useWindowDimensions from "../../utils/hooks/useWindowDimensions";
+import { UsersContext } from "../../contexts/UserContext";
 
 type Inputs = {
   name: string;
@@ -25,6 +27,14 @@ const Contribution = () => {
   const windowSize = useWindowDimensions();
   const [cities, setCities] = useState<City[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
+  const { isAuthenticated } = useContext(UsersContext);
+
+  useEffect(() => {
+    if (!isAuthenticated()) {
+      navigate("/");
+    }
+  }, [isAuthenticated]);
+
   const getCities = async () => {
     try {
       const response = await fetch(
@@ -83,7 +93,11 @@ const Contribution = () => {
   return (
     <Layout>
       <section className={styles.section_contribution}>
-        {windowSize > 768 && <ItemLi icon={faHouse} name="" path="/"></ItemLi>}
+        {windowSize > 768 && (
+          <Link to="/">
+            <ItemLi icon={faHouse} name="" path="/"></ItemLi>
+          </Link>
+        )}
 
         <h2>Une idée ?</h2>
         <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>

@@ -17,7 +17,6 @@ dotenv.config();
 
 export const app = express();
 app.use(express.json());
-console.log("helloooooo");
 app.use(cookieParser());
 app.use(
   helmet({

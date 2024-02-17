@@ -1,4 +1,4 @@
-import { Column, PrimaryGeneratedColumn, OneToMany, Entity } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
 import { Poi } from "./Poi";
 
 @Entity()

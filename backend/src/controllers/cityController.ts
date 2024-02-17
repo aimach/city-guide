@@ -29,6 +29,7 @@ export const CityController: IController = {
             createdPoi: true,
           },
         },
+        where: { userAdminCity: { id: req.query.userAdminCityId as string } },
       });
       res.status(200).send(allCities);
     } catch (err) {
@@ -388,7 +389,7 @@ export const CityController: IController = {
         req.body.image = `/public/city/${newName}`;
 
         // delete the older file
-        if (cityToUpdate.image?.includes("public/city")) {
+        if (cityToUpdate.image?.includes("public/")) {
           await unlink("." + cityToUpdate.image);
         }
       }

@@ -34,7 +34,7 @@
     padding: 2em;
 
     h3 {
-      @include m.flexLayout(start, start, column);
+      @include m.flexLayout(flex-start, flex-start, column);
     }
 
     p {

@@ -9,6 +9,7 @@ import { v4 as uuidv4 } from "uuid";
 import validator from "validator";
 import { User, UserRole } from "../entities/User";
 import { City } from "../entities/City";
+import jwt from "jsonwebtoken";
 
 export const PoiController: IController = {
   // GET ALL POI
@@ -16,11 +17,15 @@ export const PoiController: IController = {
   getPoi: async (req: Request, res: Response): Promise<void> => {
     try {
       let searchQueries = {};
+      let pagination = {};
 
       // if query in url, add finding options
       if (Object.keys(req.query).length > 0) {
         const city = req.query.city as string;
         const category = req.query.category as string;
+        const nb = req.query.nb as string;
+        const page = req.query.page as string;
+
         if (city !== undefined && category !== undefined) {
           searchQueries = {
             category: { name: category },
@@ -31,44 +36,60 @@ export const PoiController: IController = {
         } else if (category !== undefined) {
           searchQueries = { category: { name: category } };
         }
+
+        if (nb !== undefined && page !== undefined) {
+          pagination = {
+            take: parseInt(nb),
+            skip: (parseInt(page) - 1) * parseInt(nb),
+          };
+        }
       }
 
       // get poi is accepted or no depending of user status (admin or not)
-      const { userId } = req.params;
-
-      const currentUser = await dataSource
-        .getRepository(User)
-        .findOne({ where: { id: userId } });
+      const token = req.cookies.jwt;
+      let decodedToken = null;
 
       let allPoi;
-      if (currentUser?.role === UserRole.ADMIN) {
-        // get all poi (accepted or not)
-        allPoi = await dataSource.getRepository(Poi).find({
-          relations: {
-            category: true,
-            city: true,
-            user: true,
-          },
-          where: searchQueries,
-        });
-      } else if (currentUser?.role === UserRole.ADMIN_CITY) {
-        // get the city name where user is admin to get only local POIs
-        const cityWhereUserIsAdmin = await dataSource
-          .getRepository(City)
-          .findOneBy({ userAdminCity: { id: userId } });
-        // update searchQueries with the city where user is admin
-        searchQueries = {
-          ...searchQueries,
-          city: cityWhereUserIsAdmin?.name,
-        };
-        allPoi = await dataSource.getRepository(Poi).find({
-          relations: {
-            category: true,
-            city: true,
-            user: true,
-          },
-          where: searchQueries,
-        });
+
+      if (token !== undefined) {
+        decodedToken = jwt.verify(
+          token,
+          process.env.TOKEN as string
+        ) as jwt.JwtPayload;
+        if (decodedToken?.role === UserRole.ADMIN) {
+          // get all poi (accepted or not)
+          allPoi = await dataSource.getRepository(Poi).find({
+            relations: {
+              category: true,
+              city: true,
+              user: true,
+            },
+            where: searchQueries,
+            ...pagination,
+          });
+        } else if (decodedToken?.role === UserRole.ADMIN_CITY) {
+          // get the city name where user is admin to get only local POIs
+          const cityWhereUserIsAdmin = await dataSource
+            .getRepository(City)
+            .findOne({
+              relations: { userAdminCity: true },
+              where: { userAdminCity: { id: decodedToken.userId } },
+            });
+          // update searchQueries with the city where user is admin
+          searchQueries = {
+            ...searchQueries,
+            city: { id: cityWhereUserIsAdmin?.id },
+          };
+          allPoi = await dataSource.getRepository(Poi).find({
+            relations: {
+              category: true,
+              city: true,
+              user: true,
+            },
+            where: searchQueries,
+            ...pagination,
+          });
+        }
       } else {
         // get only accepted poi
         allPoi = await dataSource.getRepository(Poi).find({
@@ -78,9 +99,10 @@ export const PoiController: IController = {
             user: true,
           },
           where: { ...searchQueries, isAccepted: true },
+          ...pagination,
         });
-        res.status(200).send(allPoi);
       }
+      res.status(200).send(allPoi);
     } catch (err) {
       res.status(400).send({
         error: "Error while reading points of interest",
@@ -377,9 +399,10 @@ export const PoiController: IController = {
       const currentUser = await dataSource
         .getRepository(User)
         .findOne({ where: { id: userId } });
-
+      console.log(cityOfPoi);
+      console.log(currentUser);
       if (
-        cityOfPoi?.userAdminCity?.id !== userId ||
+        cityOfPoi?.userAdminCity?.id !== userId &&
         currentUser?.role !== UserRole.ADMIN
       ) {
         res.status(403).send({
@@ -432,7 +455,7 @@ export const PoiController: IController = {
         );
         req.body.image = `/public/poi/${newName}`;
         // delete
-        if (poiToUpdate.image !== null) {
+        if (poiToUpdate.image?.includes("public")) {
           await unlink("." + poiToUpdate.image);
         }
       } else {
@@ -503,7 +526,7 @@ export const PoiController: IController = {
       await dataSource.getRepository(Poi).delete(id);
 
       // delete image in public directory
-      if (poiToDelete.image !== null) {
+      if (poiToDelete.image.includes("/public")) {
         await unlink("." + poiToDelete.image);
       }
 

@@ -23,7 +23,9 @@ const Header = ({ size }: headerProps) => {
   }
 
   const imageURL: string | undefined = profile?.image
-    ? profile?.image?.slice(1)
+    ? profile?.image?.includes("http")
+      ? profile.image
+      : `${process.env.REACT_APP_PUBLIC_BACKEND_URL}${profile?.image?.slice(1)}`
     : undefined;
 
   // display profile menu
@@ -46,20 +48,9 @@ const Header = ({ size }: headerProps) => {
             <nav className={` ${style.menu}`}>
               <ul className="textButton">
                 <li>
-                  <a
-                    href="#parcourir"
-                    onClick={() => setDisplayProfileMenu(false)}
-                  >
+                  <Link to="/map" onClick={() => setDisplayProfileMenu(false)}>
                     Parcourir
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#abonnement"
-                    onClick={() => setDisplayProfileMenu(false)}
-                  >
-                    Abonnement
-                  </a>
+                  </Link>
                 </li>
 
                 {role === Role.VISITOR ? (
@@ -100,10 +91,7 @@ const Header = ({ size }: headerProps) => {
                   }}
                 >
                   {profile?.image !== null ? (
-                    <img
-                      src={`${process.env.REACT_APP_PUBLIC_BACKEND_URL}${imageURL}`}
-                      alt="avatar"
-                    />
+                    <img src={imageURL} alt="avatar" />
                   ) : (
                     profile?.username.substring(0, 1).toUpperCase()
                   )}
@@ -135,7 +123,7 @@ const Header = ({ size }: headerProps) => {
           </>
         ) : (
           <nav>
-            <Link to="/">
+            <Link to="/map">
               <FontAwesomeIcon icon={faMap} className={`${style.iconStyle}`} />
             </Link>
             <Link to="/">

@@ -7,9 +7,11 @@ WORKDIR /app
 COPY package.json package.json
 COPY package-lock.json package-lock.json
 COPY tsconfig.json ./
+COPY jest.config.js ./
+COPY run-test-back.sh ./
 
 RUN npm install
 
 COPY src src
 
-CMD npm run dev
+CMD npm start

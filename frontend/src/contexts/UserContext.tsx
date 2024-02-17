@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { ReactNode, useState, createContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { User } from "../utils/types";

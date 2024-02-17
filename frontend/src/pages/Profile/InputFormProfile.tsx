@@ -22,23 +22,18 @@ interface Props {
 }
 
 const InputFormProfile = ({
-  disableInputs,
-  setDisableInputs,
-  userInfo,
-  setUserInfo,
   type,
   name,
   title,
-  setDisplayModals,
+  userInfo,
+  setUserInfo,
+  disableInputs,
+  setDisableInputs,
   displayModals,
+  setDisplayModals,
   errors,
   setErrors,
 }: Props) => {
-  // resolve conflict between keyof User types and value attribute types
-  let value: string | number | undefined | string[];
-  if (typeof userInfo?.[name as keyof User] === "string") {
-    value = userInfo?.[name as keyof User]?.toString();
-  }
   const { profile } = useContext(UsersContext);
 
   return (
@@ -49,14 +44,13 @@ const InputFormProfile = ({
           type={type}
           name={name}
           id={name}
-          value={value || ""}
-          onChange={(event) => {
-            if (userInfo !== null)
-              setUserInfo({
-                ...userInfo,
-                [name]: event.target.value,
-              });
-          }}
+          value={userInfo[name as keyof User] as string}
+          onChange={(event) =>
+            setUserInfo({
+              ...userInfo,
+              [name]: event.target.value,
+            })
+          }
           disabled={disableInputs[name as keyof IDisableInputs]}
         />
         {disableInputs[name as keyof IDisableInputs] ? (
