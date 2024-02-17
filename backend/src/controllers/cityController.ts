@@ -111,7 +111,10 @@ export const CityController: IController = {
         email: currentUserAdminCity?.email,
         password: currentUserAdminCity?.password,
         image: currentUserAdminCity?.image,
-        role: UserRole.ADMIN_CITY,
+        role:
+          currentUserAdminCity?.role === UserRole.ADMIN
+            ? UserRole.ADMIN
+            : UserRole.ADMIN_CITY,
         city: currentUserAdminCity?.city,
       };
 

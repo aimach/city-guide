@@ -66,7 +66,6 @@ describe("create poi", () => {
     const allCities = await getCities();
     const cityData = await allCities.json();
     formdata.append("city", cityData[0].id);
-
     const resPoi = await createPoi(adminToken, formdata);
     expect(resPoi.status).toEqual(201);
   });
