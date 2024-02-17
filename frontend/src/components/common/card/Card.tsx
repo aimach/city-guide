@@ -42,6 +42,7 @@ const Card = ({
           onClick={onClick}
           className={styles.imageContainer}
           data-testid="image-container"
+          datatype="image-container"
         >
           <img src={imageURL} alt={name} className={styles.image} />
           <h3 className={`${styles.title} titleCard`}>{name}</h3>

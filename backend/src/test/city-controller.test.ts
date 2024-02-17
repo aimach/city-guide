@@ -71,9 +71,6 @@ describe("create city", () => {
     });
     const data = await user.json();
     adminToken = data.token;
-    const admin = await getProfile(adminToken);
-    const adminData = await admin.json();
-    formdata.append("userAdminCity", adminData.username);
     const resCity = await createCity(adminToken, formdata);
     expect(resCity.status).toEqual(201);
   });
