@@ -192,7 +192,9 @@ export const ProfileController: IController = {
         )
       ) {
         res.status(401).send({
-          error: "Username must contain 3 to 20 characters and no symbol",
+          key: "username",
+          error:
+            "Le pseudo doit contenir entre 3 et 20 caractères, sans symbole",
         });
         if (req.file !== undefined)
           await unlink(`./public/user/${req.file?.filename}`);
@@ -202,7 +204,10 @@ export const ProfileController: IController = {
         .getRepository(User)
         .findOne({ where: { username } });
       if (usernameAlreadyExist?.username !== currentUser.username) {
-        res.status(409).send({ error: "Username already exists" });
+        res.status(409).send({
+          key: "username",
+          error: "Le pseudo existe déjà",
+        });
         if (req.file !== undefined)
           await unlink(`./public/user/${req.file?.filename}`);
         return;
@@ -217,13 +222,19 @@ export const ProfileController: IController = {
           emailAlreadyExist !== null &&
           emailAlreadyExist.email !== currentUser.email
         ) {
-          res.status(409).send({ error: "Email already exists" });
+          res.status(409).send({
+            key: "email",
+            error: "L'email existe déjà",
+          });
           if (req.file !== undefined)
             await unlink(`./public/user/${req.file?.filename}`);
           return;
         }
         if (!validator.isEmail(email)) {
-          res.status(401).send({ error: "Incorrect email format" });
+          res.status(401).send({
+            key: "email",
+            error: "Format du mail incorrect",
+          });
           if (req.file !== undefined)
             await unlink(`./public/user/${req.file?.filename}`);
           return;
@@ -268,7 +279,10 @@ export const ProfileController: IController = {
         try {
           await unlink(req.body.image);
         } catch (error) {
-          res.status(400).send({ error: "Cannot delete avatar" });
+          res.status(400).send({
+            key: "image",
+            error: "Impossible de supprimer l'image",
+          });
           return;
         }
 

@@ -82,18 +82,36 @@ export const handleFormErrors = async ({
     setDisplayModals({ ...displayModals, error: true });
     if (profile) setUserInfo(profile);
     return;
-  } else {
-    await updateUserExceptPassword(userInfo?.id as string, userInfo, "json");
-    setDisableInputs({
-      city: true,
-      email: true,
-      password: true,
-      username: true,
-      bio: true,
-    });
-    setDisplayModals({
-      ...displayModals,
-      validation: true,
-    });
   }
+
+  const updateUser = await updateUserExceptPassword(
+    userInfo?.id as string,
+    userInfo,
+    "json"
+  );
+  if (updateUser.error) {
+    setErrors({
+      ...errors,
+      [updateUser.key as string]: {
+        status: true,
+        message: updateUser.error,
+      },
+    });
+    setDisableInputs({ ...disableInputs, [updateUser.key as string]: true });
+    setDisplayModals({ ...displayModals, error: true });
+    if (profile) setUserInfo(profile);
+    return;
+  }
+
+  setDisableInputs({
+    city: true,
+    email: true,
+    password: true,
+    username: true,
+    bio: true,
+  });
+  setDisplayModals({
+    ...displayModals,
+    validation: true,
+  });
 };
