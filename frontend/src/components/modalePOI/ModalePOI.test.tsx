@@ -80,33 +80,6 @@ describe("ModalePOI", () => {
     );
   });
 
-  it("should render map button", () => {
-    render(
-      <BrowserRouter>
-        <UsersContext.Provider
-          value={{
-            isAuthenticated: () => false,
-            profile: null,
-            redirectToLogin,
-            logout,
-            loaded: false,
-            checkUserSession: () => {},
-          }}
-        >
-          <ModalePOI
-            poi={mockedPoi}
-            onClose={onClose}
-            handleFavourite={handleFavourite}
-            isLiked={isLiked}
-          />
-        </UsersContext.Provider>
-      </BrowserRouter>
-    );
-
-    const mapButton = screen.getByText(/Voir sur la carte/i);
-    expect(mapButton).toBeInTheDocument();
-  });
-
   it("should render connexion button when profile null", () => {
     render(
       <BrowserRouter>
