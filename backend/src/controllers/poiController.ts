@@ -9,6 +9,7 @@ import { v4 as uuidv4 } from "uuid";
 import validator from "validator";
 import { User, UserRole } from "../entities/User";
 import { City } from "../entities/City";
+import jwt from "jsonwebtoken";
 
 export const PoiController: IController = {
   // GET ALL POI
@@ -16,11 +17,15 @@ export const PoiController: IController = {
   getPoi: async (req: Request, res: Response): Promise<void> => {
     try {
       let searchQueries = {};
+      let pagination = {};
 
       // if query in url, add finding options
       if (Object.keys(req.query).length > 0) {
         const city = req.query.city as string;
         const category = req.query.category as string;
+        const nb = req.query.nb as string;
+        const page = req.query.page as string;
+
         if (city !== undefined && category !== undefined) {
           searchQueries = {
             category: { name: category },
@@ -31,44 +36,60 @@ export const PoiController: IController = {
         } else if (category !== undefined) {
           searchQueries = { category: { name: category } };
         }
+
+        if (nb !== undefined && page !== undefined) {
+          pagination = {
+            take: parseInt(nb),
+            skip: (parseInt(page) - 1) * parseInt(nb),
+          };
+        }
       }
 
       // get poi is accepted or no depending of user status (admin or not)
-      const { userId } = req.params;
-
-      const currentUser = await dataSource
-        .getRepository(User)
-        .findOne({ where: { id: userId } });
+      const token = req.cookies.jwt;
+      let decodedToken = null;
 
       let allPoi;
-      if (currentUser?.role === UserRole.ADMIN) {
-        // get all poi (accepted or not)
-        allPoi = await dataSource.getRepository(Poi).find({
-          relations: {
-            category: true,
-            city: true,
-            user: true,
-          },
-          where: searchQueries,
-        });
-      } else if (currentUser?.role === UserRole.ADMIN_CITY) {
-        // get the city name where user is admin to get only local POIs
-        const cityWhereUserIsAdmin = await dataSource
-          .getRepository(City)
-          .findOneBy({ userAdminCity: { id: userId } });
-        // update searchQueries with the city where user is admin
-        searchQueries = {
-          ...searchQueries,
-          city: cityWhereUserIsAdmin?.name,
-        };
-        allPoi = await dataSource.getRepository(Poi).find({
-          relations: {
-            category: true,
-            city: true,
-            user: true,
-          },
-          where: searchQueries,
-        });
+
+      if (token !== undefined) {
+        decodedToken = jwt.verify(
+          token,
+          process.env.TOKEN as string
+        ) as jwt.JwtPayload;
+        if (decodedToken?.role === UserRole.ADMIN) {
+          // get all poi (accepted or not)
+          allPoi = await dataSource.getRepository(Poi).find({
+            relations: {
+              category: true,
+              city: true,
+              user: true,
+            },
+            where: searchQueries,
+            ...pagination,
+          });
+        } else if (decodedToken?.role === UserRole.ADMIN_CITY) {
+          // get the city name where user is admin to get only local POIs
+          const cityWhereUserIsAdmin = await dataSource
+            .getRepository(City)
+            .findOne({
+              relations: { userAdminCity: true },
+              where: { userAdminCity: { id: decodedToken.userId } },
+            });
+          // update searchQueries with the city where user is admin
+          searchQueries = {
+            ...searchQueries,
+            city: { id: cityWhereUserIsAdmin?.id },
+          };
+          allPoi = await dataSource.getRepository(Poi).find({
+            relations: {
+              category: true,
+              city: true,
+              user: true,
+            },
+            where: searchQueries,
+            ...pagination,
+          });
+        }
       } else {
         // get only accepted poi
         allPoi = await dataSource.getRepository(Poi).find({
@@ -78,9 +99,10 @@ export const PoiController: IController = {
             user: true,
           },
           where: { ...searchQueries, isAccepted: true },
+          ...pagination,
         });
-        res.status(200).send(allPoi);
       }
+      res.status(200).send(allPoi);
     } catch (err) {
       res.status(400).send({
         error: "Error while reading points of interest",
@@ -119,10 +141,8 @@ export const PoiController: IController = {
         address,
         phoneNumber,
         name,
-        image,
         category,
         city,
-        user,
         coordinates,
       } = req.body;
 
@@ -216,19 +236,17 @@ export const PoiController: IController = {
             await unlink(`./public/poi/${req.file?.filename}`);
         }
       };
-      const foreignKeys: string[] = [category, city, user];
+      const foreignKeys: string[] = [category, city];
       foreignKeys.forEach(async (value) => {
         if (value !== undefined) await checkIfUUID(value);
       });
 
       // check if image is an object
 
-      if (image !== undefined && typeof image !== "object") {
+      if (req.file !== undefined && typeof req.file !== "object") {
         res.status(400).send({
           error: `Field image must contains a file`,
         });
-        if (req.file !== undefined)
-          await unlink(`./public/poi/${req.file.filename}`);
         return;
       }
 
@@ -239,16 +257,6 @@ export const PoiController: IController = {
         type: "Point",
         coordinates: [parseFloat(latitude), parseFloat(longitude)],
       };
-
-      // check coordinates format
-      if (req.body.coordinates.length > 2) {
-        res.status(400).send({
-          error: "Incorrect format of coordinates (must be [lat, long])",
-        });
-        if (req.file !== undefined)
-          await unlink(`./public/poi/${req.file.filename}`);
-        return;
-      }
 
       // check if coords doesn't already exist in db
       const coordsAlreadyExist = await dataSource.getRepository(Poi).count({
@@ -298,19 +306,15 @@ export const PoiController: IController = {
 
   updatePoi: async (req: Request, res: Response): Promise<void> => {
     try {
-      const {
-        description,
-        address,
-        phoneNumber,
-        isAccepted,
-        name,
-        category,
-        city,
-        user,
-        coordinates,
-      } = req.body;
+      const { description, address, phoneNumber, name, city, coordinates } =
+        req.body;
 
       const { id } = req.params;
+
+      req.body.coordinates = [
+        parseFloat(req.body.coordinates.split(",")[0]),
+        parseFloat(req.body.coordinates.split(",")[1]),
+      ];
 
       // check if input with string are alpha and not empty
 
@@ -332,17 +336,6 @@ export const PoiController: IController = {
         if (value !== undefined) await checkIfStringAndNotEmpty(value);
       });
 
-      // check coordinates format
-      if (coordinates.length > 2) {
-        res.status(400).send({
-          error: "Incorrect format of coordinates (must be [lat, long])",
-        });
-        if (req.file !== undefined)
-          await unlink(`./public/poi/${req.file.filename}`);
-
-        return;
-      }
-
       // check name
       if (
         name !== null &&
@@ -360,7 +353,6 @@ export const PoiController: IController = {
       }
 
       // check address
-
       if (
         address !== null &&
         !validator.matches(
@@ -378,35 +370,8 @@ export const PoiController: IController = {
       }
 
       // check phone number
-
       if (!validator.isNumeric(phoneNumber)) {
         res.status(400).send({ error: "Incorrect format of phone number" });
-        if (req.file !== undefined)
-          await unlink(`./public/poi/${req.file.filename}`);
-        return;
-      }
-
-      // check if foreign key are uuid type
-
-      const checkIfUUID = async (value: string): Promise<void> => {
-        if (!validator.isUUID(value)) {
-          res.status(400).send({
-            error: "Incorrect format of foreign key (must be uuid)",
-          });
-          if (req.file !== undefined)
-            await unlink(`./public/poi/${req.file?.filename}`);
-        }
-      };
-
-      const foreignKeys: string[] = [category, city, user];
-      foreignKeys.forEach(async (value) => {
-        if (value !== undefined) await checkIfUUID(value);
-      });
-
-      // check if is_accepted is boolean
-
-      if (isAccepted !== null && typeof isAccepted !== "boolean") {
-        res.status(400).send({ error: "is_accepted must be a boolean" });
         if (req.file !== undefined)
           await unlink(`./public/poi/${req.file.filename}`);
         return;
@@ -434,13 +399,14 @@ export const PoiController: IController = {
       const currentUser = await dataSource
         .getRepository(User)
         .findOne({ where: { id: userId } });
-
+      console.log(cityOfPoi);
+      console.log(currentUser);
       if (
-        cityOfPoi?.userAdminCity.id !== userId ||
+        cityOfPoi?.userAdminCity?.id !== userId &&
         currentUser?.role !== UserRole.ADMIN
       ) {
         res.status(403).send({
-          error: "You are not authorized to create a point of interest",
+          error: "You are not authorized to update a point of interest",
         });
         if (req.file !== undefined)
           await unlink(`./public/poi/${req.file.filename}`);
@@ -459,7 +425,7 @@ export const PoiController: IController = {
           },
         });
         if (coordsAlreadyExist > 0) {
-          res.status(404).send({
+          res.status(409).send({
             error: "Point of interest already exist",
           });
           if (req.file !== undefined)
@@ -489,7 +455,7 @@ export const PoiController: IController = {
         );
         req.body.image = `/public/poi/${newName}`;
         // delete
-        if (poiToUpdate.image !== null) {
+        if (poiToUpdate.image?.includes("public")) {
           await unlink("." + poiToUpdate.image);
         }
       } else {
@@ -515,7 +481,11 @@ export const PoiController: IController = {
       const { id } = req.params;
 
       // check if POI exists in db
-      const poiToDelete = await dataSource.getRepository(Poi).findOneBy({ id });
+      const poiToDelete = await dataSource.getRepository(Poi).findOne({
+        where: { id },
+        relations: { city: true },
+        select: { city: { id: true } },
+      });
       if (poiToDelete === null) {
         res.status(404).send({ error: "Point of interest not found" });
         return;
@@ -523,28 +493,40 @@ export const PoiController: IController = {
 
       // check if user is admin
       const { userId } = req.params;
-
-      const cityOfPoi = await dataSource
-        .getRepository(City)
-        .findOne({ where: { id: poiToDelete.city.id } });
-
+      const cityOfPoi = await dataSource.getRepository(City).findOne({
+        where: { id: poiToDelete.city.id },
+        relations: {
+          userAdminCity: true,
+        },
+        select: {
+          userAdminCity: {
+            id: true,
+            username: true,
+            email: true,
+            city: true,
+            image: true,
+            createdPoi: true,
+          },
+        },
+      });
       const currentUser = await dataSource
         .getRepository(User)
         .findOne({ where: { id: userId } });
 
       if (
-        cityOfPoi?.userAdminCity.id !== userId ||
-        currentUser?.role !== UserRole.ADMIN
+        currentUser?.role !== UserRole.ADMIN &&
+        cityOfPoi?.userAdminCity?.id !== userId
       ) {
         res.status(403).send({
           error: "You are not authorized to delete a point of interest",
         });
+        return;
       }
 
       await dataSource.getRepository(Poi).delete(id);
 
       // delete image in public directory
-      if (poiToDelete.image !== null) {
+      if (poiToDelete.image.includes("/public")) {
         await unlink("." + poiToDelete.image);
       }
 

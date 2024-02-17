@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useContext, useEffect, useState } from "react";
 import { UsersContext } from "../../contexts/UserContext";
 import style from "./profile.module.scss";
@@ -11,7 +12,8 @@ import PasswordModal from "../../components/common/modals/PasswordModal";
 import Caroussel from "../../components/common/Caroussel/Caroussel";
 import { handleFormErrors } from "../../utils/handleFormError";
 import useWindowDimensions from "../../utils/hooks/useWindowDimensions";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+
 export interface IDisableInputs {
   city: boolean;
   email: boolean;
@@ -34,10 +36,12 @@ export interface IError {
 
 const Profile = () => {
   const windowSize = useWindowDimensions();
+  const navigate = useNavigate();
 
-  // get profile
   const { profile } = useContext(UsersContext);
-  const [displayEditImg, setDisplayEditImg] = useState<boolean>(false);
+  const [userInfo, setUserInfo] = useState<User | null>(null);
+
+  // state management for modals, inputs and errors
   const [displayModals, setDisplayModals] = useState<IDisplayModals>({
     validation: false,
     image: false,
@@ -45,7 +49,6 @@ const Profile = () => {
     password: false,
     error: false,
   });
-  const [userInfo, setUserInfo] = useState<User | null>(null);
   const [disableInputs, setDisableInputs] = useState<IDisableInputs>({
     city: true,
     email: true,
@@ -53,6 +56,7 @@ const Profile = () => {
     username: true,
     bio: true,
   });
+  const [displayEditImg, setDisplayEditImg] = useState<boolean>(false);
   const [errors, setErrors] = useState<{ [key: string]: IError }>({
     city: { message: "", status: false },
     email: { message: "", status: false },
@@ -61,11 +65,17 @@ const Profile = () => {
   });
 
   const imageURL: string | undefined = profile?.image
-    ? profile?.image?.slice(1)
+    ? profile?.image?.includes("http")
+      ? profile.image
+      : `http://localhost:5000${profile?.image?.slice(1)}`
     : undefined;
 
   useEffect(() => {
-    if (profile !== null) setUserInfo(profile);
+    if (profile !== null) {
+      setUserInfo(profile);
+    } else {
+      navigate("/");
+    }
   }, [profile]);
 
   return (
@@ -106,49 +116,51 @@ const Profile = () => {
       ) : null}
       <section className={style.formSection}>
         <div className={style.profileAvatarAndName}>
-          <div className={style.avatarImg}>
-            {imageURL !== undefined ? (
-              <>
-                <img
-                  src={`${process.env.REACT_APP_PUBLIC_BACKEND_URL}${imageURL}`}
-                  alt="avatar"
-                  className={displayEditImg ? style.imageOpacity : undefined}
-                  onMouseOver={() => setDisplayEditImg(true)}
-                  onMouseOut={() => setDisplayEditImg(false)}
-                />
-                {displayEditImg && (
-                  <FontAwesomeIcon
-                    icon={faPen}
-                    className={style.iconEditImg}
+          <div className={style.profileAvatarAndName}>
+            <div className={style.avatarImg}>
+              {imageURL !== undefined ? (
+                <>
+                  <img
+                    src={imageURL}
+                    alt="avatar"
+                    className={displayEditImg ? style.imageOpacity : undefined}
                     onMouseOver={() => setDisplayEditImg(true)}
-                    onClick={() =>
-                      setDisplayModals({ ...displayModals, image: true })
-                    }
+                    onMouseOut={() => setDisplayEditImg(false)}
                   />
-                )}
-              </>
-            ) : (
-              <>
-                <div
-                  onMouseOver={() => setDisplayEditImg(true)}
-                  onMouseOut={() => setDisplayEditImg(false)}
-                >
-                  {profile?.username.substring(0, 1).toUpperCase()}
-                </div>
-                {displayEditImg && (
-                  <FontAwesomeIcon
-                    icon={faPen}
-                    className={style.iconEditImg}
+                  {displayEditImg && (
+                    <FontAwesomeIcon
+                      icon={faPen}
+                      className={style.iconEditImg}
+                      onMouseOver={() => setDisplayEditImg(true)}
+                      onClick={() =>
+                        setDisplayModals({ ...displayModals, image: true })
+                      }
+                    />
+                  )}
+                </>
+              ) : (
+                <>
+                  <div
                     onMouseOver={() => setDisplayEditImg(true)}
-                    onClick={() =>
-                      setDisplayModals({ ...displayModals, image: true })
-                    }
-                  />
-                )}
-              </>
-            )}
+                    onMouseOut={() => setDisplayEditImg(false)}
+                  >
+                    {profile?.username.substring(0, 1).toUpperCase()}
+                  </div>
+                  {displayEditImg && (
+                    <FontAwesomeIcon
+                      icon={faPen}
+                      className={style.iconEditImg}
+                      onMouseOver={() => setDisplayEditImg(true)}
+                      onClick={() =>
+                        setDisplayModals({ ...displayModals, image: true })
+                      }
+                    />
+                  )}
+                </>
+              )}
+            </div>
+            <p>{profile?.username.toUpperCase()}</p>
           </div>
-          <p>{profile?.username.toUpperCase()}</p>
         </div>
         <form>
           <div className={style.formColumns}>

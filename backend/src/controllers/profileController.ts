@@ -143,6 +143,7 @@ export const ProfileController: IController = {
 
       // check enum in role
       const roles: UserRole[] = Object.values(UserRole);
+
       if (role !== null && !roles.includes(role)) {
         res.status(400).send({ error: "User role does not exist" });
         if (req.file !== undefined)
@@ -183,33 +184,33 @@ export const ProfileController: IController = {
         return;
       }
 
-      // check if username already exist in db
-      if (username !== null) {
-        const usernameAlreadyExist = await dataSource
-          .getRepository(User)
-          .findOne({ where: { username } });
-        if (usernameAlreadyExist !== null) {
-          if (usernameAlreadyExist.username !== currentUser.username) {
-            res.status(409).send({ error: "Username already exists" });
-            if (req.file !== undefined)
-              await unlink(`./public/user/${req.file?.filename}`);
-            return;
-          }
-        }
-
-        if (
-          !validator.matches(
-            username,
-            /^(?=.*[a-zA-Z]{1,})(?=.*[\d]{0,})[a-zA-Z0-9]{3,20}$/
-          )
-        ) {
-          res.status(401).send({
-            error: "Username must contain 3 to 20 characters and no symbol",
-          });
-          if (req.file !== undefined)
-            await unlink(`./public/user/${req.file?.filename}`);
-          return;
-        }
+      // check username
+      if (
+        !validator.matches(
+          username,
+          /^(?=.*[a-zA-Z]{1,})(?=.*[\d]{0,})[a-zA-Z0-9]{3,20}$/
+        )
+      ) {
+        res.status(401).send({
+          key: "username",
+          error:
+            "Le pseudo doit contenir entre 3 et 20 caractères, sans symbole",
+        });
+        if (req.file !== undefined)
+          await unlink(`./public/user/${req.file?.filename}`);
+        return;
+      }
+      const usernameAlreadyExist = await dataSource
+        .getRepository(User)
+        .findOne({ where: { username } });
+      if (usernameAlreadyExist?.username !== currentUser.username) {
+        res.status(409).send({
+          key: "username",
+          error: "Le pseudo existe déjà",
+        });
+        if (req.file !== undefined)
+          await unlink(`./public/user/${req.file?.filename}`);
+        return;
       }
 
       // check if email already exist in db
@@ -221,13 +222,19 @@ export const ProfileController: IController = {
           emailAlreadyExist !== null &&
           emailAlreadyExist.email !== currentUser.email
         ) {
-          res.status(409).send({ error: "Email already exists" });
+          res.status(409).send({
+            key: "email",
+            error: "L'email existe déjà",
+          });
           if (req.file !== undefined)
             await unlink(`./public/user/${req.file?.filename}`);
           return;
         }
         if (!validator.isEmail(email)) {
-          res.status(401).send({ error: "Incorrect email format" });
+          res.status(401).send({
+            key: "email",
+            error: "Format du mail incorrect",
+          });
           if (req.file !== undefined)
             await unlink(`./public/user/${req.file?.filename}`);
           return;
@@ -250,10 +257,7 @@ export const ProfileController: IController = {
         req.body.image = `./public/user/${newName}`;
 
         // delete
-        if (
-          profileToUpdate.image !== null &&
-          profileToUpdate.image !== undefined
-        ) {
+        if (!profileToUpdate.image.includes("http")) {
           await unlink(profileToUpdate.image);
         }
       }
@@ -275,7 +279,10 @@ export const ProfileController: IController = {
         try {
           await unlink(req.body.image);
         } catch (error) {
-          res.status(400).send({ error: "Cannot delete avatar" });
+          res.status(400).send({
+            key: "image",
+            error: "Impossible de supprimer l'image",
+          });
           return;
         }
 

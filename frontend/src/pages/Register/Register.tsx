@@ -46,15 +46,15 @@ const Register = () => {
 
       const data = await response.json();
 
-      console.log(data);
+      console.log(data.error);
       if (response.status !== 201) {
         // On gère l'erreur à ce niveau
         // Object.keys(data.errors) = ['email', 'username', 'password']
         // Pour chaque paramètre de data.errors, on va afficher le message d'erreur dans le champ correspondant
 
-        Object.keys(data.errors).forEach((error) => {
+        Object.keys(data.error).forEach((error) => {
           setError(error as keyof FormProps, {
-            message: data.errors[error],
+            message: data.error[error],
           });
         });
         return;
@@ -116,16 +116,6 @@ const Register = () => {
         <Link to="/auth/login">
           Vous avez déjà un compte ? Connectez-vous ici !
         </Link>
-        {windowSize > 768 ? (
-          <>
-            <span>Téléchargez l’application ici !</span>
-            <div id="logoStore-wrapper">
-              <img src="/appleDownload.svg" alt="Apple Store" />
-              <img src="/google-play-badge.png" alt="Google Store" />
-            </div>
-          </>
-        ) : null}
-
         {errors.root?.serverError && (
           <p className="error">{errors.root.serverError.message}</p>
         )}

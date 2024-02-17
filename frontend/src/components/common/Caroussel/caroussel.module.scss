@@ -2,7 +2,7 @@
 @import "../../../style/mixin";
 
 .container {
-  margin: 50px auto;
+  margin: auto;
   width: 80%;
   @media (max-width: 768px) {
     max-width: 348px;

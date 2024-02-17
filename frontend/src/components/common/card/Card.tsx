@@ -26,7 +26,7 @@ const Card = ({
 
   const { id, name, image } = data;
   const imageURL = image.includes("public")
-    ? `${process.env.REACT_APP_PUBLIC_BACKEND_URL}/${image}`
+    ? `${process.env.REACT_APP_PUBLIC_BACKEND_URL}${image}`
     : image;
   return (
     <>
@@ -38,12 +38,17 @@ const Card = ({
           styles.unselected
         } `}
       >
-        <div onClick={onClick} className={styles.imageContainer}>
+        <div
+          onClick={onClick}
+          className={styles.imageContainer}
+          data-testid="image-container"
+          datatype="image-container"
+        >
           <img src={imageURL} alt={name} className={styles.image} />
           <h3 className={`${styles.title} titleCard`}>{name}</h3>
         </div>
         {cardType !== CardType.CATEGORY && isAuthenticated() ? (
-          <div
+          <button
             className={styles.likeContainer}
             onClick={() => {
               handleFavourite(id);
@@ -54,11 +59,15 @@ const Card = ({
                 className={styles.filledHeart}
                 stroke="black"
                 strokeWidth={22}
+                data-testid="filled-heart"
               />
             ) : (
-              <IoIosHeartEmpty className={styles.emptyHeart} />
+              <IoIosHeartEmpty
+                className={styles.emptyHeart}
+                data-testid="empty-heart"
+              />
             )}
-          </div>
+          </button>
         ) : (
           ""
         )}

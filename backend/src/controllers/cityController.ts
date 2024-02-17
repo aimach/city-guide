@@ -29,6 +29,7 @@ export const CityController: IController = {
             createdPoi: true,
           },
         },
+        where: { userAdminCity: { id: req.query.userAdminCityId as string } },
       });
       res.status(200).send(allCities);
     } catch (err) {
@@ -110,7 +111,10 @@ export const CityController: IController = {
         email: currentUserAdminCity?.email,
         password: currentUserAdminCity?.password,
         image: currentUserAdminCity?.image,
-        role: UserRole.ADMIN_CITY,
+        role:
+          currentUserAdminCity?.role === UserRole.ADMIN
+            ? UserRole.ADMIN
+            : UserRole.ADMIN_CITY,
         city: currentUserAdminCity?.city,
       };
 
@@ -134,22 +138,6 @@ export const CityController: IController = {
       ) {
         res.status(400).send({
           error: `Field must contains only characters (min: 2, max: 100)`,
-        });
-        if (req.file !== undefined)
-          await unlink(`./public/city/${req.file?.filename}`);
-        return;
-      }
-
-      // check if coordinates are type [number, number]
-
-      if (
-        req.body.coordinates !== null &&
-        (req.body.coordinates.length > 2 ||
-          (typeof req.body.coordinates[0] !== "number" &&
-            typeof req.body.coordinates[1] !== "number"))
-      ) {
-        res.status(400).send({
-          error: "Incorrect format of coordinates (must be [lat, long])",
         });
         if (req.file !== undefined)
           await unlink(`./public/city/${req.file?.filename}`);
@@ -245,7 +233,7 @@ export const CityController: IController = {
   updateCity: async (req: Request, res: Response): Promise<void> => {
     const { id } = req.params;
 
-    const { name, image, coordinates, userAdminCity } = req.body;
+    const { name, coordinates, userAdminCity } = req.body;
     const { userId } = req.params;
 
     req.body.coordinates = [
@@ -298,7 +286,6 @@ export const CityController: IController = {
       }
 
       // check if name is alpha or not empty
-
       if (
         name !== null &&
         (!validator.matches(
@@ -315,38 +302,15 @@ export const CityController: IController = {
         return;
       }
 
-      // check if image is alpha or not empty
-
-      if (
-        image !== null &&
-        typeof image === "string" &&
-        validator.isEmpty(image)
-      ) {
+      // check if image is an object
+      if (req.file !== null && typeof req.file !== "object") {
         res.status(400).send({
-          error: `Field must contains only characters`,
+          error: `Field image must contains a file`,
         });
-        if (req.file !== undefined)
-          await unlink(`./public/city/${req.file?.filename}`);
-        return;
-      }
-
-      // check if coordinates are type [number, number]
-      if (
-        req.body.coordinates !== null &&
-        (req.body.coordinates.length > 2 ||
-          (typeof req.body.coordinates[0] !== "number" &&
-            typeof req.body.coordinates[1] !== "number"))
-      ) {
-        res.status(400).send({
-          error: "Incorrect format of coordinates (must be [lat, long])",
-        });
-        if (req.file !== undefined)
-          await unlink(`./public/city/${req.file?.filename}`);
         return;
       }
 
       // check if userAdminCity is UUID type
-
       if (
         req.body.userAdminCity !== null &&
         !validator.isUUID(req.body.userAdminCity)
@@ -428,7 +392,7 @@ export const CityController: IController = {
         req.body.image = `/public/city/${newName}`;
 
         // delete the older file
-        if (cityToUpdate.image?.includes("public/city")) {
+        if (cityToUpdate.image?.includes("public/")) {
           await unlink("." + cityToUpdate.image);
         }
       }

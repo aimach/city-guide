@@ -11,6 +11,7 @@ const Layout = ({ children }: PropsWithChildren) => {
     (location.pathname.includes("register") && windowSize > 768) ||
     (location.pathname.includes("login") && windowSize > 768) ||
     (location.pathname.includes("contribution") && windowSize > 768);
+  const isDashboardPage = location.pathname.includes("dashboard");
 
   return (
     <>
@@ -19,7 +20,8 @@ const Layout = ({ children }: PropsWithChildren) => {
       )}
 
       {children}
-      {isPageWithoutHeaderAndFooter ? null : windowSize > 768 ? (
+      {isPageWithoutHeaderAndFooter || isDashboardPage ? null : windowSize >
+        768 ? (
         <Footer />
       ) : null}
     </>

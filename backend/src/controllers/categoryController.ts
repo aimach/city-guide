@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/restrict-template-expressions */
 import { Request, Response } from "express";
 import dataSource from "../dataSource";
 import { Category } from "../entities/Category";
@@ -44,8 +45,7 @@ export const CategoryController: IController = {
 
   createCategory: async (req: Request, res: Response): Promise<void> => {
     try {
-      const { name, image } = req.body;
-
+      const { name } = req.body;
       // check if user is admin
       const { userId } = req.params;
 
@@ -59,30 +59,8 @@ export const CategoryController: IController = {
         });
         if (req.file !== undefined)
           await unlink(`./public/category/${req.file.filename}`);
+        return;
       }
-
-      // check if name is string or not empty
-      const checkIfEmptyAndNotAString = async (
-        value: string
-      ): Promise<void> => {
-        if (validator.isEmpty(value, { ignore_whitespace: true })) {
-          res.status(422).send({ error: `Please fill the empty field` });
-          if (req.file !== undefined)
-            await unlink(`./public/category/${req.file?.filename}`);
-          return;
-        }
-        if (typeof value !== "string") {
-          res
-            .status(400)
-            .send({ error: `Field must contains only characters` });
-          if (req.file !== undefined)
-            await unlink(`./public/category/${req.file?.filename}`);
-          return;
-        }
-      };
-
-      const inputs: string[] = Object.values(req.body);
-      inputs.forEach(async (value) => await checkIfEmptyAndNotAString(value));
 
       // Check format of category's name
       if (
@@ -100,12 +78,10 @@ export const CategoryController: IController = {
       }
 
       // check if image is an object
-      if (image !== null && typeof image !== "object") {
+      if (req.file !== null && typeof req.file !== "object") {
         res.status(400).send({
           error: `Field image must contains a file`,
         });
-        if (req.file !== undefined)
-          await unlink(`./public/category/${req.file?.filename}`);
         return;
       }
 
@@ -154,7 +130,7 @@ export const CategoryController: IController = {
   updateCategory: async (req: Request, res: Response): Promise<void> => {
     try {
       const { id } = req.params;
-      const { name, image } = req.body;
+      const { name } = req.body;
 
       // check if user is admin
       const { userId } = req.params;
@@ -165,33 +141,12 @@ export const CategoryController: IController = {
 
       if (currentUser?.role !== UserRole.ADMIN) {
         res.status(403).send({
-          error: "You are not authorized to create a category",
+          error: "You are not authorized to update a category",
         });
         if (req.file !== undefined)
           await unlink(`./public/category/${req.file?.filename}`);
+        return;
       }
-
-      // validate format
-
-      const checkIfEmptyAndNotAString = async (
-        value: string
-      ): Promise<void> => {
-        if (validator.isEmpty(value, { ignore_whitespace: true })) {
-          res.status(422).send({ error: `Please fill the empty field` });
-        }
-        if (typeof value !== "string") {
-          res
-            .status(400)
-            .send({ error: `Field must contains only characters` });
-          if (req.file !== undefined)
-            await unlink(`./public/category/${req.file?.filename}`);
-        }
-      };
-
-      // check if values are string and not empty
-
-      const inputs: string[] = Object.values(req.body);
-      inputs.forEach(async (value) => await checkIfEmptyAndNotAString(value));
 
       // check if name contains only characters
 
@@ -212,13 +167,10 @@ export const CategoryController: IController = {
       }
 
       // check if image is an object
-      if (image !== null && typeof image !== "object") {
+      if (req.file !== null && typeof req.file !== "object") {
         res.status(400).send({
           error: `Field image must contains a file`,
         });
-        if (req.file !== undefined)
-          await unlink(`./public/category/${req.file?.filename}`);
-
         return;
       }
 
@@ -265,8 +217,8 @@ export const CategoryController: IController = {
           }
         );
         req.body.image = `/public/category/${newName}`;
-        // delete
-        if (categoryToUpdate.image !== null) {
+        // delete the older file
+        if (categoryToUpdate.image?.includes("public/")) {
           await unlink("." + categoryToUpdate.image);
         }
       }
@@ -295,8 +247,9 @@ export const CategoryController: IController = {
 
       if (currentUser?.role !== UserRole.ADMIN) {
         res.status(403).send({
-          error: "You are not authorized to create a category",
+          error: "You are not authorized to delete a category",
         });
+        return;
       }
 
       // check if category exists in db

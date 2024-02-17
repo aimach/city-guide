@@ -1,11 +1,8 @@
 import { Poi } from "../../utils/types";
 import styles from "./modalePOI.module.scss";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faLocationDot } from "@fortawesome/free-solid-svg-icons";
 import { useContext } from "react";
 import { UsersContext } from "../../contexts/UserContext";
 import { IoIosHeartEmpty, IoIosHeart } from "react-icons/io";
-import { FaShareAlt } from "react-icons/fa";
 import { AiOutlineClose } from "react-icons/ai";
 import { Link } from "react-router-dom";
 
@@ -22,22 +19,24 @@ const ModalePOI = ({ poi, onClose, handleFavourite, isLiked }: Props) => {
 
   const { isAuthenticated } = useContext(UsersContext);
 
+  const imageURL = image.includes("public")
+    ? `${process.env.REACT_APP_PUBLIC_BACKEND_URL}${image}`
+    : image;
+
   return (
     <div className={styles.container}>
       <div className={styles.close} onClick={onClose}>
         <AiOutlineClose />
       </div>
-
       <div className={styles.imageContainer}>
-        <img src={image} alt={image} />
+        <img src={imageURL} alt={image} />
       </div>
 
       <div className={styles.header}>
         <h3>{name}</h3>
         {isAuthenticated() ? (
           <div className={styles.icons}>
-            <FaShareAlt className={styles.socialIcon} />
-            <div onClick={() => handleFavourite(id)}>
+            <div onClick={() => handleFavourite(id)} data-testid="like-button">
               {isLiked(id) ? (
                 <IoIosHeart
                   className={styles.filledHeart}
@@ -89,12 +88,6 @@ const ModalePOI = ({ poi, onClose, handleFavourite, isLiked }: Props) => {
             </Link>
           </>
         )}
-      </div>
-      <div className={styles.buttonContainer}>
-        <button className={styles.mapButton}>
-          <FontAwesomeIcon icon={faLocationDot} className={styles.icon} />
-          Voir sur la carte
-        </button>
       </div>
     </div>
   );
