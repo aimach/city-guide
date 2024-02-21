@@ -9,7 +9,7 @@ const { DB_HOST, DB_PORT, DB_USER, DB_PASSWORD, DB_NAME } = process.env;
 const dataSource = new DataSource({
   type: "postgres",
   host: DB_HOST,
-  port: DB_PORT !== undefined ? parseInt(DB_PORT) : 5432,
+  port: parseInt(DB_PORT as string, 10),
   username: DB_USER,
   password: DB_PASSWORD,
   database: DB_NAME,
