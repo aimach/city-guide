@@ -13,6 +13,5 @@ COPY run-test-back.sh ./
 RUN npm install
 
 COPY src src
-COPY public public
 
 CMD npm start
