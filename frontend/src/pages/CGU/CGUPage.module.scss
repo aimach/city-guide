@@ -1,0 +1,15 @@
+@use "../../style/mixin" as m;
+@use "../../style/variable" as v;
+
+.CGUPage {
+  color: white;
+  h2,
+  h3 {
+    color: white;
+  }
+}
+
+.CGUContainer {
+  width: 80vw;
+  margin: 0 auto;
+}
