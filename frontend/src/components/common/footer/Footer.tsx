@@ -42,10 +42,12 @@ const Footer = () => {
                   A propos
                 </h4>
                 <ul className={`textSearch`}>
-                  <li>
-                    Conditions générales <br />
-                    d’utilisation
-                  </li>
+                  <Link to="/CGU">
+                    <li>
+                      Conditions générales <br />
+                      d’utilisation
+                    </li>
+                  </Link>
                 </ul>
               </div>
               <div>
