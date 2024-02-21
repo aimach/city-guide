@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "#lancer le projet docker compose up #Après l'installation de package docker compose up --build",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "test": "npx playwright test"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
