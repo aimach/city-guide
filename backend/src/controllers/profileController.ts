@@ -114,6 +114,7 @@ export const ProfileController: IController = {
 
   updateProfile: async (req: Request, res: Response): Promise<void> => {
     try {
+      console.log(req.body);
       const { id, userId } = req.params;
       const { username, email, bio, city, role } = req.body as User;
 
@@ -203,7 +204,11 @@ export const ProfileController: IController = {
       const usernameAlreadyExist = await dataSource
         .getRepository(User)
         .findOne({ where: { username } });
-      if (usernameAlreadyExist?.username !== currentUser.username) {
+
+      if (
+        usernameAlreadyExist != null &&
+        usernameAlreadyExist.username !== currentUser.username
+      ) {
         res.status(409).send({
           key: "username",
           error: "Le pseudo existe déjà",
@@ -271,7 +276,6 @@ export const ProfileController: IController = {
       newUser.image = req.body.image;
 
       await dataSource.getRepository(User).update(id, newUser);
-
       res.status(200).json("Updated user");
       return;
     } catch (err) {

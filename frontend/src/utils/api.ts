@@ -1,4 +1,4 @@
-import Joi from "joi";
+import Joi, { string } from "joi";
 
 // ADD A FAVOURITE CITY
 
@@ -100,23 +100,15 @@ export const removeFavouritePoiToUser = async (
 
 export const updateUserExceptPassword = async (
   id: string,
-  body: any,
-  type: string
+  body: any
 ): Promise<any> => {
-  // SET HEADERS
-  const headers = new Headers();
-  if (type === "json") {
-    headers.append("Content-Type", "application/json");
-  }
-
   try {
     const response = await fetch(
       `${process.env.REACT_APP_PUBLIC_BACKEND_URL}/api/profile/${id}`,
       {
         method: "PUT",
         credentials: "include",
-        headers,
-        body: type === "json" ? JSON.stringify(body) : body,
+        body,
       }
     );
     const data = await response.json();
@@ -331,6 +323,10 @@ export const addCategory = async (body: any): Promise<void> => {
 // UPDATE CATEGORY
 export const updateCategory = async (body: any, id: string): Promise<void> => {
   try {
+    const body: any = {
+      name: "string",
+      key: { key: "key", anotherKey: { key: "string" } },
+    };
     const response = await fetch(
       `${process.env.REACT_APP_PUBLIC_BACKEND_URL}/api/categories/${id}`,
       {
@@ -339,7 +335,7 @@ export const updateCategory = async (body: any, id: string): Promise<void> => {
           Accept: "application/json",
         },
         credentials: "include",
-        body: body,
+        body: JSON.stringify(body),
       }
     );
     const data = await response.json();

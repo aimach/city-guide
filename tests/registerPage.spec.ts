@@ -2,7 +2,7 @@ import { test, expect } from "@playwright/test";
 require("dotenv").config();
 
 test.beforeEach(async ({ page }) => {
-  await page.goto("http:localhost:3000/auth/register");
+  await page.goto("https://staging.aimach.fr/auth/register");
 });
 
 // TEST HEADER
@@ -11,7 +11,9 @@ test("has titles", async ({ page }) => {
   await expect(page.getByText("Inscription")).toBeVisible();
 });
 
-test("bad register with empty input", async ({ page }) => {
+test("diplays error messages when register with empty input", async ({
+  page,
+}) => {
   await page.getByPlaceholder("Adresse mail").fill("");
   await page.getByPlaceholder("Nom d'utilisateur").fill("");
   await page.getByPlaceholder("Mot de passe").fill("");
@@ -27,7 +29,9 @@ test("bad register with empty input", async ({ page }) => {
   ).toBeVisible();
 });
 
-test("bad register with bad email", async ({ page }) => {
+test("displays error message when register with bad email", async ({
+  page,
+}) => {
   await page.getByPlaceholder("Adresse mail").fill("bademail");
   await page.getByPlaceholder("Nom d'utilisateur").fill("playwright");
   await page.getByPlaceholder("Mot de passe").fill(`Playwright!2024`);
@@ -35,7 +39,9 @@ test("bad register with bad email", async ({ page }) => {
   await expect(page.getByText("Cet email est invalide")).toBeVisible();
 });
 
-test("bad register with bad username", async ({ page }) => {
+test("displays error message when register with bad username", async ({
+  page,
+}) => {
   await page.getByPlaceholder("Adresse mail").fill(`playwright@test.fr`);
   await page.getByPlaceholder("Nom d'utilisateur").fill("playwright?§");
   await page.getByPlaceholder("Mot de passe").fill(`Playwright!2024`);
@@ -47,7 +53,9 @@ test("bad register with bad username", async ({ page }) => {
   ).toBeVisible();
 });
 
-test("bad register with bad password", async ({ page }) => {
+test("displays error message when register with bad password", async ({
+  page,
+}) => {
   await page.getByPlaceholder("Adresse mail").fill(`playwright@test.fr`);
   await page.getByPlaceholder("Nom d'utilisateur").fill("playwright");
   await page.getByPlaceholder("Mot de passe").fill(`playwrigth`);
@@ -59,7 +67,7 @@ test("bad register with bad password", async ({ page }) => {
   ).toBeVisible();
 });
 
-test("good register", async ({ page }) => {
+test("goes to home when register with good credentials", async ({ page }) => {
   await page.getByPlaceholder("Adresse mail").fill(`playwright@test.fr`);
   await page.getByPlaceholder("Nom d'utilisateur").fill("playwrigth");
   await page.getByPlaceholder("Mot de passe").fill(`Playwright!2024`);
@@ -67,7 +75,7 @@ test("good register", async ({ page }) => {
   await expect(page.getByRole("link", { name: "CITY GUIDE" })).toBeVisible();
 });
 
-test("go to login", async ({ page }) => {
+test("goes to login page with login link", async ({ page }) => {
   await page.getByRole("link", { name: "Vous avez déjà un compte ?" }).click();
   await expect(page.url()).toContain("/auth/login");
 });

@@ -89,6 +89,7 @@ export const CategoryController: IController = {
       const nameAlreadyExist = await dataSource
         .getRepository(Category)
         .count({ where: { name } });
+
       if (nameAlreadyExist > 0) {
         res.status(409).send({
           error: `Category already exists`,

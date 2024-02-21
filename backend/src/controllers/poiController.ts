@@ -399,8 +399,7 @@ export const PoiController: IController = {
       const currentUser = await dataSource
         .getRepository(User)
         .findOne({ where: { id: userId } });
-      console.log(cityOfPoi);
-      console.log(currentUser);
+
       if (
         cityOfPoi?.userAdminCity?.id !== userId &&
         currentUser?.role !== UserRole.ADMIN

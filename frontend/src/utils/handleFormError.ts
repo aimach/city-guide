@@ -83,11 +83,14 @@ export const handleFormErrors = async ({
     if (profile) setUserInfo(profile);
     return;
   }
+  const formData = new FormData();
+  for (const key in userInfo) {
+    formData.append(key, userInfo[key as keyof User] as string);
+  }
 
   const updateUser = await updateUserExceptPassword(
     userInfo?.id as string,
-    userInfo,
-    "json"
+    formData
   );
   if (updateUser.error) {
     setErrors({

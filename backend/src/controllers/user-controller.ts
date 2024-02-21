@@ -145,7 +145,7 @@ export const AuthController: IController = {
       } else {
         const token = sign(
           { userId: getUserByEmail.id, role: getUserByEmail.role },
-          TOKEN as string,
+          process.env.TOKEN as string,
           {
             expiresIn: "1h",
           }
