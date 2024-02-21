@@ -28,6 +28,7 @@ import ContactPage from "./pages/Contact/ContactPage";
 import ScrollToTop from "./components/layout/ScrollToTop";
 import PoiCityAdmin from "./backOffice/pages/cityadministrator/Poi/PoiCityAdmin";
 import UsersCitiesAdmin from "./backOffice/pages/cityadministrator/Users/UsersCitiesAdmin";
+import CGUPage from "./pages/CGU/CGUPage";
 
 const Root = () => {
   return (
@@ -63,6 +64,7 @@ function App() {
           <Route>
             <Route path="/faq" element={<FaqPage />} />
             <Route path="/contact" element={<ContactPage />} />
+            <Route path="/CGU" element={<CGUPage />} />
           </Route>
           <Route path="/dashboard" element={<BackOfficeHomePage />} />
           <Route path="/dashboard">
