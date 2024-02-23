@@ -30,7 +30,7 @@ const HomePage = () => {
               </button>
             </div>
           </section>
-
+          <section className={`${styles.imageSection}`}></section>
           <section className={`${styles.searchSection}`}>
             <SearchPOI />
           </section>

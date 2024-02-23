@@ -60,17 +60,21 @@ const SearchPOI = () => {
             </h3>
           </div>
         </section>
+        <section className={`${styles.imageSection}`}>
+          {" "}
+          <button type="button" className={`buttonHomePage textButton`}>
+            <Link to={"/map"}>Voir la carte</Link>
+          </button>
+        </section>
+
         <div className={styles.filterSearchComponent}>
           <h3 className={`subtitlePoiCity`}>
-            Choisis une ville et trouve ses points d'intérêt sur la carte
+            Trouve la ville ou les points d'intérêts que tu souhaites visiter !
           </h3>
           <FilterSearch
             filterSearch={filterSearch}
             setFilterSearch={setFilterSearch}
           />
-          <Link className={`${styles.buttonSearchPoi} textButton`} to={"/map"}>
-            Voir la carte
-          </Link>
         </div>
         {windowSize > 768 && (
           <section>

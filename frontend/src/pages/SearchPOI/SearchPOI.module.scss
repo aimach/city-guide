@@ -10,7 +10,7 @@
   border-bottom: 1px solid v.$primary_color;
 
   .subtitlePOI {
-    padding-bottom: 40px;
+    padding-top: 40px;
   }
   .subtitlePOI :first-child {
     padding-bottom: 18px;
@@ -21,7 +21,7 @@
   width: 100%;
   margin: 0 auto;
   text-align: center;
-  padding-bottom: 80px;
+  padding-bottom: 40px;
 }
 .subtitleCity {
   text-align: left;
@@ -54,4 +54,29 @@
     height: 250px;
     transform: scaleY(-1);
   }
+}
+
+.presentationButton {
+  color: v.$primary_color;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  &:hover {
+    @include m.buttonColor(v.$cream_color, v.$primary_color);
+    transition: background-color 0.4s ease;
+  }
+}
+
+.imageSection {
+  background-image: url("../../../public/map-screen.png");
+  width: 100%;
+  height: 50vh;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position-y: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
