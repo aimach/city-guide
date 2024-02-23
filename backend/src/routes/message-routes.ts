@@ -7,3 +7,5 @@ export const messageRoutes = express.Router();
 messageRoutes.get("/", auth, MessageController.getMessages);
 
 messageRoutes.post("/", MessageController.createMessage);
+
+messageRoutes.delete("/:id", MessageController.deleteMessage);

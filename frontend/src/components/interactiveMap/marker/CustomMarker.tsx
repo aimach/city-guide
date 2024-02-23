@@ -38,7 +38,8 @@ const CustomMarker = ({
   });
   const map = useMap();
 
-  const { isAuthenticated, profile } = useContext(UsersContext);
+  const { isAuthenticated, profile, checkUserSession } =
+    useContext(UsersContext);
   const [favouriteUserPoi, setFavouriteUserPoi] = useState<Poi[] | null>(null);
 
   const imageURL = image.includes("public")
@@ -60,6 +61,7 @@ const CustomMarker = ({
       } else {
         addFavouritePoiToUser(poiId, userId);
         setFavouriteUserPoi(profile?.favouritePoi as Poi[]);
+        checkUserSession();
       }
     }
   };
