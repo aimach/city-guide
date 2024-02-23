@@ -38,7 +38,7 @@ const Profile = () => {
   const windowSize = useWindowDimensions();
   const navigate = useNavigate();
 
-  const { profile, checkUserSession } = useContext(UsersContext);
+  const { profile } = useContext(UsersContext);
   const [userInfo, setUserInfo] = useState<User | null>(null);
 
   // state management for modals, inputs and errors
@@ -67,7 +67,7 @@ const Profile = () => {
   const imageURL: string | undefined = profile?.image
     ? profile?.image?.includes("http")
       ? profile.image
-      : `${process.env.REACT_APP_PUBLIC_BACKEND_URL}${profile?.image?.slice(1)}`
+      : `${process.env.REACT_APP_BACKEND_FOLDER_URL}${profile?.image?.slice(1)}`
     : undefined;
 
   useEffect(() => {
