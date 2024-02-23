@@ -60,3 +60,22 @@ td {
     cursor: pointer;
   }
 }
+
+.navButton {
+  color: v.$primary_color;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  &:hover {
+    @include m.buttonColor(v.$cream_color, v.$primary_color);
+    transition: background-color 0.4s ease;
+  }
+}
+
+.buttonContainer {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px 0 20px 0;
+}
