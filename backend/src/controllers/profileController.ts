@@ -279,6 +279,7 @@ export const ProfileController: IController = {
       res.status(200).json("Updated user");
       return;
     } catch (err) {
+      console.log(err)
       if (req.file !== undefined)
         try {
           await unlink(req.body.image);
