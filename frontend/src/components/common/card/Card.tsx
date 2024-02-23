@@ -45,7 +45,9 @@ const Card = ({
           datatype="image-container"
         >
           <img src={imageURL} alt={name} className={styles.image} />
-          <h3 className={`${styles.title} titleCard`}>{name}</h3>
+          <div className={styles.titleContainer}>
+            <h3 className={`${styles.title} titleCard`}>{name}</h3>
+          </div>
         </div>
         {cardType !== CardType.CATEGORY && isAuthenticated() ? (
           <button

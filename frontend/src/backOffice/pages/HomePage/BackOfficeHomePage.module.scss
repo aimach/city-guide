@@ -2,27 +2,27 @@
 @use "../../../style/mixin" as m;
 
 .titleContainer {
-	// @include flexLayout(center, space-around, center);
-	display: flex;
-	// justify-content: space-between;
-	align-items: center;
-	padding-bottom: 30px;
-	padding-top: 34px;
-	h3,
-	.iconSpaces {
-		color: v.$primary_color;
-	}
+  // @include flexLayout(center, space-around, center);
+  display: flex;
+  // justify-content: space-between;
+  align-items: center;
+  padding-bottom: 30px;
+  padding-top: 34px;
+  h3,
+  .iconSpaces {
+    color: v.$primary_color;
+  }
 
-	.iconSpaces {
-		font-size: 25px;
-		padding-right: 30px;
-	}
+  .iconSpaces {
+    font-size: 25px;
+    padding-right: 30px;
+  }
 }
 
 .illustrationBackOffice {
-	background-image: url(./illustrattionHomePageBackOffice02.png);
-	background-repeat: no-repeat;
-	background-size: cover;
-	background-size: 100%;
-	height: 100vh;
+  background-image: url(./illustrattionHomePageBackOffice02.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: bottom;
+  height: 100vh;
 }

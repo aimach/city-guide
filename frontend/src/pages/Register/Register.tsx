@@ -5,6 +5,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faAt, faKey } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import useWindowDimensions from "../../utils/hooks/useWindowDimensions";
+import { useContext } from "react";
+import { UsersContext } from "../../contexts/UserContext";
 
 export interface FormProps {
   email: string;
@@ -26,6 +28,8 @@ const Register = () => {
     },
   });
 
+  const { checkUserSession } = useContext(UsersContext);
+
   const navigate = useNavigate();
   const windowSize = useWindowDimensions();
 
@@ -46,12 +50,7 @@ const Register = () => {
 
       const data = await response.json();
 
-      console.log(data.error);
       if (response.status !== 201) {
-        // On gère l'erreur à ce niveau
-        // Object.keys(data.errors) = ['email', 'username', 'password']
-        // Pour chaque paramètre de data.errors, on va afficher le message d'erreur dans le champ correspondant
-
         Object.keys(data.error).forEach((error) => {
           setError(error as keyof FormProps, {
             message: data.error[error],
@@ -59,6 +58,7 @@ const Register = () => {
         });
         return;
       } else {
+        checkUserSession();
         navigate("/");
       }
 

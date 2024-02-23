@@ -60,6 +60,7 @@ const MessagePage = () => {
 
   useEffect(() => {
     getMessages();
+    console.log(messages);
   }, []);
 
   const handleReponseMessage = (message: Message) => {
@@ -106,33 +107,34 @@ const MessagePage = () => {
             </tr>
           </thead>
           <tbody>
-            {messages.map((message) => {
-              return (
-                <tr key={message.id}>
-                  <td className={`fieldTableBody`}>{message.email}</td>
-                  <td className={`fieldTableBody`}>
-                    {message.title.slice(0, 20)}...
-                  </td>
-                  <td className={`${styles.fieldImage} fieldTableBody`}>
-                    {message.message.slice(0, 20)}...
-                  </td>
-                  <td className={styles.titleTable}>
-                    <Button
-                      icon={faReply}
-                      onClick={() => handleReponseMessage(message)}
-                      typeButton={"icon"}
-                    />
-                  </td>
-                  <td className={styles.endColumn}>
-                    <Button
-                      icon={faTrashCan}
-                      onClick={() => handleDeleteOneMessage(message)}
-                      typeButton={"icon"}
-                    />
-                  </td>
-                </tr>
-              );
-            })}
+            {messages &&
+              messages.map((message) => {
+                return (
+                  <tr key={message.id}>
+                    <td className={`fieldTableBody`}>{message.email}</td>
+                    <td className={`fieldTableBody`}>
+                      {message.title.slice(0, 20)}...
+                    </td>
+                    <td className={`${styles.fieldImage} fieldTableBody`}>
+                      {message.message.slice(0, 20)}...
+                    </td>
+                    <td className={styles.titleTable}>
+                      <Button
+                        icon={faReply}
+                        onClick={() => handleReponseMessage(message)}
+                        typeButton={"icon"}
+                      />
+                    </td>
+                    <td className={styles.endColumn}>
+                      <Button
+                        icon={faTrashCan}
+                        onClick={() => handleDeleteOneMessage(message)}
+                        typeButton={"icon"}
+                      />
+                    </td>
+                  </tr>
+                );
+              })}
           </tbody>
         </table>
       </BackOfficeLayout>

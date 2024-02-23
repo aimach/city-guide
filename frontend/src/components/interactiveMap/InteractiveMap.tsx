@@ -29,7 +29,7 @@ const InteractiveMap = () => {
 
   const mapRef = useRef(null);
 
-  const fetchData = async () => {
+  const getPOI = async () => {
     try {
       const response = await axios.get(
         `${process.env.REACT_APP_PUBLIC_BACKEND_URL}/api/poi`
@@ -43,7 +43,7 @@ const InteractiveMap = () => {
   console.log(pois);
 
   useEffect(() => {
-    fetchData();
+    getPOI();
   }, []);
 
   useEffect(() => {}, [mapRef]);
