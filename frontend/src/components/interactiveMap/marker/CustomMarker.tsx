@@ -38,14 +38,13 @@ const CustomMarker = ({
   });
   const map = useMap();
 
-  const { isAuthenticated, profile } = useContext(UsersContext);
+  const { isAuthenticated, profile, checkUserSession } =
+    useContext(UsersContext);
   const [favouriteUserPoi, setFavouriteUserPoi] = useState<Poi[] | null>(null);
 
   const imageURL = image.includes("public")
     ? `${process.env.REACT_APP_PUBLIC_BACKEND_URL}${image}`
     : image;
-
-  console.log(favouriteUserPoi);
 
   const handleUserFavouritePoi = (
     poiId: string,
@@ -60,6 +59,7 @@ const CustomMarker = ({
       } else {
         addFavouritePoiToUser(poiId, userId);
         setFavouriteUserPoi(profile?.favouritePoi as Poi[]);
+        checkUserSession();
       }
     }
   };
@@ -87,30 +87,33 @@ const CustomMarker = ({
       <Popup className="popup--container">
         <img src={imageURL} alt={name} className="popup-image" />
         <div>
-          <h3>{name}</h3>
+          <div className={styles.titleContainer}>
+            <h3>{name}</h3>
+            <div
+              onClick={() => {
+                if (profile !== null)
+                  handleUserFavouritePoi(
+                    poiId,
+                    profile.id as string,
+                    favouriteUserPoi as Poi[]
+                  );
+              }}
+              data-testid="like-button"
+              className={styles.likeButtonContainer}
+            >
+              {isLiked(poiId) ? (
+                <IoIosHeart
+                  className={styles.filledHeart}
+                  stroke="black"
+                  strokeWidth={22}
+                />
+              ) : (
+                <IoIosHeartEmpty className={styles.emptyHeart} />
+              )}
+            </div>
+          </div>
           {isAuthenticated() ? (
             <div className={styles.icons}>
-              <div
-                onClick={() => {
-                  if (profile !== null)
-                    handleUserFavouritePoi(
-                      poiId,
-                      profile.id as string,
-                      favouriteUserPoi as Poi[]
-                    );
-                }}
-                data-testid="like-button"
-              >
-                {isLiked(poiId) ? (
-                  <IoIosHeart
-                    className={styles.filledHeart}
-                    stroke="black"
-                    strokeWidth={22}
-                  />
-                ) : (
-                  <IoIosHeartEmpty className={styles.emptyHeart} />
-                )}
-              </div>
               <div className="secondary_info">
                 <h4>Adresse</h4>
                 <p>{address}</p>

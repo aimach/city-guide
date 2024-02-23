@@ -2,6 +2,7 @@ import { IController } from "./user-controller";
 import { Request, Response } from "express";
 import dataSource from "../dataSource";
 import { Message } from "../entities/Message";
+import { User, UserRole } from "../entities/User";
 import validator from "validator";
 
 export const MessageController: IController = {
@@ -13,7 +14,7 @@ export const MessageController: IController = {
       res.status(200).send(allMessages);
     } catch (err) {
       console.log(err);
-      res.status(400).send({ error: "Error while reading categories" });
+      res.status(400).send({ error: "Error while reading messages" });
     }
   },
 
@@ -47,6 +48,38 @@ export const MessageController: IController = {
     } catch (error) {
       console.log(error);
       res.status(500).send("Erreur serveur");
+    }
+  },
+
+  deleteMessage: async (req: Request, res: Response): Promise<void> => {
+    try {
+      const { id } = req.params;
+      const messageToDelete = await dataSource
+        .getRepository(Message)
+        .findOne({ where: { id } });
+      if (messageToDelete === null) {
+        res.status(404).send({ error: "Message not found" });
+        return;
+      }
+
+      const { userId } = req.params;
+
+      const currentUser = await dataSource
+        .getRepository(User)
+        .findOne({ where: { id: userId } });
+
+      if (currentUser?.role !== UserRole.ADMIN) {
+        res.status(403).send({
+          error: "You are not authorized to delete a message",
+        });
+        return;
+      }
+
+      await dataSource.getRepository(Message).delete(id);
+      res.status(200).send("Deleted message");
+    } catch (err) {
+      console.log(err);
+      res.status(400).send({ error: "Error while reading messages" });
     }
   },
 };
