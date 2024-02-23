@@ -191,7 +191,7 @@ describe("delete user", () => {
   it("should return a code 403 if user is not authorized to delete the profile", async () => {
     const getAllUsers = await getProfiles(token);
     const users = await getAllUsers.json();
-
+    console.log(users);
     const res = await deleteUser(users[0].id, token);
     expect(res.status).toEqual(403);
   });

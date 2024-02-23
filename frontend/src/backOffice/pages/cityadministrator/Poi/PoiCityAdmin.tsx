@@ -30,14 +30,16 @@ const PoiCityAdmin = () => {
     "Actif",
   ];
 
-  // get cities
+  const nbOfPoi = 5;
+
+  // get POI
   const [listOfPoi, setListOfPoi] = useState<Poi[]>([]);
   const [pageNb, setPageNb] = useState<number>(1);
 
   const getAllPoi = async () => {
     try {
       const response = await fetch(
-        `${process.env.REACT_APP_PUBLIC_BACKEND_URL}/api/poi?nb=5&page=${pageNb}`,
+        `${process.env.REACT_APP_PUBLIC_BACKEND_URL}/api/poi?nb=${nbOfPoi}&page=${pageNb}`,
         { credentials: "include" }
       );
       const data = await response.json();
@@ -46,8 +48,6 @@ const PoiCityAdmin = () => {
       console.log(error);
     }
   };
-
-  console.log("listOfPoi", listOfPoi);
 
   useEffect(() => {
     getAllPoi();
@@ -131,6 +131,24 @@ const PoiCityAdmin = () => {
             <div className={styles.buttonText}>Ajouter un POI</div>
           </Link>
         </div>
+        <div className={styles.buttonContainer}>
+          {pageNb > 1 && (
+            <button
+              className={styles.buttonText}
+              onClick={() => setPageNb(pageNb - 1)}
+            >
+              Précédent
+            </button>
+          )}
+          {listOfPoi.length === nbOfPoi && (
+            <button
+              className={styles.buttonText}
+              onClick={() => setPageNb(pageNb + 1)}
+            >
+              Suivant
+            </button>
+          )}
+        </div>
         <table>
           <thead>
             <tr>
@@ -198,12 +216,7 @@ const PoiCityAdmin = () => {
             })}
           </tbody>
         </table>
-        <div>
-          {pageNb > 1 && (
-            <button onClick={() => setPageNb(pageNb - 1)}>Précédent</button>
-          )}
-          <button onClick={() => setPageNb(pageNb + 1)}>Suivant</button>
-        </div>
+
         {isModalOpenModify && (
           <ModalUpdatePoi
             onClose={handleCloseModal}

@@ -1,4 +1,4 @@
-import Joi, { string } from "joi";
+import Joi from "joi";
 
 // ADD A FAVOURITE CITY
 
@@ -7,12 +7,7 @@ export const addFavouriteCityToUser = async (
   userId: string
 ): Promise<void> => {
   try {
-    /*  const data = await callRestApi(
-          'POST',
-          `/api/profile/fav/city/${userId}/${cityId}`
-       ); */
-
-    const response = await fetch(
+    await fetch(
       `${process.env.REACT_APP_PUBLIC_BACKEND_URL}/api/profile/fav/city/${userId}/${cityId}`,
       {
         method: "POST",
@@ -24,8 +19,6 @@ export const addFavouriteCityToUser = async (
         body: null,
       }
     );
-    const data = await response.json();
-    console.log("data", data);
   } catch (error) {
     console.log("error", error);
   }
