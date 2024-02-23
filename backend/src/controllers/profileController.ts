@@ -262,7 +262,10 @@ export const ProfileController: IController = {
         req.body.image = `./public/user/${newName}`;
 
         // delete
-        if (!profileToUpdate.image.includes("http")) {
+        if (
+          profileToUpdate.image !== null &&
+          !profileToUpdate.image.includes("http")
+        ) {
           await unlink(profileToUpdate.image);
         }
       }
@@ -279,7 +282,7 @@ export const ProfileController: IController = {
       res.status(200).json("Updated user");
       return;
     } catch (err) {
-      console.log(err)
+      console.log(err);
       if (req.file !== undefined)
         try {
           await unlink(req.body.image);
