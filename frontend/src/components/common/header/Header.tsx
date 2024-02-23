@@ -25,7 +25,7 @@ const Header = ({ size }: headerProps) => {
   const imageURL: string | undefined = profile?.image
     ? profile?.image?.includes("http")
       ? profile.image
-      : `${process.env.REACT_APP_BACKEND_FOLDER_URL}${profile?.image?.slice(1)}`
+      : `${process.env.REACT_APP_PUBLIC_BACKEND_URL}${profile?.image?.slice(1)}`
     : undefined;
 
   // display profile menu
