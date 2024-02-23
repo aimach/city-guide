@@ -79,7 +79,6 @@ const SearchPOI = () => {
             </div>
           </section>
         )}
-        <div className={styles.separatingBorder}></div>
 
         <section className={styles.filterSearchComponent} id="cities">
           <Caroussel
