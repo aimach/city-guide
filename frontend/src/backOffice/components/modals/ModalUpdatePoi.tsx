@@ -92,8 +92,6 @@ const ModalUpdatePoi = ({
     setDisplayModals({ ...displayModals, validation: true });
   };
 
-  console.log("inputFormData", inputFormData);
-
   return (
     <>
       {isOpen && (

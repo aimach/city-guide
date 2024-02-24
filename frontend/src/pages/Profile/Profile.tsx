@@ -38,7 +38,7 @@ const Profile = () => {
   const windowSize = useWindowDimensions();
   const navigate = useNavigate();
 
-  const { profile } = useContext(UsersContext);
+  const { profile, checkUserSession } = useContext(UsersContext);
   const [userInfo, setUserInfo] = useState<User | null>(null);
 
   // state management for modals, inputs and errors
@@ -72,11 +72,12 @@ const Profile = () => {
 
   useEffect(() => {
     if (profile !== null) {
+      checkUserSession();
       setUserInfo(profile);
     } else {
       navigate("/");
     }
-  }, [profile]);
+  }, []);
 
   return (
     <div className={style.profilePage}>

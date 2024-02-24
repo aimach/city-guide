@@ -114,7 +114,6 @@ export const ProfileController: IController = {
 
   updateProfile: async (req: Request, res: Response): Promise<void> => {
     try {
-      console.log(req.body);
       const { id, userId } = req.params;
       const { username, email, bio, city, role } = req.body as User;
 

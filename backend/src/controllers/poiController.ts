@@ -122,6 +122,7 @@ export const PoiController: IController = {
         res.status(200).send(poiToRead);
       }
     } catch (err) {
+      console.log(err);
       res.status(400).send({
         error: "Error while reading point of interest",
       });

@@ -132,7 +132,6 @@ export const CategoryController: IController = {
     try {
       const { id } = req.params;
       const { name } = req.body;
-      console.log(req.body);
       // check if user is admin
       const { userId } = req.params;
 

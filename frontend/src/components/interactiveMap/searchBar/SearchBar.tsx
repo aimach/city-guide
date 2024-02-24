@@ -33,7 +33,6 @@ const SearchBar = () => {
 
   useEffect(() => {
     const onResultSelected = (event: any) => {
-      console.log(event.location);
       const selectedResult = event.location;
 
       if (selectedResult) {
