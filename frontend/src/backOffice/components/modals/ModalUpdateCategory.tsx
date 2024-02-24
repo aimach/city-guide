@@ -41,7 +41,6 @@ const ModalUpdateCategory = ({
     event.preventDefault();
 
     const formData = new FormData();
-
     Object.keys(inputFormData).forEach((key) => {
       if (key !== "image") {
         formData.append(

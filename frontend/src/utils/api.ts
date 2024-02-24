@@ -316,19 +316,12 @@ export const addCategory = async (body: any): Promise<void> => {
 // UPDATE CATEGORY
 export const updateCategory = async (body: any, id: string): Promise<void> => {
   try {
-    const body: any = {
-      name: "string",
-      key: { key: "key", anotherKey: { key: "string" } },
-    };
     const response = await fetch(
       `${process.env.REACT_APP_PUBLIC_BACKEND_URL}/api/categories/${id}`,
       {
         method: "PUT",
-        headers: {
-          Accept: "application/json",
-        },
         credentials: "include",
-        body: JSON.stringify(body),
+        body: body,
       }
     );
     const data = await response.json();
