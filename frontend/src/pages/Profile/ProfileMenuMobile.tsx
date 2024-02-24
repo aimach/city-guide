@@ -34,7 +34,7 @@ export default function ProfileMenuMobile() {
       </div>
       <div className={style.linkContainer}>
         <Link to="/contact">Contact</Link>
-        <Link to="">A propos</Link>
+        <Link to="/faq">A propos</Link>
         <button
           onClick={() => {
             logout();

@@ -40,7 +40,6 @@ const InteractiveMap = () => {
       console.error(error);
     }
   };
-  console.log(pois);
 
   useEffect(() => {
     getPOI();
@@ -74,24 +73,28 @@ const InteractiveMap = () => {
         />
         {<SearchBar />}
 
-        <MarkerClusterGroup iconCreateFunction={createClusterCustomIcon}>
-          {pois.map((poi, index) => {
-            const latitude = poi.coordinates.coordinates[0];
-            const longitude = poi.coordinates.coordinates[1];
+        <MarkerClusterGroup
+          iconCreateFunction={createClusterCustomIcon}
+          maxClusterRadius={25}
+        >
+          {pois &&
+            pois.map((poi, index) => {
+              const latitude = poi.coordinates.coordinates[0];
+              const longitude = poi.coordinates.coordinates[1];
 
-            return (
-              <CustomMarker
-                key={index}
-                position={[latitude, longitude]}
-                name={poi.name}
-                image={poi.image}
-                address={poi.address}
-                phoneNumber={poi.phoneNumber}
-                description={poi.description}
-                poiId={poi.id}
-              />
-            );
-          })}
+              return (
+                <CustomMarker
+                  key={index}
+                  position={[latitude, longitude]}
+                  name={poi.name}
+                  image={poi.image}
+                  address={poi.address}
+                  phoneNumber={poi.phoneNumber}
+                  description={poi.description}
+                  poiId={poi.id}
+                />
+              );
+            })}
         </MarkerClusterGroup>
       </MapContainer>
     </>

@@ -132,7 +132,7 @@ export const CategoryController: IController = {
     try {
       const { id } = req.params;
       const { name } = req.body;
-
+      console.log(req.body);
       // check if user is admin
       const { userId } = req.params;
 
@@ -227,6 +227,7 @@ export const CategoryController: IController = {
       await dataSource.getRepository(Category).update(id, req.body);
       res.status(200).send("Updated category");
     } catch (err) {
+      console.log(err);
       res.status(400).send({ error: "Error while updating category" });
       if (req.file !== undefined)
         await unlink(`./public/category/${req.file?.filename}`);
