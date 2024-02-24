@@ -73,7 +73,10 @@ const InteractiveMap = () => {
         />
         {<SearchBar />}
 
-        <MarkerClusterGroup iconCreateFunction={createClusterCustomIcon}>
+        <MarkerClusterGroup
+          iconCreateFunction={createClusterCustomIcon}
+          maxClusterRadius={25}
+        >
           {pois &&
             pois.map((poi, index) => {
               const latitude = poi.coordinates.coordinates[0];
