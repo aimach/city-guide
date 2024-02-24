@@ -89,28 +89,30 @@ const CustomMarker = ({
         <div>
           <div className={styles.titleContainer}>
             <h3>{name}</h3>
-            <div
-              onClick={() => {
-                if (profile !== null)
-                  handleUserFavouritePoi(
-                    poiId,
-                    profile.id as string,
-                    favouriteUserPoi as Poi[]
-                  );
-              }}
-              data-testid="like-button"
-              className={styles.likeButtonContainer}
-            >
-              {isLiked(poiId) ? (
-                <IoIosHeart
-                  className={styles.filledHeart}
-                  stroke="black"
-                  strokeWidth={22}
-                />
-              ) : (
-                <IoIosHeartEmpty className={styles.emptyHeart} />
-              )}
-            </div>
+            {isAuthenticated() && (
+              <div
+                onClick={() => {
+                  if (profile !== null)
+                    handleUserFavouritePoi(
+                      poiId,
+                      profile.id as string,
+                      favouriteUserPoi as Poi[]
+                    );
+                }}
+                data-testid="like-button"
+                className={styles.likeButtonContainer}
+              >
+                {isLiked(poiId) ? (
+                  <IoIosHeart
+                    className={styles.filledHeart}
+                    stroke="black"
+                    strokeWidth={22}
+                  />
+                ) : (
+                  <IoIosHeartEmpty className={styles.emptyHeart} />
+                )}
+              </div>
+            )}
           </div>
           {isAuthenticated() ? (
             <div className={styles.icons}>

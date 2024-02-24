@@ -152,3 +152,11 @@
     cursor: pointer;
   }
 }
+
+@media (max-width: 768px) {
+  .container {
+    position: fixed;
+    top: 0;
+    left: 0;
+  }
+}
