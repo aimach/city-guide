@@ -50,7 +50,7 @@ export const PoiController: IController = {
       let decodedToken = null;
 
       let allPoi;
-
+      console.log(token);
       if (token !== undefined) {
         decodedToken = jwt.verify(
           token,
