@@ -88,7 +88,7 @@ export const PoiController: IController = {
             where: searchQueries,
             ...pagination,
           });
-        } else {
+        } else if (decodedToken?.role === UserRole.FREE_USER) {
           // get only accepted poi
           allPoi = await dataSource.getRepository(Poi).find({
             relations: {
@@ -112,6 +112,7 @@ export const PoiController: IController = {
           ...pagination,
         });
       }
+      console.log(allPoi);
       res.status(200).send(allPoi);
     } catch (err) {
       res.status(400).send({
