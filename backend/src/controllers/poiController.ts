@@ -50,7 +50,6 @@ export const PoiController: IController = {
       let decodedToken = null;
 
       let allPoi;
-      console.log(token);
       if (token !== undefined) {
         decodedToken = jwt.verify(
           token,
@@ -89,6 +88,17 @@ export const PoiController: IController = {
             where: searchQueries,
             ...pagination,
           });
+        } else {
+          // get only accepted poi
+          allPoi = await dataSource.getRepository(Poi).find({
+            relations: {
+              category: true,
+              city: true,
+              user: true,
+            },
+            where: { ...searchQueries, isAccepted: true },
+            ...pagination,
+          });
         }
       } else {
         // get only accepted poi
@@ -104,7 +114,6 @@ export const PoiController: IController = {
       }
       res.status(200).send(allPoi);
     } catch (err) {
-      console.log(err);
       res.status(400).send({
         error: "Error while reading points of interest",
       });
