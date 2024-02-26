@@ -10,6 +10,18 @@ export const MessageController: IController = {
 
   getMessages: async (req: Request, res: Response): Promise<void> => {
     try {
+      const { userId } = req.params;
+      const currentUser = await dataSource
+        .getRepository(User)
+        .findOne({ where: { id: userId } });
+
+      if (currentUser?.role !== UserRole.ADMIN) {
+        res.status(403).send({
+          error: "You are not authorized to read messages",
+        });
+        return;
+      }
+
       const allMessages = await dataSource.getRepository(Message).find();
       res.status(200).send(allMessages);
     } catch (err) {

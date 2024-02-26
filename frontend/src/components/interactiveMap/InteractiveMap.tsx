@@ -8,6 +8,7 @@ import style from "./InteractiveMap.module.scss";
 // @ts-ignore
 import icon from "../../assets/marker.svg";
 import SearchBar from "./searchBar/SearchBar";
+import { useSearchParams } from "react-router-dom";
 
 type coordinates = {
   type: Point;
@@ -47,6 +48,10 @@ const InteractiveMap = () => {
 
   useEffect(() => {}, [mapRef]);
 
+  let [searchParams, setSearchParams] = useSearchParams();
+  const lat = searchParams.get("lat");
+  const long = searchParams.get("long");
+
   const createClusterCustomIcon = (cluster: MarkerCluster) => {
     return L.divIcon({
       html: `<span>${cluster.getChildCount()}</span><img class=${
@@ -71,7 +76,7 @@ const InteractiveMap = () => {
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://tile.jawg.io/78a4b677-e817-42a6-8184-16a7c7017384/{z}/{x}/{y}{r}.png?access-token=VsqNhlNeeh2fYcI97JN1VuaKPpHNNeQSYYllqIf29xrB8in1XrrCycJkjpz6aJZX"
         />
-        {<SearchBar />}
+        {<SearchBar lat={lat} long={long} />}
 
         <MarkerClusterGroup
           iconCreateFunction={createClusterCustomIcon}

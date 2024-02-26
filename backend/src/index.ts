@@ -59,7 +59,6 @@ const start = async (): Promise<void> => {
 
   app.listen({ port }, () => {
     console.log(`Backend app ready at http://localhost:${port}`);
-    console.log(process.env.DEPLOY_URL);
   });
 };
 void start();

@@ -30,11 +30,9 @@ export const UserProvider = ({ children }: ProviderProps) => {
   // useState
   const [profile, setProfile] = useState<User | null>(null);
   const [loaded, setLoaded] = useState(false);
-
   const navigate = useNavigate();
 
   const checkUserSession = async () => {
-    // GET /my-profile, en cas de succès on setUser avec les infos de l'utilisateur //
     try {
       const response = await fetch(
         `${process.env.REACT_APP_PUBLIC_BACKEND_URL}/api/profile/my-profile`,
@@ -55,7 +53,7 @@ export const UserProvider = ({ children }: ProviderProps) => {
   };
 
   useEffect(() => {
-    checkUserSession();
+    if (loaded) checkUserSession();
   }, [navigate]);
 
   const isAuthenticated = () => {

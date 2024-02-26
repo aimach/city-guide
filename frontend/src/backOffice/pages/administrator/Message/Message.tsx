@@ -60,7 +60,6 @@ const MessagePage = () => {
 
   useEffect(() => {
     getMessages();
-    console.log(messages);
   }, []);
 
   const handleReponseMessage = (message: Message) => {
