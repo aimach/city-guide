@@ -4,7 +4,8 @@ import { useContext } from "react";
 import { UsersContext } from "../../contexts/UserContext";
 import { IoIosHeartEmpty, IoIosHeart } from "react-icons/io";
 import { AiOutlineClose } from "react-icons/ai";
-import { Link } from "react-router-dom";
+import { FaLocationDot } from "react-icons/fa6";
+import { Link, useNavigate } from "react-router-dom";
 
 interface Props {
   poi: Poi;
@@ -18,6 +19,8 @@ const ModalePOI = ({ poi, onClose, handleFavourite, isLiked }: Props) => {
     poi;
 
   const { isAuthenticated } = useContext(UsersContext);
+
+  const navigate = useNavigate();
 
   const imageURL = image.includes("public")
     ? `${process.env.REACT_APP_PUBLIC_BACKEND_URL}${image}`
@@ -34,6 +37,13 @@ const ModalePOI = ({ poi, onClose, handleFavourite, isLiked }: Props) => {
 
       <div className={styles.header}>
         <h3>{name}</h3>
+        <FaLocationDot
+          onClick={() =>
+            navigate(
+              `/map?lat=${poi.coordinates.coordinates[0]}&long=${poi.coordinates.coordinates[1]}`
+            )
+          }
+        />
         {isAuthenticated() ? (
           <div className={styles.icons}>
             <div onClick={() => handleFavourite(id)} data-testid="like-button">

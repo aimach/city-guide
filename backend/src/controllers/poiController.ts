@@ -104,6 +104,7 @@ export const PoiController: IController = {
       }
       res.status(200).send(allPoi);
     } catch (err) {
+      console.log(err);
       res.status(400).send({
         error: "Error while reading points of interest",
       });

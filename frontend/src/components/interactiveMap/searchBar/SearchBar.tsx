@@ -5,7 +5,12 @@ import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import "./searchBar.scss";
 
-const SearchBar = () => {
+type SearchBarPropsType = {
+  lat: string | null;
+  long: string | null;
+};
+
+const SearchBar = ({ lat, long }: SearchBarPropsType) => {
   const provider = new OpenStreetMapProvider({
     params: {
       "accept-language": "fr",
@@ -32,19 +37,14 @@ const SearchBar = () => {
   }, [map, searchControl]);
 
   useEffect(() => {
+    if (lat && long) {
+      map.flyTo([parseFloat(lat), parseFloat(long)], 13);
+    }
+
     const onResultSelected = (event: any) => {
       const selectedResult = event.location;
 
       if (selectedResult) {
-        const circle = L.circle([selectedResult.y, selectedResult.x], {
-          color: "#090f43",
-          fillColor: "#090f43",
-          fillOpacity: 0.5,
-          radius: 5000,
-        }).addTo(map);
-
-        map.fitBounds(circle.getBounds());
-
         map.flyTo([selectedResult.y, selectedResult.x], 11);
       }
     };

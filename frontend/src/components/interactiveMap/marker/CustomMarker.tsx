@@ -76,6 +76,7 @@ const CustomMarker = ({
 
   return (
     <Marker
+      attribution={position.toString()}
       position={position}
       icon={customIcon}
       eventHandlers={{
