@@ -112,7 +112,6 @@ export const PoiController: IController = {
           ...pagination,
         });
       }
-      console.log(allPoi);
       res.status(200).send(allPoi);
     } catch (err) {
       res.status(400).send({
