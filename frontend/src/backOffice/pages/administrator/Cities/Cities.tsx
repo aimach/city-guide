@@ -143,7 +143,17 @@ const Cities = () => {
                   </div>
                 </td>
                 <td className={`${styles.fieldImage} fieldTableBody`}>
-                  {city.image}
+                  <img
+                    src={
+                      city.image.includes("http")
+                        ? city.image
+                        : `${
+                            process.env.REACT_APP_PUBLIC_BACKEND_URL
+                          }${city?.image?.slice(1)}`
+                    }
+                    alt="category"
+                    width={100}
+                  />
                 </td>
                 <td className={`fieldTableBody`}>
                   {city.userAdminCity?.username}

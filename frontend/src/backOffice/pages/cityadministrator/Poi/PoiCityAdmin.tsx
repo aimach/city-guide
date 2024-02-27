@@ -189,7 +189,17 @@ const PoiCityAdmin = () => {
                     {poi.phoneNumber}
                   </td>
                   <td className={`${styles.fieldImage} fieldTableBody`}>
-                    {poi.image}
+                    <img
+                      src={
+                        poi.image.includes("http")
+                          ? poi.image
+                          : `${
+                              process.env.REACT_APP_PUBLIC_BACKEND_URL
+                            }${poi.image.slice(1)}`
+                      }
+                      alt="category"
+                      width={100}
+                    />
                   </td>
                   <td className={`${styles.fieldImage} fieldTableBody`}>
                     <FontAwesomeIcon

@@ -46,7 +46,7 @@ export default class MainSeeder implements Seeder {
     // POI
     const poiFactory = factoryManager.get(Poi);
     const pois = await Promise.all(
-      Array(50)
+      Array(100)
         .fill("")
         .map(async () => {
           const made = await poiFactory.make({
