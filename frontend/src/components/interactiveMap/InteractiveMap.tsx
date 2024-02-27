@@ -60,6 +60,7 @@ const InteractiveMap = () => {
       className: `${style.counter}`,
       iconSize: L.point(33, 33, true),
       iconUrl: icon,
+      iconAnchor: [18, 50],
     });
   };
   return (

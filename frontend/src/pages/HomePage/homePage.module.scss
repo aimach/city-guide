@@ -19,6 +19,9 @@
   margin-left: 5rem;
   @include m.flexLayout(space-around, flex-start);
   flex-direction: column;
+  & > p {
+    text-shadow: 0 0 3px v.$primary_color;
+  }
 }
 
 .presentationButton {
@@ -51,7 +54,6 @@
     @include m.flexLayout(normal, center);
     flex-direction: column;
     width: 100%;
-    border-bottom: 1px solid v.$primary_color;
     padding-bottom: 5rem;
   }
 }

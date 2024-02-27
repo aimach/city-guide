@@ -133,7 +133,17 @@ const Categories = () => {
                 <tr key={category.id}>
                   <td className={`fieldTableBody`}>{category.name}</td>
                   <td className={`${styles.fieldImage} fieldTableBody`}>
-                    {category.image}
+                    <img
+                      src={
+                        category.image.includes("http")
+                          ? category.image
+                          : `${
+                              process.env.REACT_APP_PUBLIC_BACKEND_URL
+                            }${category?.image?.slice(1)}`
+                      }
+                      alt="category"
+                      width={100}
+                    />
                   </td>
                   <td className={styles.titleTable}>
                     <Button
